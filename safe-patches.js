@@ -2,7 +2,8 @@
   const STYLE_ID='safe-ui-patches-v1';
   const SCHOOL_ID='aboutSchool';
   const REP_RED='#c62828';
-  const PAGE_NAMES=new Set(['home','senate','polls','betting','errors','about']);
+  const PAGE_NAMES=['home','senate','polls','betting','errors','about'];
+  const PAGE_SET=new Set(PAGE_NAMES);
   let stableTabHandlerInstalled=false;
 
   function ensureStyle(){
@@ -47,11 +48,83 @@
     document.head.appendChild(style);
   }
 
-  function ensureStableTabs(){
-    document.querySelectorAll('.site-header .nav [data-page-link]').forEach(tab=>{
-      if(tab.tagName==='BUTTON') tab.type='button';
-      if(tab.tagName==='A') tab.removeAttribute('href');
+  function currentVisiblePage(){
+    for(const page of PAGE_NAMES){
+      const el=document.getElementById('page-'+page);
+      if(!el) continue;
+      try{
+        const s=getComputedStyle(el);
+        if(!el.hidden && s.display!=='none' && s.visibility!=='hidden') return page;
+      }catch(e){}
+    }
+    return null;
+  }
+
+  function setSafeActive(page){
+    const nav=document.querySelector('.site-header .nav');
+    if(!nav) return;
+    nav.querySelectorAll('[data-page-link]').forEach(tab=>{
+      tab.classList.toggle('active',tab.getAttribute('data-page-link')===page);
     });
+  }
+
+  function buildCanonicalNav(nav){
+    if(!nav) return;
+    const expected=[
+      ['home','Home'],
+      ['senate','2026 Senate Prediction'],
+      ['governor','2026 Governor Map'],
+      ['polls','New Polls'],
+      ['betting','Betting Odds'],
+      ['errors','Past Polling Errors'],
+      ['about','About Me']
+    ];
+    const children=[...nav.children];
+    const current=children.map(el=>{
+      if(el.hasAttribute('data-governor-link')) return 'governor';
+      return el.getAttribute('data-page-link')||'';
+    });
+    const wanted=expected.map(x=>x[0]);
+    const alreadyCanonical=
+      nav.getAttribute('data-safe-nav')==='1' &&
+      current.length===wanted.length &&
+      current.every((v,i)=>v===wanted[i]);
+
+    if(alreadyCanonical){
+      children.forEach(el=>{
+        if(el.tagName==='BUTTON') el.type='button';
+        if(el.tagName==='A') el.removeAttribute('href');
+      });
+      return;
+    }
+
+    const active=currentVisiblePage();
+    nav.textContent='';
+    nav.setAttribute('data-safe-nav','1');
+
+    for(const [key,label] of expected){
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent=label;
+      button.setAttribute('data-safe-tab','1');
+      if(key==='governor'){
+        button.setAttribute('data-governor-link','');
+        button.addEventListener('click',e=>{
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.assign('/governor.html');
+        });
+      }else{
+        button.setAttribute('data-page-link',key);
+      }
+      nav.appendChild(button);
+    }
+    if(active) setSafeActive(active);
+  }
+
+  function ensureStableTabs(){
+    const nav=document.querySelector('.site-header .nav');
+    if(nav) buildCanonicalNav(nav);
 
     if(stableTabHandlerInstalled) return;
     stableTabHandlerInstalled=true;
@@ -60,11 +133,17 @@
       const target=e.target&&e.target.closest?e.target.closest('.site-header .nav [data-page-link]'):null;
       if(!target) return;
       const page=target.getAttribute('data-page-link');
-      if(!PAGE_NAMES.has(page) || typeof showPage!=='function') return;
+      if(!PAGE_SET.has(page)) return;
 
       e.preventDefault();
+      e.stopPropagation();
       e.stopImmediatePropagation();
-      showPage(page);
+
+      const current=currentVisiblePage();
+      if(current!==page && typeof showPage==='function'){
+        showPage(page);
+      }
+      setSafeActive(page);
 
       try{
         const path=location.pathname||'/';
