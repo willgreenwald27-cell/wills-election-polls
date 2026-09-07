@@ -1,0 +1,36 @@
+name: Remove home hero Past Polling button
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/remove-home-hero-past-polling.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove only the hero Past Polling button
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = 'nav.insertBefore(gb,polls||null)}<\\/script>\';'
+          new = 'nav.insertBefore(gb,polls||null)}const heroActions=document.querySelector(".reference-hero-actions");if(heroActions){for(const el of [...heroActions.querySelectorAll("button,a")]){if(/past polling (misses|errors)/i.test(el.textContent||""))el.remove()}}/*home-hero-past-polling-removed*/<\\/script>\';'
+          if old not in s:
+              raise SystemExit('Expected publicLockScript marker not found; refusing to modify index.html')
+          p.write_text(s.replace(old, new, 1))
+          PY
+      - name: Commit targeted change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Remove Past Polling button beside New Polls'
+          git push
