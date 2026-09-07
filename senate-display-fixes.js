@@ -1,6 +1,9 @@
 (()=>{
   const POLL_COUNT=88;
   const STATE_COUNT=19;
+  const RED='#bd2937';
+  const BLUE='#2763b8';
+  const IND='#8051d2';
   const CALLS={
     ME:{name:'Maine',rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},
     IA:{name:'Iowa',rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},
@@ -16,6 +19,13 @@
 
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
+
+  function partyColor(party){
+    const p=norm(party).toLowerCase();
+    if(p.includes('republican')||p==='r'||p==='gop') return RED;
+    if(p.includes('democrat')||p==='d') return BLUE;
+    return IND;
+  }
 
   function setCandidatePoll(s,name,value){
     let changed=false;
@@ -126,6 +136,52 @@
     }
   }
 
+  function forceMobilePartyVisuals(){
+    if(!window.matchMedia('(max-width:760px)').matches) return;
+    const root=document.getElementById('page-senate');
+    if(!root) return;
+
+    const lines=[...root.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+    for(const line of lines){
+      const partyEl=line.querySelector('.candidate-party');
+      if(!partyEl) continue;
+      const color=partyColor(partyEl.textContent);
+      line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b').forEach(el=>{
+        el.style.setProperty('color',color,'important');
+      });
+    }
+
+    const bars=[...root.querySelectorAll('.oddsbar')].filter(el=>el.getClientRects().length);
+    for(const bar of bars){
+      let panel=bar.parentElement;
+      while(panel&&panel!==root){
+        const candidateLines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+        if(candidateLines.length>=2){
+          const firstParty=candidateLines[0].querySelector('.candidate-party');
+          const secondParty=candidateLines[1].querySelector('.candidate-party');
+          const firstColor=partyColor(firstParty?firstParty.textContent:'');
+          const secondColor=partyColor(secondParty?secondParty.textContent:'');
+          const a=bar.querySelector('.oddsbar-a');
+          const b=bar.querySelector('.oddsbar-b');
+          if(a) a.style.setProperty('background',firstColor,'important');
+          if(b) b.style.setProperty('background',secondColor,'important');
+
+          const firstName=candidateLines[0].querySelector('.candidate-name');
+          const secondName=candidateLines[1].querySelector('.candidate-name');
+          const firstKey=firstName?norm(firstName.textContent).toLowerCase()+':':'';
+          const secondKey=secondName?norm(secondName.textContent).toLowerCase()+':':'';
+          panel.querySelectorAll('b,strong').forEach(el=>{
+            const t=norm(el.textContent).toLowerCase();
+            if(firstKey&&t.startsWith(firstKey)) el.style.setProperty('color',firstColor,'important');
+            if(secondKey&&t.startsWith(secondKey)) el.style.setProperty('color',secondColor,'important');
+          });
+          break;
+        }
+        panel=panel.parentElement;
+      }
+    }
+  }
+
   function setMetric(root,labelRe,value){
     if(!root) return;
     for(const el of leafs(root)){
@@ -162,6 +218,7 @@
     forceSenateBalance();
     forceMaineMapColor();
     forceVisibleCallText();
+    forceMobilePartyVisuals();
     forcePollMetrics();
   }
 
@@ -177,4 +234,5 @@
   setTimeout(enforce,1600);
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',enforce);
+  window.addEventListener('resize',enforce);
 })();
