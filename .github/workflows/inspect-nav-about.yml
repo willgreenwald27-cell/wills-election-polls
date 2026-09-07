@@ -1,0 +1,24 @@
+name: Inspect nav and about markup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-nav-about.yml'
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and inspect nav and about
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(n).read_text().strip() for n in names))).decode('utf-8')
+          for needle,label,span in [('<header','HEADER',7000),('<section class="page" id="page-about">','ABOUT',13000),('function showPage','SHOWPAGE',3000)]:
+              i=html.find(needle)
+              print('\n###',label,'INDEX',i)
+              if i>=0: print(html[i:i+span])
+          PY
