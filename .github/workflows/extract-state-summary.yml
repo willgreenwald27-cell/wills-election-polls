@@ -1,0 +1,41 @@
+name: Extract Senate state summary
+
+on:
+  push:
+    paths:
+      - '.github/workflows/extract-state-summary.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract embedded Senate state data
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re,json,csv,io
+          files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(f).read_text() for f in files))).decode()
+          m=re.search(r'const EMBEDDED_SITE_DATA_B64 = "([A-Za-z0-9+/=]+)"',html)
+          if not m: raise SystemExit('embedded data not found')
+          data=json.loads(base64.b64decode(m.group(1)).decode())
+          states=data['stateData']
+          rows=[]
+          for ab,s in states.items():
+            if not s.get('active'): continue
+            rows.append({k:s.get(k,'') for k in ['abbr','name','candidate1','candidate1Party','candidate1Poll','candidate2','candidate2Party','candidate2Poll','rating','prediction','predictionParty','updated']})
+          rows.sort(key=lambda r:r['abbr'])
+          out=io.StringIO(); w=csv.DictWriter(out,fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
+          Path('senate-state-summary.csv').write_text(out.getvalue())
+          PY
+      - name: Commit summary
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add senate-state-summary.csv
+          git commit -m 'Extract Senate state data summary'
+          git push
