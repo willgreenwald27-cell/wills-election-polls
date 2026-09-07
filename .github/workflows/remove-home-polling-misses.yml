@@ -1,0 +1,52 @@
+name: Remove home Past Polling Misses safely
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-home-polling-misses.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove broken home polling misses elements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace("h=h.replace('See forecasts','See past polling misses').replace('See Forecasts','See Past Polling Misses');","")
+          start=s.find("h=h.replace('<div class=\"reference-divider\"></div>','<button")
+          if start!=-1:
+              end=s.find("h=h.replace('<span><i class=\"mini-key\"", start)
+              if end==-1:
+                  raise SystemExit('could not find end of home polling misses injection')
+              s=s[:start]+s[end:]
+          p.write_text(s)
+          PY
+      - name: Browser render test
+        run: |
+          set -e
+          CHROME="$(command -v google-chrome || command -v chromium-browser || command -v chromium || true)"
+          test -n "$CHROME"
+          python3 -m http.server 8000 >/tmp/http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          timeout 20s "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=8000 --dump-dom "http://127.0.0.1:8000/?v=remove-polling-misses" >/tmp/dom.html 2>/tmp/chrome.log || true
+          grep -q 'id="page-home"' /tmp/dom.html
+          ! grep -q 'id="loading"' /tmp/dom.html
+          ! grep -q 'Site failed to load:' /tmp/dom.html
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove broken home Past Polling Misses link'
+          git push
