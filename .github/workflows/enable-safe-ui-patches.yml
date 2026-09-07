@@ -13,23 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch loader to include isolated UI file
+      - name: Cache-bust isolated UI file safely
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text()
-          old="h=h.replace('</body>',publicLockScript+'</body>');document.open();document.write(h);document.close()"
-          new="h=h.replace('</body>',publicLockScript+'<script src=\"/safe-patches.js\"><\\/script></body>');document.open();document.write(h);document.close()"
-          if new in s:
-              print('Safe patch loader already enabled')
-          else:
-              if s.count(old) != 1:
-                  raise SystemExit(f'Expected exactly one loader marker, found {s.count(old)}')
-              s=s.replace(old,new,1)
-              p.write_text(s)
-          if s.count('/safe-patches.js') != 1:
-              raise SystemExit('safe-patches.js reference verification failed')
+          updated,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2257',s)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one safe-patches.js reference, found {count}')
+          if updated != s:
+              p.write_text(updated)
+          if updated.count('/safe-patches.js?v=20260907-2257') != 1:
+              raise SystemExit('Versioned safe-patches.js reference verification failed')
           PY
       - name: Validate JavaScript and protect compressed site data
         run: |
@@ -45,11 +42,11 @@ jobs:
           PY
           node --check /tmp/loader.js
           git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
-      - name: Commit index-only loader change
+      - name: Commit index-only cache-bust
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Enable safe isolated UI patches'
+          git commit -m 'Refresh isolated UI patch version'
           git push
