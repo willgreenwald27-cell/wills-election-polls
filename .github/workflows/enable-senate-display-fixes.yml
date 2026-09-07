@@ -13,26 +13,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add isolated Senate display corrections
+      - name: Refresh Senate calls and display corrections
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
           p=Path('index.html')
           s=p.read_text()
-          # Refresh the archive cache key as well.
           s,n1=re.subn(r'/senate-julsep-archive\.js(?:\?v=[0-9A-Za-z._-]+)?','/senate-julsep-archive.js?v=20260907-1622',s)
           if n1 != 1:
               raise SystemExit(f'Expected one Senate archive loader, found {n1}')
-          # Add or refresh the final display correction script immediately after it.
           pat=r'(<script src="/senate-julsep-archive\.js\?v=[^"]+"><\\/script>)(?:<script src="/senate-display-fixes\.js(?:\?v=[^"]+)?"><\\/script>)?'
-          fix='<script src="/senate-display-fixes.js?v=20260907-1622"><\\/script>'
+          fix='<script src="/senate-display-fixes.js?v=20260907-1745"><\\/script>'
           s,n2=re.subn(pat,lambda m:m.group(1)+fix,s)
           if n2 != 1:
               raise SystemExit(f'Expected one Senate archive script marker, found {n2}')
+          old="const callOverride={AK:'Peltola +1.1%',GA:'Ossoff +8.1%',NC:'Cooper +7.9%',OH:'Husted +0.9%',NH:'Pappas +5.6%',ME:'Jackson +0.4%',TX:'Paxton +0.3%'}[s.abbr];"
+          new="const callOverride={AK:'Peltola +1.1%',GA:'Ossoff +8.1%',NC:'Cooper +7.9%',OH:'Husted +0.9%',NH:'Pappas +5.6%',ME:'Collins +1.3%',TX:'Paxton +0.3%',IA:'Hinson +3.2%',KS:'Marshall +6.9%',NE:'Ricketts +4.3%'}[s.abbr];"
+          if s.count(old)!=1:
+              raise SystemExit(f'Expected one legacy callOverride, found {s.count(old)}')
+          s=s.replace(old,new)
           p.write_text(s)
-          if s.count('/senate-display-fixes.js?v=20260907-1622') != 1:
+          if s.count('/senate-display-fixes.js?v=20260907-1745') != 1:
               raise SystemExit('Senate display fix loader verification failed')
+          if s.count("ME:'Collins +1.3%'") != 1:
+              raise SystemExit('Maine call override verification failed')
           PY
       - name: Validate scripts and protect site data
         run: |
@@ -57,5 +62,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Load final Senate display corrections'
+          git commit -m 'Refresh Senate calls and averages display'
           git push
