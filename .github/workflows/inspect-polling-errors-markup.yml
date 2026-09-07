@@ -1,0 +1,30 @@
+name: Inspect polling errors markup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-polling-errors-markup.yml'
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and inspect polling errors markup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip, re
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          b=''.join(Path(n).read_text().strip() for n in names)
+          html=gzip.decompress(base64.b64decode(b)).decode('utf-8')
+          print('HTML length:',len(html))
+          for m in re.finditer(r'id=["\']([^"\']*error[^"\']*)["\']',html,re.I):
+              print('ERROR-ID:',m.group(1))
+          for phrase in ['Past Polling Errors','Past Polling Misses','Polling Errors']:
+              i=html.lower().find(phrase.lower())
+              print('PHRASE',phrase,'INDEX',i)
+              if i>=0:
+                  print(html[max(0,i-1800):i+2600])
+                  print('\n---END-SNIP---\n')
+          PY
