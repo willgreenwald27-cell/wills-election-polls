@@ -1,0 +1,69 @@
+name: Fix mobile governor taps and Kalshi spacing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/mobile-governor-kalshi-spacing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch governor mobile detail visibility
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('governor.html')
+          s = p.read_text()
+          old = '.poll-grid{grid-template-columns:1fr 1fr}.hover{display:none!important}}'
+          new = '.poll-grid{grid-template-columns:1fr 1fr}.hover{display:none!important}.detail{display:block!important}}'
+          if s.count(old) != 1:
+              raise SystemExit(f'Governor mobile CSS target count: {s.count(old)}')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+      - name: Patch Kalshi/state spacing
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = '#page-betting .kleg.i{background:#8051d2!important}#page-betting .kalshi-legend span:has(.kleg.o){display:none!important}'
+          new = '#page-betting .kleg.i{background:#8051d2!important}#page-betting .kalshi-selected-content .kalshi-wordmark{display:inline-flex!important;align-items:center!important;margin-right:8px!important}#page-betting .kalshi-selected-content>div:first-child{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important}#page-betting .kalshi-selected-content>div:first-child .kalshi-wordmark{margin-right:0!important}#page-betting .kalshi-legend span:has(.kleg.o){display:none!important}'
+          if s.count(old) != 1:
+              raise SystemExit(f'Kalshi CSS target count: {s.count(old)}')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+      - name: Validate governor script
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('governor.html').read_text()
+          start = s.rfind('<script>')
+          end = s.rfind('</script>')
+          if start < 0 or end <= start:
+              raise SystemExit('Governor script not found')
+          Path('/tmp/governor.js').write_text(s[start+8:end])
+      - run: node --check /tmp/governor.js
+      - name: Validate homepage loader
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('index.html').read_text()
+          start = s.find('<script>')
+          end = s.rfind('</script>')
+          if start < 0 or end <= start:
+              raise SystemExit('Loader script not found')
+          Path('/tmp/loader.js').write_text(s[start+8:end])
+      - run: node --check /tmp/loader.js
+      - name: Commit UI fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add governor.html index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix governor mobile taps and Kalshi state spacing"
+          git push
