@@ -123,34 +123,12 @@
   }
 
   function ensureStableTabs(){
-    const nav=document.querySelector('.site-header .nav');
-    if(nav) buildCanonicalNav(nav);
-
-    if(stableTabHandlerInstalled) return;
-    stableTabHandlerInstalled=true;
-
-    window.addEventListener('click',e=>{
-      const target=e.target&&e.target.closest?e.target.closest('.site-header .nav [data-page-link]'):null;
-      if(!target) return;
-      const page=target.getAttribute('data-page-link');
-      if(!PAGE_SET.has(page)) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-
-      const current=currentVisiblePage();
-      if(current!==page && typeof showPage==='function'){
-        showPage(page);
-      }
-      setSafeActive(page);
-
-      try{
-        const path=location.pathname||'/';
-        const url=page==='home'?path:path+'?page='+encodeURIComponent(page);
-        history.replaceState({page},'',url);
-      }catch(err){}
-    },true);
+    if(document.querySelector('script[data-reload-free-nav="1"]')) return;
+    const script=document.createElement('script');
+    script.src='/navigation-controller.js?v=20260907-1655';
+    script.async=false;
+    script.setAttribute('data-reload-free-nav','1');
+    document.head.appendChild(script);
   }
 
   function ensureKalshiHeading(){
