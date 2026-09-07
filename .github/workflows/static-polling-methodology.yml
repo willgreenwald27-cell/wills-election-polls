@@ -1,0 +1,102 @@
+name: Add static polling errors methodology
+
+on:
+  push:
+    paths:
+      - '.github/workflows/static-polling-methodology.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add methodology directly to Past Polling Errors page
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip
+
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          encoded=''.join(Path(n).read_text().strip() for n in names)
+          html=gzip.decompress(base64.b64decode(encoded)).decode('utf-8')
+
+          note='''<div id="pollingErrorsMethodNote" class="card" style="margin:0 0 16px;padding:14px 16px;border:1px solid #d8e0ea;background:#f7f9fc;border-radius:10px;color:#4f5f73;line-height:1.55"><strong style="display:block;margin-bottom:4px;color:#24364d">Methodology</strong><span style="font-size:12px">Polling-error calculations are based on final polling averages compiled from reputable public polling sources rather than any single survey. Where a published final average is unavailable, the final available public polls are combined into a simple average.</span></div>'''
+
+          page_start=html.find('<section class="page" id="page-errors">')
+          if page_start < 0:
+              raise SystemExit('page-errors section not found')
+          content_start=html.find('<div class="content">', page_start)
+          if content_start < 0:
+              raise SystemExit('page-errors content not found')
+          insert_at=content_start+len('<div class="content">')
+
+          # Remove any older static copy of this note before inserting the canonical version.
+          old_start=html.find('<div id="pollingErrorsMethodNote"', page_start)
+          if old_start >= 0:
+              old_end=html.find('</div>', old_start)
+              if old_end < 0:
+                  raise SystemExit('existing methodology note malformed')
+              html=html[:old_start]+html[old_end+6:]
+              page_start=html.find('<section class="page" id="page-errors">')
+              content_start=html.find('<div class="content">', page_start)
+              insert_at=content_start+len('<div class="content">')
+
+          html=html[:insert_at]+'\n'+note+html[insert_at:]
+
+          # Keep the existing bottom methodology text consistent with the new note.
+          old='Final RCP averages are used where available; some early cycles use a simple average of the final available public polls.'
+          new='Final published polling averages are used where available; when no published final average is available, the final available public polls are combined into a simple average.'
+          if old in html:
+              html=html.replace(old,new,1)
+
+          # Recompress the source HTML and redistribute across the loader chunks.
+          new_encoded=base64.b64encode(gzip.compress(html.encode('utf-8'),mtime=0)).decode('ascii')
+          q,r=divmod(len(new_encoded),len(names))
+          pos=0
+          for i,n in enumerate(names):
+              size=q+(1 if i<r else 0)
+              Path(n).write_text(new_encoded[pos:pos+size])
+              pos += size
+          if pos != len(new_encoded):
+              raise SystemExit('chunk split failed')
+
+          # Prevent the older injected helper from moving the new static note into the page header.
+          p=Path('index.html')
+          s=p.read_text()
+          oldfn='function ensurePollingErrorsMethodNote(){const errorsRoot='
+          newfn='function ensurePollingErrorsMethodNote(){if(document.getElementById("pollingErrorsMethodNote"))return;const errorsRoot='
+          if oldfn in s:
+              s=s.replace(oldfn,newfn,1)
+              p.write_text(s)
+          elif newfn not in s:
+              raise SystemExit('polling methodology helper marker not found')
+
+          # Verify the rebuilt page contains the note exactly once.
+          rebuilt=gzip.decompress(base64.b64decode(''.join(Path(n).read_text().strip() for n in names))).decode('utf-8')
+          if rebuilt.count('id="pollingErrorsMethodNote"') != 1:
+              raise SystemExit('methodology note verification failed')
+          if 'Polling-error calculations are based on final polling averages compiled from reputable public polling sources rather than any single survey.' not in rebuilt:
+              raise SystemExit('methodology wording missing')
+          print('Static methodology note verified in page-errors content.')
+          PY
+      - name: Validate loader JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          a=s.index('<script>')+len('<script>')
+          b=s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[a:b])
+          PY
+          node --check /tmp/loader.js
+      - name: Commit update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add methodology directly to polling errors page'
+          git push
