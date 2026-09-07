@@ -138,7 +138,7 @@
 
   function forceMobilePartyVisuals(){
     if(!window.matchMedia('(max-width:760px)').matches) return;
-    const root=document.getElementById('page-senate');
+    const root=document.body;
     if(!root) return;
 
     const lines=[...root.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
