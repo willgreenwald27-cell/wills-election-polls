@@ -69,6 +69,44 @@ if '</body>' not in html:
     raise SystemExit('Closing body tag not found')
 html = html.replace('</body>', route_restore + '</body>', 1)
 
+# Make the visible nav deterministic on every render and intercept internal tab clicks
+# before any older handler can submit/reload the document.
+html = re.sub(r'<script id="stable-nav-fix">.*?</script>', '', html, flags=re.S)
+stable_nav = '''<script id="stable-nav-fix">(()=>{
+const pages=['home','senate','polls','betting','errors','about'];
+function orderNav(){
+  const nav=document.querySelector('.site-header .nav');
+  if(!nav)return;
+  let gov=nav.querySelector('[data-governor-link]');
+  if(!gov){
+    gov=document.createElement('button');
+    gov.type='button';
+    gov.setAttribute('data-governor-link','');
+    gov.textContent='2026 Governor Map';
+    gov.addEventListener('click',()=>{window.location.href='/governor.html'});
+  }
+  const senate=nav.querySelector('[data-page-link="senate"]');
+  if(senate)senate.insertAdjacentElement('afterend',gov);
+  else if(!gov.parentNode)nav.prepend(gov);
+  const about=nav.querySelector('[data-page-link="about"]');
+  if(about)nav.appendChild(about);
+  nav.querySelectorAll('[data-page-link]').forEach(b=>{b.type='button'});
+}
+orderNav();
+new MutationObserver(orderNav).observe(document.body,{childList:true,subtree:true});
+setInterval(orderNav,1200);
+document.addEventListener('click',e=>{
+  const t=e.target&&e.target.closest?e.target.closest('.site-header .nav [data-page-link]'):null;
+  if(!t)return;
+  const name=t.getAttribute('data-page-link');
+  if(!pages.includes(name)||typeof showPage!=='function')return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  showPage(name);
+},true);
+})();</script>'''
+html = html.replace('</body>', stable_nav + '</body>', 1)
+
 # 2. Make the betting page heading permanently read "Live Kalshi Senate Odds".
 old_heading = '<h1>Kalshi Senate Odds</h1>'
 new_heading = (
@@ -125,6 +163,26 @@ school_card = '''
 </section>'''
 html = html[:strip_end] + school_card + html[strip_end:]
 
+# 4. On mobile, Ashley Hinson is a Republican and her Iowa Senate candidate label must be red.
+html = re.sub(r'<script id="iowa-hinson-mobile-fix">.*?</script>', '', html, flags=re.S)
+hinson_fix = '''<script id="iowa-hinson-mobile-fix">(()=>{
+function fixHinson(){
+  if(!window.matchMedia('(max-width:760px)').matches)return;
+  const root=document.getElementById('page-senate');
+  if(!root)return;
+  root.querySelectorAll('*').forEach(el=>{
+    const t=(el.textContent||'').replace(/\\s+/g,' ').trim();
+    if(el.children.length===0&&(/^(Ashley Hinson|Hinson)(\\s*\\(R\\))?$/i.test(t)||/^Ashley Hinson\\s*[—-]/i.test(t))){
+      el.style.setProperty('color','#c62828','important');
+    }
+  });
+}
+fixHinson();
+new MutationObserver(fixHinson).observe(document.body,{childList:true,subtree:true,characterData:true});
+window.addEventListener('resize',fixHinson);
+})();</script>'''
+html = html.replace('</body>', hinson_fix + '</body>', 1)
+
 save_html(html)
 
 # Re-read the rebuilt source and fail the workflow if any requested change is missing.
@@ -132,14 +190,19 @@ rebuilt = load_html()
 required = [
     "history.replaceState(null,'',u)",
     'id="page-route-restore"',
+    'id="stable-nav-fix"',
+    "e.stopImmediatePropagation()",
+    "nav.appendChild(about)",
     'Live Kalshi Senate Odds',
     'class="live-kalshi-dot"',
     'id="aboutSchool"',
     'Redwood High School',
     'Larkspur, California',
+    'id="iowa-hinson-mobile-fix"',
+    '#c62828',
 ]
 for needle in required:
     if needle not in rebuilt:
         raise SystemExit('Verification failed: ' + needle)
 
-print('Verified navigation routing, Live Kalshi heading, and Redwood High School About card.')
+print('Verified stable SPA navigation, About-last order, Governor-after-Senate order, Live Kalshi heading, Redwood school card, and Iowa Hinson mobile color.')
