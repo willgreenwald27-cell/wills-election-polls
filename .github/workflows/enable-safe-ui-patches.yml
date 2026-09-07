@@ -20,12 +20,12 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text()
-          updated,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2257',s)
+          updated,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2302',s)
           if count != 1:
               raise SystemExit(f'Expected exactly one safe-patches.js reference, found {count}')
           if updated != s:
               p.write_text(updated)
-          if updated.count('/safe-patches.js?v=20260907-2257') != 1:
+          if updated.count('/safe-patches.js?v=20260907-2302') != 1:
               raise SystemExit('Versioned safe-patches.js reference verification failed')
           PY
       - name: Validate JavaScript and protect compressed site data
