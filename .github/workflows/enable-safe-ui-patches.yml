@@ -1,0 +1,55 @@
+name: Enable safe UI patches
+
+on:
+  push:
+    paths:
+      - '.github/workflows/enable-safe-ui-patches.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch loader to include isolated UI file
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old="h=h.replace('</body>',publicLockScript+'</body>');document.open();document.write(h);document.close()"
+          new="h=h.replace('</body>',publicLockScript+'<script src=\"/safe-patches.js\"><\\/script></body>');document.open();document.write(h);document.close()"
+          if new in s:
+              print('Safe patch loader already enabled')
+          else:
+              if s.count(old) != 1:
+                  raise SystemExit(f'Expected exactly one loader marker, found {s.count(old)}')
+              s=s.replace(old,new,1)
+              p.write_text(s)
+          if s.count('/safe-patches.js') != 1:
+              raise SystemExit('safe-patches.js reference verification failed')
+          PY
+      - name: Validate JavaScript and protect compressed site data
+        run: |
+          node --check safe-patches.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          if len(scripts) != 1:
+              raise SystemExit(f'Expected one loader script, found {len(scripts)}')
+          Path('/tmp/loader.js').write_text(scripts[0])
+          PY
+          node --check /tmp/loader.js
+          git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit index-only loader change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Enable safe isolated UI patches'
+          git push
