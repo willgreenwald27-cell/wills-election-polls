@@ -1,0 +1,37 @@
+name: Inspect current nav state
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-current-nav-state.yml'
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and inspect navigation state
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(n).read_text().strip() for n in names))).decode('utf-8')
+          needles=['function showPage','localStorage','sessionStorage','data-page-link','page-route-restore','stable-nav-fix','Latest update','Latest Update','September 6','Sep. 6','Sept. 6','September 7','Sep. 7','Sept. 7']
+          for needle in needles:
+              print('\n###',needle)
+              start=0
+              found=False
+              while True:
+                  i=html.find(needle,start)
+                  if i<0: break
+                  found=True
+                  print(html[max(0,i-900):min(len(html),i+2200)])
+                  print('\n---MATCH-END---')
+                  start=i+len(needle)
+                  if start>i+20000: break
+              if not found: print('NOT FOUND')
+          print('\n### NAV HEADER')
+          i=html.find('<header')
+          print(html[i:i+5000] if i>=0 else 'HEADER NOT FOUND')
+          PY
