@@ -1,0 +1,78 @@
+name: Restore original map sizes
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Let older one-time workflows finish
+        run: sleep 25
+      - name: Refresh to latest main
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+      - name: Restore original map sizing only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          # Remove the later desktop-only Senate viewport height/size override.
+          s, n1 = re.subn(
+              r'#page-senate \.map-wrap\{[^{}]*\}#page-senate \.map-wrap svg\{[^{}]*\}/\*senate-desktop-fit-v2\*/',
+              '', s, count=1
+          )
+          if n1 != 1:
+              # Also handle the earlier v1 override if that is what an older workflow left behind.
+              s, n1 = re.subn(
+                  r'#page-senate \.map-wrap\{[^{}]*\}#page-senate \.map-wrap svg\{[^{}]*\}/\*senate-desktop-fit-v1\*/',
+                  '', s, count=1
+              )
+          if n1 != 1:
+              raise SystemExit('Could not locate Senate desktop sizing override')
+
+          # Put Betting Odds map sizing back to the original full-width behavior.
+          pattern = r'#page-betting \.kalshi-map-wrap\{[^{}]*\}#page-betting \.kalshi-map-wrap svg\{[^{}]*\}'
+          repl = '#page-betting .kalshi-map-wrap{width:100%!important;max-width:100%!important}#page-betting .kalshi-map-wrap svg{width:100%!important;max-width:100%!important;height:auto!important}'
+          s, n2 = re.subn(pattern, repl, s, count=1)
+          if n2 != 1:
+              raise SystemExit('Could not locate Betting desktop sizing override')
+          p.write_text(s)
+
+          # Governor page: restore the exact pre-resize version, which already includes
+          # the polling hover fix and hidden Choose-a-state detail box.
+          gov = subprocess.check_output([
+              'git','show','657a23e5edebc80c07046a56cba1b7390a510203:governor.html'
+          ], text=True)
+          Path('governor.html').write_text(gov)
+          PY
+      - name: Remove obsolete map sizing workflows
+        run: |
+          rm -f .github/workflows/fit-senate-map-desktop.yml
+          rm -f .github/workflows/fix-desktop-map-fits.yml
+          rm -f .github/workflows/adjust-map-size-home-box.yml
+          rm -f .github/workflows/restore-original-map-sizes.yml
+      - name: Commit restored sizes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html governor.html .github/workflows
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "Restore original map sizes"
+          git push origin HEAD:main
