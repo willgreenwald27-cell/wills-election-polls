@@ -1,0 +1,56 @@
+name: Restore About logo and Live Kalshi heading
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-logo-kalshi-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Repair live UI regressions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+
+          bad_logo_rule = '#page-about .about-logo-stage svg circle,#page-about .about-logo-stage svg ellipse{display:none!important}'
+          if bad_logo_rule in s:
+              s = s.replace(bad_logo_rule, '', 1)
+
+          bad_inner_h = 'h=h.replaceAll("Kalshi Senate Odds","Live Kalshi Senate Odds");'
+          if bad_inner_h in s:
+              s = s.replace(bad_inner_h, '', 1)
+
+          if bad_logo_rule in s:
+              raise SystemExit('logo circle-hiding rule still present')
+          if bad_inner_h in s:
+              raise SystemExit('invalid inner h replacement still present')
+          if '#page-about .about-logo-halo,#page-about .about-logo-stage strong{display:none!important}' not in s:
+              raise SystemExit('decorative About halo/text hide rule missing')
+          if 'function enforceLiveKalshiHeading()' not in s:
+              raise SystemExit('Live Kalshi heading function missing')
+
+          p.write_text(s)
+          start = s.index('<script>') + len('<script>')
+          end = s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[start:end])
+          PY
+      - name: Validate loader JavaScript
+        run: node --check /tmp/loader.js
+      - name: Commit repaired index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Restore About logo and fix Live Kalshi heading'
+          git push
