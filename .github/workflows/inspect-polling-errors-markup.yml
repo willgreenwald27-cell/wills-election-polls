@@ -19,12 +19,16 @@ jobs:
           b=''.join(Path(n).read_text().strip() for n in names)
           html=gzip.decompress(base64.b64decode(b)).decode('utf-8')
           print('HTML length:',len(html))
-          for m in re.finditer(r'id=["\']([^"\']*error[^"\']*)["\']',html,re.I):
-              print('ERROR-ID:',m.group(1))
-          for phrase in ['Past Polling Errors','Past Polling Misses','Polling Errors']:
-              i=html.lower().find(phrase.lower())
-              print('PHRASE',phrase,'INDEX',i)
-              if i>=0:
-                  print(html[max(0,i-1800):i+2600])
-                  print('\n---END-SNIP---\n')
+          needle='id="page-errors"'
+          i=html.find(needle)
+          print('PAGE-ERRORS INDEX',i)
+          if i>=0:
+              print(html[max(0,i-1200):i+6500])
+              print('\n---END PAGE ERRORS MARKUP---\n')
+          for fn in ['function renderErrors','function showPage']:
+              j=html.find(fn)
+              print(fn,'INDEX',j)
+              if j>=0:
+                  print(html[j:j+5000])
+                  print('\n---END FUNCTION---\n')
           PY
