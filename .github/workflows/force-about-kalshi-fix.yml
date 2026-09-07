@@ -1,0 +1,54 @@
+name: Force About logo and live Kalshi UI fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-about-kalshi-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch real About SVG circle and Kalshi title source
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+
+          css_old = '#page-about .about-logo-stage svg,#page-about .about-logo-stage img{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}'
+          css_new = css_old + '#page-about .about-logo-stage svg circle,#page-about .about-logo-stage svg ellipse{display:none!important}'
+          if css_old not in s:
+              raise SystemExit('About logo CSS target not found')
+          s = s.replace(css_old, css_new, 1)
+
+          js_old = 'const bettingHeadings=[...document.querySelectorAll("#page-betting h1,#page-betting h2,#page-betting h3")];const kalshiHeading=bettingHeadings.find(el=>/kalshi\\s+senate\\s+odds/i.test((el.textContent||"").trim()));if(kalshiHeading){kalshiHeading.innerHTML="<span class=\\"live-kalshi-dot\\" aria-hidden=\\"true\\"></span>Live Kalshi Senate Odds";}'
+          js_new = 'h=h.replaceAll("Kalshi Senate Odds","Live Kalshi Senate Odds");function enforceLiveKalshiHeading(){const root=document.getElementById("page-betting");if(!root)return;const els=[...root.querySelectorAll("*")];const el=els.find(x=>/^(live\\s+)?kalshi\\s+senate\\s+odds$/i.test((x.textContent||"").trim())&&![...x.children].some(c=>/senate\\s+odds/i.test((c.textContent||"").trim())));if(el&&!el.querySelector(".live-kalshi-dot")){el.innerHTML="<span class=\\"live-kalshi-dot\\" aria-hidden=\\"true\\"></span>Live Kalshi Senate Odds";}}enforceLiveKalshiHeading();setTimeout(enforceLiveKalshiHeading,100);setTimeout(enforceLiveKalshiHeading,750);'
+          if js_old not in s:
+              raise SystemExit('Kalshi heading JS target not found')
+          s = s.replace(js_old, js_new, 1)
+          p.write_text(s)
+
+      - name: Validate loader JavaScript
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('index.html').read_text()
+          start = s.find('<script>')
+          end = s.rfind('</script>')
+          if start < 0 or end <= start:
+              raise SystemExit('Loader script not found')
+          Path('/tmp/loader.js').write_text(s[start+8:end])
+      - run: node --check /tmp/loader.js
+      - name: Commit direct index change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Remove About SVG circle and force live Kalshi title"
+          git push
