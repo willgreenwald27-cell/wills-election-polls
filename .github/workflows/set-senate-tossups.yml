@@ -1,0 +1,36 @@
+name: Set Senate tossups
+on:
+  push:
+    paths:
+      - '.github/workflows/set-senate-tossups.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Senate calls
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old1="h=h.replace(\"function renderSenate(){\\n  applyPaletteCSS();\",\"function renderSenate(){\\n  applyPaletteCSS();\\n  if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';\");"
+          new1="h=h.replace(\"function renderSenate(){\\n  applyPaletteCSS();\",\"function renderSenate(){\\n  applyPaletteCSS();\\n  if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';\\n  for(const ab of ['TX','ME','MI'])if(stateData[ab]&&stateData[ab].active){stateData[ab].rating='tossup';stateData[ab].prediction='Tossup';}\");"
+          old2="const callOverride={AK:'Peltola +1.1%',GA:'Ossoff +8.1%',NC:'Cooper +7.9%',OH:'Husted +0.9%',NH:'Pappas +5.6%',ME:'Jackson +0.4%',TX:'Paxton +0.3%'}[s.abbr];"
+          new2="const callOverride={AK:'Peltola +1.1%',GA:'Ossoff +8.1%',NC:'Cooper +7.9%',OH:'Husted +0.9%',NH:'Pappas +5.6%',ME:'Tossup',MI:'Tossup',TX:'Tossup'}[s.abbr];"
+          if s.count(old1)!=1:
+              raise SystemExit(f'renderSenate target count {s.count(old1)}')
+          if s.count(old2)!=1:
+              raise SystemExit(f'callOverride target count {s.count(old2)}')
+          s=s.replace(old1,new1).replace(old2,new2)
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Set Texas Maine Michigan Senate calls to tossup'
+          git push
