@@ -1,0 +1,43 @@
+name: Restore working loader with purple Independent key
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-working-loader-purple.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore known working index and add purple Senate key safely
+        run: |
+          git show 4b9cf9e6429fe1fb8b9cc1e7da3f1f785a3a0068:index.html > index.html
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker = "const publicLock='<style id=\"public-view-lock\">"
+          add = '#page-senate .key-neutral .mini-key[style*="--solid-i"]{background:#8051d2!important}'
+          if marker not in s:
+              raise SystemExit('publicLock marker not found')
+          s=s.replace(marker, marker+add, 1)
+          p.write_text(s)
+          start=s.index('<script>')+len('<script>')
+          end=s.index('</script>', start)
+          Path('/tmp/loader.js').write_text(s[start:end])
+          PY
+      - name: Validate loader JavaScript
+        run: node --check /tmp/loader.js
+      - name: Commit restored loader
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore working loader and purple Senate Independent key'
+          git push
