@@ -1,0 +1,40 @@
+name: Restore persistent governor nav
+
+on:
+  push:
+    paths:
+      - '.github/workflows/restore-governor-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make Governor tab persistent
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = 'const nav=document.querySelector(".site-header .nav");if(nav&&!nav.querySelector("[data-governor-link]")){const gb=document.createElement("button");gb.setAttribute("data-governor-link","");gb.textContent="2026 Governor Map";gb.addEventListener("click",()=>{window.location.href="governor.html"});const polls=nav.querySelector("[data-page-link=polls]");nav.insertBefore(gb,polls||null)}'
+          new = 'function ensureGovernorLink(){const nav=document.querySelector(".site-header .nav");if(!nav||nav.querySelector("[data-governor-link]"))return;const gb=document.createElement("button");gb.setAttribute("data-governor-link","");gb.textContent="2026 Governor Map";gb.addEventListener("click",()=>{window.location.href="/governor.html"});const polls=nav.querySelector("[data-page-link=polls]");nav.insertBefore(gb,polls||null)}ensureGovernorLink();new MutationObserver(ensureGovernorLink).observe(document.body,{childList:true,subtree:true});setInterval(ensureGovernorLink,1500)'
+          if old not in s:
+              raise SystemExit('Governor nav target not found')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          start = s.index('<script>') + len('<script>')
+          end = s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[start:end])
+      - name: Validate loader JavaScript
+        run: node --check /tmp/loader.js
+      - name: Commit repair
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Restore persistent Governor navigation tab'
+          git push
