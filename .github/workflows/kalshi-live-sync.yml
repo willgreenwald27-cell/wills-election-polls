@@ -33,6 +33,10 @@ jobs:
               'LA': 'KXSENATELA-26NOV',
           })
 
+          def num(v):
+              try: return float(v)
+              except Exception: return -1.0
+
           def fetch_state(ab):
               event = event_for[ab]
               url = f'{base}/events/{event}?with_nested_markets=true'
@@ -41,15 +45,14 @@ jobs:
                   with urllib.request.urlopen(req, timeout=30) as r:
                       data = json.load(r)
                   markets = (data.get('event') or {}).get('markets') or data.get('markets') or []
-                  keep = []
+                  best = {}
                   for m in markets:
                       source_ticker = str(m.get('ticker') or '')
                       hit = re.search(r'-([DRI])$', source_ticker)
-                      if not hit:
-                          continue
-                      party = hit.group(1)
-                      keep.append({
-                          # Canonicalize the state ticker so the existing website code can read every race uniformly.
+                      # Kalshi uses candidate-specific suffixes for some independents (for example Dan Osborn),
+                      # so any non-D/R market in these winner events is treated as the independent/other option.
+                      party = hit.group(1) if hit else 'I'
+                      item = {
                           'ticker': f'SENATE{ab}-26-{party}',
                           'source_ticker': source_ticker,
                           'yes_sub_title': m.get('yes_sub_title'),
@@ -57,9 +60,13 @@ jobs:
                           'yes_bid_dollars': m.get('yes_bid_dollars'),
                           'yes_ask_dollars': m.get('yes_ask_dollars'),
                           'updated_time': m.get('updated_time')
-                      })
+                      }
+                      # If an event has multiple non-D/R contracts, keep the highest-priced independent/other one.
+                      if party not in best or num(item.get('last_price_dollars')) > num(best[party].get('last_price_dollars')):
+                          best[party] = item
+                  keep = list(best.values())
                   if not keep:
-                      return ab, [], f'No D/R/I markets found in {event}'
+                      return ab, [], f'No winner markets found in {event}'
                   return ab, keep, None
               except Exception as e:
                   return ab, [], f'{type(e).__name__}: {e}'
