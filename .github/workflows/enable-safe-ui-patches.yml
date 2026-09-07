@@ -13,6 +13,125 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Add mobile Senate party-color fix
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('safe-patches.js')
+          s=p.read_text()
+          marker='mobile-party-color-fix-v2'
+          if marker not in s:
+              snippet=r'''
+
+  // mobile-party-color-fix-v2
+  function forceMobileSenatePartyColors(){
+    if(!window.matchMedia('(max-width:760px)').matches) return;
+    const root=document.getElementById('page-senate');
+    if(!root) return;
+    const COLORS={R:'#bd2937',D:'#2763b8'};
+    const leafs=[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
+    const cards=[];
+
+    for(const partyEl of leafs){
+      const partyText=(partyEl.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+      const party=partyText==='republican'?'R':((partyText==='democrat'||partyText==='democratic')?'D':null);
+      if(!party) continue;
+
+      let card=partyEl.parentElement;
+      for(let depth=0;card&&card!==root&&depth<5;depth++,card=card.parentElement){
+        const t=(card.textContent||'').replace(/\s+/g,' ');
+        if(/poll average/i.test(t)&&/\d+(?:\.\d+)?%/.test(t)) break;
+      }
+      if(!card||card===root) continue;
+
+      const cardLeafs=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
+      const pct=cardLeafs.find(el=>/^\s*\d+(?:\.\d+)?%\s*$/.test(el.textContent||''));
+      const name=cardLeafs.find(el=>{
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim();
+        return t && /[A-Za-z]/.test(t) && t.split(/\s+/).length>=2 &&
+          !/^(Republican|Democrat(?:ic)?|POLL AVERAGE|\d+(?:\.\d+)?%)$/i.test(t);
+      });
+      if(!name) continue;
+
+      const color=COLORS[party];
+      name.style.setProperty('color',color,'important');
+      partyEl.style.setProperty('color',color,'important');
+      if(pct) pct.style.setProperty('color',color,'important');
+      card.setAttribute('data-safe-party',party);
+      cards.push({name:(name.textContent||'').replace(/\s+/g,' ').trim(),party,color});
+    }
+
+    if(!cards.length) return;
+    const allLeafs=[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
+    const oddsLabels=[];
+
+    for(const c of cards){
+      const key=c.name.toLowerCase();
+      for(const el of allLeafs){
+        const t=(el.textContent||'').replace(/\s+/g,' ').trim();
+        if(t.toLowerCase().startsWith(key+':')&&/\d+(?:\.\d+)?%\s*$/.test(t)){
+          el.style.setProperty('color',c.color,'important');
+          oddsLabels.push({el,name:c.name,party:c.party,color:c.color});
+        }
+      }
+    }
+
+    if(oddsLabels.length<2) return;
+    oddsLabels.sort((a,b)=>a.el.getBoundingClientRect().left-b.el.getBoundingClientRect().left);
+    const first=oddsLabels[0],second=oddsLabels[1];
+    const firstPctMatch=(first.el.textContent||'').match(/(\d+(?:\.\d+)?)%\s*$/);
+    const split=firstPctMatch?Math.max(0,Math.min(100,Number(firstPctMatch[1]))):50;
+    const heading=allLeafs.find(el=>/will'?s statistical odds/i.test((el.textContent||'').replace(/\s+/g,' ').trim()));
+    const firstRect=first.el.getBoundingClientRect();
+    const secondRect=second.el.getBoundingClientRect();
+    const top=heading?heading.getBoundingClientRect().bottom:Math.min(firstRect.top,secondRect.top)-70;
+    const bottom=Math.min(firstRect.top,secondRect.top);
+
+    const colored=[];
+    for(const el of root.querySelectorAll('div,span,i')){
+      const r=el.getBoundingClientRect();
+      if(r.width<18||r.height<4||r.height>30||r.top<top-6||r.bottom>bottom+5) continue;
+      const cs=getComputedStyle(el);
+      const bg=cs.backgroundColor||'';
+      const nums=bg.match(/\d+/g);
+      if(!nums||nums.length<3) continue;
+      const rgb=nums.slice(0,3).map(Number);
+      if(Math.max(...rgb)-Math.min(...rgb)<35) continue;
+      colored.push({el,r});
+    }
+    colored.sort((a,b)=>a.r.left-b.r.left||b.r.width-a.r.width);
+    const segments=[];
+    for(const item of colored){
+      if(!segments.some(x=>Math.abs(x.r.left-item.r.left)<2&&Math.abs(x.r.width-item.r.width)<2)) segments.push(item);
+    }
+    if(segments.length>=2){
+      segments[0].el.style.setProperty('background',first.color,'important');
+      segments[1].el.style.setProperty('background',second.color,'important');
+    }
+
+    for(const el of root.querySelectorAll('div,span')){
+      const r=el.getBoundingClientRect();
+      if(r.width<150||r.height<4||r.height>30||r.top<top-6||r.bottom>bottom+5) continue;
+      const cs=getComputedStyle(el);
+      if(cs.backgroundImage&&cs.backgroundImage!=='none'){
+        el.style.setProperty('background',`linear-gradient(to right, ${first.color} 0%, ${first.color} ${split}%, ${second.color} ${split}%, ${second.color} 100%)`,'important');
+      }
+    }
+  }
+
+  forceMobileSenatePartyColors();
+  new MutationObserver(forceMobileSenatePartyColors).observe(document.body,{childList:true,subtree:true,characterData:true});
+  window.addEventListener('pageshow',forceMobileSenatePartyColors);
+  window.addEventListener('resize',forceMobileSenatePartyColors);
+'''
+              pos=s.rfind('})();')
+              if pos<0:
+                  raise SystemExit('safe-patches.js closing marker not found')
+              s=s[:pos]+snippet+s[pos:]
+              p.write_text(s)
+          if marker not in p.read_text():
+              raise SystemExit('Mobile party-color patch was not inserted')
+          PY
       - name: Cache-bust isolated UI file safely
         run: |
           python3 - <<'PY'
@@ -20,12 +139,12 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text()
-          updated,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2302',s)
+          updated,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2310',s)
           if count != 1:
               raise SystemExit(f'Expected exactly one safe-patches.js reference, found {count}')
           if updated != s:
               p.write_text(updated)
-          if updated.count('/safe-patches.js?v=20260907-2302') != 1:
+          if updated.count('/safe-patches.js?v=20260907-2310') != 1:
               raise SystemExit('Versioned safe-patches.js reference verification failed')
           PY
       - name: Validate JavaScript and protect compressed site data
@@ -42,11 +161,11 @@ jobs:
           PY
           node --check /tmp/loader.js
           git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
-      - name: Commit index-only cache-bust
+      - name: Commit safe mobile party colors
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
+          git add safe-patches.js index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Refresh isolated UI patch version'
+          git commit -m 'Fix mobile Senate party colors'
           git push
