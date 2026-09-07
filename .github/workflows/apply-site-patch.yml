@@ -1,0 +1,36 @@
+name: Apply site patch
+
+on:
+  push:
+    paths:
+      - 'scripts/apply_site_patch.py'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python3 scripts/apply_site_patch.py
+      - name: Validate page JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip, re
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(n).read_text().strip() for n in names))).decode('utf-8')
+          for i,s in enumerate(re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S)):
+              Path(f'/tmp/site-{i}.js').write_text(s)
+          PY
+          for f in /tmp/site-*.js; do node --check "$f"; done
+      - name: Commit site update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix page navigation and update Kalshi and About pages'
+          git push
