@@ -1,0 +1,55 @@
+name: Fix Iowa Hinson mobile color
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-iowa-hinson-mobile.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch mobile Iowa candidate color
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re
+
+          names=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          encoded=''.join(Path(n).read_text().strip() for n in names)
+          html=gzip.decompress(base64.b64decode(encoded)).decode('utf-8')
+
+          html=re.sub(r'<script id="iowa-hinson-mobile-fix">.*?</script>','',html,flags=re.S)
+          fix='''<script id="iowa-hinson-mobile-fix">(()=>{function fixHinson(){if(!window.matchMedia("(max-width:760px)").matches)return;const root=document.getElementById("page-senate");if(!root)return;for(const el of root.querySelectorAll("*")){const t=(el.textContent||"").replace(/\\s+/g," ").trim();if(el.children.length===0&&(/^(Ashley Hinson|Hinson)(\\s*\\(R\\))?$/i.test(t)||/^Ashley Hinson\\s*[—-]/i.test(t))){el.style.setProperty("color","#c62828","important")}}}fixHinson();new MutationObserver(fixHinson).observe(document.body,{childList:true,subtree:true,characterData:true});window.addEventListener("resize",fixHinson);})();</script>'''
+          if '</body>' not in html:
+              raise SystemExit('Closing body tag not found')
+          html=html.replace('</body>',fix+'</body>',1)
+
+          out=base64.b64encode(gzip.compress(html.encode('utf-8'),mtime=0)).decode('ascii')
+          q,r=divmod(len(out),len(names)); pos=0
+          for i,n in enumerate(names):
+              size=q+(1 if i<r else 0)
+              Path(n).write_text(out[pos:pos+size]); pos+=size
+
+          if 'id="iowa-hinson-mobile-fix"' not in html or '#c62828' not in html:
+              raise SystemExit('Verification failed')
+
+          for i,s in enumerate(re.findall(r'<script(?:\\s[^>]*)?>(.*?)</script>',html,re.S)):
+              Path(f'/tmp/site-{i}.js').write_text(s)
+          print('Ashley Hinson mobile Senate label forced to Republican red.')
+          PY
+      - name: Validate page JavaScript
+        run: |
+          for f in /tmp/site-*.js; do node --check "$f"; done
+      - name: Commit update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Ashley Hinson mobile color in Iowa'
+          git push
