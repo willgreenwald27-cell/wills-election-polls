@@ -1,0 +1,101 @@
+name: Browser-test and recover site
+
+on:
+  push:
+    paths:
+      - '.github/workflows/browser-recover-site.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Browser test current site and recover if needed
+        run: |
+          set -e
+          CHROME="$(command -v google-chrome || command -v chromium-browser || command -v chromium || true)"
+          if [ -z "$CHROME" ]; then
+            echo "No Chrome/Chromium available"
+            exit 1
+          fi
+          python3 -m http.server 8000 >/tmp/http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+
+          test_site() {
+            tag="$1"
+            rm -f /tmp/dom.html /tmp/chrome.log
+            timeout 20s "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=8000 --dump-dom "http://127.0.0.1:8000/?v=$tag" >/tmp/dom.html 2>/tmp/chrome.log || true
+            if grep -q 'id="page-home"' /tmp/dom.html && ! grep -q 'id="loading"' /tmp/dom.html && ! grep -q 'Site failed to load:' /tmp/dom.html; then
+              return 0
+            fi
+            return 1
+          }
+
+          if test_site current; then
+            echo "Current site renders successfully in headless Chrome."
+            # Touch index with cache-busting metadata so browsers/CDN revalidate it.
+            python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker='<meta name="viewport" content="width=device-width,initial-scale=1">'
+          extra='<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">'
+          if extra not in s and marker in s:
+              s=s.replace(marker, marker+extra, 1)
+              p.write_text(s)
+          PY
+          else
+            echo "Current site failed browser render. Searching recent index history..."
+            chosen=""
+            for c in $(git rev-list HEAD -- index.html | head -40); do
+              git show "$c:index.html" > index.html
+              if test_site "${c:0:10}"; then
+                chosen="$c"
+                echo "Found browser-working index: $chosen"
+                break
+              fi
+            done
+            if [ -z "$chosen" ]; then
+              echo "No browser-working index found in recent history"
+              echo "DOM:"; head -80 /tmp/dom.html || true
+              echo "Chrome:"; head -80 /tmp/chrome.log || true
+              exit 1
+            fi
+            python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker = "const publicLock='<style id=\"public-view-lock\">"
+          if marker in s:
+              css = '#page-senate .key-neutral .mini-key[style*="--solid-i"]{background:#8051d2!important}'
+              if css not in s:
+                  s=s.replace(marker, marker+css, 1)
+          head_marker='<meta name="viewport" content="width=device-width,initial-scale=1">'
+          extra='<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">'
+          if extra not in s and head_marker in s:
+              s=s.replace(head_marker, head_marker+extra, 1)
+          p.write_text(s)
+          PY
+            if ! test_site restored; then
+              echo "Restored candidate broke after safe styling/cache additions"
+              head -80 /tmp/dom.html || true
+              exit 1
+            fi
+          fi
+
+          if git diff --quiet -- index.html; then
+            echo "No index change needed"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Recover browser-working site loader'
+          git push
