@@ -1,0 +1,32 @@
+name: Hide governor detail box
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Hide choose-a-state box
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('governor.html')
+          s=p.read_text()
+          old='.detail{margin-top:12px;'
+          new='.detail{display:none!important;margin-top:12px;'
+          if new in s:
+              raise SystemExit(0)
+          if old not in s:
+              raise SystemExit('detail style marker not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add governor.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Remove governor choose-a-state box'
+          git push
