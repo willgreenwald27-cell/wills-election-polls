@@ -1,0 +1,22 @@
+name: Debug Kalshi CORS
+on:
+  push:
+    paths:
+      - '.github/workflows/debug-kalshi-cors.yml'
+permissions:
+  contents: write
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check CORS headers
+        run: |
+          curl -sS -D kalshi-cors-debug.txt -o /dev/null -H 'Origin: https://willelectionpolls.com' 'https://external-api.kalshi.com/trade-api/v2/events/SENATETX-26?with_nested_markets=true'
+      - name: Commit headers
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add kalshi-cors-debug.txt
+          git diff --cached --quiet || git commit -m 'Capture Kalshi CORS headers'
+          git push
