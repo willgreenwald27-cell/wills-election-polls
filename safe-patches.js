@@ -2,6 +2,8 @@
   const STYLE_ID='safe-ui-patches-v1';
   const SCHOOL_ID='aboutSchool';
   const REP_RED='#c62828';
+  const PAGE_NAMES=new Set(['home','senate','polls','betting','errors','about']);
+  let stableTabHandlerInstalled=false;
 
   function ensureStyle(){
     if(document.getElementById(STYLE_ID)) return;
@@ -43,6 +45,33 @@
       }
     `;
     document.head.appendChild(style);
+  }
+
+  function ensureStableTabs(){
+    document.querySelectorAll('.site-header .nav [data-page-link]').forEach(tab=>{
+      if(tab.tagName==='BUTTON') tab.type='button';
+      if(tab.tagName==='A') tab.removeAttribute('href');
+    });
+
+    if(stableTabHandlerInstalled) return;
+    stableTabHandlerInstalled=true;
+
+    window.addEventListener('click',e=>{
+      const target=e.target&&e.target.closest?e.target.closest('.site-header .nav [data-page-link]'):null;
+      if(!target) return;
+      const page=target.getAttribute('data-page-link');
+      if(!PAGE_NAMES.has(page) || typeof showPage!=='function') return;
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      showPage(page);
+
+      try{
+        const path=location.pathname||'/';
+        const url=page==='home'?path:path+'?page='+encodeURIComponent(page);
+        history.replaceState({page},'',url);
+      }catch(err){}
+    },true);
   }
 
   function ensureKalshiHeading(){
@@ -181,6 +210,7 @@
 
   function apply(){
     ensureStyle();
+    ensureStableTabs();
     ensureKalshiHeading();
     ensureSchoolCard();
     markRepublicansRedOnMobile();
