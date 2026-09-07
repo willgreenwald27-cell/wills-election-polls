@@ -1,0 +1,42 @@
+name: Fix Governor nav script syntax
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-governor-nav-semicolon.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix missing semicolon in injected navigation script
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          bad = 'setInterval(ensureGovernorLink,1500)function enforceLiveKalshiHeading()'
+          good = 'setInterval(ensureGovernorLink,1500);function enforceLiveKalshiHeading()'
+          if bad in s:
+              s = s.replace(bad, good, 1)
+          if good not in s:
+              raise SystemExit('Governor nav syntax marker not found after patch')
+          p.write_text(s)
+          start = s.index('<script>') + len('<script>')
+          end = s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[start:end])
+          PY
+      - name: Validate loader JavaScript
+        run: node --check /tmp/loader.js
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Governor navigation script syntax'
+          git push
