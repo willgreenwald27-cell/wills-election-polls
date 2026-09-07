@@ -1,0 +1,58 @@
+name: Fix mobile Senate odds bar colors
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-mobile-oddsbar-scope.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch mobile Senate drawer color scope
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('senate-display-fixes.js')
+          s=p.read_text()
+          old="""    const root=document.getElementById('page-senate');\n    if(!root) return;\n\n    const lines=[...root.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);"""
+          new="""    const root=document.body;\n    if(!root) return;\n\n    const lines=[...root.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);"""
+          if s.count(old)!=1:
+              raise SystemExit(f'Expected one mobile visual scope block, found {s.count(old)}')
+          s=s.replace(old,new)
+          p.write_text(s)
+
+          ip=Path('index.html')
+          h=ip.read_text()
+          import re
+          h,n=re.subn(r'/senate-display-fixes\.js(?:\?v=[0-9A-Za-z._-]+)?','/senate-display-fixes.js?v=20260907-1815',h)
+          if n!=1:
+              raise SystemExit(f'Expected one Senate display-fixes loader, found {n}')
+          ip.write_text(h)
+          PY
+      - name: Validate
+        run: |
+          node --check senate-display-fixes.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          if len(scripts)!=1:
+              raise SystemExit(f'Expected one loader script, found {len(scripts)}')
+          Path('/tmp/loader.js').write_text(scripts[0])
+          PY
+          node --check /tmp/loader.js
+          git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add senate-display-fixes.js index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix all mobile Senate odds bar party colors'
+          git push
