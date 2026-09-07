@@ -1,0 +1,33 @@
+name: Fix Senate Independent key
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-senate-independent-key.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make Senate Independent legend purple
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          anchor="h=h.replace('</body>',publicLockScript+'</body>');"
+          patch="h=h.replace('<span><i class=\"mini-key\" style=\"background:var(--solid-i)\"></i>Independent / Other</span>','<span><i class=\"mini-key\" style=\"background:#8051d2\"></i>Independent / Other</span>');"
+          if patch not in s:
+              if anchor not in s:
+                  raise SystemExit('anchor not found')
+              s=s.replace(anchor,patch+anchor)
+              p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet || git commit -m "Make Senate Independent legend purple"
+          git push
