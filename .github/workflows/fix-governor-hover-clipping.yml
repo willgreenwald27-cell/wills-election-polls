@@ -1,0 +1,36 @@
+name: Fix governor hover clipping
+on:
+  push:
+    branches: [main]
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Keep governor hover card inside viewport
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('governor.html')
+          s=p.read_text()
+          old_css='.hover{display:none;position:absolute;z-index:50;'
+          new_css='.hover{display:none;position:fixed;z-index:200;'
+          old_js="b.addEventListener('mousemove',e=>{const r=wrap.getBoundingClientRect();hover.style.left=Math.min(e.clientX-r.left+14,wrap.clientWidth-325)+'px';hover.style.top=Math.max(8,e.clientY-r.top-20)+'px'});"
+          new_js="b.addEventListener('mousemove',e=>{const w=hover.offsetWidth||310,h=hover.offsetHeight||150,pad=12;let left=e.clientX+16,top=e.clientY-24;if(left+w>window.innerWidth-pad)left=e.clientX-w-16;if(top+h>window.innerHeight-pad)top=window.innerHeight-h-pad;if(top<pad)top=pad;hover.style.left=left+'px';hover.style.top=top+'px'});"
+          if old_css not in s:
+              raise SystemExit('Expected hover CSS not found')
+          if old_js not in s:
+              raise SystemExit('Expected hover mousemove code not found')
+          s=s.replace(old_css,new_css,1).replace(old_js,new_js,1)
+          p.write_text(s)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add governor.html
+          git commit -m 'Fix governor hover card clipping'
+          git push
