@@ -1,6 +1,7 @@
 (()=>{
   const STYLE_ID='safe-ui-patches-v1';
   const SCHOOL_ID='aboutSchool';
+  const REP_RED='#c62828';
 
   function ensureStyle(){
     if(document.getElementById(STYLE_ID)) return;
@@ -32,6 +33,13 @@
       }
       @media(max-width:650px){
         #page-senate .map-wrap svg{transform:scale(1.08)!important}
+      }
+      @media(max-width:760px){
+        #page-senate [data-safe-republican-red="1"]{
+          color:#c62828!important;
+          fill:#c62828!important;
+          border-color:#c62828!important;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -83,13 +91,103 @@
     strip.insertAdjacentElement('afterend',buildSchoolCard());
   }
 
+  function normalized(value){
+    return String(value||'').replace(/\s+/g,' ').trim().toLowerCase();
+  }
+
+  function isRepublicanParty(value){
+    const p=normalized(value);
+    return p==='r' || p==='rep' || p==='gop' || p.includes('republican');
+  }
+
+  function mobileRepublicanNames(){
+    const names=[];
+    try{
+      if(typeof stateData!=='undefined' && stateData && typeof stateData==='object'){
+        Object.values(stateData).forEach(s=>{
+          if(!s) return;
+          if(isRepublicanParty(s.candidate1Party) && s.candidate1) names.push(String(s.candidate1).trim());
+          if(isRepublicanParty(s.candidate2Party) && s.candidate2) names.push(String(s.candidate2).trim());
+        });
+      }
+    }catch(e){}
+    return [...new Set(names.filter(Boolean))];
+  }
+
+  function markRepublicansRedOnMobile(){
+    if(!window.matchMedia('(max-width:760px)').matches) return;
+    const root=document.getElementById('page-senate');
+    if(!root) return;
+
+    const names=mobileRepublicanNames();
+    const normalizedNames=names.map(name=>[name,normalized(name)]);
+    const mark=el=>{
+      if(!el || !root.contains(el)) return;
+      el.setAttribute('data-safe-republican-red','1');
+      el.style.setProperty('color',REP_RED,'important');
+      if(el.namespaceURI==='http://www.w3.org/2000/svg'){
+        el.style.setProperty('fill',REP_RED,'important');
+      }
+    };
+
+    root.querySelectorAll('[data-party],[data-candidate-party],[aria-label]').forEach(el=>{
+      const party=el.getAttribute('data-party') || el.getAttribute('data-candidate-party') || '';
+      const aria=el.getAttribute('aria-label') || '';
+      if(isRepublicanParty(party) || /\brepublican\b/i.test(aria) || /\(R\)\b/i.test(aria)) mark(el);
+    });
+
+    root.querySelectorAll('*').forEach(el=>{
+      const text=normalized(el.textContent);
+      if(!text) return;
+
+      if(el.children.length===0 && (text==='(r)' || text==='republican' || text==='gop')){
+        mark(el);
+      }
+
+      if(el.children.length>0) return;
+      const match=normalizedNames.find(([,name])=>
+        text===name ||
+        text===name+' (r)' ||
+        text.startsWith(name+' —') ||
+        text.startsWith(name+' -') ||
+        text.startsWith(name+' ')
+      );
+      if(!match) return;
+
+      mark(el);
+
+      let container=el.parentElement;
+      for(let depth=0; container && container!==root && depth<2; depth++,container=container.parentElement){
+        const containerText=normalized(container.textContent);
+        const candidateCount=normalizedNames.reduce((count,[,name])=>count+(containerText.includes(name)?1:0),0);
+        if(candidateCount>1) break;
+
+        container.querySelectorAll('span,strong,b,em,small').forEach(child=>{
+          const childText=normalized(child.textContent);
+          if(!childText) return;
+          if(
+            childText.includes(match[1]) ||
+            /^[-+]?\d+(?:\.\d+)?%?$/.test(childText) ||
+            /^\(?r\)?$/.test(childText) ||
+            childText==='republican' ||
+            childText==='gop'
+          ){
+            mark(child);
+          }
+        });
+      }
+    });
+  }
+
   function apply(){
     ensureStyle();
     ensureKalshiHeading();
     ensureSchoolCard();
+    markRepublicansRedOnMobile();
   }
 
   apply();
-  new MutationObserver(apply).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(apply).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',apply);
+  window.addEventListener('resize',apply);
 })();
