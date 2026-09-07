@@ -13,29 +13,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add mobile party-color script safely
+      - name: Refresh safe UI and mobile party scripts
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
           p=Path('index.html')
           s=p.read_text()
-          s,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-2312',s)
+          s,count=re.subn(r'/safe-patches\.js(?:\?v=[0-9A-Za-z._-]+)?','/safe-patches.js?v=20260907-1700',s)
           if count != 1:
               raise SystemExit(f'Expected one safe-patches.js reference, found {count}')
           pat=r'(<script src="/safe-patches\.js\?v=[^"]+"><\\/script>)(?:<script src="/mobile-party-colors\.js(?:\?v=[^"]+)?"><\\/script>)?'
-          party='<script src="/mobile-party-colors.js?v=20260907-2312"><\\/script>'
+          party='<script src="/mobile-party-colors.js?v=20260907-1700"><\\/script>'
           s,count=re.subn(pat,lambda m:m.group(1)+party,s)
           if count != 1:
               raise SystemExit(f'Expected one safe script loader marker, found {count}')
           p.write_text(s)
-          if s.count('/mobile-party-colors.js?v=20260907-2312') != 1:
+          if s.count('/mobile-party-colors.js?v=20260907-1700') != 1:
               raise SystemExit('mobile-party-colors.js loader verification failed')
           PY
       - name: Validate JavaScript and protect compressed site data
         run: |
           node --check safe-patches.js
+          node --check navigation-controller.js
           node --check mobile-party-colors.js
+          node --check senate-julsep-archive.js
+          node --check senate-display-fixes.js
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -47,11 +50,11 @@ jobs:
           PY
           node --check /tmp/loader.js
           git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
-      - name: Commit loader update
+      - name: Commit cache-busted loader update
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Load mobile Senate party colors'
+          git commit -m 'Refresh reload-free navigation scripts'
           git push
