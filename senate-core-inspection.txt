@@ -1,0 +1,989 @@
+
+===== const stateData =====
+
+===== let stateData =====
+solid-r","prediction":"","notes":"","updated":"2026-09-06","predictionParty":"Republican"}};
+const ACTIVE_STATES = new Set(["AL", "AK", "AR", "CO", "DE", "FL", "GA", "ID", "IL", "IA", "KS", "KY", "LA", "ME", "MA", "MI", "MN", "MS", "MT", "NE", "NH", "NJ", "NM", "NC", "OH", "OK", "OR", "RI", "SC", "SD", "TN", "TX", "VA", "WV", "WY"]);
+const RATING_LABELS = {
+ 'not-up':'No 2026 election','unrated':'Unrated','tossup':'Toss-up',
+ 'tilt-r':'Tilt Republican','lean-r':'Lean Republican','likely-r':'Likely Republican','solid-r':'Solid Republican',
+ 'tilt-d':'Tilt Democratic','lean-d':'Lean Democratic','likely-d':'Likely Democratic','solid-d':'Solid Democratic',
+ 'tilt-i':'Tilt Independent / Other','lean-i':'Lean Independent / Other','likely-i':'Likely Independent / Other','solid-i':'Solid Independent / Other'
+};
+const DEFAULT_RATING_COLORS = {
+ 'not-up':'#68717e','unrated':'#e5e8ee','tossup':'#f2c94c',
+ 'tilt-r':'#f2a0a6','lean-r':'#e65c66','likely-r':'#bd2937','solid-r':'#8e1320',
+ 'tilt-d':'#a9c5ed','lean-d':'#6597da','likely-d':'#2763b8','solid-d':'#173f87',
+ 'tilt-i':'#eadb96','lean-i':'#ccb14b','likely-i':'#a38318','solid-i':'#715c0a'
+};
+let RATING_COLORS = {...DEFAULT_RATING_COLORS};
+let stateData = deepClone(DEFAULT_STATE_DATA);
+Object.values(stateData).forEach(s=>{ if(!Object.prototype.hasOwnProperty.call(s,'predictionParty')) s.predictionParty='uncalled'; });
+let errors = [];
+let polls = [];
+let bettingOdds = [];
+let aboutData = {
+  name:'Will',
+  headline:"Creator of Will's Election Polls and Predictions",
+  bio:"I built this site to organize my election polling averages, race ratings, and forecast updates in one place.",
+  purpose:"I wanted a clean, map-first site where I can publish my own data and explain how my view of each race changes over time.",
+  methodology:"The ratings, polling averages, and statistical odds displayed here are values I enter and maintain. The website itself does not automatically generate election probabilities."
+};
+let editMode = false;
+let selectedState = null;
+const EMBEDDED_SITE_DATA_B64 = "eyJ2ZXJzaW9uIjoyMCwic2F2ZWRBdCI6IjIwMjYtMDktMDZUMjE6NTU6MDAuMDAwWiIsInN0YXRlRGF0YSI6eyJBTCI6eyJhYmJyIjoiQUwiLCJuYW1lIjoiQWxhYmFtYSIsImFjdGl2ZSI6dHJ1ZSwiY2FuZGlkYXRlMSI6IkV2ZXJldHQgV2VzcyIsImNhbmRpZGF0ZTFQYXJ0eSI6IkRlbW9jcmF0IiwiY2FuZGlkYXRlMVBvbGwiOiIzMi4wIiwiY2FuZGlkYXRlMU9kZHMiOiIzIiwiY2FuZGlkYXRlMiI6IkJhcnJ5IE1vb3JlIiwiY2FuZGlkYXRlMlBhcnR5IjoiUmVwdWJsaWNhbiIsImNhbmRpZGF0ZTJQb2xsIjoiNDcuMCIsImNhbmRpZGF0ZTJPZGRzIjoiOTciLCJyYXRpbmciOiJzb2xpZC1yIiwicHJlZGljdGlvbiI6IiIsIm5vdGVzIjoiIiwidXBkYXRlZCI6IjIwMjYtMDktMDYiLCJwcmVkaWN0aW9uUGFydHkiOiJSZXB1YmxpY2FuIn0sIkFLIjp7ImFiYnIiOiJBSyIsIm5hbWUiOiJBbGFza2EiLCJhY3RpdmUiOnRydWUsImNhbmRpZGF0ZTEiOiJNYXJ5IFBlbHRvbGEiLCJjYW5kaWRhdGUxUGFydHkiOiJEZW1vY3JhdCIsImNhbmRpZGF0ZTFQb2xsIjoiNDkuNyIsImNhbmRpZGF0ZTFPZGRzIjoiNjUiLCJjYW5kaWRhdGUyIjoiRGFuIFN1bGxpdmFuIiwiY2FuZGlkYXRlMlBhcnR5IjoiUmVwdWJsaWNhbiIsImNhbmRpZGF0ZTJQb2xsIjoiNDcuNyIsImNhbmRpZGF0ZTJPZGRzIjoiMzUiLCJyYXRpbmciOiJ0aWx0LWQiLCJwcmVkaWN0aW9uIjoiIiwibm90ZXMiOiIiLCJ1cGRhdGVkIjoiMjAyNi0wOS0wNiIsInByZWRpY3Rpb25QYXJ0eSI6IkRlbW9jcmF0In0sIkFaIjp7ImFiYnIiOiJBWiIsIm5hbWUiOiJBcml6b25hIiwiYWN0aXZlIjpmYWxzZSwiY2FuZGlkYXRlMSI6IiIsImNhbmRpZGF0ZTFQYXJ0eSI6IkRlbW9jcmF0IiwiY2FuZGlkYXRlMVBvbGwiOiIiLCJjYW5kaWRhdGUxT2RkcyI6IiIsImNhbmRpZGF0ZTIiOiIiLCJjYW5kaWRhdGUyUGFydHkiOiJSZXB1YmxpY2FuIiwiY2FuZGlkYXRlMlBvbGwiOiIiLCJjYW5kaWRhdGUyT2RkcyI6IiIsInJhdGluZyI6Im5vdC11cCIsInByZWRpY3Rpb24iOiIiLCJub3RlcyI6IiIsInVwZGF0ZWQiOiIiLCJwcmVkaWN0aW9uUGFydHkiOiJ1bmNhbGxlZCJ9LCJBUiI6eyJhYmJyIjoiQVIiLCJuYW1lIjoiQXJrYW5zYXMiLCJhY3RpdmUiOnRydWUsImNhbmRpZGF0ZTEiOiJIYWxsaWUgU2hvZmZuZXIiLCJjYW5kaWRhdGUxUGFydHkiOiJEZW1vY3JhdCIsImNhbmRpZGF0ZTFQb2xsIjoiNDEuMCIsImNhbmRpZGF0ZTFPZGRzIjoiNyIsImNhbmRpZGF0ZTIiOiJUb20gQ290dG9uIiwiY2FuZGlkYXRlMlBhcnR5IjoiUmVwdWJsaWNhbiIsImNhbmRpZGF0ZTJQb2xsIjoiNDcuNSIsImNhbmRpZGF0ZTJPZGRzIjoiOTMiLCJyYXRpbmciOiJzb2xpZC1yIiwicHJlZGljdGlvbiI6IiIsIm5vdGVzIjoiIiwidXBkYXRlZCI6IjIwMjYtMDktMDYiLCJwcmVkaWN0aW9uUGFydHkiOiJSZXB1YmxpY2FuIn0sIkNBIjp7ImFiYnIiOiJDQSIsIm5hbWUiOiJDYWxpZm9ybmlhIiwiYWN0aXZlIjpmYWxzZSwiY2FuZGlkYXRlMSI6IiIsImNhbmRpZGF0ZTFQYXJ0eSI6IkRlbW9jcmF0IiwiY2FuZGlkYXRlMVBvbGwiOiIiLCJjYW5kaWRhdGUxT2RkcyI6IiIsImNhbmRpZGF0ZTIiOiIiLCJjYW5kaWRhdGUyUGFydHkiOiJSZXB1YmxpY2FuIiwiY2FuZGlkYXRlMlBvbGwiOiIiLCJjYW5kaWRhdGUyT2RkcyI6IiIsInJhdGluZyI6Im5vdC11cCIsInByZWRpY3Rpb24iOiIiLCJub3RlcyI6IiIsInVwZGF0ZWQiOiIiLCJwcmVkaWN0aW9uUGFydHkiOiJ1bmNhbGxlZCJ9LCJDTyI6eyJhYmJyIjoiQ08iLCJuYW1lIjoiQ29sb3JhZG8iLCJhY3RpdmUiOnRydWUsImNhbmRpZGF0ZTEiOiJKb2huIEhpY2tlbmxvb3BlciIsImNhbmRpZGF0ZTFQYXJ0eSI6IkRlbW9jcmF0IiwiY2FuZGlkYXRlMVBvbGwiOiIiLCJjYW5kaWRhdGUxT2RkcyI6Ijk2IiwiY2FuZGlkYXRlMiI6Ik1hcmsgQmFpc2xleSIsImNhbmRpZGF0ZTJQYXJ0eSI6IlJlcHVibGljYW4iLCJjYW5kaWRhdGUyUG9sbCI6IiIsImNhbmRpZGF0ZTJPZGRzIjoiNCIsInJhdGluZyI6InNvbGlkLWQiLCJwcmVkaWN0aW9uIjoiIiwibm90ZXMiOiIiLCJ1cGRhdGVkIjoiMjAyNi0wOS0wNiIsInByZWRpY3Rpb25QYXJ0eSI6IkRlbW9jcmF0In0sIkNUIjp7ImFiYnIiOiJDVCIsIm5hbWUiOiJDb25uZWN0aWN1dCIsImFjdGl2ZSI6ZmFsc2UsImNhbmRpZGF0ZTEiOiIiLCJjYW5kaWRhdGUxUGFydHkiOiJEZW1vY3JhdCIsImNhbmRpZGF0ZTFQb2xsIjoiIiwiY2FuZGlkYXRlMU9kZHMiOiIiLCJjYW5kaWRhdGUyIjoiIiwiY2FuZGlkYXRlMlBhcnR5IjoiUmVwdWJsaWNhbiIsImNhbmRpZGF0ZTJQb2xsIjoiIiwiY2FuZGlkYXRlMk9kZHMiOiIiLCJyYXRpbmciOiJub3QtdXAiLCJwcmVkaWN0aW9uIjoiIiwibm90ZXMiOiIiLCJ1cGRhdGVkIjoiIiwicHJlZGljdGlvblBhcnR5IjoidW5jYWxsZWQifSwiREUiOnsiYWJiciI6IkRFIiwibmFtZSI6IkRlbGF3YXJlIiwiYWN0aXZlIjp0cnVlLCJjYW5kaWRhdGUxIjoiQ2hyaXMgQ29vbnMiLCJjYW5kaWRhdGUxUGFydHkiOiJEZW1vY3JhdCIsImNhbmRpZGF0ZTFQb2xsIjoiIiwiY2FuZGlkYXRlMU9kZHMiOiI5NiIsImNhbmRpZGF0ZTIiOiJNaWNoYWVsIEthdHoiLCJjYW5kaWRhdGUyUGFydHkiOiJSZXB1YmxpY2FuIiwiY2FuZGlkYXRlMlBvbGwiOiIiLCJjYW5kaWRhdGUyT2RkcyI6IjQiLCJyYXRpbmciOiJzb2xpZC1kIiwicHJlZGljdGlvbiI6IiIsIm5vdGVzIjoiIiwidXBkYXRlZCI6IjIwMjYtMDktMDYiLCJwcmVkaWN0aW9uUGFydHkiOiJEZW1vY3JhdCJ9LCJGTCI6eyJhYmJyIjoiRkwiLCJuYW1lIjoiRmxvcmlkYSIsImFjdGl2ZSI6dHJ1ZSwiY2FuZGlkYXRlMSI6IkFuZ2llIE5peG9uIiwiY2FuZGlkYXRlMVBhcnR5IjoiRGVtb2NyYXQiLCJjYW5kaWRhdGUxUG9sbCI6IjM5LjAiLCJjYW5kaWRhdGUxT2RkcyI6IjkiLCJjYW5kaWRhdGUyIjoiQXNobGV5IE1vb2R5IiwiY2FuZGlkYXRlMlBhcnR5IjoiUmVwdWJsaWNhbiIsImNhbmRpZGF0ZTJQb2xsIjoiNDguNSIsImNhbmRpZGF0ZTJPZGRzIjoiOTEiLCJyYXRpbmciOiJsaWtlbHktciIsInByZWRpY3Rpb24iOiIiLCJub3RlcyI6IiIsInVwZGF0ZWQiOiIyMDI2LTA5LTA2IiwicHJlZGljdGlvb
+---
+
+===== statePollMarginLabel =====
+2',party:s.candidate2Party||'',poll:s.candidate2Poll,odds:s.candidate2Odds}
+  ];
+  return candidates.sort((a,b)=>{
+    const av=pollValue(a.poll), bv=pollValue(b.poll);
+    if(av===null && bv===null) return a.slot-b.slot;
+    if(av===null) return 1;
+    if(bv===null) return -1;
+    if(bv!==av) return bv-av;
+    return a.slot-b.slot;
+  });
+}
+
+
+function shortLastName(name){
+  const full=String(name||'').trim();
+  if(!full) return 'Leader';
+  const parts=full.split(/\s+/);
+  if(parts.length===1) return parts[0];
+  const particles=new Set(['van','von','de','del','di','da','la','le','st.','st','du']);
+  const last=parts[parts.length-1];
+  const prev=parts[parts.length-2];
+  if(particles.has(prev.toLowerCase())) return prev + ' ' + last;
+  return last;
+}
+
+function fmtMarginNumber(n){
+  const rounded=Math.round(n*10)/10;
+  return rounded.toFixed(1);
+}
+
+function statePollMarginClass(s){
+  const ordered=orderedStateCandidates(s);
+  const lead=ordered[0];
+  const leadPoll=pollValue(lead.poll), trailPoll=pollValue((ordered[1]||{}).poll);
+  if(leadPoll===null || trailPoll===null || Math.abs(leadPoll-trailPoll)<0.05) return 'even';
+  return candidatePollClass(lead.name,lead.party);
+}
+
+function statePollMarginLabel(s){
+  const ordered=orderedStateCandidates(s);
+  const lead=ordered[0], trail=ordered[1];
+  const leadPoll=pollValue(lead.poll), trailPoll=pollValue(trail.poll);
+  if(leadPoll===null || trailPoll===null) return 'No avg';
+  const diff=Math.round((leadPoll-trailPoll)*10)/10;
+  if(Math.abs(diff)<0.05) return 'Even';
+  return `${shortLastName(lead.name)} +${fmtMarginNumber(diff)}`;
+}
+
+function pollCandidateParty(p,name,slot){
+  const s=stateData[p.state]||{};
+  const n=String(name||'').trim().toLowerCase();
+  if(n && n===String(s.candidate1||'').trim().toLowerCase()) return s.candidate1Party||'';
+  if(n && n===String(s.candidate2||'').trim().toLowerCase()) return s.candidate2Party||'';
+  return slot===1?(s.candidate1Party||''):(s.candidate2Party||'');
+}
+function orderedPollCandidates(p){
+  const candidates=[
+    {slot:1,name:p.c1||'Candidate 1',poll:p.c1Pct,party:pollCandidateParty(p,p.c1,1)},
+    {slot:2,name:p.c2||'Candidate 2',poll:p.c2Pct,party:pollCandidateParty(p,p.c2,2)}
+  ];
+  return candidates.sort((a,b)=>{
+    const av=pollValue(a.poll), bv=pollValue(b.poll);
+    if(av===null && bv===null) return a.slot-b.slot;
+    if(av===null) return 1;
+    if(bv===null) return -1;
+    if(bv!==av) return bv-av;
+    return a.slot-b.slot;
+  });
+}
+
+
+function candidatePollClass(name,party){
+  const n=String(name||'').toLowerCase();
+  if(/\bdan\s+osborn(e)?\b/.test(n) || /\bosborn(e)?\b/.test(n)) return 'osborn';
+  return partyHoverClass(party);
+}
+
+function partyHoverClass(party){
+  const p=String(party||'').toLowerCase();
+  if(p.includes('dem')) return 'dem';
+  if(p.includes('rep')) return 'rep';
+  if(p.includes('ind')) return 'ind';
+  return 'other';
+}
+function predictionHoverClass(party){
+  const p=String(party||'').toLowerCase();
+  if(p.includes('dem')) return 'dem';
+  if(p.includes('rep')) return 'rep';
+  if(p.includes('ind')) return 'ind';
+  return 'uncalled';
+}
+function hoverCardHTML(ab){
+  const s=stateData[ab];
+  if(!s) return '';
+  if(!s.active){
+    return `<div class="map-hover-state">${esc(s.name)}</div><div class="map-hover-rating">No 2026 Senate race</div><div class="map-hover-footer">This state is gray because it is not configured as an active 2026 Senate race.</div>`;
+  }
+  const [lead,trail]=orderedStateCandidates(s);
+  const marginLabel=statePollMarginLabel(s);
+  return `<div class="map-hover-topline">
+      <div>
+        <div class="map-hover-state">${esc(s.name)}</div>
+      </div>
+      <div class="map-hover-margin ${statePollMarginClass(s)}">${esc(marginLabel)}</div>
+    </div>
+    <div class="map-hover-section-title first">Avg polls</div>
+    <div class="map-hover-candidate"><div><b>${esc(lead.name)}</b><span>${esc(lead.party)}</span></div><div class="map-hover-number ${candidatePollClass(lead.name,lead.party)}">${fmtPct(lead.poll)}</div></div>
+    <div class="map-hover-candidate"><div><b>${esc(trail.name)}</b><span>${esc(trail.party)}</span></div><div class="map-hover-number ${candidatePollClass(trail.name,trail.party)}">${fmtPct(trail.poll)}</div></div>
+    <div class="map-hover-section-title">My prediction</div>
+    <div class="map-hover-prediction ${predictionHoverClass(s.predictionParty)}">
+      <span class="prediction-kicker">Will's call</span>
+      <strong>
+        <span class="prediction-party">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'Uncalled'}</span>
+        <span class="prediction-rating">${RATING_LABELS[s.rating]||'Unrated'}</span>
+      </strong>
+      <span class="prediction-copy">${s.prediction?esc(s.prediction):'No written prediction entered yet.'}</span>
+    </div>
+    <div class="map-hover-footer"><b>Win odds:</b> ${esc(lead.name)} ${fmtOdds(lead.odds)} · ${esc(trail.name)} ${fmtOdds(trail.odds)}</div>`;
+}
+function positionHoverCard(ev){
+  const wrap=document.querySelector('#page-senate .map-wrap');
+  const card=document.getElementById('mapHoverCard');
+  if(!wrap||!card) return;
+  const rect=wrap.getBoundingClientRect();
+  let x=ev.clientX-rect.left+16, y=ev.clientY-rect.top+16;
+  const maxX=wrap.clientWidth-card.offsetWidth-10;
+  const maxY=wrap.clientHeight-card.offsetHeight-10;
+  if(x>maxX) x=Math.max(10,ev.clientX-rect.left-card.offsetWidth-16);
+  if(y>maxY) y=Math.max(10,ev.clientY-rect.top-card.offsetHeight-16);
+  card.style.left=Math.max(10,x)+'px';
+  card.style.top=Math.max(10,y)+'px';
+}
+document.querySelectorAll('.state-shape').forEach(path=>{
+  path.addEventListener('mouseenter',ev=>{
+    const ab=path.dataset.state;
+    if(!stateData[ab]) return;
+    mapHoverCard.innerHTML=hoverCardHTML(ab);
+    mapHoverCard.classList.add('show');
+    positionHoverCard(ev);
+  });
+  path.addEventListener('mousemove',positionHoverCard);
+  path.addEventListener('mouseleave',()=>mapHoverCard.classList.remove('show'));
+  path.addEventListener('click',()=>{
+    const ab=path.dataset.state;
+    if(editMode && stateData[ab]) openState(ab);
+  });
+});
+function openState(ab){selectedState=ab;document.querySelectorAll('.state-shape').forEac
+---
+    if(av===null && bv===null) return a.slot-b.slot;
+    if(av===null) return 1;
+    if(bv===null) return -1;
+    if(bv!==av) return bv-av;
+    return a.slot-b.slot;
+  });
+}
+
+
+function candidatePollClass(name,party){
+  const n=String(name||'').toLowerCase();
+  if(/\bdan\s+osborn(e)?\b/.test(n) || /\bosborn(e)?\b/.test(n)) return 'osborn';
+  return partyHoverClass(party);
+}
+
+function partyHoverClass(party){
+  const p=String(party||'').toLowerCase();
+  if(p.includes('dem')) return 'dem';
+  if(p.includes('rep')) return 'rep';
+  if(p.includes('ind')) return 'ind';
+  return 'other';
+}
+function predictionHoverClass(party){
+  const p=String(party||'').toLowerCase();
+  if(p.includes('dem')) return 'dem';
+  if(p.includes('rep')) return 'rep';
+  if(p.includes('ind')) return 'ind';
+  return 'uncalled';
+}
+function hoverCardHTML(ab){
+  const s=stateData[ab];
+  if(!s) return '';
+  if(!s.active){
+    return `<div class="map-hover-state">${esc(s.name)}</div><div class="map-hover-rating">No 2026 Senate race</div><div class="map-hover-footer">This state is gray because it is not configured as an active 2026 Senate race.</div>`;
+  }
+  const [lead,trail]=orderedStateCandidates(s);
+  const marginLabel=statePollMarginLabel(s);
+  return `<div class="map-hover-topline">
+      <div>
+        <div class="map-hover-state">${esc(s.name)}</div>
+      </div>
+      <div class="map-hover-margin ${statePollMarginClass(s)}">${esc(marginLabel)}</div>
+    </div>
+    <div class="map-hover-section-title first">Avg polls</div>
+    <div class="map-hover-candidate"><div><b>${esc(lead.name)}</b><span>${esc(lead.party)}</span></div><div class="map-hover-number ${candidatePollClass(lead.name,lead.party)}">${fmtPct(lead.poll)}</div></div>
+    <div class="map-hover-candidate"><div><b>${esc(trail.name)}</b><span>${esc(trail.party)}</span></div><div class="map-hover-number ${candidatePollClass(trail.name,trail.party)}">${fmtPct(trail.poll)}</div></div>
+    <div class="map-hover-section-title">My prediction</div>
+    <div class="map-hover-prediction ${predictionHoverClass(s.predictionParty)}">
+      <span class="prediction-kicker">Will's call</span>
+      <strong>
+        <span class="prediction-party">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'Uncalled'}</span>
+        <span class="prediction-rating">${RATING_LABELS[s.rating]||'Unrated'}</span>
+      </strong>
+      <span class="prediction-copy">${s.prediction?esc(s.prediction):'No written prediction entered yet.'}</span>
+    </div>
+    <div class="map-hover-footer"><b>Win odds:</b> ${esc(lead.name)} ${fmtOdds(lead.odds)} · ${esc(trail.name)} ${fmtOdds(trail.odds)}</div>`;
+}
+function positionHoverCard(ev){
+  const wrap=document.querySelector('#page-senate .map-wrap');
+  const card=document.getElementById('mapHoverCard');
+  if(!wrap||!card) return;
+  const rect=wrap.getBoundingClientRect();
+  let x=ev.clientX-rect.left+16, y=ev.clientY-rect.top+16;
+  const maxX=wrap.clientWidth-card.offsetWidth-10;
+  const maxY=wrap.clientHeight-card.offsetHeight-10;
+  if(x>maxX) x=Math.max(10,ev.clientX-rect.left-card.offsetWidth-16);
+  if(y>maxY) y=Math.max(10,ev.clientY-rect.top-card.offsetHeight-16);
+  card.style.left=Math.max(10,x)+'px';
+  card.style.top=Math.max(10,y)+'px';
+}
+document.querySelectorAll('.state-shape').forEach(path=>{
+  path.addEventListener('mouseenter',ev=>{
+    const ab=path.dataset.state;
+    if(!stateData[ab]) return;
+    mapHoverCard.innerHTML=hoverCardHTML(ab);
+    mapHoverCard.classList.add('show');
+    positionHoverCard(ev);
+  });
+  path.addEventListener('mousemove',positionHoverCard);
+  path.addEventListener('mouseleave',()=>mapHoverCard.classList.remove('show'));
+  path.addEventListener('click',()=>{
+    const ab=path.dataset.state;
+    if(editMode && stateData[ab]) openState(ab);
+  });
+});
+function openState(ab){selectedState=ab;document.querySelectorAll('.state-shape').forEach(p=>p.classList.toggle('selected',p.dataset.state===ab));renderDrawer(ab);stateDrawer.classList.add('show');drawerBackdrop.classList.add('show');}
+function closeDrawer(){stateDrawer.classList.remove('show');drawerBackdrop.classList.remove('show');document.querySelectorAll('.state-shape').forEach(p=>p.classList.remove('selected'));selectedState=null;}
+drawerClose.onclick=closeDrawer;drawerBackdrop.onclick=closeDrawer;
+
+function renderDrawer(ab){const s=stateData[ab];drawerStateName.textContent=s.name;drawerRating.textContent='Prediction: '+RATING_LABELS[s.rating];if(!s.active){drawerBody.innerHTML=`<div class="inactive-state"><strong>${s.name}</strong> is not configured as a 2026 Senate-election state, so it stays gray on this map.</div>`;return;}
+  const [lead,trail]=orderedStateCandidates(s);
+  const oddsA=Math.max(0,Math.min(100,Number(lead.odds)||0));const oddsB=Math.max(0,Math.min(100,Number(trail.odds)||0));const oddsTotal=oddsA+oddsB;const aWidth=oddsTotal?oddsA/oddsTotal*100:50;const bWidth=oddsTotal?100-aWidth:50;
+  drawerBody.innerHTML=`
+    <div class="race-display">
+      <div class="candidate-line"><div><div class="candidate-name">${esc(lead.name)}</div><div class="candidate-party">${esc(lead.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(lead.poll)}</b><span>Poll average</span></div></div>
+      <div class="candidate-line"><div><div class="candidate-name">${esc(trail.name)}</div><div class="candidate-party">${esc(trail.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(trail.poll)}</b><span>Poll average</span></div></div>
+    </div>
+    <div class="section-label">Will's statistical odds</div>
+    <div class="oddsbar"><div class="oddsbar-a" style="width:${aWidth}%"></div><div class="oddsbar-b" style="width:${bWidth}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(lead.name)}: ${fmtOdds(lead.odds)}</b><b>${esc(trail.name)}: ${fmtOdds(trail.odds)}</b></div>
+    <div class="section-label">My projected winner</div><div class="prediction-box">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'<span class="empty-text">Uncalled</span>'}</div>
+    <div class="section-label">Prediction</div><div class="prediction-box">${s.prediction?esc(s.prediction):'<span c
+---
+
+===== function renderSenate =====
+fault();showPage(el.dataset.pageLink)}));
+
+function setEditMode(on){editMode=!!on;document.body.classList.toggle('edit-mode',editMode);document.getElementById('editToggle').textContent='Edit mode: '+(editMode?'On':'Off');document.getElementById('senateEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('pollsEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('bettingEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('aboutEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('addErrorBtn').style.display=editMode?'inline-block':'none';if(selectedState)renderDrawer(selectedState);renderErrors();renderPolls();renderBetting();renderAbout();}
+document.getElementById('editToggle').onclick=()=>setEditMode(!editMode);document.getElementById('senateEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('pollsEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('bettingEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('aboutEditBtn').onclick=()=>setEditMode(!editMode);
+
+function renderSenate(){
+  applyPaletteCSS();
+  let d=0,r=0,i=0,t=0,u=0; let latest='';
+  let pd=0,pr=0,pi=0,pu=0;
+  Object.values(stateData).forEach(s=>{
+    const path=document.getElementById('state-'+s.abbr); if(!path)return;
+    const stateFill=s.active ? (RATING_COLORS[s.rating]||RATING_COLORS.unrated) : RATING_COLORS['not-up'];
+    path.style.setProperty('fill',stateFill,'important');
+    path.setAttribute('fill',stateFill);
+    const label=document.querySelector('[data-label="'+s.abbr+'"]');
+    if(label){label.classList.toggle('active-label',s.active && ['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));label.classList.toggle('light-text',s.active && !['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));}
+    if(s.active){
+      if(s.rating.endsWith('-d'))d++;else if(s.rating.endsWith('-r'))r++;else if(s.rating.endsWith('-i'))i++;else if(s.rating==='tossup')t++;else if(s.rating==='unrated')u++;
+      if(s.predictionParty==='Democrat')pd++;else if(s.predictionParty==='Republican')pr++;else if(s.predictionParty==='Independent / Other')pi++;else pu++;
+      if(s.updated && s.updated>latest)latest=s.updated;
+    }
+  });
+  countD.textContent=d;countR.textContent=r;countI.textContent=i;
+  const competitiveTossups=Object.values(stateData).filter(s=>s.active&&(s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''))).length;
+  countT.textContent=competitiveTossups;countU.textContent=u;
+  if(document.getElementById('predCountD')){
+    const totalD=BASELINE_SEATS.Democrat+pd;
+    const totalR=BASELINE_SEATS.Republican+pr;
+    const totalI=BASELINE_SEATS.Independent+pi;
+    const totalU=pu;
+    predCountD.textContent=totalD;
+    predCountR.textContent=totalR;
+    if(document.getElementById('barDem')){
+      barDem.style.width=totalD+'%';
+      barInd.style.width=totalI+'%';
+      barUncalled.style.width=totalU+'%';
+      barRep.style.width=totalR+'%';
+    }
+    if(document.getElementById('indSeatNote')){
+      indSeatNote.textContent=totalI+' Independent';
+    }
+  }
+  mapUpdated.textContent=latest?'Latest entry: '+latest:'No data entered yet';
+  const rows=Object.values(stateData).filter(s=>s.active).sort((a,b)=>a.name.localeCompare(b.name));
+  raceBoardBody.innerHTML=rows.map(s=>{const [lead,trail]=orderedStateCandidates(s);return `<tr><td><span class="state-link" data-open-state="${s.abbr}">${s.name}</span></td><td><span class="rating-pill"><span class="rating-dot" style="background:${RATING_COLORS[s.rating]}"></span>${RATING_LABELS[s.rating]}</span></td><td>${s.candidate1||s.candidate2?`${esc(lead.name)} ${fmtPct(lead.poll)} / ${esc(trail.name)} ${fmtPct(trail.poll)}`:'—'}</td><td>${s.candidate1||s.candidate2?`${fmtOdds(lead.odds)} / ${fmtOdds(trail.odds)}`:'—'}</td><td>${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'—'}</td><td>${esc(s.updated||'—')}</td></tr>`}).join('');
+  document.querySelectorAll('[data-open-state]').forEach(x=>x.onclick=()=>openState(x.dataset.openState));
+}
+
+
+function pollValue(v){
+  const n=Number(v);
+  return Number.isFinite(n) && String(v).trim()!=='' ? n : null;
+}
+function orderedStateCandidates(s){
+  const candidates=[
+    {slot:1,name:s.candidate1||'Candidate 1',party:s.candidate1Party||'',poll:s.candidate1Poll,odds:s.candidate1Odds},
+    {slot:2,name:s.candidate2||'Candidate 2',party:s.candidate2Party||'',poll:s.candidate2Poll,odds:s.candidate2Odds}
+  ];
+  return candidates.sort((a,b)=>{
+    const av=pollValue(a.poll), bv=pollValue(b.poll);
+    if(av===null && bv===null) return a.slot-b.slot;
+    if(av===null) return 1;
+    if(bv===null) return -1;
+    if(bv!==av) return bv-av;
+    return a.slot-b.slot;
+  });
+}
+
+
+function shortLastName(name){
+  const full=String(name||'').trim();
+  if(!full) return 'Leader';
+  const parts=full.split(/\s+/);
+  if(parts.length===1) return parts[0];
+  const particles=new Set(['van','von','de','del','di','da','la','le','st.','st','du']);
+  const last=parts[parts.length-1];
+  const prev=parts[parts.length-2];
+  if(particles.has(prev.toLowerCase())) return prev + ' ' + last;
+  return last;
+}
+
+function fmtMarginNumber(n){
+  const rounded=Math.round(n*10)/10;
+  return rounded.toFixed(1);
+}
+
+function statePollMarginClass(s){
+  const ordered=orderedStateCandidates(s);
+  const lead=ordered[0];
+  const leadPoll=pollValue(lead.poll), trailPoll=pollValue((ordered[1]||{}).poll);
+  if(leadPoll===null || trailPoll===null || Math.abs(leadPoll-trailPoll)<0.05) return 'even';
+  return candidatePollClass(lead.name,lead.party);
+}
+
+function statePollMarginLabel(s){
+  const ordered=orderedStateCandidates(s);
+  const lead=ordered[0], trail=ordered[1];
+  const leadPoll=pollValue(lead.poll), trailPoll=pollValue(trail.poll);
+  if(leadPoll===null || trailPoll===null) return 'No avg';
+  const diff=Math.round((leadPoll-trailPoll)*10)/10;
+  if(Math.abs(diff)<0.05) return 'Even';
+  return `${shortLastName(lead.name)} +${fmtMarginNumber(diff)}`;
+}
+
+function pollCandidateParty(p,name,slot){
+  const s=stateData[p.state
+---
+
+===== function openState =====
+c(trail.name)} ${fmtOdds(trail.odds)}</div>`;
+}
+function positionHoverCard(ev){
+  const wrap=document.querySelector('#page-senate .map-wrap');
+  const card=document.getElementById('mapHoverCard');
+  if(!wrap||!card) return;
+  const rect=wrap.getBoundingClientRect();
+  let x=ev.clientX-rect.left+16, y=ev.clientY-rect.top+16;
+  const maxX=wrap.clientWidth-card.offsetWidth-10;
+  const maxY=wrap.clientHeight-card.offsetHeight-10;
+  if(x>maxX) x=Math.max(10,ev.clientX-rect.left-card.offsetWidth-16);
+  if(y>maxY) y=Math.max(10,ev.clientY-rect.top-card.offsetHeight-16);
+  card.style.left=Math.max(10,x)+'px';
+  card.style.top=Math.max(10,y)+'px';
+}
+document.querySelectorAll('.state-shape').forEach(path=>{
+  path.addEventListener('mouseenter',ev=>{
+    const ab=path.dataset.state;
+    if(!stateData[ab]) return;
+    mapHoverCard.innerHTML=hoverCardHTML(ab);
+    mapHoverCard.classList.add('show');
+    positionHoverCard(ev);
+  });
+  path.addEventListener('mousemove',positionHoverCard);
+  path.addEventListener('mouseleave',()=>mapHoverCard.classList.remove('show'));
+  path.addEventListener('click',()=>{
+    const ab=path.dataset.state;
+    if(editMode && stateData[ab]) openState(ab);
+  });
+});
+function openState(ab){selectedState=ab;document.querySelectorAll('.state-shape').forEach(p=>p.classList.toggle('selected',p.dataset.state===ab));renderDrawer(ab);stateDrawer.classList.add('show');drawerBackdrop.classList.add('show');}
+function closeDrawer(){stateDrawer.classList.remove('show');drawerBackdrop.classList.remove('show');document.querySelectorAll('.state-shape').forEach(p=>p.classList.remove('selected'));selectedState=null;}
+drawerClose.onclick=closeDrawer;drawerBackdrop.onclick=closeDrawer;
+
+function renderDrawer(ab){const s=stateData[ab];drawerStateName.textContent=s.name;drawerRating.textContent='Prediction: '+RATING_LABELS[s.rating];if(!s.active){drawerBody.innerHTML=`<div class="inactive-state"><strong>${s.name}</strong> is not configured as a 2026 Senate-election state, so it stays gray on this map.</div>`;return;}
+  const [lead,trail]=orderedStateCandidates(s);
+  const oddsA=Math.max(0,Math.min(100,Number(lead.odds)||0));const oddsB=Math.max(0,Math.min(100,Number(trail.odds)||0));const oddsTotal=oddsA+oddsB;const aWidth=oddsTotal?oddsA/oddsTotal*100:50;const bWidth=oddsTotal?100-aWidth:50;
+  drawerBody.innerHTML=`
+    <div class="race-display">
+      <div class="candidate-line"><div><div class="candidate-name">${esc(lead.name)}</div><div class="candidate-party">${esc(lead.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(lead.poll)}</b><span>Poll average</span></div></div>
+      <div class="candidate-line"><div><div class="candidate-name">${esc(trail.name)}</div><div class="candidate-party">${esc(trail.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(trail.poll)}</b><span>Poll average</span></div></div>
+    </div>
+    <div class="section-label">Will's statistical odds</div>
+    <div class="oddsbar"><div class="oddsbar-a" style="width:${aWidth}%"></div><div class="oddsbar-b" style="width:${bWidth}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(lead.name)}: ${fmtOdds(lead.odds)}</b><b>${esc(trail.name)}: ${fmtOdds(trail.odds)}</b></div>
+    <div class="section-label">My projected winner</div><div class="prediction-box">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'<span class="empty-text">Uncalled</span>'}</div>
+    <div class="section-label">Prediction</div><div class="prediction-box">${s.prediction?esc(s.prediction):'<span class="empty-text">No prediction text entered yet.</span>'}</div>
+    ${s.notes?`<div class="section-label">Notes</div><div class="prediction-box">${esc(s.notes)}</div>`:''}
+    <div class="section-label">Last updated</div><div style="font-size:12px;color:#596477">${esc(s.updated||'Not entered')}</div>
+    <div class="editor"><div class="edit-hint">You are in Edit mode. Changes below are saved only when you press <strong>Save race data</strong>.</div>
+      <div class="form-grid">
+        <div><label>Candidate 1</label><input id="eC1" value="${esc(s.candidate1)}" placeholder="Name"></div><div><label>Candidate 1 party</label><select id="eP1"><option>Democrat</option><option>Republican</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 1 poll %</label><input id="ePoll1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Poll)}"></div><div><label>Candidate 1 odds %</label><input id="eOdds1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Odds)}"></div>
+        <div><label>Candidate 2</label><input id="eC2" value="${esc(s.candidate2)}" placeholder="Name"></div><div><label>Candidate 2 party</label><select id="eP2"><option>Republican</option><option>Democrat</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 2 poll %</label><input id="ePoll2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Poll)}"></div><div><label>Candidate 2 odds %</label><input id="eOdds2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Odds)}"></div>
+        <div><label>My projected winner</label><select id="ePredParty">${predictionPartyOptions(s.predictionParty||'uncalled')}</select></div>
+        <div><label>Prediction strength</label><select id="ePredStrength">${predictionStrengthOptions(strengthFromRating(s.rating))}</select><div class="prediction-combo-note">Winner + strength sets the map color. Example: Democrat + Tilt = Tilt Blue.</div></div>
+        <div class="full"><label>My prediction</label><input id="ePrediction" value="${esc(s.prediction)}" placeholder="Example: Candidate name +2.5 or a short forecast headline"></div>
+        <div class="full"><label>Notes</label><textarea id="eNotes" placeholder="Polling methodology, race context, update notes…">${esc(s.notes)}</textarea></div>
+        <div class="full"><label>Last updated</label><input id="eUpdated" type="date" value="${esc(s.updated)}"></div>
+      </div><div class="save-row"><button id="saveRaceBtn" class="btn red">Save race data</button><button id="clearRaceBtn" class="btn light
+---
+
+===== function renderHomeDashboard =====
+ette(){paletteGrid.innerHTML=Object.keys(COLOR_VAR_MAP).map(k=>`<div class="palette-item"><label>${RATING_LABELS[k]}</label><input type="color" data-color-key="${k}" value="${RATING_COLORS[k]}"></div>`).join('');paletteGrid.querySelectorAll('input[type=color]').forEach(inp=>inp.addEventListener('input',()=>{RATING_COLORS[inp.dataset.colorKey]=inp.value;applyPaletteCSS();renderSenate();save();}));}
+mapColorsBtn.onclick=()=>{renderPalette();paletteModal.classList.add('show')};paletteClose.onclick=()=>paletteModal.classList.remove('show');paletteDone.onclick=()=>paletteModal.classList.remove('show');paletteModal.onclick=e=>{if(e.target===paletteModal)paletteModal.classList.remove('show')};resetPaletteBtn.onclick=()=>{RATING_COLORS={...DEFAULT_RATING_COLORS};applyPaletteCSS();renderPalette();renderSenate();save();toast('Map colors reset')};
+
+function activeStateOptions(selected=''){return Object.values(stateData).filter(s=>s.active).sort((a,b)=>a.name.localeCompare(b.name)).map(s=>`<option value="${s.abbr}" ${s.abbr===selected?'selected':''}>${s.name}</option>`).join('')}
+function pctBarWidth(a,b){const x=Math.max(0,Number(a)||0),y=Math.max(0,Number(b)||0),t=x+y;return t?x/t*100:50}
+
+
+function renderHomeDashboard(){
+  const active=Object.values(stateData).filter(s=>s.active);
+  const rated=active.filter(s=>s.rating && s.rating!=='unrated');
+  const tossups=active.filter(s=>s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''));
+
+  const ratedEl=document.getElementById('homeRatedRaces');
+  const tossEl=document.getElementById('homeTossups');
+  const pollEl=document.getElementById('homePollCount');
+  const updateEl=document.getElementById('homeLatestUpdate');
+  if(ratedEl) ratedEl.textContent=rated.length;
+  if(tossEl) tossEl.textContent=tossups.length;
+  if(pollEl) pollEl.textContent=polls.length;
+
+  const dates=[
+    ...active.map(s=>s.updated).filter(Boolean),
+    ...polls.map(p=>p.date).filter(Boolean),
+    ...bettingOdds.map(p=>p.date).filter(Boolean)
+  ].sort((a,b)=>b.localeCompare(a));
+
+  if(updateEl){
+    if(dates.length){
+      const d=new Date(dates[0]+'T12:00:00');
+      updateEl.textContent=Number.isNaN(d.getTime())?dates[0]:
+        d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+    }else{
+      updateEl.textContent='—';
+    }
+  }
+
+  document.querySelectorAll('[data-home-state]').forEach(path=>{
+    const s=stateData[path.dataset.homeState];
+    let fill='#d8dde4';
+    if(s){
+      if(s.active){
+        fill=RATING_COLORS[s.rating]||RATING_COLORS['unrated']||'#d8dde4';
+      }else{
+        fill=RATING_COLORS['not-up']||'#d8dde4';
+      }
+    }
+    path.style.fill=fill;
+  });
+
+  const latest=document.getElementById('homeLatestPolls');
+  if(latest){
+    const rows=[...polls].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,2);
+    if(!rows.length){
+      latest.innerHTML='<div class="reference-empty">No polls entered yet. Add your first poll from the New Polls page.</div>';
+    }else{
+      latest.innerHTML=rows.map(p=>{
+        const state=stateData[p.state]?.name||p.state||'Senate';
+        const ab=p.state||'US';
+        const [lead,trail]=orderedPollCandidates(p);
+        const c1=lead.name;
+        const c2=trail.name;
+        const p1=fmtPct(lead.poll);
+        const p2=fmtPct(trail.poll);
+        const date=p.date||'Date not entered';
+        const title=p.pollster||`${state} poll`;return `<article class="reference-poll-row">
+          <div class="reference-poll-badge">${esc(ab)}</div>
+          <div class="reference-poll-copy">
+            <div class="poll-kicker">${esc(state).toUpperCase()}</div>
+            <h3>${esc(title)}</h3>
+            <p>${esc(c1)} ${p1} &nbsp; • &nbsp; ${esc(c2)} ${p2}</p>
+            <time>${esc(date)}</time>
+          </div>
+        </article>`;
+      }).join('');
+    }
+  }
+}
+
+function renderPolls(){
+  pollStateInput.innerHTML=activeStateOptions(pollStateInput.value||'');
+  pollCount.textContent=polls.length;pollStateCount.textContent=new Set(polls.map(p=>p.state).filter(Boolean)).size;
+  const rows=[...polls].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  pollFeed.innerHTML=rows.length?rows.map(p=>{const idx=polls.indexOf(p),state=stateData[p.state]?.name||p.state||'State';const [lead,trail]=orderedPollCandidates(p);const w=pctBarWidth(lead.poll,trail.poll);const leadClass=candidatePollClass(lead.name,lead.party),trailClass=candidatePollClass(trail.name,trail.party);return `<div class="feed-card"><div class="feed-top"><div><div class="feed-kicker">${esc(state)} • ${esc(p.date||'Date not entered')}</div><h3>${esc(p.pollster||'Poll')}</h3><div class="feed-meta">${esc(p.sample||'Sample not entered')}</div></div><button class="btn danger sm delete-entry" data-delete-poll="${idx}">Delete</button></div><div class="candidate-feed"><div class="candidate-feed-row"><div><b>${esc(lead.name)}</b><div class="mini-bar ${leadClass}"><i style="width:${w}%"></i></div></div><strong class="${leadClass}">${fmtPct(lead.poll)}</strong></div><div class="candidate-feed-row"><div><b>${esc(trail.name)}</b><div class="mini-bar ${trailClass}"><i style="width:${100-w}%"></i></div></div><strong class="${trailClass}">${fmtPct(trail.poll)}</strong></div></div>${p.notes?`<div class="feed-notes">${esc(p.notes)}</div>`:''}</div>`}).join(''):`<div class="empty-feed">No polls entered yet.${editMode?' Use the form above to add your first poll.':''}</div>`;
+  document.querySelectorAll('[data-delete-poll]').forEach(btn=>btn.onclick=()=>{polls.splice(Number(btn.dataset.deletePoll),1);save();renderPolls();toast('Poll deleted')});
+}
+savePollBtn.onclick=()=>{polls.push({date:pollDateInput.value,state:pollStateInput.value,pollster:pollsterInput.value.trim(),sample:pollSampleInput.value.trim(),c1:pollC1Input.value.trim(),c1Pct:pollC1PctInput.value,c2:pollC2Input.value.trim(),c2Pct:pollC2PctInput.value,notes:pollNotesInput.value.trim()});save();[pollsterInput,pollSampleInput,pollC1Input,pollC1PctInput,pollC2Input,pollC2PctInput,pollNotesInput].forEach(x=>x.value='');renderPolls();toast('Poll added')};
+
+function fillKalshiCandidates(){
+  const ab=betStateInput.value;
+  const s=stateData[ab];
+  if(!s){betC1Input.value='';betC2Input.value
+---
+
+===== function compute =====
+
+===== projected =====
+v>
+<span class="key-range">Tilt → Solid</span>
+</div>
+</div>
+</div>
+<div class="card rating-table-card">
+<div class="card-head"><div><h2>2026 race board</h2><p>A clean state-by-state index generated from the data you enter.</p></div></div>
+<div class="table-wrap"><table class="rating-table"><thead><tr><th>State</th><th>Map shade</th><th>Polling average</th><th>Forecast odds</th><th>Projected winner</th><th>Updated</th></tr></thead><tbody id="raceBoardBody"></tbody></table></div>
+</div>
+</div>
+<aside class="sidebar">
+<div class="card stat-card"><h3>Poll-map snapshot</h3><div class="stats"><div class="stat-row"><span>Democratic poll-rated races</span><b id="countD">0</b></div><div class="stat-row"><span>Republican poll-rated races</span><b id="countR">0</b></div><div class="stat-row"><span>Independent/Other poll-rated</span><b id="countI">0</b></div><div class="stat-row"><span>Toss-ups</span><b id="countT">0</b></div><div class="stat-row"><span>Unrated 2026 races</span><b id="countU">35</b></div></div></div>
+<div class="card how-card"><h3>How to update the map</h3><p>Turn on <strong>Edit mode</strong>, click a 2026 Senate state, enter the candidates and polling averages, choose your projected winner and Tilt/Lean/Likely/Solid strength, then save. The state changes shade immediately.</p></div>
+<div class="card how-card"><h3>2026 map structure</h3><p>The active states are configured from the regular Class II Senate cycle plus the Florida and Ohio special-election seats. Other states remain gray.</p><div class="map-source">Map geometry is embedded directly in this file so it does not depend on an external map service.</div></div>
+</aside>
+</div>
+</div>
+</section>
+<section class="page" id="page-errors">
+<div class="page-head"><div class="page-head-inner"><div><h1>Past Senate Polling Errors</h1><p>A race-by-race look at past Senate elections: where final polling was right, where it missed, and which side it underestimated.</p></div><div class="page-actions"><button class="btn primary sm" id="addErrorBtn">Add race</button></div></div></div>
+<div class="content">
+<div class="errors-summary">
+  <div class="card metric-card"><span>Completed races</span><b id="errorCount">0</b></div>
+  <div class="card metric-card"><span>Mean candidate miss</span><b id="maeValue">—</b></div>
+  <div class="card metric-card"><span>Largest miss</span><b id="maxErrorValue">—</b></div>
+  <div class="card metric-card"><span>Wrong polling leaders</span><b id="wrongCallCount">0</b></div>
+</div>
+
+<div class="card error-control-card" id="errorTopAnchor">
+  <div class="error-nav-title">
+    <div><span>BROWSE THE ARCHIVE</span><strong>Jump to a year, state, or candidate</strong></div>
+    <button class="btn light sm" id="errorClearBtn" type="button">Clear filters</button>
+  </div>
+  <div class="error-controls">
+    <div class="error-control wide"><label>Search</label><input id="errorSearchInput" placeholder="State or candidate — e.g. Michigan, Brown, Collins"/></div>
+    <div class="error-control"><label>Show year</label><select id="errorYearSelect"><option value="all">All years</option></select></div>
+    <div class="error-control"><label>Sort races</label><select id="errorSortSelect"><option value="newest">By election year</option><option value="largest">Biggest candidate miss</option><option value="shift">Biggest margin shift</option><option value="state">State A–Z</option></select></div>
+  </div>
+  <div class="error-year-nav">
+    <span>Election years</span>
+    <div class="error-year-chips" id="errorYearChips"></div>
+  </div>
+  <div class="error-key">
+    <span class="error-chip under">Underestimated</span>
+    <span class="error-chip over">Overestimated</span>
+    <span class="error-chip wrong">Wrong leader</span>
+  </div>
+</div>
+
+<div class="error-results-line"><strong id="errorVisibleCount">0 races</strong><span id="errorViewDescription">Grouped by election year</span></div>
+<div id="errorsList"></div>
+
+<div class="card error-method-simple">
+  <strong>How to read this page</strong>
+  <p><b>Underestimated</b> means a candidate finished higher than the final polling average. <b>Overestimated</b> means the candidate finished lower. “Margin shift” shows how far the final margin moved from the polling margin. Final RCP averages are used where available; some early cycles use a simple average of the final available public polls.</p>
+</div>
+</div>
+</section>
+<section class="page" id="page-polls">
+<div class="page-head"><div class="page-head-inner"><div><h1>New Polls</h1><p>A clean feed for the newest Senate polls you enter. Add the pollster, matchup, percentages, sample, date, and your notes.</p></div><div class="page-actions"><button class="btn primary sm" id="pollsEditBtn">Turn on edit mode</button></div></div></div>
+<div class="content">
+<div class="data-page-grid">
+<div>
+<div class="card entry-form" id="pollEntryForm"><h2>Add a new poll</h2><p>Enter one poll at a time. Your newest entries will appear at the top of the feed.</p>
+<div class="entry-grid">
+<div><label>Date</label><input id="pollDateInput" type="date"/></div><div><label>State</label><select id="pollStateInput"></select></div>
+<div><label>Pollster</label><input id="pollsterInput" placeholder="Pollster / organization"/></div><div><label>Sample</label><input id="pollSampleInput" placeholder="Example: 800 LV"/></div>
+<div><label>Candidate 1</label><input id="pollC1Input" placeholder="Candidate name"/></div><div><label>Candidate 1 %</label><input id="pollC1PctInput" max="100" min="0" step="0.1" type="number"/></div>
+<div><label>Candidate 2</label><input id="pollC2Input" placeholder="Candidate name"/></div><div><label>Candidate 2 %</label><input id="pollC2PctInput" max="100" min="0" step="0.1" type="number"/></div>
+<div class="full"><label>Notes / methodology</label><textarea id="pollNotesInput" placeholder="Optional notes about field dates, sample, mode, sponsor, etc."></textarea></div>
+</div><button class="btn red entry-submit" id="savePollBtn">Add poll</button>
+</div>
+<div class="feed" id="pollFeed"></div>
+</div>
+<aside class="page-side">
+<div class="card page-side-card"><h3>Poll feed snapshot</h3><div class="mini-stats"><div class="mini-stat"><span>Polls ente
+---
+t oddsA=Math.max(0,Math.min(100,Number(lead.odds)||0));const oddsB=Math.max(0,Math.min(100,Number(trail.odds)||0));const oddsTotal=oddsA+oddsB;const aWidth=oddsTotal?oddsA/oddsTotal*100:50;const bWidth=oddsTotal?100-aWidth:50;
+  drawerBody.innerHTML=`
+    <div class="race-display">
+      <div class="candidate-line"><div><div class="candidate-name">${esc(lead.name)}</div><div class="candidate-party">${esc(lead.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(lead.poll)}</b><span>Poll average</span></div></div>
+      <div class="candidate-line"><div><div class="candidate-name">${esc(trail.name)}</div><div class="candidate-party">${esc(trail.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(trail.poll)}</b><span>Poll average</span></div></div>
+    </div>
+    <div class="section-label">Will's statistical odds</div>
+    <div class="oddsbar"><div class="oddsbar-a" style="width:${aWidth}%"></div><div class="oddsbar-b" style="width:${bWidth}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(lead.name)}: ${fmtOdds(lead.odds)}</b><b>${esc(trail.name)}: ${fmtOdds(trail.odds)}</b></div>
+    <div class="section-label">My projected winner</div><div class="prediction-box">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'<span class="empty-text">Uncalled</span>'}</div>
+    <div class="section-label">Prediction</div><div class="prediction-box">${s.prediction?esc(s.prediction):'<span class="empty-text">No prediction text entered yet.</span>'}</div>
+    ${s.notes?`<div class="section-label">Notes</div><div class="prediction-box">${esc(s.notes)}</div>`:''}
+    <div class="section-label">Last updated</div><div style="font-size:12px;color:#596477">${esc(s.updated||'Not entered')}</div>
+    <div class="editor"><div class="edit-hint">You are in Edit mode. Changes below are saved only when you press <strong>Save race data</strong>.</div>
+      <div class="form-grid">
+        <div><label>Candidate 1</label><input id="eC1" value="${esc(s.candidate1)}" placeholder="Name"></div><div><label>Candidate 1 party</label><select id="eP1"><option>Democrat</option><option>Republican</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 1 poll %</label><input id="ePoll1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Poll)}"></div><div><label>Candidate 1 odds %</label><input id="eOdds1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Odds)}"></div>
+        <div><label>Candidate 2</label><input id="eC2" value="${esc(s.candidate2)}" placeholder="Name"></div><div><label>Candidate 2 party</label><select id="eP2"><option>Republican</option><option>Democrat</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 2 poll %</label><input id="ePoll2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Poll)}"></div><div><label>Candidate 2 odds %</label><input id="eOdds2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Odds)}"></div>
+        <div><label>My projected winner</label><select id="ePredParty">${predictionPartyOptions(s.predictionParty||'uncalled')}</select></div>
+        <div><label>Prediction strength</label><select id="ePredStrength">${predictionStrengthOptions(strengthFromRating(s.rating))}</select><div class="prediction-combo-note">Winner + strength sets the map color. Example: Democrat + Tilt = Tilt Blue.</div></div>
+        <div class="full"><label>My prediction</label><input id="ePrediction" value="${esc(s.prediction)}" placeholder="Example: Candidate name +2.5 or a short forecast headline"></div>
+        <div class="full"><label>Notes</label><textarea id="eNotes" placeholder="Polling methodology, race context, update notes…">${esc(s.notes)}</textarea></div>
+        <div class="full"><label>Last updated</label><input id="eUpdated" type="date" value="${esc(s.updated)}"></div>
+      </div><div class="save-row"><button id="saveRaceBtn" class="btn red">Save race data</button><button id="clearRaceBtn" class="btn light">Clear this state</button></div>
+    </div>`;
+  if(editMode){document.getElementById('eP1').value=s.candidate1Party;document.getElementById('eP2').value=s.candidate2Party;document.getElementById('saveRaceBtn').onclick=()=>saveRace(ab);document.getElementById('clearRaceBtn').onclick=()=>clearRace(ab);}
+}
+function ratingOptions(sel){const vals=['unrated','tossup','tilt-r','lean-r','likely-r','solid-r','tilt-d','lean-d','likely-d','solid-d','tilt-i','lean-i','likely-i','solid-i'];return vals.map(v=>`<option value="${v}" ${v===sel?'selected':''}>${RATING_LABELS[v]}</option>`).join('')}
+function predictionPartyOptions(sel){const vals=[['uncalled','Uncalled'],['Democrat','Democrat'],['Republican','Republican'],['Independent / Other','Independent / Other']];return vals.map(([v,l])=>`<option value="${v}" ${v===sel?'selected':''}>${l}</option>`).join('')}
+function strengthFromRating(rating){
+  if(!rating || rating==='unrated' || rating==='tossup') return 'tilt';
+  if(rating.startsWith('solid-')) return 'solid';
+  if(rating.startsWith('likely-')) return 'likely';
+  if(rating.startsWith('lean-')) return 'lean';
+  return 'tilt';
+}
+function predictionStrengthOptions(sel){
+  const vals=[['tilt','Tilt'],['lean','Lean'],['likely','Likely'],['solid','Solid']];
+  return vals.map(([v,l])=>`<option value="${v}" ${v===sel?'selected':''}>${l}</option>`).join('');
+}
+function ratingFromPrediction(party,strength){
+  if(!party || party==='uncalled') return 'unrated';
+  const suffix = party==='Democrat' ? 'd' : party==='Republican' ? 'r' : 'i';
+  return `${strength||'tilt'}-${suffix}`;
+}
+function saveRace(ab){
+  const s=stateData[ab];
+  s.candidate1=eC1.value.trim();s.candidate1Party=eP1.value;s.candidate1Poll=ePoll1.value;s.candidate1Odds=eOdds1.value;
+  s.candidate2=eC2.value.trim();s.candidate2Party=eP2.value;s.candidate2Poll=ePoll2.value;s.candidate2Odds=eOdds2.value;
+  s.predictionParty=ePredParty.value;
+  s.rating=ratingFromPrediction(s.predictionParty,ePredStrength.value);
+  s.prediction=ePrediction.value.trim();s.notes=eNotes.value.trim();s.updated=eUpdated.value;
+  save();renderSe
+---
+<strong>Save race data</strong>.</div>
+      <div class="form-grid">
+        <div><label>Candidate 1</label><input id="eC1" value="${esc(s.candidate1)}" placeholder="Name"></div><div><label>Candidate 1 party</label><select id="eP1"><option>Democrat</option><option>Republican</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 1 poll %</label><input id="ePoll1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Poll)}"></div><div><label>Candidate 1 odds %</label><input id="eOdds1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Odds)}"></div>
+        <div><label>Candidate 2</label><input id="eC2" value="${esc(s.candidate2)}" placeholder="Name"></div><div><label>Candidate 2 party</label><select id="eP2"><option>Republican</option><option>Democrat</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 2 poll %</label><input id="ePoll2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Poll)}"></div><div><label>Candidate 2 odds %</label><input id="eOdds2" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate2Odds)}"></div>
+        <div><label>My projected winner</label><select id="ePredParty">${predictionPartyOptions(s.predictionParty||'uncalled')}</select></div>
+        <div><label>Prediction strength</label><select id="ePredStrength">${predictionStrengthOptions(strengthFromRating(s.rating))}</select><div class="prediction-combo-note">Winner + strength sets the map color. Example: Democrat + Tilt = Tilt Blue.</div></div>
+        <div class="full"><label>My prediction</label><input id="ePrediction" value="${esc(s.prediction)}" placeholder="Example: Candidate name +2.5 or a short forecast headline"></div>
+        <div class="full"><label>Notes</label><textarea id="eNotes" placeholder="Polling methodology, race context, update notes…">${esc(s.notes)}</textarea></div>
+        <div class="full"><label>Last updated</label><input id="eUpdated" type="date" value="${esc(s.updated)}"></div>
+      </div><div class="save-row"><button id="saveRaceBtn" class="btn red">Save race data</button><button id="clearRaceBtn" class="btn light">Clear this state</button></div>
+    </div>`;
+  if(editMode){document.getElementById('eP1').value=s.candidate1Party;document.getElementById('eP2').value=s.candidate2Party;document.getElementById('saveRaceBtn').onclick=()=>saveRace(ab);document.getElementById('clearRaceBtn').onclick=()=>clearRace(ab);}
+}
+function ratingOptions(sel){const vals=['unrated','tossup','tilt-r','lean-r','likely-r','solid-r','tilt-d','lean-d','likely-d','solid-d','tilt-i','lean-i','likely-i','solid-i'];return vals.map(v=>`<option value="${v}" ${v===sel?'selected':''}>${RATING_LABELS[v]}</option>`).join('')}
+function predictionPartyOptions(sel){const vals=[['uncalled','Uncalled'],['Democrat','Democrat'],['Republican','Republican'],['Independent / Other','Independent / Other']];return vals.map(([v,l])=>`<option value="${v}" ${v===sel?'selected':''}>${l}</option>`).join('')}
+function strengthFromRating(rating){
+  if(!rating || rating==='unrated' || rating==='tossup') return 'tilt';
+  if(rating.startsWith('solid-')) return 'solid';
+  if(rating.startsWith('likely-')) return 'likely';
+  if(rating.startsWith('lean-')) return 'lean';
+  return 'tilt';
+}
+function predictionStrengthOptions(sel){
+  const vals=[['tilt','Tilt'],['lean','Lean'],['likely','Likely'],['solid','Solid']];
+  return vals.map(([v,l])=>`<option value="${v}" ${v===sel?'selected':''}>${l}</option>`).join('');
+}
+function ratingFromPrediction(party,strength){
+  if(!party || party==='uncalled') return 'unrated';
+  const suffix = party==='Democrat' ? 'd' : party==='Republican' ? 'r' : 'i';
+  return `${strength||'tilt'}-${suffix}`;
+}
+function saveRace(ab){
+  const s=stateData[ab];
+  s.candidate1=eC1.value.trim();s.candidate1Party=eP1.value;s.candidate1Poll=ePoll1.value;s.candidate1Odds=eOdds1.value;
+  s.candidate2=eC2.value.trim();s.candidate2Party=eP2.value;s.candidate2Poll=ePoll2.value;s.candidate2Odds=eOdds2.value;
+  s.predictionParty=ePredParty.value;
+  s.rating=ratingFromPrediction(s.predictionParty,ePredStrength.value);
+  s.prediction=ePrediction.value.trim();s.notes=eNotes.value.trim();s.updated=eUpdated.value;
+  save();renderSenate();renderDrawer(ab);toast(s.name+' saved — map updated');
+}
+function clearRace(ab){if(!confirm('Clear all entered data for '+stateData[ab].name+'?'))return;const d=deepClone(DEFAULT_STATE_DATA[ab]);d.predictionParty='uncalled';stateData[ab]=d;save();renderSenate();renderDrawer(ab);toast('State data cleared');}
+clearRatingsBtn.onclick=()=>{if(!confirm('Set every 2026 poll-map rating back to Unrated? Candidate and polling data will stay.'))return;Object.values(stateData).filter(s=>s.active).forEach(s=>s.rating='unrated');save();renderSenate();if(selectedState)renderDrawer(selectedState);toast('Map ratings cleared')};
+
+function errNum(v){
+  if(v===undefined||v===null||String(v).trim()==='')return null;
+  const n=Number(v);return Number.isFinite(n)?n:null;
+}
+function errPartyClass(name,party){
+  if(/\bdan\s+osborn(?:e)?\b/i.test(String(name||'')) || /^osborn(?:e)?$/i.test(String(name||'').trim()))return 'osborn';
+  const p=String(party||'').toUpperCase();
+  if(p==='D'||p==='DEMOCRAT')return 'd';
+  if(p==='R'||p==='REPUBLICAN')return 'r';
+  return 'i';
+}
+function errPct(v){const n=errNum(v);return n===null?'—':n.toFixed(1)+'%'}
+function candidateError(x,slot){
+  const poll=errNum(x['poll'+slot]),actual=errNum(x['actual'+slot]);
+  return poll===null||actual===null?null:actual-poll;
+}
+function errWrongLeader(x){
+  const p1=errNum(x.poll1),p2=errNum(x.poll2),a1=errNum(x.actual1),a2=errNum(x.actual2);
+  if([p1,p2,a1,a2].some(v=>v===null))return false;
+  const ps=Math.sign(p1-p2),as=Math.sign(a1-a2);
+  return ps!==0&&as!==0&&ps!==as;
+}
+function errMarginShift(x){
+  const p1=errNum(x.poll1),p2=errNum(x.poll2),a1=errNum(x.actual1),a2=errNum(x.actual2);
+  if([p1,p2,a1,a2].some(v=>v===null))return null;
+  return (a1-a2)-(p1-p2);
+}
+function biggestCandidateMiss(x){
+  const vals=[candidateError(x,1),candidateError(x,2)].filter(v=>v!==null).map(Math.abs);
+  return vals.length?Math.max(..
+---
+
+===== prediction-copy =====
+rediction.ind:before{background:#e4c24f}
+.map-hover-prediction.uncalled{
+  background:linear-gradient(135deg,rgba(125,135,151,.28),rgba(125,135,151,.08));
+}
+.map-hover-prediction .prediction-kicker{
+  display:block;
+  font-size:9px;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:1.25px;
+  text-transform:uppercase;
+  color:#dbe5f2;
+  margin-bottom:5px;
+}
+.map-hover-prediction strong{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  font-size:17px;
+  line-height:1.05;
+  color:#fff;
+}
+.map-hover-prediction .prediction-party{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;
+}
+.map-hover-prediction .prediction-rating{
+  display:inline-block;
+  padding:4px 7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.15);
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.map-hover-prediction.dem .prediction-rating{background:#6fa8ff;color:#07182f}
+.map-hover-prediction.rep .prediction-rating{background:#ff6b78;color:#2a0710}
+.map-hover-prediction.ind .prediction-rating{background:#e4c24f;color:#2d2400}
+.map-hover-prediction.uncalled .prediction-rating{background:#9ca6b4;color:#111820}
+.map-hover-prediction .prediction-copy{
+  display:block;
+  margin-top:6px;
+  color:#d7e2ef;
+  font-size:11px;
+  line-height:1.4;
+}
+@media (prefers-reduced-motion:no-preference){
+  .map-hover-prediction.dem,
+  .map-hover-prediction.rep,
+  .map-hover-prediction.ind{
+    animation:predictionPulse 3.4s ease-in-out infinite;
+  }
+}
+@keyframes predictionPulse{
+  0%,100%{box-shadow:0 0 0 rgba(255,255,255,0)}
+  50%{box-shadow:0 0 12px rgba(255,255,255,.08)}
+}
+.prediction-combo-note{font-size:11px;color:#748094;line-height:1.4;margin-top:5px}
+.map-wrap svg{width:100%;height:auto;display:block;min-height:650px}.state-shape{stroke:#fff;stroke-width:1.65;fill:var(--notup);vector-effect:non-scaling-stroke;transition:fill .18s,filter .18s,stroke-width .18s}.state-shape[data-active="true"]{fill:var(--unrated);cursor:pointer}.state-shape[data-active="true"]:hover{filter:brightness(.96);stroke:#152b4e;stroke-width:2.5}.state-shape.selected{stroke:#07152c;stroke-width:4;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15))}.state-label{
+  fill:#fff;
+  font-family:"Trebuchet MS","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  font-weight:800;
+  letter-spacing:.7px;
+  pointer-events:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.7)
+}.state-label.active-label{fill:#27364a;text-shadow:none}.state-label.light-text{fill:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45)}.inset-frame{fill:none;stroke:#c9d0dc;stroke-width:1}.inset-label{font-size:9px;font-weight:900;letter-spacing:1.5px;fill:#7b8493}
+.legend{margin-top:15px;border-top:1px solid var(--line);padding-top:14px}.legend-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;color:#566075;margin-bottom:9px}.legend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:#596477}.swatch{width:18px;height:10px;border-radius:3px;flex:none}.legend-note{font-size:11px;color:#7c8696;margin:11px 0 0}
+
+.prediction-strip{
+  display:grid;
+  grid-template-columns:minmax(220px,1.35fr) repeat(4,minmax(120px,.65fr));
+  gap:10px;
+  margin:0 0 18px;
+}
+.prediction-title-card,.prediction-total-card{
+  border-radius:15px;
+  border:1px solid var(--line);
+  box-shadow:0 10px 32px rgba(13,28,54,.07);
+  min-height:96px;
+}
+.prediction-title-card{
+  background:var(--navy);
+  color:#fff;
+  padding:18px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.prediction-title-card span{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  text-transform:uppercase;
+  color:#b8c8dc;
+}
+.prediction-title-card strong{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+  line-height:1.05;
+  margin-top:5px;
+}
+.prediction-title-card small{
+  color:#b8c8dc;
+  font-size:11px;
+  margin-top:5px;
+}
+.prediction-total-card{
+  background:#fff;
+  padding:13px 15px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+.prediction-total-card span{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:#687385;
+}
+.prediction-total-card b{
+  font-size:38px;
+  line-height:1;
+  margin-top:5px;
+}
+.prediction-total-card.dem b{color:#2763b8}
+.prediction-total-card.rep b{color:#bd2937}
+.prediction-total-card.ind b{color:#a38318}
+.prediction-total-card.uncalled b{color:#7d8797}
+@media(max-width:900px){
+  .prediction-strip{grid-template-columns:1fr 1fr}
+  .prediction-title-card{grid-column:1/-1}
+}
+@media(max-width:520px){
+  .prediction-strip{grid-template-columns:1fr}
+  .prediction-title-card{grid-column:auto}
+}
+.sidebar{display:grid;gap:14px}.stat-card{padding:18px}.stat-card h3{font-size:12px;text-transform:uppercase;letter-spacing:1.1px;color:#707a8c;margin:0 0 13px}.stats{display:grid;gap:9px}.stat-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #edf0f4;padding-bottom:9px}.stat-row:last-child{border:0;padding-bottom:0}.stat-row span{font-size:13px;color:#5f697a}.stat-row b{font-size:18px}.how-card{padding:18px}.how-card h3{margin:0 0 8px;font-size:15px}.how-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.map-source{margin-top:10px;font-size:10px;color:#8b94a3}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(5,14,29,.38);z-index:180;display:none}.drawer-backdrop.show{display:block}.drawer{position:fixed;right:0;top:0;height:100vh;width:min(460px,96vw);background:#fff;z-index:190;transform:translateX(102%);transition:transform .22s ease;box-shadow:-25px 0 70px rgba(4,16,35,.2);overflow:auto}.drawer.show{transform:translateX(0)}.drawer-top{background:var(--navy);color:#fff;padding:24px 24px 20px;position:sticky;top:0;z-index:2}.drawer-close{position:absolute;right:17px;top:17px;width:34px;height:34px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:8px;font-size:18px}.drawer-kicker{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#aebdd2;font-weight:850}.drawer-top h2{font-family:Georgia,"Times New Roman",serif
+---
+ollMarginLabel(s);
+  return `<div class="map-hover-topline">
+      <div>
+        <div class="map-hover-state">${esc(s.name)}</div>
+      </div>
+      <div class="map-hover-margin ${statePollMarginClass(s)}">${esc(marginLabel)}</div>
+    </div>
+    <div class="map-hover-section-title first">Avg polls</div>
+    <div class="map-hover-candidate"><div><b>${esc(lead.name)}</b><span>${esc(lead.party)}</span></div><div class="map-hover-number ${candidatePollClass(lead.name,lead.party)}">${fmtPct(lead.poll)}</div></div>
+    <div class="map-hover-candidate"><div><b>${esc(trail.name)}</b><span>${esc(trail.party)}</span></div><div class="map-hover-number ${candidatePollClass(trail.name,trail.party)}">${fmtPct(trail.poll)}</div></div>
+    <div class="map-hover-section-title">My prediction</div>
+    <div class="map-hover-prediction ${predictionHoverClass(s.predictionParty)}">
+      <span class="prediction-kicker">Will's call</span>
+      <strong>
+        <span class="prediction-party">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'Uncalled'}</span>
+        <span class="prediction-rating">${RATING_LABELS[s.rating]||'Unrated'}</span>
+      </strong>
+      <span class="prediction-copy">${s.prediction?esc(s.prediction):'No written prediction entered yet.'}</span>
+    </div>
+    <div class="map-hover-footer"><b>Win odds:</b> ${esc(lead.name)} ${fmtOdds(lead.odds)} · ${esc(trail.name)} ${fmtOdds(trail.odds)}</div>`;
+}
+function positionHoverCard(ev){
+  const wrap=document.querySelector('#page-senate .map-wrap');
+  const card=document.getElementById('mapHoverCard');
+  if(!wrap||!card) return;
+  const rect=wrap.getBoundingClientRect();
+  let x=ev.clientX-rect.left+16, y=ev.clientY-rect.top+16;
+  const maxX=wrap.clientWidth-card.offsetWidth-10;
+  const maxY=wrap.clientHeight-card.offsetHeight-10;
+  if(x>maxX) x=Math.max(10,ev.clientX-rect.left-card.offsetWidth-16);
+  if(y>maxY) y=Math.max(10,ev.clientY-rect.top-card.offsetHeight-16);
+  card.style.left=Math.max(10,x)+'px';
+  card.style.top=Math.max(10,y)+'px';
+}
+document.querySelectorAll('.state-shape').forEach(path=>{
+  path.addEventListener('mouseenter',ev=>{
+    const ab=path.dataset.state;
+    if(!stateData[ab]) return;
+    mapHoverCard.innerHTML=hoverCardHTML(ab);
+    mapHoverCard.classList.add('show');
+    positionHoverCard(ev);
+  });
+  path.addEventListener('mousemove',positionHoverCard);
+  path.addEventListener('mouseleave',()=>mapHoverCard.classList.remove('show'));
+  path.addEventListener('click',()=>{
+    const ab=path.dataset.state;
+    if(editMode && stateData[ab]) openState(ab);
+  });
+});
+function openState(ab){selectedState=ab;document.querySelectorAll('.state-shape').forEach(p=>p.classList.toggle('selected',p.dataset.state===ab));renderDrawer(ab);stateDrawer.classList.add('show');drawerBackdrop.classList.add('show');}
+function closeDrawer(){stateDrawer.classList.remove('show');drawerBackdrop.classList.remove('show');document.querySelectorAll('.state-shape').forEach(p=>p.classList.remove('selected'));selectedState=null;}
+drawerClose.onclick=closeDrawer;drawerBackdrop.onclick=closeDrawer;
+
+function renderDrawer(ab){const s=stateData[ab];drawerStateName.textContent=s.name;drawerRating.textContent='Prediction: '+RATING_LABELS[s.rating];if(!s.active){drawerBody.innerHTML=`<div class="inactive-state"><strong>${s.name}</strong> is not configured as a 2026 Senate-election state, so it stays gray on this map.</div>`;return;}
+  const [lead,trail]=orderedStateCandidates(s);
+  const oddsA=Math.max(0,Math.min(100,Number(lead.odds)||0));const oddsB=Math.max(0,Math.min(100,Number(trail.odds)||0));const oddsTotal=oddsA+oddsB;const aWidth=oddsTotal?oddsA/oddsTotal*100:50;const bWidth=oddsTotal?100-aWidth:50;
+  drawerBody.innerHTML=`
+    <div class="race-display">
+      <div class="candidate-line"><div><div class="candidate-name">${esc(lead.name)}</div><div class="candidate-party">${esc(lead.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(lead.poll)}</b><span>Poll average</span></div></div>
+      <div class="candidate-line"><div><div class="candidate-name">${esc(trail.name)}</div><div class="candidate-party">${esc(trail.party)}</div></div><div class="candidate-metrics"><b>${fmtPct(trail.poll)}</b><span>Poll average</span></div></div>
+    </div>
+    <div class="section-label">Will's statistical odds</div>
+    <div class="oddsbar"><div class="oddsbar-a" style="width:${aWidth}%"></div><div class="oddsbar-b" style="width:${bWidth}%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(lead.name)}: ${fmtOdds(lead.odds)}</b><b>${esc(trail.name)}: ${fmtOdds(trail.odds)}</b></div>
+    <div class="section-label">My projected winner</div><div class="prediction-box">${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'<span class="empty-text">Uncalled</span>'}</div>
+    <div class="section-label">Prediction</div><div class="prediction-box">${s.prediction?esc(s.prediction):'<span class="empty-text">No prediction text entered yet.</span>'}</div>
+    ${s.notes?`<div class="section-label">Notes</div><div class="prediction-box">${esc(s.notes)}</div>`:''}
+    <div class="section-label">Last updated</div><div style="font-size:12px;color:#596477">${esc(s.updated||'Not entered')}</div>
+    <div class="editor"><div class="edit-hint">You are in Edit mode. Changes below are saved only when you press <strong>Save race data</strong>.</div>
+      <div class="form-grid">
+        <div><label>Candidate 1</label><input id="eC1" value="${esc(s.candidate1)}" placeholder="Name"></div><div><label>Candidate 1 party</label><select id="eP1"><option>Democrat</option><option>Republican</option><option>Independent / Other</option></select></div>
+        <div><label>Candidate 1 poll %</label><input id="ePoll1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Poll)}"></div><div><label>Candidate 1 odds %</label><input id="eOdds1" type="number" step="0.1" min="0" max="100" value="${esc(s.candidate1Odds)}"></div>
+        <div><label>Candidate 2</label><input id="eC2" value="${esc(s.candidate2)}" placeholder="Name"></div><div><label>Candidate 2 party</label><select id="eP2"><opt
+---
+
+===== poll average =====
