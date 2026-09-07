@@ -1,0 +1,38 @@
+name: Add governor tab and desktop home fit
+on:
+  push:
+    paths:
+      - '.github/workflows/add-governor-home.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index safely
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          if 'home-desktop-fit-v1' not in s:
+              old='@media(min-width:900px){html{scroll-behavior:smooth}'
+              new='@media(min-width:900px){html{scroll-behavior:smooth}.reference-home-shell{width:min(1180px,calc(100vw - 56px))!important;margin-left:auto!important;margin-right:auto!important}.reference-hero{min-height:0!important;padding:34px 0 24px!important;gap:28px!important}.reference-hero h1{font-size:clamp(46px,5vw,70px)!important;line-height:.98!important}.reference-hero-copy>p{font-size:16px!important;line-height:1.5!important;max-width:690px!important}.reference-hero-mark{display:flex!important;align-items:center!important;justify-content:center!important}.brand-arc-hero{width:min(300px,23vw)!important}.reference-metrics{gap:10px!important;margin-top:18px!important}.reference-metrics>*{padding:14px 16px!important}.reference-divider{margin:20px 0!important}.reference-home-shell:before{content:"";display:none}/*home-desktop-fit-v1*/'
+              if old not in s: raise SystemExit('desktop media marker not found')
+              s=s.replace(old,new,1)
+          if 'data-governor-link' not in s:
+              old='document.body.classList.remove("edit-mode");<\\/script>'
+              new='document.body.classList.remove("edit-mode");const nav=document.querySelector(".site-header .nav");if(nav&&!nav.querySelector("[data-governor-link]")){const gb=document.createElement("button");gb.setAttribute("data-governor-link","");gb.textContent="2026 Governor Map";gb.addEventListener("click",()=>{window.location.href="governor.html"});const polls=nav.querySelector("[data-page-link=polls]");nav.insertBefore(gb,polls||null)}<\\/script>'
+              if old not in s: raise SystemExit('public lock marker not found')
+              s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Add governor nav tab and improve desktop home fit"
+          git push
