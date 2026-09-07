@@ -1,0 +1,46 @@
+name: Persist polling errors methodology note
+
+on:
+  push:
+    paths:
+      - '.github/workflows/persist-polling-errors-note.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Make methodology note survive page re-renders
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = '''const errorsRoot=document.getElementById("page-errors");if(errorsRoot&&!document.getElementById("pollingErrorsMethodNote")){const note=document.createElement("p");note.id="pollingErrorsMethodNote";note.textContent="Polling-error calculations are based on polling averages compiled from reputable public polling sources, rather than any single survey.";note.style.cssText="margin:8px 0 16px;font-size:12px;line-height:1.5;color:#5f6d7f;max-width:900px";const anchor=errorsRoot.querySelector(".page-head p,.errors-summary");if(anchor)anchor.insertAdjacentElement("afterend",note);else errorsRoot.prepend(note)}'''
+          new = '''function ensurePollingErrorsMethodNote(){const errorsRoot=document.getElementById("page-errors");if(!errorsRoot)return;let note=document.getElementById("pollingErrorsMethodNote");if(!note){note=document.createElement("div");note.id="pollingErrorsMethodNote";note.textContent="Polling-error calculations are based on polling averages compiled from reputable public polling sources, rather than any single survey.";note.style.cssText="margin:10px 0 18px;padding:11px 14px;border:1px solid #d8e0ea;border-radius:10px;background:#f7f9fc;font-size:12px;line-height:1.5;font-weight:700;color:#4f5f73;max-width:900px"}const intro=errorsRoot.querySelector(".page-head p");const heading=[...errorsRoot.querySelectorAll("h1,h2")].find(x=>/past polling errors/i.test((x.textContent||"").trim()));const summary=errorsRoot.querySelector(".errors-summary");const anchor=intro||heading||summary;if(anchor){if(note.previousElementSibling!==anchor)anchor.insertAdjacentElement("afterend",note)}else if(!errorsRoot.contains(note)){errorsRoot.prepend(note)}}ensurePollingErrorsMethodNote();new MutationObserver(ensurePollingErrorsMethodNote).observe(document.body,{childList:true,subtree:true});setInterval(ensurePollingErrorsMethodNote,1000);'''
+          if new in s:
+              raise SystemExit(0)
+          if old not in s:
+              raise SystemExit('Existing polling-errors note code not found')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          start = s.index('<script>') + len('<script>')
+          end = s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[start:end])
+          PY
+      - name: Validate loader JavaScript
+        run: node --check /tmp/loader.js
+      - name: Commit persistent note
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Keep polling errors methodology note visible'
+          git pull --rebase origin main
+          git push
