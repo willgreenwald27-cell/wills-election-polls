@@ -1,0 +1,50 @@
+name: Reorder top navigation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/reorder-top-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reorder visible navigation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('index.html')
+          s=p.read_text()
+          pat=r'function ensureGovernorLink\(\)\{.*?\}ensureGovernorLink\(\);new MutationObserver\(ensureGovernorLink\)\.observe\(document\.body,\{childList:true,subtree:true\}\);setInterval\(ensureGovernorLink,1500\);'
+          repl='''function ensureGovernorLink(){const nav=document.querySelector(".site-header .nav");if(!nav)return;let gb=nav.querySelector("[data-governor-link]");if(!gb){gb=document.createElement("button");gb.setAttribute("data-governor-link","");gb.textContent="2026 Governor Map";gb.addEventListener("click",()=>{window.location.href="/governor.html"})}const senate=nav.querySelector("[data-page-link=senate]");if(senate){senate.insertAdjacentElement("afterend",gb)}else if(!gb.parentNode){nav.prepend(gb)}const about=nav.querySelector("[data-page-link=about]");if(about)nav.appendChild(about)}ensureGovernorLink();new MutationObserver(ensureGovernorLink).observe(document.body,{childList:true,subtree:true});setInterval(ensureGovernorLink,1500);'''
+          ns,n=re.subn(pat,repl,s,count=1,flags=re.S)
+          if n!=1:
+              raise SystemExit(f'ensureGovernorLink block not found or ambiguous: {n}')
+          p.write_text(ns)
+          print('Navigation order patched: Governor after Senate; About last.')
+          PY
+      - name: Validate loader JavaScript
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          for i,x in enumerate(scripts): Path(f'/tmp/loader-{i}.js').write_text(x)
+          print(len(scripts))
+          PY
+          for f in /tmp/loader-*.js; do node --check "$f"; done
+      - name: Commit update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Keep Governor after Senate and About last'
+          git push
