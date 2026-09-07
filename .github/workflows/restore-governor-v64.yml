@@ -1,0 +1,44 @@
+name: Restore Governor map navigation
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  restore-governor:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make Governor tab fail-safe
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = 'governor-nav-guard-v2'
+          target = "h=h.replace('</body>',publicLockScript+'</body>');document.open();"
+          guard = """/*governor-nav-guard-v2*/if(!h.includes('data-governor-link')){h=h.replace('</nav>',`<button type=\"button\" data-governor-link onclick=\"window.location.href='/governor.html'\">2026 Governor Map</button></nav>`);}h=h.replace('</body>',publicLockScript+'</body>');document.open();"""
+          if marker not in s:
+              if target not in s:
+                  raise SystemExit('Expected render hook not found')
+              s = s.replace(target, guard, 1)
+              p.write_text(s, encoding='utf-8')
+          if not Path('governor.html').exists():
+              raise SystemExit('governor.html is missing')
+          PY
+
+      - name: Commit repair
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/restore-governor-v64.yml
+          git add index.html governor.html
+          git diff --cached --quiet || git commit -m "Restore Governor map tab after SEO update"
+          git push
