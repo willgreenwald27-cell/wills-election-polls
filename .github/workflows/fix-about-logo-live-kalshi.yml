@@ -1,0 +1,54 @@
+name: Fix About logo circle and live Kalshi heading
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-about-logo-live-kalshi.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch About logo circle and live Kalshi heading
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+
+          old_css = '#page-about .about-logo-halo,#page-about .about-logo-stage strong{display:none!important}#page-about .profile-card{background:#5a789d!important;color:#fff!important}'
+          new_css = '#page-about .about-logo-halo,#page-about .about-logo-stage strong{display:none!important}#page-about .about-logo-stage{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important}#page-about .about-logo-stage:before,#page-about .about-logo-stage:after{display:none!important;content:none!important}#page-about .about-logo-stage svg,#page-about .about-logo-stage img{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}#page-betting .live-kalshi-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#e32636;margin-right:8px;vertical-align:middle;animation:kalshiPulse 1.15s ease-in-out infinite}@keyframes kalshiPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(227,38,54,.42)}50%{opacity:.35;box-shadow:0 0 0 5px rgba(227,38,54,0)}}#page-about .profile-card{background:#5a789d!important;color:#fff!important}'
+          if s.count(old_css) != 1:
+              raise SystemExit(f'About CSS target count: {s.count(old_css)}')
+          s = s.replace(old_css, new_css, 1)
+
+          old_js = 'const heroIntro=document.querySelector("#page-home .reference-hero-copy>p");'
+          new_js = 'const bettingHeadings=[...document.querySelectorAll("#page-betting h1,#page-betting h2,#page-betting h3")];const kalshiHeading=bettingHeadings.find(el=>/kalshi\\s+senate\\s+odds/i.test((el.textContent||"").trim()));if(kalshiHeading){kalshiHeading.innerHTML="<span class=\\"live-kalshi-dot\\" aria-hidden=\\"true\\"></span>Live Kalshi Senate Odds";}const heroIntro=document.querySelector("#page-home .reference-hero-copy>p");'
+          if s.count(old_js) != 1:
+              raise SystemExit(f'Kalshi JS insertion target count: {s.count(old_js)}')
+          s = s.replace(old_js, new_js, 1)
+          p.write_text(s)
+
+      - name: Validate loader JavaScript
+        shell: python
+        run: |
+          from pathlib import Path
+          s = Path('index.html').read_text()
+          start = s.find('<script>')
+          end = s.rfind('</script>')
+          if start < 0 or end <= start:
+              raise SystemExit('Loader script not found')
+          Path('/tmp/loader.js').write_text(s[start+8:end])
+      - run: node --check /tmp/loader.js
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Remove About logo circle and add live Kalshi heading"
+          git push
