@@ -1,10 +1,51 @@
 (()=>{
-  const REP='#c62828';
-  function ensureStyle(){if(document.getElementById('safe-ui-patches-v2'))return;const s=document.createElement('style');s.id='safe-ui-patches-v2';s.textContent=`#page-senate .map-wrap svg{transform:scale(1.14)!important;transform-origin:center center!important}@media(max-width:650px){#page-senate .map-wrap svg{transform:scale(1.08)!important}}#page-betting .live-kalshi-title{display:flex!important;align-items:center!important}#page-betting .live-kalshi-dot{display:inline-block!important;width:10px!important;height:10px!important;border-radius:50%!important;background:#e32636!important;margin-right:9px!important;animation:kalshiPulseSafe 1.15s ease-in-out infinite!important}@keyframes kalshiPulseSafe{0%,100%{opacity:1}50%{opacity:.32}}@media(max-width:760px){#page-senate [data-safe-republican-red="1"]{color:${REP}!important;fill:${REP}!important;border-color:${REP}!important}}`;document.head.appendChild(s);}
-  function kalshi(){const root=document.getElementById('page-betting');if(!root)return;const h=[...root.querySelectorAll('h1,h2,h3')].find(el=>/^(live\s+)?kalshi\s+senate\s+odds$/i.test((el.textContent||'').replace(/\s+/g,' ').trim()));if(!h)return;h.classList.add('live-kalshi-title');if(!h.querySelector('.live-kalshi-dot')){h.textContent='';const d=document.createElement('span');d.className='live-kalshi-dot';h.append(d,document.createTextNode('Live Kalshi Senate Odds'));}}
-  function isR(v){v=String(v||'').toLowerCase();return v==='r'||v==='rep'||v==='gop'||v.includes('republican');}
-  function republicans(){if(!matchMedia('(max-width:760px)').matches)return;const root=document.getElementById('page-senate');if(!root)return;root.querySelectorAll('.candidate-line').forEach(line=>{const p=line.querySelector('.candidate-party');if(!p||!isR(p.textContent))return;line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong').forEach(el=>{el.dataset.safeRepublicanRed='1';el.style.setProperty('color',REP,'important');});});}
-  function school(){const root=document.getElementById('page-about');if(!root||document.getElementById('aboutSchool'))return;const strip=root.querySelector('.about-stat-strip');if(!strip)return;const s=document.createElement('section');s.id='aboutSchool';s.style.cssText='margin:14px 0 18px;padding:16px 18px;border:1px solid #d9dee7;border-radius:16px;background:#fff;display:flex;align-items:center;gap:18px;box-shadow:0 7px 22px rgba(20,34,53,.055)';s.innerHTML='<div style="font-size:34px">🌲</div><div><div style="font-size:9px;font-weight:950;letter-spacing:1.4px;color:#d92732;text-transform:uppercase">School</div><h3 style="margin:3px 0 0;font-family:Georgia,serif;font-size:21px;color:#17263d">Redwood High School</h3><p style="margin:4px 0 0;font-size:12px;color:#66758a">Larkspur, California</p></div>';strip.insertAdjacentElement('afterend',s);}
-  function apply(){ensureStyle();kalshi();republicans();school();}
-  apply();new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.body,{childList:true,subtree:true,characterData:true});window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
+  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['errors','Past Polling Errors'],['pastmaps','Past Senate Maps'],['about','About Me']];
+  const KEYS=new Set(PAGES.map(x=>x[0]));
+  const REP='#bd2937',DEM='#2763b8',PURPLE='#8051d2';
+  let current='home',busy=false,queued=false;
+  const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+  const leafs=r=>[...r.querySelectorAll('*')].filter(el=>el.children.length===0);
+
+  function ensureStyle(){
+    if(document.getElementById('safe-ui-patches-v3'))return;
+    const s=document.createElement('style');s.id='safe-ui-patches-v3';s.textContent=`
+      #page-senate .map-wrap svg{transform:scale(1.14)!important;transform-origin:center center!important}
+      #will-governor-page,#will-pastmaps-page{width:100%;background:#fff;min-height:calc(100vh - 72px)}
+      .will-inline-frame{display:block;width:100%;border:0;background:#fff;min-height:calc(100vh - 72px)}
+      .site-header .nav[data-final-nav="1"]{display:flex!important;align-items:center!important;gap:5px!important;flex-wrap:nowrap!important}
+      .site-header .nav[data-final-nav="1"]>button{height:42px!important;padding:0 13px!important;border:0!important;background:transparent!important;color:#17263d!important;border-radius:999px!important;font:800 12px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;white-space:nowrap!important;cursor:pointer!important}
+      .site-header .nav[data-final-nav="1"]>button.active{background:#17263d!important;color:#fff!important}
+      @media(max-width:760px){.site-header .nav[data-final-nav="1"]{overflow-x:auto!important;padding-bottom:7px!important;-webkit-overflow-scrolling:touch}.site-header .nav[data-final-nav="1"]>button{flex:0 0 auto!important;height:38px!important;padding:0 10px!important;font-size:11px!important}}
+    `;document.head.appendChild(s);
+  }
+
+  function makeFrame(id,src,title){
+    let page=document.getElementById(id);if(page)return page;
+    page=document.createElement('section');page.id=id;page.className='page';page.hidden=true;
+    const frame=document.createElement('iframe');frame.className='will-inline-frame';frame.src=src;frame.title=title;frame.loading='eager';
+    frame.addEventListener('load',()=>{try{const d=frame.contentDocument;if(d){const st=d.createElement('style');st.textContent=`.site-header{display:none!important}body{margin:0!important;background:#fff!important}.page-head,.content,.wrap{max-width:1500px!important;margin-left:auto!important;margin-right:auto!important}.page-head{padding-top:24px!important}.title-row h1,.page-head h1{font-family:Georgia,serif!important;color:#17263d!important}`;d.head.appendChild(st);const resize=()=>{frame.style.height=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0,window.innerHeight-72)+'px'};resize();new ResizeObserver(resize).observe(d.documentElement);}}catch(e){}});
+    page.appendChild(frame);const about=document.getElementById('page-about');if(about?.parentNode)about.parentNode.insertBefore(page,about);else document.body.appendChild(page);return page;
+  }
+
+  function pageEl(key){if(key==='governor')return makeFrame('will-governor-page','/governor.html?embedded=1','2026 Governor Map');if(key==='pastmaps')return makeFrame('will-pastmaps-page','/past-senate-maps.html?embedded=1','Past Senate Maps');return document.getElementById('page-'+key);}
+
+  function detect(){for(const [k] of PAGES){if(k==='governor'||k==='pastmaps')continue;const el=document.getElementById('page-'+k);if(!el)continue;try{const c=getComputedStyle(el);if(!el.hidden&&c.display!=='none'&&c.visibility!=='hidden')return k;}catch(e){}}return'home';}
+
+  function buildNav(){const nav=document.querySelector('.site-header .nav');if(!nav)return;const valid=nav.dataset.finalNav==='1'&&nav.querySelectorAll(':scope>[data-final-page]').length===PAGES.length;if(valid)return;nav.textContent='';nav.dataset.finalNav='1';for(const [k,label] of PAGES){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.finalPage=k;nav.appendChild(b);}setActive();}
+  function setActive(){const nav=document.querySelector('.site-header .nav[data-final-nav="1"]');if(!nav)return;nav.querySelectorAll('[data-final-page]').forEach(b=>b.classList.toggle('active',b.dataset.finalPage===current));}
+
+  function show(key,scroll=true){if(!KEYS.has(key)||busy)return;busy=true;try{for(const [k] of PAGES){const el=pageEl(k);if(!el)continue;const on=k===key;el.hidden=!on;el.classList.toggle('active',on);if(on)el.style.setProperty('display','block','important');else el.style.setProperty('display','none','important');}current=key;setActive();if(scroll)window.scrollTo(0,0);}finally{busy=false;}}
+
+  function navClick(e){const b=e.target.closest?.('.site-header .nav[data-final-nav="1"] [data-final-page]');if(!b)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();show(b.dataset.finalPage,true);}
+
+  function forceMaineData(){try{if(typeof stateData==='undefined'||!stateData?.ME)return;const s=stateData.ME;s.rating='tilt-r';s.predictionParty='Republican';s.prediction='Collins +1.3%';s.updated='2026-09-07';if(norm(s.candidate1)==='Susan Collins')s.candidate1Odds='51';if(norm(s.candidate2)==='Susan Collins')s.candidate2Odds='51';if(norm(s.candidate1)==='Troy Jackson')s.candidate1Odds='49';if(norm(s.candidate2)==='Troy Jackson')s.candidate2Odds='49';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in s)s[k]='Republican';if('call' in s)s.call='Collins +1.3%';}catch(e){}}
+
+  function fixMainePanel(){const root=document.getElementById('page-senate');if(!root)return;root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{el.style.setProperty('fill','#f8c6ca','important');el.style.setProperty('background','#f8c6ca','important');});const maine=leafs(root).find(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length);if(!maine)return;let box=maine.parentElement;for(let i=0;box&&box!==root&&i<12;i++,box=box.parentElement){const t=norm(box.textContent);if(/WILL'S CALL|MY PREDICTION|WILL'S STATISTICAL ODDS/i.test(t)&&/Troy Jackson|Susan Collins/i.test(t))break;}if(!box||box===root)return;for(const el of leafs(box)){let t=norm(el.textContent);if(t==='Democrat'||t==='Democratic'){if(/WILL'S CALL|MY PREDICTION|MY PROJECTED WINNER/i.test(norm(el.parentElement?.textContent)||'')){el.textContent='Republican';el.style.setProperty('color',REP,'important');}}if(/^Troy Jackson:\s*\d+(?:\.\d+)?%$/i.test(t))el.textContent='Troy Jackson: 49%';if(/^Susan Collins:\s*\d+(?:\.\d+)?%$/i.test(t))el.textContent='Susan Collins: 51%';if(t==='Jackson +0.4%'||t==='Jackson +0.4')el.textContent='Collins +1.3%';if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';}
+    const copy=box.querySelector('.prediction-copy');if(copy)copy.textContent='Collins +1.3%';
+    const bar=box.querySelector('.oddsbar');if(bar){const lines=[...box.querySelectorAll('.candidate-line')];if(lines.length>=2){const n1=norm(lines[0].querySelector('.candidate-name')?.textContent),n2=norm(lines[1].querySelector('.candidate-name')?.textContent);const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');const p1=n1==='Susan Collins'?51:n1==='Troy Jackson'?49:null,p2=n2==='Susan Collins'?51:n2==='Troy Jackson'?49:null;if(a&&p1!=null){a.style.setProperty('width',p1+'%','important');a.style.setProperty('background',n1==='Susan Collins'?REP:DEM,'important');}if(b&&p2!=null){b.style.setProperty('width',p2+'%','important');b.style.setProperty('background',n2==='Susan Collins'?REP:DEM,'important');}}}
+  }
+
+  function apply(){ensureStyle();buildNav();forceMaineData();fixMainePanel();setActive();}
+  function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
+  current=detect();apply();pageEl('governor');pageEl('pastmaps');show(current,false);document.addEventListener('click',navClick,true);new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});window.addEventListener('pageshow',()=>{apply();show(current,false)});window.addEventListener('resize',apply);window.__willFinalNavigate=show;
 })();
