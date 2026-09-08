@@ -53,7 +53,7 @@
     if(document.getElementById('accepted-archive-loader')||document.getElementById('julsepPollArchive')) return;
     const s=document.createElement('script');
     s.id='accepted-archive-loader';
-    s.src='/senate-julsep-archive.js?v=20260908-1225';
+    s.src='/senate-julsep-archive.js?v=20260908-1236';
     document.head.appendChild(s);
   }
 

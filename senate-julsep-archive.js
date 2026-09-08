@@ -231,6 +231,17 @@
       };
       setPoll(1,'flanagan','45.0'); setPoll(2,'flanagan','45.0');
       setPoll(1,'tafoya','41.5'); setPoll(2,'tafoya','41.5');
+      if(mn.rating!=='lean-d'){mn.rating='lean-d';changed=true;}
+      if(mn.predictionParty!=='Democrat'){mn.predictionParty='Democrat';changed=true;}
+      const setOdds=(slot,last,pct)=>{
+        const name=norm(mn['candidate'+slot]).toLowerCase();
+        if(!name.includes(last)) return;
+        const key='candidate'+slot+'Odds';
+        if(String(mn[key])!==String(pct)){mn[key]=String(pct);changed=true;}
+      };
+      setOdds(1,'flanagan','82'); setOdds(2,'flanagan','82');
+      setOdds(1,'tafoya','18'); setOdds(2,'tafoya','18');
+
       if(mn.updated!=='2026-09-07'){mn.updated='2026-09-07';changed=true;}
       if(changed&&typeof renderSenate==='function'&&!renderingMinnesota){
         renderingMinnesota=true;
@@ -244,12 +255,20 @@
       if(typeof polls==='undefined'||!Array.isArray(polls)) return;
       const exists=polls.some(p=>p&&p.state==='MN'&&p.date==='2026-09-07'&&/TIPP/i.test(String(p.pollster||'')));
       if(exists) return;
-      polls.push({date:'2026-09-07',state:'MN',pollster:'TIPP**',sample:'Sample size not listed in source snapshot',c1:'Peggy Flanagan',c1Pct:'44',c2:'Michele Tafoya',c2Pct:'42',notes:'RealClearPolling listing · Flanagan +2'});
+      polls.push({date:'2026-09-07',state:'MN',pollster:'TIPP**',sample:'1,494 registered voters',c1:'Peggy Flanagan',c1Pct:'44',c2:'Michele Tafoya',c2Pct:'42',notes:'RealClearPolling listing · Flanagan +2'});
       if(typeof renderPolls==='function') renderPolls();
     }catch(e){console.warn('Minnesota poll feed update unavailable',e);}
   }
 
-  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
+  function ensureMobileSenateMapSize(){
+    if(document.getElementById('mobile-senate-map-size-v1')) return;
+    const st=document.createElement('style');
+    st.id='mobile-senate-map-size-v1';
+    st.textContent=`@media(max-width:760px){#page-senate .map-wrap{overflow:visible!important}#page-senate .map-wrap svg{transform:scale(1.32)!important;transform-origin:center center!important;max-width:none!important}}`;
+    document.head.appendChild(st);
+  }
+
+  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();ensureMobileSenateMapSize();fixMaineVisibleDetail();ensurePollArchive();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
   new MutationObserver(()=>{fixMaineVisibleDetail();ensurePollArchive();}).observe(document.body,{childList:true,subtree:true});
