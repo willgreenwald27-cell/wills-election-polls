@@ -1,0 +1,38 @@
+name: Bump mobile color only v4
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-mobile-color-only-v4.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump mobile repair cache key only
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          ns,n=re.subn(r'mobile-home-repair\.js\?v=[0-9-]+','mobile-home-repair.js?v=20260908-0047',s)
+          if n != 1:
+              raise SystemExit(f'expected 1 mobile-home-repair cache key, found {n}')
+          p.write_text(ns)
+      - name: Validate only loader reference changed
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert 'mobile-home-repair.js?v=20260908-0047' in s
+          assert "const files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']" in s
+          assert 'document.open();document.write(h);document.close()' in s
+      - name: Commit cache refresh
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git diff --cached --quiet || git commit -m "Refresh mobile color-only fix"
+          git push
