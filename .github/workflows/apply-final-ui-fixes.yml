@@ -13,45 +13,66 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch loader safely
+      - name: Patch site shell safely
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           p=Path('index.html')
           s=p.read_text()
 
-          old="function candidatePollClass(name,party){if(String(name||'').toLowerCase().includes('brian bengs')) return 'osborn';"
-          new="function candidatePollClass(name,party){const pp=String(party||'').trim().toLowerCase();if(pp==='i'||pp.includes('independent')||pp.includes('unaffiliated')||pp.includes('other'))return 'osborn';if(String(name||'').toLowerCase().includes('brian bengs')) return 'osborn';"
+          # Make the native Senate renderer itself preserve the two custom calls.
+          nh="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';"
+          both=nh+"if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
+          if both not in s:
+              if nh not in s:
+                  raise SystemExit('Senate render marker not found')
+              s=s.replace(nh,both,1)
+
+          # Once the stable shell owns navigation, stop the legacy governor injector.
+          old='function ensureGovernorLink(){const nav=document.querySelector(".site-header .nav");'
+          new='function ensureGovernorLink(){if(window.__willSiteShell)return;const nav=document.querySelector(".site-header .nav");'
           if old in s:
               s=s.replace(old,new,1)
-          elif new not in s:
-              raise SystemExit('candidatePollClass marker not found')
 
-          marker='</body>'
-          script='<script src="/final-ui-fixes.js?v=20260907-1836"><\\/script>'
-          if '/final-ui-fixes.js' not in s:
-              if marker not in s:
-                  raise SystemExit('body marker not found')
-              s=s.replace(marker,script+marker,1)
-          else:
-              s=re.sub(r'<script src="/final-ui-fixes\.js(?:\?v=[^"]+)?"><\\/script>',script,s,count=1)
+          # Fresh archive version so all 88 rows return after the rollback.
+          s=re.sub(r'/senate-julsep-archive\.js\?v=[0-9-]+','/senate-julsep-archive.js?v=20260907-1955',s)
+          s=re.sub(r'/safe-patches\.js\?v=[0-9-]+','/safe-patches.js?v=20260907-1955',s)
+
+          # Load durable corrections and the one-owner, no-reload navigation shell last.
+          tail=re.compile(r'<script src="/home-poll-count\.js\?v=[^"]+"><\\/script></body>')
+          replacement='<script src="/home-poll-count.js?v=20260907-1955"><\\/script><script src="/site-corrections.js?v=20260907-1955"><\\/script><script src="/site-shell.js?v=20260907-1955"><\\/script></body>'
+          if tail.search(s):
+              s=tail.sub(replacement,s,count=1)
+          elif '/site-shell.js?v=20260907-1955' not in s:
+              raise SystemExit('Loader tail marker not found')
 
           p.write_text(s)
-          if s.count('/final-ui-fixes.js?v=20260907-1836') != 1:
-              raise SystemExit('final UI loader verification failed')
-          if new not in s:
-              raise SystemExit('Independent party patch verification failed')
+
+          # Keep governor snapshot date consistent with the rest of the site.
+          g=Path('governor.html')
+          if g.exists():
+              t=g.read_text().replace('September 6, 2026','September 7, 2026')
+              g.write_text(t)
+
+          checks=[both,'/senate-julsep-archive.js?v=20260907-1955','/site-corrections.js?v=20260907-1955','/site-shell.js?v=20260907-1955']
+          for x in checks:
+              if x not in s: raise SystemExit('Missing expected patch: '+x)
           PY
-      - name: Validate without touching site data
+      - name: Validate scripts and protect site data
         run: |
-          node --check final-ui-fixes.js
+          node --check safe-patches.js
+          node --check senate-julsep-archive.js
+          node --check senate-display-fixes.js
+          node --check site-corrections.js
+          node --check site-shell.js
           python3 - <<'PY'
           from pathlib import Path
           import re
           s=Path('index.html').read_text()
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
-          if len(scripts) != 1:
+          if len(scripts)!=1:
               raise SystemExit(f'Expected one loader script, found {len(scripts)}')
           Path('/tmp/loader.js').write_text(scripts[0])
           PY
@@ -61,7 +82,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
+          git add index.html governor.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Make all independent candidates purple'
+          git commit -m 'Restore Maine 88 polls stable tabs and historical maps'
           git push
