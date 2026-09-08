@@ -1,0 +1,113 @@
+(()=>{
+  const PURPLE='#8051d2';
+  const RED='#bd2937';
+  const BLUE='#2763b8';
+  const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+
+  function partyColor(text){
+    const p=norm(text).toLowerCase();
+    if(p.includes('republican')||p==='r'||p==='gop') return RED;
+    if(p.includes('democrat')||p==='d') return BLUE;
+    return PURPLE;
+  }
+
+  function replaceExactText(root,from,to){
+    if(!root) return;
+    for(const el of root.querySelectorAll('*')){
+      if(el.children.length===0&&norm(el.textContent)===from) el.textContent=to;
+    }
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    const nodes=[];
+    while(walker.nextNode()) nodes.push(walker.currentNode);
+    for(const node of nodes){
+      if(norm(node.nodeValue)===from) node.nodeValue=(node.nodeValue||'').replace(from,to);
+    }
+  }
+
+  function fixHomeStats(){
+    const root=document.getElementById('page-home');
+    if(!root) return;
+    const metrics=root.querySelector('.reference-metrics');
+    if(!metrics) return;
+
+    for(const card of [...metrics.children]){
+      const t=norm(card.textContent).toLowerCase();
+      if(t.includes('polls')&&t.includes('entered')){
+        replaceExactText(card,'13','88');
+        for(const el of card.querySelectorAll('*')){
+          const raw=norm(el.textContent);
+          if(el.children.length===0&&/^13\s+polls?\s+entered$/i.test(raw)) el.textContent=raw.replace(/^13/,'88');
+        }
+      }
+      if(t.includes('latest')&&t.includes('update')){
+        replaceExactText(card,'Sep 6, 2026','Sep 7, 2026');
+        replaceExactText(card,'Sep. 6, 2026','Sep 7, 2026');
+        replaceExactText(card,'2026-09-06','Sep 7, 2026');
+      }
+    }
+  }
+
+  function fixPartyLinesAndBars(){
+    const root=document.body;
+    if(!root) return;
+
+    for(const line of [...root.querySelectorAll('.candidate-line')]){
+      const party=line.querySelector('.candidate-party');
+      if(!party) continue;
+      const color=partyColor(party.textContent);
+      line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong').forEach(el=>{
+        el.style.setProperty('color',color,'important');
+      });
+    }
+
+    for(const bar of [...root.querySelectorAll('.oddsbar')]){
+      let panel=bar.parentElement;
+      while(panel&&panel!==root){
+        const lines=[...panel.querySelectorAll('.candidate-line')];
+        if(lines.length>=2){
+          const p1=lines[0].querySelector('.candidate-party');
+          const p2=lines[1].querySelector('.candidate-party');
+          const c1=partyColor(p1?p1.textContent:'');
+          const c2=partyColor(p2?p2.textContent:'');
+          const a=bar.querySelector('.oddsbar-a');
+          const b=bar.querySelector('.oddsbar-b');
+          if(a) a.style.setProperty('background',c1,'important');
+          if(b) b.style.setProperty('background',c2,'important');
+          break;
+        }
+        panel=panel.parentElement;
+      }
+    }
+
+    for(const label of [...root.querySelectorAll('.candidate-party')]){
+      const p=norm(label.textContent).toLowerCase();
+      if(p.includes('independent')||p.includes('unaffiliated')||p==='i'||p.includes('other')){
+        label.style.setProperty('color',PURPLE,'important');
+        const line=label.closest('.candidate-line');
+        if(line) line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong').forEach(el=>el.style.setProperty('color',PURPLE,'important'));
+      }
+    }
+  }
+
+  function enforce(){
+    fixHomeStats();
+    fixPartyLinesAndBars();
+  }
+
+  let queued=false;
+  function schedule(){
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(()=>{queued=false;enforce();});
+  }
+
+  enforce();
+  setTimeout(enforce,100);
+  setTimeout(enforce,500);
+  setTimeout(enforce,1200);
+  setTimeout(enforce,2500);
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  window.addEventListener('pageshow',enforce);
+  window.addEventListener('focus',enforce);
+  window.addEventListener('resize',enforce);
+})();
