@@ -1,0 +1,44 @@
+name: Refresh mobile Senate party colors
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refresh-mobile-party-colors.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Refresh accepted-good cache key
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old='accepted-good.js?v=20260907-1958'
+          new='accepted-good.js?v=20260907-2316'
+          if old not in s:
+              raise SystemExit('Expected accepted-good loader version not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Validate mobile color fix
+        run: |
+          node --check accepted-good.js
+          grep -q "const REP='#bd2937', DEM='#2763b8', IND='#8051d2'" accepted-good.js
+          grep -q "fixMobileOddsFallback" accepted-good.js
+          grep -q 'accepted-good.js?v=20260907-2316' index.html
+          git diff --exit-code -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit cache refresh
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh mobile Senate party colors and odds bars'
+          git push origin main
