@@ -141,6 +141,7 @@
     for(const card of root.querySelectorAll('.reference-metrics>*')){
       const t=norm(card.textContent).toLowerCase();
       if(t.includes('poll')&&t.includes('entered')) leafs(card).forEach(el=>{if(norm(el.textContent)==='13')el.textContent='88';});
+      if(t.includes('toss')&&t.includes('up')) leafs(card).forEach(el=>{if(norm(el.textContent)==='7')el.textContent='6';});
       if(t.includes('latest')&&t.includes('update')) leafs(card).forEach(el=>{if(/Sep\.? 6, 2026|2026-09-06/i.test(norm(el.textContent)))el.textContent='Sep 7, 2026';});
     }
   }
