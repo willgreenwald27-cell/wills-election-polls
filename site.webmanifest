@@ -1,0 +1,16 @@
+{
+  "name": "Will's Election Polls & Predictions",
+  "short_name": "Will's Election Polls",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#0c223d",
+  "icons": [
+    {
+      "src": "/site-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
