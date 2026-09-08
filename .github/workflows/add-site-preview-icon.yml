@@ -1,0 +1,96 @@
+name: Add site preview icon
+on:
+  push:
+    paths:
+      - '.github/workflows/add-site-preview-icon.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate branded PNG icons and add preview metadata
+        shell: python
+        run: |
+          from pathlib import Path
+          import math, struct, zlib
+
+          BLUE=(39,99,184,255)
+          RED=(189,41,55,255)
+          LBLUE=(122,166,217,255)
+          LRED=(224,121,130,255)
+          GRAY=(154,171,192,255)
+          WHITE=(255,255,255,255)
+          NAVY=(12,34,61,255)
+
+          def make_icon(n, path):
+              px=[list(WHITE) for _ in range(n*n)]
+              def setp(x,y,c):
+                  if 0<=x<n and 0<=y<n: px[y*n+x]=list(c)
+              def circle(cx,cy,r,c):
+                  x0=max(0,int(cx-r)); x1=min(n-1,int(cx+r))
+                  y0=max(0,int(cy-r)); y1=min(n-1,int(cy+r))
+                  rr=r*r
+                  for y in range(y0,y1+1):
+                      for x in range(x0,x1+1):
+                          if (x-cx)*(x-cx)+(y-cy)*(y-cy)<=rr: setp(x,y,c)
+              cx=n*0.5; cy=n*0.43
+              radii=[n*0.29,n*0.22,n*0.15]
+              angles=list(range(200,341,20))+list(range(0,181,20))
+              for ri,r in enumerate(radii):
+                  for a in angles:
+                      rad=math.radians(a)
+                      x=cx+r*math.cos(rad); y=cy+r*math.sin(rad)
+                      if x<cx-n*0.035: c=BLUE if ri!=1 else LBLUE
+                      elif x>cx+n*0.035: c=RED if ri!=1 else LRED
+                      else: c=GRAY
+                      circle(x,y,max(3,n*0.022),c)
+              # navy W mark under the dots
+              thick=max(3,int(n*0.035))
+              y0=int(n*0.66); y1=int(n*0.83)
+              pts=[(int(n*.30),y0),(int(n*.36),y1),(int(n*.44),int(n*.71)),(int(n*.50),y1),(int(n*.57),int(n*.71)),(int(n*.64),y1),(int(n*.70),y0)]
+              def line(x0,y0,x1,y1,c,t):
+                  steps=max(abs(x1-x0),abs(y1-y0),1)
+                  for i in range(steps+1):
+                      x=round(x0+(x1-x0)*i/steps); y=round(y0+(y1-y0)*i/steps)
+                      circle(x,y,t/2,c)
+              for a,b in zip(pts,pts[1:]): line(*a,*b,NAVY,thick)
+              # red/blue underline
+              for y in range(int(n*.90),int(n*.925)):
+                  for x in range(int(n*.31),int(n*.49)): setp(x,y,BLUE)
+                  for x in range(int(n*.51),int(n*.69)): setp(x,y,RED)
+
+              raw=bytearray()
+              for y in range(n):
+                  raw.append(0)
+                  for x in range(n): raw.extend(px[y*n+x])
+              def chunk(tag,data):
+                  return struct.pack('>I',len(data))+tag+data+struct.pack('>I',zlib.crc32(tag+data)&0xffffffff)
+              png=b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',n,n,8,6,0,0,0))+chunk(b'IDAT',zlib.compress(bytes(raw),9))+chunk(b'IEND',b'')
+              Path(path).write_bytes(png)
+
+          make_icon(180,'apple-touch-icon.png')
+          make_icon(32,'favicon-32x32.png')
+          make_icon(512,'site-preview.png')
+
+          p=Path('index.html')
+          s=p.read_text()
+          marker='<!--site-preview-meta-v1-->'
+          if marker not in s:
+              tags='''<!--site-preview-meta-v1--><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260908-001"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=20260908-001"><link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20260908-001"><link rel="manifest" href="/site.webmanifest?v=20260908-001"><meta name="theme-color" content="#0c223d"><meta property="og:site_name" content="Will's Election Polls & Predictions"><meta property="og:title" content="Will's Election Polls & Predictions"><meta property="og:description" content="Polling, forecasting, and race-by-race predictions for a clearer understanding of what's next."><meta property="og:image" content="https://willelectionpolls.com/site-preview.png?v=20260908-001"><meta property="og:url" content="https://willelectionpolls.com/"><meta property="og:type" content="website">'''
+              needle="<title>Will's Election Polls and Predictions</title>"
+              if needle not in s:
+                  raise SystemExit('title marker not found')
+              s=s.replace(needle,needle+tags,1)
+              p.write_text(s)
+          assert marker in p.read_text()
+          assert Path('apple-touch-icon.png').stat().st_size>1000
+          assert Path('site-preview.png').stat().st_size>1000
+      - name: Commit preview assets
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html apple-touch-icon.png favicon-32x32.png site-preview.png
+          git diff --cached --quiet || git commit -m "Add branded Safari and social site preview"
+          git push
