@@ -1,0 +1,72 @@
+name: Force stable site shell
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-stable-site-shell.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace fragile loader with authoritative shell
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+
+          # Disable the old standalone Governor-tab injector entirely.
+          s=s.replace('function ensureGovernorLink(){if(window.__willSiteShell)return;','function ensureGovernorLink(){return;',1)
+
+          start='h=h.replace(\'<script src="/final-ui-fixes.js?v=20260907-1836"><\\/script></body>\','
+          i=s.find(start)
+          if i<0:
+              raise SystemExit('fragile loader start not found')
+          end=');document.open();document.write(h);document.close()'
+          j=s.find(end,i)
+          if j<0:
+              raise SystemExit('fragile loader end not found')
+
+          inject=(
+              'h=h.replace(/<script src="\\/(?:safe-patches|navigation-controller|mobile-party-colors|senate-julsep-archive|senate-display-fixes|maine-statistical-odds|home-poll-count|site-corrections|site-shell|site-final)\\.js[^\"]*"><\\\\/script>/g,\'\');'
+              'h=h.replace(\'</body>\',publicLockScript+'
+              '\'<script src="/senate-julsep-archive.js?v=20260907-2035"><\\/script>'
+              '<script src="/site-final.js?v=20260907-2035"><\\/script>'
+              '<script src="/site-shell.js?v=20260907-2035"><\\/script></body>\');'
+          )
+          s=s[:i]+inject+s[j+2:]
+          p.write_text(s)
+
+          for marker in ['/senate-julsep-archive.js?v=20260907-2035','/site-final.js?v=20260907-2035','/site-shell.js?v=20260907-2035','function ensureGovernorLink(){return;']:
+              if marker not in s:
+                  raise SystemExit('missing marker '+marker)
+          PY
+      - name: Validate
+        run: |
+          node --check senate-julsep-archive.js
+          node --check site-final.js
+          node --check site-shell.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('index.html').read_text()
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          if len(scripts)!=1:
+              raise SystemExit(f'Expected one loader script, found {len(scripts)}')
+          Path('/tmp/loader.js').write_text(scripts[0])
+          PY
+          node --check /tmp/loader.js
+          git diff --quiet -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Make Governor and historical tabs stable and restore Maine details'
+          git push
