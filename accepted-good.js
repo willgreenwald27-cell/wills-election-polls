@@ -5,6 +5,35 @@
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=r=>r?[...r.querySelectorAll('*')].filter(el=>el.children.length===0):[];
 
+  function partyColor(v){
+    const p=norm(v).toLowerCase();
+    if(p==='r'||p==='rep'||p==='gop'||p.includes('republican')) return REP;
+    if(p==='d'||p==='dem'||p.includes('democrat')) return DEM;
+    if(p==='i'||p==='ind'||p.includes('independent')||p.includes('unaffiliated')||p.includes('other')) return IND;
+    return null;
+  }
+
+  function partyForName(name){
+    const n=norm(name).toLowerCase();
+    if(!n) return null;
+    if(['seth bodnar','todd achilles','dan osborn','brian bengs'].includes(n)) return IND;
+    try{
+      if(typeof stateData!=='undefined'&&stateData){
+        for(const s of Object.values(stateData)){
+          if(norm(s?.candidate1).toLowerCase()===n) return partyColor(s?.candidate1Party)||IND;
+          if(norm(s?.candidate2).toLowerCase()===n) return partyColor(s?.candidate2Party)||IND;
+        }
+      }
+    }catch(e){}
+    return null;
+  }
+
+  function lineColor(line){
+    const party=line?.querySelector?.('.candidate-party');
+    const name=norm(line?.querySelector?.('.candidate-name')?.textContent);
+    return partyColor(party?.textContent)||partyForName(name)||IND;
+  }
+
   function addStyle(){
     if(document.getElementById('accepted-good-style')) return;
     const s=document.createElement('style');
@@ -118,6 +147,119 @@
     }catch(e){}
   }
 
+  function fixAllCandidateColors(root){
+    const lines=[...root.querySelectorAll('.candidate-line')];
+    for(const line of lines){
+      const c=lineColor(line);
+      line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong,.candidate-metrics span').forEach(el=>el.style.setProperty('color',c,'important'));
+    }
+
+    for(const bar of root.querySelectorAll('.oddsbar')){
+      let panel=bar.parentElement;
+      while(panel&&panel!==root){
+        const panelLines=[...panel.querySelectorAll('.candidate-line')];
+        if(panelLines.length>=2){
+          const c1=lineColor(panelLines[0]), c2=lineColor(panelLines[1]);
+          const a=bar.querySelector('.oddsbar-a'), b=bar.querySelector('.oddsbar-b');
+          if(a) a.style.setProperty('background',c1,'important');
+          if(b) b.style.setProperty('background',c2,'important');
+          const kids=[...bar.children].filter(el=>el!==a&&el!==b);
+          if(!a&&kids[0]) kids[0].style.setProperty('background',c1,'important');
+          if(!b&&kids[1]) kids[1].style.setProperty('background',c2,'important');
+          break;
+        }
+        panel=panel.parentElement;
+      }
+    }
+
+    const all=leafs(root);
+    for(const line of lines){
+      const name=norm(line.querySelector('.candidate-name')?.textContent);
+      if(!name) continue;
+      const c=lineColor(line);
+      for(const el of all){
+        const t=norm(el.textContent);
+        if(t.toLowerCase().startsWith(name.toLowerCase()+':')&&/\d+(?:\.\d+)?%$/.test(t)) el.style.setProperty('color',c,'important');
+      }
+    }
+  }
+
+  function fixMobileOddsFallback(root){
+    if(!window.matchMedia('(max-width:760px)').matches) return;
+    const cards=[];
+    for(const partyEl of leafs(root)){
+      const pt=norm(partyEl.textContent);
+      const c=partyColor(pt);
+      if(!c) continue;
+      let card=partyEl.parentElement;
+      for(let i=0;card&&card!==root&&i<6;i++,card=card.parentElement){
+        const t=norm(card.textContent);
+        if(/poll average/i.test(t)&&/\d+(?:\.\d+)?%/.test(t)) break;
+      }
+      if(!card||card===root) continue;
+      const ls=leafs(card);
+      const pct=ls.find(el=>/^\d+(?:\.\d+)?%$/.test(norm(el.textContent)));
+      const name=ls.find(el=>{
+        const t=norm(el.textContent);
+        return t&&/[A-Za-z]/.test(t)&&t.split(/\s+/).length>=2&&!/^(Republican|Democrat(?:ic)?|Independent|Unaffiliated|Other|POLL AVERAGE|\d+(?:\.\d+)?%)$/i.test(t);
+      });
+      if(!name) continue;
+      const resolved=partyForName(name.textContent)||c;
+      name.style.setProperty('color',resolved,'important');
+      partyEl.style.setProperty('color',resolved,'important');
+      if(pct) pct.style.setProperty('color',resolved,'important');
+      cards.push({name:norm(name.textContent),color:resolved});
+    }
+    if(cards.length<2) return;
+
+    const labels=[];
+    const all=leafs(root);
+    for(const c of cards){
+      for(const el of all){
+        const t=norm(el.textContent);
+        if(t.toLowerCase().startsWith(c.name.toLowerCase()+':')&&/\d+(?:\.\d+)?%$/.test(t)){
+          el.style.setProperty('color',c.color,'important');
+          labels.push({el,...c});
+        }
+      }
+    }
+    if(labels.length<2) return;
+    labels.sort((a,b)=>a.el.getBoundingClientRect().left-b.el.getBoundingClientRect().left);
+    const first=labels[0], second=labels[1];
+    const firstPct=Number((norm(first.el.textContent).match(/(\d+(?:\.\d+)?)%$/)||[])[1]||50);
+    const split=Math.max(0,Math.min(100,firstPct));
+    const heading=all.find(el=>/will'?s statistical odds/i.test(norm(el.textContent)));
+    const top=heading?heading.getBoundingClientRect().bottom:Math.min(first.el.getBoundingClientRect().top,second.el.getBoundingClientRect().top)-70;
+    const bottom=Math.min(first.el.getBoundingClientRect().top,second.el.getBoundingClientRect().top);
+
+    const colored=[];
+    for(const el of root.querySelectorAll('div,span,i')){
+      const r=el.getBoundingClientRect();
+      if(r.width<18||r.height<4||r.height>30||r.top<top-6||r.bottom>bottom+5) continue;
+      const bg=getComputedStyle(el).backgroundColor||'';
+      const nums=bg.match(/\d+/g);
+      if(!nums||nums.length<3) continue;
+      const rgb=nums.slice(0,3).map(Number);
+      if(Math.max(...rgb)-Math.min(...rgb)<25) continue;
+      colored.push({el,r});
+    }
+    colored.sort((a,b)=>a.r.left-b.r.left||b.r.width-a.r.width);
+    const segs=[];
+    for(const item of colored){
+      if(!segs.some(x=>Math.abs(x.r.left-item.r.left)<2&&Math.abs(x.r.width-item.r.width)<2)) segs.push(item);
+    }
+    if(segs.length>=2){
+      segs[0].el.style.setProperty('background',first.color,'important');
+      segs[1].el.style.setProperty('background',second.color,'important');
+    }
+    for(const el of root.querySelectorAll('div,span')){
+      const r=el.getBoundingClientRect();
+      if(r.width<150||r.height<4||r.height>30||r.top<top-6||r.bottom>bottom+5) continue;
+      const cs=getComputedStyle(el);
+      if(cs.backgroundImage&&cs.backgroundImage!=='none') el.style.setProperty('background',`linear-gradient(to right, ${first.color} 0%, ${first.color} ${split}%, ${second.color} ${split}%, ${second.color} 100%)`,'important');
+    }
+  }
+
   function fixSenate(){
     const root=document.getElementById('page-senate'); if(!root) return;
     enforceMaineData();
@@ -171,12 +313,8 @@
         }
       }
     }
-    root.querySelectorAll('.candidate-line').forEach(line=>{
-      const p=line.querySelector('.candidate-party'); if(!p) return;
-      const pt=norm(p.textContent).toLowerCase();
-      const c=pt.includes('republican')||pt==='r'?REP:pt.includes('democrat')||pt==='d'?DEM:IND;
-      line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong').forEach(el=>el.style.setProperty('color',c,'important'));
-    });
+    fixAllCandidateColors(root);
+    fixMobileOddsFallback(root);
   }
 
   function apply(){
@@ -196,5 +334,6 @@
   setTimeout(apply,100); setTimeout(apply,500); setTimeout(apply,1500);
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',()=>{apply();show(current,false)});
+  window.addEventListener('resize',apply);
   window.__acceptedGoodNavigate=show;
 })();
