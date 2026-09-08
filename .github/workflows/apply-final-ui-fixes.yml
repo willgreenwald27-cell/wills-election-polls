@@ -21,6 +21,7 @@ jobs:
           p=Path('index.html')
           s=p.read_text()
 
+          # Keep every independent/unaffiliated candidate in the purple class.
           old="function candidatePollClass(name,party){if(String(name||'').toLowerCase().includes('brian bengs')) return 'osborn';"
           new="function candidatePollClass(name,party){const pp=String(party||'').trim().toLowerCase();if(pp==='i'||pp.includes('independent')||pp.includes('unaffiliated')||pp.includes('other'))return 'osborn';if(String(name||'').toLowerCase().includes('brian bengs')) return 'osborn';"
           if old in s:
@@ -28,24 +29,38 @@ jobs:
           elif new not in s:
               raise SystemExit('candidatePollClass marker not found')
 
-          marker='</body>'
-          script='<script src="/final-ui-fixes.js?v=20260907-1836"><\\/script>'
-          if '/final-ui-fixes.js' not in s:
-              if marker not in s:
-                  raise SystemExit('body marker not found')
-              s=s.replace(marker,script+marker,1)
-          else:
-              s=re.sub(r'<script src="/final-ui-fixes\.js(?:\?v=[^"]+)?"><\\/script>',script,s,count=1)
+          # Bust caches for the scripts that control the affected UI.
+          s=re.sub(r'/safe-patches\.js\?v=[0-9A-Za-z._-]+','/safe-patches.js?v=20260907-1910',s)
+          s=re.sub(r'/senate-display-fixes\.js\?v=[0-9A-Za-z._-]+','/senate-display-fixes.js?v=20260907-1910',s)
+          s=re.sub(r'/home-poll-count\.js\?v=[0-9A-Za-z._-]+','/home-poll-count.js?v=20260907-1910',s)
+          s=re.sub(r'/navigation-controller\.js\?v=[0-9A-Za-z._-]+','/navigation-controller.js?v=20260907-1910',s)
+          s=re.sub(r'/final-ui-fixes\.js\?v=[0-9A-Za-z._-]+','/final-ui-fixes.js?v=20260907-1910',s)
+
+          # The previous loader accidentally used final-ui-fixes as a replacement marker
+          # but omitted it from the generated page. Always load the stable navigation
+          # controller and final correction script at the very end of the generated site.
+          pat=r'(<script src="/home-poll-count\.js\?v=[^"]+"><\\/script>)(?:<script src="/navigation-controller\.js\?v=[^"]+"><\\/script>)?(?:<script src="/final-ui-fixes\.js\?v=[^"]+"><\\/script>)?</body>'
+          repl=r'\1<script src="/navigation-controller.js?v=20260907-1910"><\\/script><script src="/final-ui-fixes.js?v=20260907-1910"><\\/script></body>'
+          s,n=re.subn(pat,repl,s,count=1)
+          if n!=1:
+              raise SystemExit(f'Could not locate generated-script tail: {n}')
+
+          # Remove the old hard Governor reload path from the injected helper where present.
+          s=s.replace('gb.addEventListener("click",()=>{window.location.href="/governor.html"});','gb.addEventListener("click",e=>{e.preventDefault();if(window.__willNavigate)window.__willNavigate("governor")});')
 
           p.write_text(s)
-          if s.count('/final-ui-fixes.js?v=20260907-1836') != 1:
-              raise SystemExit('final UI loader verification failed')
-          if new not in s:
-              raise SystemExit('Independent party patch verification failed')
+          if s.count('/navigation-controller.js?v=20260907-1910') < 1:
+              raise SystemExit('Navigation controller loader verification failed')
+          if s.count('/final-ui-fixes.js?v=20260907-1910') < 1:
+              raise SystemExit('Final UI loader verification failed')
           PY
       - name: Validate without touching site data
         run: |
+          node --check safe-patches.js
+          node --check navigation-controller.js
           node --check final-ui-fixes.js
+          node --check senate-display-fixes.js
+          node --check home-poll-count.js
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -63,5 +78,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Make all independent candidates purple'
+          git commit -m 'Stabilize tabs Maine and Sep 7 fixes'
           git push
