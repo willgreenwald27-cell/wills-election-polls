@@ -1,0 +1,24 @@
+name: Debug mobile senate markup
+on:
+  push:
+    paths:
+      - '.github/workflows/debug-mobile-senate-markup.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract relevant markup and JS
+        shell: python
+        run: |
+          from pathlib import Path
+          import base64,gzip,re
+          parts=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          raw=''.join(Path(p).read_text() for p in parts)
+          h=gzip.decompress(base64.b64decode(raw)).decode('utf-8','replace')
+          for key in ['function openState','WILL\'S STATISTICAL ODDS','POLL AVERAGE','oddsbar','candidate-name']:
+              i=h.find(key)
+              print('\n===',key,'at',i,'===')
+              if i>=0: print(h[max(0,i-2200):i+5000])
