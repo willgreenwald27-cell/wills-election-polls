@@ -27,9 +27,17 @@ jobs:
           if needle not in s:
               raise SystemExit('Loader write point not found; refusing broad edit')
 
-          marker = 'force-final-ui-v20260907-2305'
+          old_marker = '/*force-final-ui-v20260907-2305*/'
+          if old_marker in s:
+              end = s.index(old_marker) + len(old_marker)
+              start = s.rfind('h=h.replace(/<script', 0, end)
+              if start == -1:
+                  raise SystemExit('Old force-load block not found')
+              s = s[:start] + s[end:]
+
+          marker = 'force-final-ui-v20260907-2310'
           if marker not in s:
-              inject = "h=h.replace(/<script src=\\\"\\/(?:senate-julsep-archive|site-final|safe-patches)\\.js\\?v=[^\\\"]+\\\"><\\\\/script>/g,'');h=h.replace('</body>','<script src=\\\"/senate-julsep-archive.js?v=20260907-2305\\\"><\\\\/script><script src=\\\"/site-final.js?v=20260907-2305\\\"><\\\\/script><script src=\\\"/safe-patches.js?v=20260907-2305\\\"><\\\\/script></body>');/*" + marker + "*/"
+              inject = "h=h.replace('</body>','<script src=\\\"/senate-julsep-archive.js?v=20260907-2310\\\"><\\/script><script src=\\\"/site-final.js?v=20260907-2310\\\"><\\/script><script src=\\\"/safe-patches.js?v=20260907-2310\\\"><\\/script></body>');/*" + marker + "*/"
               s = s.replace(needle, inject + needle, 1)
           p.write_text(s)
 
@@ -42,15 +50,21 @@ jobs:
           if "t.includes('toss')&&t.includes('up')" not in t:
               t = t.replace(old, new, 1)
           f.write_text(t)
+
+          html = p.read_text()
+          a = html.index('<script>') + len('<script>')
+          b = html.rindex('</script><noscript>')
+          Path('/tmp/loader.js').write_text(html[a:b])
           PY
       - name: Validate final UI wiring
         run: |
+          node --check /tmp/loader.js
           node --check site-final.js
           node --check safe-patches.js
           test -f senate-julsep-archive.js
           test -f past-senate-maps.html
-          grep -q 'force-final-ui-v20260907-2305' index.html
-          grep -q 'safe-patches.js?v=20260907-2305' index.html
+          grep -q 'force-final-ui-v20260907-2310' index.html
+          grep -q 'safe-patches.js?v=20260907-2310' index.html
           grep -q "t.includes('toss')&&t.includes('up')" site-final.js
           git diff --exit-code -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
       - name: Commit final UI wiring
@@ -58,5 +72,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html site-final.js
-          git commit -m 'Force accepted UI scripts to load on live site'
+          git commit -m 'Load accepted UI scripts from valid loader'
           git push origin main
