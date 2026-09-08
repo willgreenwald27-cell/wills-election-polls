@@ -1,0 +1,39 @@
+name: Fix site loader
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-site-load.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair malformed script tag in loader
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          bad='<script src="/mobile-state-party-colors-v2.js?v=20260907-2322"></script></body>'
+          good='<script src="/mobile-state-party-colors-v2.js?v=20260907-2322"><\\/script></body>'
+          if bad not in s:
+              raise SystemExit('Malformed mobile script tag not found')
+          s=s.replace(bad,good,1)
+          p.write_text(s)
+          PY
+      - name: Validate outer loader has no literal closing script in string
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert 'mobile-state-party-colors-v2.js?v=20260907-2322<\\/script>' in s
+          PY
+      - name: Commit repair
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git commit -m "Fix site loader script escaping"
+          git push
