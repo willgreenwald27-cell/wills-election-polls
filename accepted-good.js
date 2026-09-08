@@ -260,6 +260,34 @@
     }
   }
 
+  const FORECAST_DISAGREEMENT_NOTES={
+    TX:{candidates:['Ken Paxton','James Talarico'],text:"Why my forecast differs from the polling average: I’m giving more weight to Texas’s Republican-leaning fundamentals and turnout patterns, while accounting for the possibility that some surveys may underrepresent rural and blue-collar voters."},
+    OH:{candidates:['Jon Husted','Sherrod Brown'],text:"Why my forecast differs from the polling average: I’m giving more weight to Ohio’s recent Republican-leaning fundamentals and turnout patterns, while accounting for the possibility that some surveys may underrepresent rural and blue-collar voters."}
+  };
+
+  function ensureForecastDisagreementNotes(){
+    const root=document.body; if(!root) return;
+    const all=leafs(root);
+    for(const [abbr,cfg] of Object.entries(FORECAST_DISAGREEMENT_NOTES)){
+      const seed=all.find(el=>el.getClientRects().length&&cfg.candidates.includes(norm(el.textContent)));
+      if(!seed) continue;
+      let box=seed.parentElement;
+      for(let i=0;box&&box!==root&&i<16;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(cfg.candidates.every(n=>t.includes(n))&&/POLL AVERAGE|AVG POLLS/i.test(t)&&/WILL'S CALL|MY PREDICTION|WILL'S STATISTICAL ODDS/i.test(t)) break;
+      }
+      if(!box||box===root) continue;
+      let note=box.querySelector(`[data-forecast-disagreement=\"${abbr}\"]`);
+      if(!note){
+        note=document.createElement('div'); note.dataset.forecastDisagreement=abbr;
+        note.style.cssText='margin:16px 0 2px;padding:13px 14px;border-top:1px solid #dbe2ea;background:#f7f9fc;border-radius:10px;color:#27384d;font-size:12px;line-height:1.5';
+        const label=document.createElement('strong'); label.textContent='WHY MY FORECAST DIFFERS'; label.style.cssText='display:block;margin-bottom:5px;font-size:10px;letter-spacing:.8px;color:#607089';
+        const body=document.createElement('div'); body.className='forecast-disagreement-copy'; body.textContent=cfg.text;
+        note.append(label,body); box.appendChild(note);
+      }else{ const body=note.querySelector('.forecast-disagreement-copy'); if(body) body.textContent=cfg.text; }
+    }
+  }
+
   function fixSenate(){
     const root=document.getElementById('page-senate'); if(!root) return;
     enforceMaineData();
@@ -313,6 +341,7 @@
         }
       }
     }
+    ensureForecastDisagreementNotes();
     fixAllCandidateColors(root);
     fixMobileOddsFallback(root);
   }
