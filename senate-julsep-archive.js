@@ -102,7 +102,7 @@
       const me=stateData.ME;
       let changed=false;
       const set=(k,v)=>{if(String(me[k]===undefined?'':me[k])!==String(v)){me[k]=v;changed=true;}};
-      set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-07');
+      set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-08');
       for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(k,'Democrat');
       if('call' in me) set('call','Jackson +0.4%');
       if(norm(me.candidate1)==='Susan Collins') set('candidate1Odds','48');
@@ -275,7 +275,7 @@
     document.head.appendChild(st);
   }
 
-  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();ensureMobileSenateMapSize();fixMaineVisibleDetail();ensurePollArchive();}
+  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
   new MutationObserver(()=>{fixMaineVisibleDetail();ensurePollArchive();}).observe(document.body,{childList:true,subtree:true});

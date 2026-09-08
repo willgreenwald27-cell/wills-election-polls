@@ -128,7 +128,7 @@
         const v=norm(el.textContent);
         if(t.includes('poll')&&t.includes('entered')&&['13','14','88'].includes(v)) el.textContent='89';
         if(t.includes('toss')&&t.includes('up')&&v==='7') el.textContent='6';
-        if(t.includes('latest')&&t.includes('update')&&(/Sep\.? 6, 2026/i.test(v)||v==='2026-09-06')) el.textContent='Sep 7, 2026';
+        if(t.includes('latest')&&t.includes('update')&&(/Sep\.? [67], 2026/i.test(v)||v==='2026-09-06'||v==='2026-09-07')) el.textContent='Sep 8, 2026';
       }
     }
   }
@@ -137,7 +137,7 @@
     try{
       if(typeof stateData==='undefined'||!stateData?.ME) return;
       const s=stateData.ME;
-      s.rating='tilt-d'; s.predictionParty='Democrat'; s.prediction='Jackson +0.4%'; s.updated='2026-09-07';
+      s.rating='tilt-d'; s.predictionParty='Democrat'; s.prediction='Jackson +0.4%'; s.updated='2026-09-08';
       for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in s) s[k]='Democrat';
       if('call' in s) s.call='Jackson +0.4%';
       if(norm(s.candidate1)==='Susan Collins') s.candidate1Odds='48';

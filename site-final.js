@@ -19,7 +19,7 @@
         me.rating='tilt-d';
         me.predictionParty='Democrat';
         me.prediction='Jackson +0.4%';
-        me.updated='2026-09-07';
+        me.updated='2026-09-08';
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) me[k]='Democrat';
         if('call' in me) me.call='Jackson +0.4%';
         if(norm(me.candidate1)==='Susan Collins') me.candidate1Odds='48';
@@ -141,7 +141,7 @@
     for(const card of root.querySelectorAll('.reference-metrics>*')){
       const t=norm(card.textContent).toLowerCase();
       if(t.includes('poll')&&t.includes('entered')) leafs(card).forEach(el=>{if(norm(el.textContent)==='13')el.textContent='88';});
-      if(t.includes('latest')&&t.includes('update')) leafs(card).forEach(el=>{if(/Sep\.? 6, 2026|2026-09-06/i.test(norm(el.textContent)))el.textContent='Sep 7, 2026';});
+      if(t.includes('latest')&&t.includes('update')) leafs(card).forEach(el=>{if(/Sep\.? [67], 2026|2026-09-0[67]/i.test(norm(el.textContent)))el.textContent='Sep 8, 2026';});
     }
   }
 
