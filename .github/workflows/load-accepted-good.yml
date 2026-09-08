@@ -1,0 +1,54 @@
+name: Load accepted good site
+
+on:
+  push:
+    paths:
+      - '.github/workflows/load-accepted-good.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Wire authoritative site controller
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          marker='accepted-good-loader-v1'
+          needle='document.open();document.write(h);document.close()'
+          if needle not in s:
+              raise SystemExit('loader write point not found')
+          if marker not in s:
+              inject="h=h.replace('</body>','<script src=\"/accepted-good.js?v=20260907-1958\"><\\/script></body>');/*"+marker+"*/"
+              s=s.replace(needle,inject+needle,1)
+          p.write_text(s)
+          PY
+      - name: Validate controller and loader
+        run: |
+          node --check accepted-good.js
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          a=s.index('<script>')+len('<script>')
+          b=s.rindex('</script>')
+          Path('/tmp/loader.js').write_text(s[a:b])
+          PY
+          node --check /tmp/loader.js
+          grep -q 'accepted-good-loader-v1' index.html
+          grep -q 'accepted-good.js?v=20260907-1958' index.html
+          git diff --exit-code -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit accepted site wiring
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Wire authoritative accepted site controller'
+          git push origin main
