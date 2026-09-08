@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install final navigation and Maine fixes
+      - name: Load final unified controller
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -21,30 +21,27 @@ jobs:
           p=Path('index.html')
           s=p.read_text()
 
-          nh="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';"
-          both=nh+"if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
-          if both not in s and nh in s:
-              s=s.replace(nh,both,1)
+          # Keep all 88 polls fresh.
+          s=re.sub(r'/senate-julsep-archive\.js\?v=[0-9-]+','/senate-julsep-archive.js?v=20260907-2115',s)
 
-          s=re.sub(r'/safe-patches\.js\?v=[0-9-]+','/safe-patches.js?v=20260907-2030',s)
-          s=re.sub(r'/senate-julsep-archive\.js\?v=[0-9-]+','/senate-julsep-archive.js?v=20260907-2030',s)
-
-          # Remove the two competing navigation/correction controllers. safe-patches.js now owns both.
+          # site-final keeps the corrected Maine data/odds. Remove competing navigation shell.
           s=re.sub(r'<script src="/site-shell\.js\?v=[^"]+"><\\/script>','',s)
-          s=re.sub(r'<script src="/site-corrections\.js\?v=[^"]+"><\\/script>','',s)
-          s=re.sub(r'<script src="/navigation-controller\.js\?v=[^"]+"><\\/script>','',s)
+
+          # Load the one final navigation controller last so all tabs use the same in-page shell.
+          final='<script src="/safe-patches.js?v=20260907-2115"><\\/script>'
+          if '/safe-patches.js?v=20260907-2115' not in s:
+              s=s.replace('</body>',final+'</body>',1)
 
           p.write_text(s)
-          for marker in ['/safe-patches.js?v=20260907-2030','/senate-julsep-archive.js?v=20260907-2030']:
+          for marker in ['/senate-julsep-archive.js?v=20260907-2115','/safe-patches.js?v=20260907-2115','/site-final.js']:
               if marker not in s: raise SystemExit('Missing '+marker)
-          if '/site-shell.js?' in s: raise SystemExit('Old site-shell still loaded')
+          if '/site-shell.js?' in s: raise SystemExit('Competing site-shell still loaded')
           PY
       - name: Validate without touching core site data
         run: |
           node --check safe-patches.js
+          node --check site-final.js
           node --check senate-julsep-archive.js
-          node --check senate-display-fixes.js
-          node --check maine-statistical-odds.js
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -61,5 +58,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Use one smooth navigation system and refresh Maine fixes'
+          git commit -m 'Use one consistent in-page navigation system'
           git push
