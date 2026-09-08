@@ -31,9 +31,17 @@ jobs:
           if n2 != 1:
               raise SystemExit(f'Expected one Senate display script marker, found {n2}')
 
+          pat2=r'(<script src="/maine-statistical-odds\.js\?v=[^"]+"><\\/script>)(?:<script src="/home-poll-count\.js(?:\?v=[^"]+)?"><\\/script>)?'
+          home='<script src="/home-poll-count.js?v=20260907-1818"><\\/script>'
+          s,n3=re.subn(pat2,lambda m:m.group(1)+home,s)
+          if n3 != 1:
+              raise SystemExit(f'Expected one Maine script marker, found {n3}')
+
           p.write_text(s)
           if s.count('/maine-statistical-odds.js?v=20260907-1805') != 1:
               raise SystemExit('Maine statistical-odds loader verification failed')
+          if s.count('/home-poll-count.js?v=20260907-1818') != 1:
+              raise SystemExit('Home poll-count loader verification failed')
           PY
       - name: Validate scripts and protect site data
         run: |
@@ -42,6 +50,7 @@ jobs:
           node --check senate-julsep-archive.js
           node --check senate-display-fixes.js
           node --check maine-statistical-odds.js
+          node --check home-poll-count.js
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -59,5 +68,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Load Maine 51-49 statistical odds fix'
+          git commit -m 'Load home poll count fix'
           git push
