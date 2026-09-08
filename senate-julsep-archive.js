@@ -271,7 +271,7 @@
     if(document.getElementById('mobile-senate-map-size-v1')) return;
     const st=document.createElement('style');
     st.id='mobile-senate-map-size-v1';
-    st.textContent=`@media(max-width:760px){#page-senate .map-wrap{overflow:visible!important}#page-senate .map-wrap svg{transform:scale(1.32)!important;transform-origin:center center!important;max-width:none!important}}`;
+    st.textContent='';
     document.head.appendChild(st);
   }
 
