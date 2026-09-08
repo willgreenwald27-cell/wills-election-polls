@@ -1,5 +1,6 @@
 (()=>{
   const PURPLE='#8051d2';
+  const PURPLE_LIGHT='#efe8ff';
   const RED='#bd2937';
   const BLUE='#2763b8';
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
@@ -9,6 +10,26 @@
     if(p.includes('republican')||p==='r'||p==='gop') return RED;
     if(p.includes('democrat')||p==='d') return BLUE;
     return PURPLE;
+  }
+
+  function ensureIndependentStyle(){
+    if(document.getElementById('force-independent-purple-style')) return;
+    const style=document.createElement('style');
+    style.id='force-independent-purple-style';
+    style.textContent=`
+      :root{--solid-i:${PURPLE}!important;--likely-i:${PURPLE}!important;--lean-i:${PURPLE}!important;--tilt-i:${PURPLE}!important}
+      #page-senate .candidate-name.ind,#page-senate .candidate-name.independent,#page-senate .candidate-name.osborn,
+      #page-senate .candidate-party.ind,#page-senate .candidate-party.independent,#page-senate .candidate-party.osborn,
+      #page-senate .candidate-metrics .ind,#page-senate .candidate-metrics .independent,#page-senate .candidate-metrics .osborn,
+      #page-polls .ind,#page-polls .independent,#page-polls .osborn,
+      #page-betting .ind,#page-betting .independent,#page-betting .osborn{color:${PURPLE}!important;border-color:${PURPLE}!important}
+      #page-senate .oddsbar .ind,#page-senate .oddsbar .independent,#page-senate .oddsbar .osborn,
+      #page-betting .mini-bar.ind i,#page-betting .mini-bar.independent i,#page-betting .mini-bar.osborn i,
+      #page-betting .kleg.i,#page-betting .kleg.ind,#page-betting .kleg.independent,#page-betting .kleg.osborn,
+      #page-senate .mini-key.ind,#page-senate .mini-key.independent,#page-senate .mini-key.osborn{background:${PURPLE}!important}
+      #page-betting .kalshi-market-tile-odds .i,#page-betting .kalshi-market-tile-odds .ind,#page-betting .kalshi-market-tile-odds .independent,#page-betting .kalshi-market-tile-odds .osborn{background:${PURPLE_LIGHT}!important;color:${PURPLE}!important;border-color:${PURPLE}!important}
+    `;
+    document.head.appendChild(style);
   }
 
   function replaceExactText(root,from,to){
@@ -47,6 +68,34 @@
     }
   }
 
+  function isIndependentText(text){
+    const p=norm(text).toLowerCase();
+    return p==='i'||p.includes('independent')||p.includes('unaffiliated')||p.includes('other');
+  }
+
+  function paintIndependentContext(label){
+    label.style.setProperty('color',PURPLE,'important');
+    let line=label.closest('.candidate-line');
+    if(line){
+      line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong,.candidate-metrics span').forEach(el=>{
+        el.style.setProperty('color',PURPLE,'important');
+      });
+    }
+
+    let box=label.parentElement;
+    for(let depth=0;box&&box!==document.body&&depth<8;depth++,box=box.parentElement){
+      const cls=String(box.className||'').toLowerCase();
+      if(/candidate|poll|market|odds|race|tile|row|card/.test(cls)){
+        box.querySelectorAll('.ind,.independent,.osborn,[class*="independent"]').forEach(el=>{
+          el.style.setProperty('color',PURPLE,'important');
+          if(/bar|fill|swatch|dot|key|segment|meter/.test(String(el.className||'').toLowerCase())){
+            el.style.setProperty('background',PURPLE,'important');
+          }
+        });
+      }
+    }
+  }
+
   function fixPartyLinesAndBars(){
     const root=document.body;
     if(!root) return;
@@ -80,16 +129,23 @@
     }
 
     for(const label of [...root.querySelectorAll('.candidate-party')]){
-      const p=norm(label.textContent).toLowerCase();
-      if(p.includes('independent')||p.includes('unaffiliated')||p==='i'||p.includes('other')){
-        label.style.setProperty('color',PURPLE,'important');
-        const line=label.closest('.candidate-line');
-        if(line) line.querySelectorAll('.candidate-name,.candidate-party,.candidate-metrics b,.candidate-metrics strong').forEach(el=>el.style.setProperty('color',PURPLE,'important'));
+      if(isIndependentText(label.textContent)) paintIndependentContext(label);
+    }
+
+    for(const el of [...root.querySelectorAll('#page-senate *,#page-polls *,#page-betting *')]){
+      if(el.children.length!==0) continue;
+      if(!isIndependentText(el.textContent)) continue;
+      el.style.setProperty('color',PURPLE,'important');
+      const badge=el.closest('.party-badge,.pill,.chip,.tag,.legend-item,.candidate-line,.candidate-feed-row,.poll-row,.kalshi-market-tile');
+      if(badge){
+        badge.style.setProperty('border-color',PURPLE,'important');
+        badge.querySelectorAll('.dot,.swatch,.key,.mini-key,i').forEach(mark=>mark.style.setProperty('background',PURPLE,'important'));
       }
     }
   }
 
   function enforce(){
+    ensureIndependentStyle();
     fixHomeStats();
     fixPartyLinesAndBars();
   }
