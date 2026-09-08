@@ -100,9 +100,16 @@
     try{
       if(typeof stateData==='undefined'||!stateData||!stateData.ME) return;
       const me=stateData.ME;
-      if(me.rating==='tilt-r') return;
-      me.rating='tilt-r';
-      if(typeof renderSenate==='function'&&!renderingMaine){
+      let changed=false;
+      const set=(k,v)=>{if(String(me[k]===undefined?'':me[k])!==String(v)){me[k]=v;changed=true;}};
+      set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-07');
+      for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(k,'Democrat');
+      if('call' in me) set('call','Jackson +0.4%');
+      if(norm(me.candidate1)==='Susan Collins') set('candidate1Odds','48');
+      if(norm(me.candidate2)==='Susan Collins') set('candidate2Odds','48');
+      if(norm(me.candidate1)==='Troy Jackson') set('candidate1Odds','52');
+      if(norm(me.candidate2)==='Troy Jackson') set('candidate2Odds','52');
+      if(changed&&typeof renderSenate==='function'&&!renderingMaine){
         renderingMaine=true;
         try{renderSenate();}finally{renderingMaine=false;}
       }
@@ -113,7 +120,7 @@
     const root=document.getElementById('page-senate');
     if(!root) return;
     root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{
-      if(el.namespaceURI==='http://www.w3.org/2000/svg'||/^(path|rect|polygon)$/i.test(el.tagName||'')) el.style.setProperty('fill','#f8c6ca','important');
+      if(el.namespaceURI==='http://www.w3.org/2000/svg'||/^(path|rect|polygon)$/i.test(el.tagName||'')) el.style.setProperty('fill','#d3e2f7','important');
     });
     const ls=leafs(root);
     const maine=ls.find(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length);
@@ -127,8 +134,8 @@
     const bl=leafs(box);
     bl.forEach(el=>{
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Republican';
-      if(t==='Jackson +0.4%'||t==='No prediction text entered yet.') el.textContent='Tilt Republican';
+      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Democratic';
+      if(t==='Collins +1.3%'||t==='No prediction text entered yet.') el.textContent='Jackson +0.4%';
     });
     const projected=bl.find(el=>/^MY PROJECTED WINNER$/i.test(norm(el.textContent)));
     const prediction=bl.find(el=>/^PREDICTION$/i.test(norm(el.textContent)));
@@ -139,7 +146,7 @@
         const y=el.getBoundingClientRect().top;
         return y>=y0&&y<y1&&/^(Democrat|Democratic|Republican)$/i.test(norm(el.textContent));
       });
-      if(value) value.textContent='Republican';
+      if(value) value.textContent='Democrat';
     }
   }
 

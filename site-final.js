@@ -16,16 +16,16 @@
       if(typeof stateData==='undefined'||!stateData) return;
       const me=stateData.ME;
       if(me){
-        me.rating='tilt-r';
-        me.predictionParty='Republican';
-        me.prediction='Collins +1.3%';
+        me.rating='tilt-d';
+        me.predictionParty='Democrat';
+        me.prediction='Jackson +0.4%';
         me.updated='2026-09-07';
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) me[k]='Republican';
-        if('call' in me) me.call='Collins +1.3%';
-        if(norm(me.candidate1)==='Susan Collins') me.candidate1Odds='51';
-        if(norm(me.candidate2)==='Susan Collins') me.candidate2Odds='51';
-        if(norm(me.candidate1)==='Troy Jackson') me.candidate1Odds='49';
-        if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='49';
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) me[k]='Democrat';
+        if('call' in me) me.call='Jackson +0.4%';
+        if(norm(me.candidate1)==='Susan Collins') me.candidate1Odds='48';
+        if(norm(me.candidate2)==='Susan Collins') me.candidate2Odds='48';
+        if(norm(me.candidate1)==='Troy Jackson') me.candidate1Odds='52';
+        if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
     }catch(e){}
@@ -52,7 +52,7 @@
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n){n.textContent=/^REPUBLICAN$/i.test(t)?'51':'49';break;}
+        if(n){n.textContent='50';break;}
       }
     }
   }
@@ -73,40 +73,40 @@
   function fixMaine(){
     const root=document.getElementById('page-senate'); if(!root) return;
     root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{
-      el.style.setProperty('fill','#f8c6ca','important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg') el.style.setProperty('background','#f8c6ca','important');
+      el.style.setProperty('fill','#d3e2f7','important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg') el.style.setProperty('background','#d3e2f7','important');
     });
     const box=findMainePanel(); if(!box) return;
     const ls=leafs(box);
 
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Republican';
+      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Democratic';
       if(t==='Jackson +0.4%'||t==='Tilt Republican'||t==='No prediction text entered yet.'){
-        if(el.closest('.prediction-copy')||/Jackson \+0\.4%|No prediction text/i.test(t)) el.textContent='Collins +1.3%';
+        if(el.closest('.prediction-copy')||/Jackson \+0\.4%|No prediction text/i.test(t)) el.textContent='Jackson +0.4%';
       }
-      if(/^Susan Collins:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Susan Collins: 51%';
-      if(/^Troy Jackson:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Troy Jackson: 49%';
+      if(/^Susan Collins:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Susan Collins: 48%';
+      if(/^Troy Jackson:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Troy Jackson: 52%';
     }
 
     const call=ls.findIndex(el=>/^WILL'S CALL$/i.test(norm(el.textContent)));
     if(call>=0){
       const p=ls.slice(call+1,call+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-      if(p){p.textContent='Republican';p.style.setProperty('color',RED,'important');}
-      const copy=box.querySelector('.prediction-copy'); if(copy) copy.textContent='Collins +1.3%';
+      if(p){p.textContent='Democrat';p.style.setProperty('color',BLUE,'important');}
+      const copy=box.querySelector('.prediction-copy'); if(copy) copy.textContent='Jackson +0.4%';
     }
 
     const proj=ls.findIndex(el=>/^MY PROJECTED WINNER$/i.test(norm(el.textContent)));
     if(proj>=0){
       const p=ls.slice(proj+1,proj+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-      if(p) p.textContent='Republican';
+      if(p) p.textContent='Democrat';
     }
 
     const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
     const bar=box.querySelector('.oddsbar');
     if(bar&&lines.length>=2){
       const names=lines.map(line=>norm(line.querySelector('.candidate-name')?.textContent));
-      const odds=names.map(n=>n==='Susan Collins'?51:n==='Troy Jackson'?49:null);
+      const odds=names.map(n=>n==='Susan Collins'?48:n==='Troy Jackson'?52:null);
       const colors=lines.map(line=>partyColor(line.querySelector('.candidate-party')?.textContent));
       const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
       if(a&&odds[0]!=null){a.style.setProperty('width',odds[0]+'%','important');a.style.setProperty('background',colors[0],'important');}
