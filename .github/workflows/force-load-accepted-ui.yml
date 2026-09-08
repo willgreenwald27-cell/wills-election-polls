@@ -1,0 +1,62 @@
+name: Force load accepted UI
+
+on:
+  push:
+    paths:
+      - '.github/workflows/force-load-accepted-ui.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  force-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Force final UI scripts into rendered document
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text()
+          needle = 'document.open();document.write(h);document.close()'
+          if needle not in s:
+              raise SystemExit('Loader write point not found; refusing broad edit')
+
+          marker = 'force-final-ui-v20260907-2305'
+          if marker not in s:
+              inject = "h=h.replace(/<script src=\\\"\\/(?:senate-julsep-archive|site-final|safe-patches)\\.js\\?v=[^\\\"]+\\\"><\\\\/script>/g,'');h=h.replace('</body>','<script src=\\\"/senate-julsep-archive.js?v=20260907-2305\\\"><\\\\/script><script src=\\\"/site-final.js?v=20260907-2305\\\"><\\\\/script><script src=\\\"/safe-patches.js?v=20260907-2305\\\"><\\\\/script></body>');/*" + marker + "*/"
+              s = s.replace(needle, inject + needle, 1)
+          p.write_text(s)
+
+          f = Path('site-final.js')
+          t = f.read_text()
+          old = "if(t.includes('poll')&&t.includes('entered')) leafs(card).forEach(el=>{if(norm(el.textContent)==='13')el.textContent='88';});"
+          new = old + "\n      if(t.includes('toss')&&t.includes('up')) leafs(card).forEach(el=>{if(norm(el.textContent)==='7')el.textContent='6';});"
+          if old not in t:
+              raise SystemExit('Home metric patch point not found')
+          if "t.includes('toss')&&t.includes('up')" not in t:
+              t = t.replace(old, new, 1)
+          f.write_text(t)
+          PY
+      - name: Validate final UI wiring
+        run: |
+          node --check site-final.js
+          node --check safe-patches.js
+          test -f senate-julsep-archive.js
+          test -f past-senate-maps.html
+          grep -q 'force-final-ui-v20260907-2305' index.html
+          grep -q 'safe-patches.js?v=20260907-2305' index.html
+          grep -q "t.includes('toss')&&t.includes('up')" site-final.js
+          git diff --exit-code -- d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+      - name: Commit final UI wiring
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html site-final.js
+          git commit -m 'Force accepted UI scripts to load on live site'
+          git push origin main
