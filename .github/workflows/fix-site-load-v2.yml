@@ -1,0 +1,41 @@
+name: Fix site loader v2
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-site-load-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair mobile script escaping
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          bad='''<script src="/mobile-state-party-colors-v2.js?v=20260907-2322"></script></body>'''
+          good='''<script src="/mobile-state-party-colors-v2.js?v=20260907-2322"><\\/script></body>'''
+          if bad in s:
+              s=s.replace(bad,good,1)
+          elif 'mobile-state-party-colors-v2.js?v=20260907-2322' not in s:
+              raise SystemExit('mobile color script reference missing')
+          p.write_text(s)
+          PY
+      - name: Basic loader sanity check
+        run: |
+          grep -q 'mobile-state-party-colors-v2.js?v=20260907-2322' index.html
+          ! grep -q 'mobile-state-party-colors-v2.js?v=20260907-2322"></script></body>' index.html
+      - name: Commit repair
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No index change needed'
+          else
+            git commit -m "Repair site loader after mobile color patch"
+            git push
+          fi
