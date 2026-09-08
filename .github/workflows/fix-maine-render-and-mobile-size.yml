@@ -17,35 +17,31 @@ jobs:
           from pathlib import Path
           import re
 
-          # Remove the mobile-only map enlargement that was added for the previous request.
-          p = Path('senate-julsep-archive.js')
-          s = p.read_text()
-          s = re.sub(r"\n\s*function ensureMobileSenateMapSize\(\)\{.*?\n\s*\}\n\n\s*function apply\(\)\{applyMaineCall\(\);applyMinnesotaAverage\(\);ensureSep7MinnesotaPoll\(\);ensureMobileSenateMapSize\(\);fixMaineVisibleDetail\(\);ensurePollArchive\(\);\}",
-                     "\n\n  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}",
-                     s, flags=re.S)
-          if 'scale(1.32)' in s or 'ensureMobileSenateMapSize' in s:
-              raise SystemExit('mobile map enlargement still present')
+          # Neutralize the mobile-only enlargement without touching the normal map layout.
+          p=Path('senate-julsep-archive.js')
+          s=p.read_text()
+          if 'scale(1.32)' not in s:
+              raise SystemExit('1.32 mobile map rule not found')
+          s=s.replace("st.textContent=`@media(max-width:760px){#page-senate .map-wrap{overflow:visible!important}#page-senate .map-wrap svg{transform:scale(1.32)!important;transform-origin:center center!important;max-width:none!important}}`;","st.textContent='';",1)
           p.write_text(s)
 
-          # Fix the source renderer itself so Maine is drawn Tilt Democratic instead of
-          # being painted Republican first and then patched afterward.
-          p = Path('index.html')
-          i = p.read_text()
-          old = "if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
-          new = "if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-d';"
+          # Make the underlying Senate renderer itself treat Maine as Tilt Democratic.
+          p=Path('index.html')
+          i=p.read_text()
+          old="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
+          new="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-d';"
           if old not in i:
               raise SystemExit('Maine render override anchor not found')
-          i = i.replace(old, new, 1)
-          i = i.replace("ME:'Collins +1.3%'", "ME:'Jackson +0.4%'")
-          # Fresh archive URL so phones cannot retain the old 1.32x CSS.
-          i = re.sub(r'senate-julsep-archive\.js\?v=[0-9-]+', 'senate-julsep-archive.js?v=20260908-1312', i)
+          i=i.replace(old,new,1)
+          i=i.replace("ME:'Collins +1.3%'","ME:'Jackson +0.4%'")
+          i=re.sub(r'senate-julsep-archive\.js\?v=[0-9-]+','senate-julsep-archive.js?v=20260908-1318',i)
           p.write_text(i)
 
-          out = Path('index.html').read_text()
+          assert 'scale(1.32)' not in Path('senate-julsep-archive.js').read_text()
+          out=Path('index.html').read_text()
           assert "stateData.ME.active)stateData.ME.rating='tilt-d'" in out
           assert "ME:'Jackson +0.4%'" in out
-          assert 'senate-julsep-archive.js?v=20260908-1312' in out
-          assert 'scale(1.32)' not in Path('senate-julsep-archive.js').read_text()
+          assert 'senate-julsep-archive.js?v=20260908-1318' in out
           PY
       - name: Commit site update
         run: |
