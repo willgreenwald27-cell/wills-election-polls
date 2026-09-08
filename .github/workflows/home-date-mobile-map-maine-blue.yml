@@ -1,0 +1,71 @@
+name: Update home date mobile map and Maine blue
+on:
+  push:
+    paths:
+      - '.github/workflows/home-date-mobile-map-maine-blue.yml'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply display updates
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Home page latest-update card -> Sep 8, 2026.
+          p=Path('accepted-good.js'); s=p.read_text()
+          s=s.replace("if(t.includes('latest')&&t.includes('update')&&(/Sep\\.? 6, 2026/i.test(v)||v==='2026-09-06')) el.textContent='Sep 7, 2026';",
+                      "if(t.includes('latest')&&t.includes('update')&&(/Sep\\.? [67], 2026/i.test(v)||v==='2026-09-06'||v==='2026-09-07')) el.textContent='Sep 8, 2026';")
+          s=s.replace("s.updated='2026-09-07'","s.updated='2026-09-08'")
+          # Maine must be Tilt Democratic blue.
+          s=s.replace("'#f8c6ca'","'#d3e2f7'")
+          p.write_text(s)
+
+          p=Path('site-final.js'); s=p.read_text()
+          s=s.replace("if(/Sep\\.? 6, 2026|2026-09-06/i.test(norm(el.textContent)))el.textContent='Sep 7, 2026';",
+                      "if(/Sep\\.? [67], 2026|2026-09-0[67]/i.test(norm(el.textContent)))el.textContent='Sep 8, 2026';")
+          s=s.replace("me.updated='2026-09-07'","me.updated='2026-09-08'")
+          s=s.replace("'#f8c6ca'","'#d3e2f7'")
+          p.write_text(s)
+
+          p=Path('safe-patches.js'); s=p.read_text()
+          s=s.replace("s.updated='2026-09-07'","s.updated='2026-09-08'")
+          s=s.replace("'#f8c6ca'","'#d3e2f7'")
+          p.write_text(s)
+
+          p=Path('senate-julsep-archive.js'); s=p.read_text()
+          s=s.replace("set('updated','2026-09-07')","set('updated','2026-09-08')")
+          s=s.replace("'#f8c6ca'","'#d3e2f7'")
+          # Revert the mobile-only enlargement added in the last update.
+          s=s.replace('ensureMobileSenateMapSize();','')
+          p.write_text(s)
+
+          # Cache-bust changed runtime files so phones do not keep the old display.
+          p=Path('index.html'); s=p.read_text()
+          for fname in ['site-final.js','accepted-good.js','safe-patches.js','senate-julsep-archive.js']:
+              s=re.sub(re.escape(fname)+r'\?v=[0-9-]+',fname+'?v=20260908-1302',s)
+          p.write_text(s)
+
+          ag=Path('accepted-good.js').read_text()
+          sf=Path('site-final.js').read_text()
+          sp=Path('safe-patches.js').read_text()
+          ar=Path('senate-julsep-archive.js').read_text()
+          assert "Sep 8, 2026" in ag
+          assert "Sep 8, 2026" in sf
+          assert "rating='tilt-d'" in ag or "rating='tilt-d'" in sf
+          assert '#d3e2f7' in ag and '#d3e2f7' in sf and '#d3e2f7' in sp and '#d3e2f7' in ar
+          assert 'ensureMobileSenateMapSize();' not in ar
+          PY
+      - name: Commit site update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/home-date-mobile-map-maine-blue.yml
+          git add accepted-good.js site-final.js safe-patches.js senate-julsep-archive.js index.html .github/workflows/home-date-mobile-map-maine-blue.yml
+          git commit -m "Update home date and restore mobile map size"
+          git push
