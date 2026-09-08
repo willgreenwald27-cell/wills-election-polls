@@ -13,67 +13,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch site shell safely
+      - name: Install final navigation and Maine fixes
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
-
           p=Path('index.html')
           s=p.read_text()
 
-          # Make the native Senate renderer itself preserve the two custom calls.
           nh="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='tilt-d';"
           both=nh+"if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
-          if both not in s:
-              if nh not in s:
-                  raise SystemExit('Senate render marker not found')
+          if both not in s and nh in s:
               s=s.replace(nh,both,1)
 
-          # Once the stable shell owns navigation, stop the legacy governor injector.
-          old='function ensureGovernorLink(){const nav=document.querySelector(".site-header .nav");'
-          new='function ensureGovernorLink(){if(window.__willSiteShell)return;const nav=document.querySelector(".site-header .nav");'
-          if old in s:
-              s=s.replace(old,new,1)
+          s=re.sub(r'/safe-patches\.js\?v=[0-9-]+','/safe-patches.js?v=20260907-2030',s)
+          s=re.sub(r'/senate-julsep-archive\.js\?v=[0-9-]+','/senate-julsep-archive.js?v=20260907-2030',s)
 
-          # Fresh archive version so all 88 rows return after the rollback.
-          s=re.sub(r'/senate-julsep-archive\.js\?v=[0-9-]+','/senate-julsep-archive.js?v=20260907-1955',s)
-          s=re.sub(r'/safe-patches\.js\?v=[0-9-]+','/safe-patches.js?v=20260907-1955',s)
-
-          # Load durable corrections and the one-owner, no-reload navigation shell last.
-          tail=re.compile(r'<script src="/home-poll-count\.js\?v=[^"]+"><\\/script></body>')
-          replacement='<script src="/home-poll-count.js?v=20260907-1955"><\\/script><script src="/site-corrections.js?v=20260907-1955"><\\/script><script src="/site-shell.js?v=20260907-1955"><\\/script></body>'
-          if tail.search(s):
-              s=tail.sub(replacement,s,count=1)
-          elif '/site-shell.js?v=20260907-1955' not in s:
-              raise SystemExit('Loader tail marker not found')
+          # Remove the two competing navigation/correction controllers. safe-patches.js now owns both.
+          s=re.sub(r'<script src="/site-shell\.js\?v=[^"]+"><\\/script>','',s)
+          s=re.sub(r'<script src="/site-corrections\.js\?v=[^"]+"><\\/script>','',s)
+          s=re.sub(r'<script src="/navigation-controller\.js\?v=[^"]+"><\\/script>','',s)
 
           p.write_text(s)
-
-          # Keep governor snapshot date consistent with the rest of the site.
-          g=Path('governor.html')
-          if g.exists():
-              t=g.read_text().replace('September 6, 2026','September 7, 2026')
-              g.write_text(t)
-
-          checks=[both,'/senate-julsep-archive.js?v=20260907-1955','/site-corrections.js?v=20260907-1955','/site-shell.js?v=20260907-1955']
-          for x in checks:
-              if x not in s: raise SystemExit('Missing expected patch: '+x)
+          for marker in ['/safe-patches.js?v=20260907-2030','/senate-julsep-archive.js?v=20260907-2030']:
+              if marker not in s: raise SystemExit('Missing '+marker)
+          if '/site-shell.js?' in s: raise SystemExit('Old site-shell still loaded')
           PY
-      - name: Validate scripts and protect site data
+      - name: Validate without touching core site data
         run: |
           node --check safe-patches.js
           node --check senate-julsep-archive.js
           node --check senate-display-fixes.js
-          node --check site-corrections.js
-          node --check site-shell.js
+          node --check maine-statistical-odds.js
           python3 - <<'PY'
           from pathlib import Path
           import re
           s=Path('index.html').read_text()
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
-          if len(scripts)!=1:
-              raise SystemExit(f'Expected one loader script, found {len(scripts)}')
+          if len(scripts)!=1: raise SystemExit(f'Expected one loader script, found {len(scripts)}')
           Path('/tmp/loader.js').write_text(scripts[0])
           PY
           node --check /tmp/loader.js
@@ -82,7 +59,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html governor.html
+          git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Restore Maine 88 polls stable tabs and historical maps'
+          git commit -m 'Use one smooth navigation system and refresh Maine fixes'
           git push
