@@ -53,7 +53,7 @@
     if(document.getElementById('accepted-archive-loader')||document.getElementById('julsepPollArchive')) return;
     const s=document.createElement('script');
     s.id='accepted-archive-loader';
-    s.src='/senate-julsep-archive.js?v=20260907-2358';
+    s.src='/senate-julsep-archive.js?v=20260908-1225';
     document.head.appendChild(s);
   }
 
@@ -126,7 +126,7 @@
       const t=norm(card.textContent).toLowerCase();
       for(const el of leafs(card)){
         const v=norm(el.textContent);
-        if(t.includes('poll')&&t.includes('entered')&&v==='13') el.textContent='88';
+        if(t.includes('poll')&&t.includes('entered')&&['13','14','88'].includes(v)) el.textContent='89';
         if(t.includes('toss')&&t.includes('up')&&v==='7') el.textContent='6';
         if(t.includes('latest')&&t.includes('update')&&(/Sep\.? 6, 2026/i.test(v)||v==='2026-09-06')) el.textContent='Sep 7, 2026';
       }

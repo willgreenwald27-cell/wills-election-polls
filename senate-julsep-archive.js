@@ -1,5 +1,6 @@
 (()=>{
   const POLLS=[
+['2026-09-07','MN','Minnesota','TIPP**','Peggy Flanagan',44,'Michele Tafoya',42,'RCP'],
 ['2026-09-03','IA','Iowa','Emerson','Ashley Hinson',50,'Josh Turek',45,'RCP'],
 ['2026-09-03','TN','Tennessee','Beacon Center','Bill Hagerty',58,'Marquita Bradshaw',33,'RCP'],
 ['2026-09-02','TX','Texas','TPPF / Overton Insights','James Talarico',50,'Ken Paxton',50,'RCP'],
@@ -91,6 +92,7 @@
   ];
   const RED='#bd2937';
   let renderingMaine=false;
+  let renderingMinnesota=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
 
@@ -206,7 +208,7 @@
     const host=root.querySelector('.content')||root;
     const sec=document.createElement('section');
     sec.id='julsepPollArchive';
-    sec.innerHTML=`<div class="jp-head"><div class="jp-kicker">Expanded Senate Poll Archive</div><h2>July–September 2026 Senate polls</h2><div class="jp-sub">88 public general-election matchup polls and snapshots from July 7 through September 3, including alternate matchups that were publicly tested during the period.</div><div class="jp-controls"><select aria-label="Filter Senate polls by state"><option value="ALL">All states</option></select><span class="jp-count"></span></div></div><div class="jp-list"></div><div class="jp-source">Compiled from public listings at <a href="https://www.realclearpolling.com/latest-polls/senate" target="_blank" rel="noopener">RealClearPolling</a> and <a href="https://www.callthemap.com/polls?view=senate" target="_blank" rel="noopener">Call the Map</a>. Dates follow the source listing/field-date convention; duplicate source representations are retained only where they reflect a distinct listed sample or release.</div>`;
+    sec.innerHTML=`<div class="jp-head"><div class="jp-kicker">Expanded Senate Poll Archive</div><h2>July–September 2026 Senate polls</h2><div class="jp-sub">89 public general-election matchup polls and snapshots from July 7 through September 7, including alternate matchups that were publicly tested during the period.</div><div class="jp-controls"><select aria-label="Filter Senate polls by state"><option value="ALL">All states</option></select><span class="jp-count"></span></div></div><div class="jp-list"></div><div class="jp-source">Compiled from public listings at <a href="https://www.realclearpolling.com/latest-polls/senate" target="_blank" rel="noopener">RealClearPolling</a> and <a href="https://www.callthemap.com/polls?view=senate" target="_blank" rel="noopener">Call the Map</a>. Dates follow the source listing/field-date convention; duplicate source representations are retained only where they reflect a distinct listed sample or release.</div>`;
     host.appendChild(sec);
     const select=sec.querySelector('select');
     const states=[...new Map(POLLS.map(p=>[p[1],p[2]])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
@@ -216,7 +218,38 @@
     select.addEventListener('change',show);show();
   }
 
-  function apply(){applyMaineCall();fixMaineVisibleDetail();ensurePollArchive();}
+  function applyMinnesotaAverage(){
+    try{
+      if(typeof stateData==='undefined'||!stateData||!stateData.MN) return;
+      const mn=stateData.MN;
+      let changed=false;
+      const setPoll=(slot,last,pct)=>{
+        const name=norm(mn['candidate'+slot]).toLowerCase();
+        if(!name.includes(last)) return;
+        const key='candidate'+slot+'Poll';
+        if(String(mn[key])!==String(pct)){mn[key]=String(pct);changed=true;}
+      };
+      setPoll(1,'flanagan','45.0'); setPoll(2,'flanagan','45.0');
+      setPoll(1,'tafoya','41.5'); setPoll(2,'tafoya','41.5');
+      if(mn.updated!=='2026-09-07'){mn.updated='2026-09-07';changed=true;}
+      if(changed&&typeof renderSenate==='function'&&!renderingMinnesota){
+        renderingMinnesota=true;
+        try{renderSenate();}finally{renderingMinnesota=false;}
+      }
+    }catch(e){console.warn('Minnesota polling-average update unavailable',e);}
+  }
+
+  function ensureSep7MinnesotaPoll(){
+    try{
+      if(typeof polls==='undefined'||!Array.isArray(polls)) return;
+      const exists=polls.some(p=>p&&p.state==='MN'&&p.date==='2026-09-07'&&/TIPP/i.test(String(p.pollster||'')));
+      if(exists) return;
+      polls.push({date:'2026-09-07',state:'MN',pollster:'TIPP**',sample:'Sample size not listed in source snapshot',c1:'Peggy Flanagan',c1Pct:'44',c2:'Michele Tafoya',c2Pct:'42',notes:'RealClearPolling listing · Flanagan +2'});
+      if(typeof renderPolls==='function') renderPolls();
+    }catch(e){console.warn('Minnesota poll feed update unavailable',e);}
+  }
+
+  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
   new MutationObserver(()=>{fixMaineVisibleDetail();ensurePollArchive();}).observe(document.body,{childList:true,subtree:true});
