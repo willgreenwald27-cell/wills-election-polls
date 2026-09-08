@@ -1,0 +1,38 @@
+name: Bump accepted good mobile colors
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-accepted-good-mobile-colors.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh accepted-good cache key only
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          ns,n=re.subn(r'accepted-good\.js\?v=[0-9-]+','accepted-good.js?v=20260907-2327',s)
+          if n != 1:
+              raise SystemExit(f'expected 1 accepted-good cache key, found {n}')
+          p.write_text(ns)
+      - name: Sanity check loader
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert 'accepted-good.js?v=20260907-2327' in s
+          assert "const files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']" in s
+          assert 'document.open();document.write(h);document.close()' in s
+      - name: Commit cache refresh
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html
+          git diff --cached --quiet || git commit -m "Refresh mobile candidate colors"
+          git push
