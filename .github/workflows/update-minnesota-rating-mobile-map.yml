@@ -1,0 +1,88 @@
+name: Update Minnesota rating odds and mobile map
+on:
+  push:
+    paths:
+      - '.github/workflows/update-minnesota-rating-mobile-map.yml'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Minnesota and mobile map changes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          ap=Path('senate-julsep-archive.js')
+          s=ap.read_text()
+
+          s=s.replace("sample:'Sample size not listed in source snapshot'","sample:'1,494 registered voters'")
+
+          anchor="setPoll(1,'tafoya','41.5'); setPoll(2,'tafoya','41.5');"
+          if anchor not in s:
+              raise SystemExit('Minnesota poll-average anchor not found')
+          if "mn.rating!=='lean-d'" not in s:
+              extra="""
+      if(mn.rating!=='lean-d'){mn.rating='lean-d';changed=true;}
+      if(mn.predictionParty!=='Democrat'){mn.predictionParty='Democrat';changed=true;}
+      const setOdds=(slot,last,pct)=>{
+        const name=norm(mn['candidate'+slot]).toLowerCase();
+        if(!name.includes(last)) return;
+        const key='candidate'+slot+'Odds';
+        if(String(mn[key])!==String(pct)){mn[key]=String(pct);changed=true;}
+      };
+      setOdds(1,'flanagan','82'); setOdds(2,'flanagan','82');
+      setOdds(1,'tafoya','18'); setOdds(2,'tafoya','18');
+"""
+              s=s.replace(anchor,anchor+extra,1)
+
+          old_apply="function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}"
+          if old_apply not in s:
+              raise SystemExit('apply function anchor not found')
+          if 'function ensureMobileSenateMapSize()' not in s:
+              helper="""function ensureMobileSenateMapSize(){
+    if(document.getElementById('mobile-senate-map-size-v1')) return;
+    const st=document.createElement('style');
+    st.id='mobile-senate-map-size-v1';
+    st.textContent=`@media(max-width:760px){#page-senate .map-wrap{overflow:visible!important}#page-senate .map-wrap svg{transform:scale(1.32)!important;transform-origin:center center!important;max-width:none!important}}`;
+    document.head.appendChild(st);
+  }
+
+  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();ensureMobileSenateMapSize();fixMaineVisibleDetail();ensurePollArchive();}"""
+              s=s.replace(old_apply,helper,1)
+
+          ap.write_text(s)
+
+          gp=Path('accepted-good.js')
+          g=gp.read_text()
+          g=re.sub(r'senate-julsep-archive\.js\?v=[0-9-]+','senate-julsep-archive.js?v=20260908-1236',g)
+          gp.write_text(g)
+
+          ip=Path('index.html')
+          i=ip.read_text()
+          i,n=re.subn(r'senate-julsep-archive\.js\?v=[0-9-]+','senate-julsep-archive.js?v=20260908-1236',i)
+          if n<1:
+              raise SystemExit('index archive reference not found')
+          ip.write_text(i)
+
+          out=ap.read_text()
+          assert "sample:'1,494 registered voters'" in out
+          assert "mn.rating='lean-d'" in out
+          assert "setOdds(1,'flanagan','82')" in out
+          assert "setOdds(1,'tafoya','18')" in out
+          assert 'scale(1.32)' in out
+          assert 'senate-julsep-archive.js?v=20260908-1236' in gp.read_text()
+          assert 'senate-julsep-archive.js?v=20260908-1236' in ip.read_text()
+          PY
+      - name: Commit site update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/update-minnesota-rating-mobile-map.yml
+          git add senate-julsep-archive.js accepted-good.js index.html .github/workflows/update-minnesota-rating-mobile-map.yml
+          git commit -m "Update Minnesota rating odds and mobile map"
+          git push
