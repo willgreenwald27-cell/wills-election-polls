@@ -1,39 +1,68 @@
 (()=>{
-  const TARGET='88';
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
 
-  function fixHomePollCount(){
-    const root=document.getElementById('page-home');
-    if(!root) return;
-    const metrics=root.querySelector('.reference-metrics')||root;
+  function findMetricCard(root,labelText){
+    const labels=[...root.querySelectorAll('*')].filter(el=>el.children.length===0&&norm(el.textContent).toLowerCase()===labelText.toLowerCase());
+    for(const label of labels){
+      let box=label.parentElement;
+      for(let depth=0;box&&box!==root&&depth<8;depth++,box=box.parentElement){
+        const t=norm(box.textContent).toLowerCase();
+        if(t.includes(labelText.toLowerCase())) return box;
+      }
+    }
+    return null;
+  }
 
-    const walker=document.createTreeWalker(metrics,NodeFilter.SHOW_TEXT);
+  function replaceLeafText(root,matcher,replacement){
+    if(!root) return false;
+    let changed=false;
+    for(const el of root.querySelectorAll('*')){
+      if(el.children.length!==0) continue;
+      const t=norm(el.textContent);
+      if(matcher.test(t)){
+        el.textContent=replacement;
+        changed=true;
+      }
+    }
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     const nodes=[];
     while(walker.nextNode()) nodes.push(walker.currentNode);
-
     for(const node of nodes){
       const raw=node.nodeValue||'';
-      if(!/\b13\b/.test(raw)) continue;
-      let box=node.parentElement;
-      let isPollMetric=false;
-      for(let depth=0;box&&box!==metrics.parentElement&&depth<7;depth++,box=box.parentElement){
-        if(/POLLS? ENTERED/i.test(norm(box.textContent))){isPollMetric=true;break;}
+      if(matcher.test(norm(raw))){
+        node.nodeValue=raw.replace(raw.trim(),replacement);
+        changed=true;
       }
-      if(isPollMetric) node.nodeValue=raw.replace(/\b13\b/g,TARGET);
+    }
+    return changed;
+  }
+
+  function fixHomeStats(){
+    const root=document.getElementById('page-home');
+    if(!root) return;
+
+    const pollsCard=findMetricCard(root,'Polls Entered');
+    if(pollsCard){
+      replaceLeafText(pollsCard,/^13$/,'88');
+      for(const el of pollsCard.querySelectorAll('*')){
+        if(el.children.length===0&&/^13\s+POLLS? ENTERED$/i.test(norm(el.textContent))){
+          el.textContent=norm(el.textContent).replace(/^13/,'88');
+        }
+      }
     }
 
-    for(const el of metrics.querySelectorAll('*')){
-      const t=norm(el.textContent);
-      if(/^13\s+POLLS? ENTERED$/i.test(t)&&el.children.length===0){
-        el.textContent=t.replace(/^13/,TARGET);
-      }
+    const updateCard=findMetricCard(root,'Latest Update');
+    if(updateCard){
+      replaceLeafText(updateCard,/^(Sep\.?\s*6,\s*2026|2026-09-06)$/i,'Sep 7, 2026');
     }
   }
 
-  fixHomePollCount();
-  setTimeout(fixHomePollCount,100);
-  setTimeout(fixHomePollCount,600);
-  setTimeout(fixHomePollCount,1500);
-  new MutationObserver(fixHomePollCount).observe(document.body,{childList:true,subtree:true,characterData:true});
-  window.addEventListener('pageshow',fixHomePollCount);
+  fixHomeStats();
+  setTimeout(fixHomeStats,100);
+  setTimeout(fixHomeStats,500);
+  setTimeout(fixHomeStats,1200);
+  setTimeout(fixHomeStats,2500);
+  new MutationObserver(fixHomeStats).observe(document.body,{childList:true,subtree:true,characterData:true});
+  window.addEventListener('pageshow',fixHomeStats);
+  window.addEventListener('focus',fixHomeStats);
 })();
