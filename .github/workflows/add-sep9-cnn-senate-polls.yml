@@ -1,0 +1,107 @@
+name: Add Sept 9 CNN Senate polls
+on:
+  push:
+    paths:
+      - '.github/workflows/add-sep9-cnn-senate-polls.yml'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add CNN polls and refresh averages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('senate-julsep-archive.js')
+          s=p.read_text()
+
+          # Add the two new CNN general-election polls to the archive.
+          marker="  const POLLS=[\n"
+          new_rows=(
+            "['2026-09-09','MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44,'RCP'],\n"
+            "['2026-09-09','ME','Maine','CNN','Troy Jackson',48,'Susan Collins',45,'RCP'],\n"
+          )
+          if "['2026-09-09','MI','Michigan','CNN'" not in s:
+              if marker not in s: raise SystemExit('POLLS marker missing')
+              s=s.replace(marker,marker+new_rows,1)
+
+          # RCP averages after the new releases: MI El-Sayed 46.6 / Rogers 44.7; ME Jackson 48.2 / Collins 45.8.
+          s=s.replace("setPoll(1,'el-sayed','46.9'); setPoll(2,'el-sayed','46.9');","setPoll(1,'el-sayed','46.6'); setPoll(2,'el-sayed','46.6');")
+          s=s.replace("setPoll(1,'rogers','44.6'); setPoll(2,'rogers','44.6');","setPoll(1,'rogers','44.7'); setPoll(2,'rogers','44.7');")
+          s=s.replace("if(mi.updated!=='2026-09-08'){mi.updated='2026-09-08';changed=true;}","if(mi.updated!=='2026-09-09'){mi.updated='2026-09-09';changed=true;}")
+
+          s=s.replace("set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-08');","set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-09');")
+          maine_odds="""      if(norm(me.candidate1)==='Susan Collins') set('candidate1Odds','48');
+      if(norm(me.candidate2)==='Susan Collins') set('candidate2Odds','48');
+      if(norm(me.candidate1)==='Troy Jackson') set('candidate1Odds','52');
+      if(norm(me.candidate2)==='Troy Jackson') set('candidate2Odds','52');"""
+          maine_poll=maine_odds+"""
+      if(norm(me.candidate1)==='Susan Collins') set('candidate1Poll','45.8');
+      if(norm(me.candidate2)==='Susan Collins') set('candidate2Poll','45.8');
+      if(norm(me.candidate1)==='Troy Jackson') set('candidate1Poll','48.2');
+      if(norm(me.candidate2)==='Troy Jackson') set('candidate2Poll','48.2');"""
+          if "candidate1Poll','45.8'" not in s:
+              if maine_odds not in s: raise SystemExit('Maine odds anchor missing')
+              s=s.replace(maine_odds,maine_poll,1)
+
+          # Add both polls to the site's native New Polls feed too.
+          if 'function ensureSep9CNNPolls()' not in s:
+              anchor='  function ensureSep8MichiganPoll(){\n'
+              if anchor not in s: raise SystemExit('native poll feed anchor missing')
+              fn="""  function ensureSep9CNNPolls(){
+    try{
+      if(typeof polls==='undefined'||!Array.isArray(polls)) return;
+      const add=(obj)=>{const exists=polls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&String(p.pollster||'')==='CNN'&&String(p.c1||'')===obj.c1);if(!exists) polls.push(obj);};
+      add({date:'2026-09-09',state:'MI',pollster:'CNN',sample:'',c1:'Abdul El-Sayed',c1Pct:'47',c2:'Mike Rogers',c2Pct:'44',notes:'RealClearPolling listing · El-Sayed +3'});
+      add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});
+      if(typeof renderPolls==='function') renderPolls();
+    }catch(e){console.warn('CNN poll feed update unavailable',e);}
+  }
+
+"""
+              s=s.replace(anchor,fn+anchor,1)
+
+          s=s.replace("function apply(){applyMaineCall();applyMichiganAverage();applyMinnesotaAverage();ensureSep8MichiganPoll();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}","function apply(){applyMaineCall();applyMichiganAverage();applyMinnesotaAverage();ensureSep9CNNPolls();ensureSep8MichiganPoll();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}")
+          s=s.replace('90 public general-election matchup polls and snapshots from July 7 through September 8','92 public general-election matchup polls and snapshots from July 7 through September 9')
+          p.write_text(s)
+
+          # Refresh poll-count references and force a fresh archive load.
+          p=Path('accepted-good.js')
+          a=p.read_text()
+          a=re.sub(r"senate-julsep-archive\.js\?v=[0-9-]+","senate-julsep-archive.js?v=20260909-1322",a)
+          a=a.replace("['13','14','88','89'].includes(v)) el.textContent='90'","['13','14','88','89','90'].includes(v)) el.textContent='92'")
+          a=a.replace("/\\b(?:13|89)\\s+polls?\\b/i","/\\b(?:13|89|90)\\s+polls?\\b/i")
+          a=a.replace("/\\b(?:13|89)(?=\\s+polls?\\b)/i,'90'","/\\b(?:13|89|90)(?=\\s+polls?\\b)/i,'92'")
+          a=a.replace("if(!['13','89'].includes(t)) continue;","if(!['13','89','90'].includes(t)) continue;")
+          a=a.replace("if(ok) el.textContent='90';","if(ok) el.textContent='92';")
+          p.write_text(a)
+
+          # Bump accepted-good cache key only; preserve the active d-file loader.
+          p=Path('index.html')
+          i=p.read_text()
+          i=re.sub(r'accepted-good\.js\?v=[0-9-]+','accepted-good.js?v=20260909-1322',i)
+          p.write_text(i)
+
+          out=Path('senate-julsep-archive.js').read_text()
+          assert "['2026-09-09','MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44,'RCP']" in out
+          assert "['2026-09-09','ME','Maine','CNN','Troy Jackson',48,'Susan Collins',45,'RCP']" in out
+          assert "setPoll(1,'el-sayed','46.6')" in out and "setPoll(1,'rogers','44.7')" in out
+          assert "candidate1Poll','45.8'" in out and "candidate1Poll','48.2'" in out
+          assert 'function ensureSep9CNNPolls()' in out
+          assert '92 public general-election matchup polls' in out
+          assert 'senate-julsep-archive.js?v=20260909-1322' in Path('accepted-good.js').read_text()
+          assert 'accepted-good.js?v=20260909-1322' in Path('index.html').read_text()
+          PY
+      - name: Commit site update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/add-sep9-cnn-senate-polls.yml
+          git add senate-julsep-archive.js accepted-good.js index.html .github/workflows/add-sep9-cnn-senate-polls.yml
+          git commit -m "Add Sept. 9 CNN Senate polls and refresh averages"
+          git push
