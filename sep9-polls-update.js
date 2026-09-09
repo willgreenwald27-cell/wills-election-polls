@@ -18,12 +18,33 @@
     }catch(e){return false;}
   }
 
+  function applyForecastCalls(){
+    let changed=false;
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.NH){
+        const nh=stateData.NH;
+        if(nh.rating!=='likely-d'){nh.rating='likely-d';changed=true;}
+        if(nh.predictionParty!=='Democrat'){nh.predictionParty='Democrat';changed=true;}
+        if(nh.updated!=='2026-09-09'){nh.updated='2026-09-09';changed=true;}
+      }
+      if(typeof stateData!=='undefined'&&stateData?.MI){
+        const mi=stateData.MI;
+        if(mi.prediction!=='El-Sayed +1.3%'){mi.prediction='El-Sayed +1.3%';changed=true;}
+        if(mi.predictionParty!=='Democrat'){mi.predictionParty='Democrat';changed=true;}
+        if('call' in mi&&mi.call!=='El-Sayed +1.3%'){mi.call='El-Sayed +1.3%';changed=true;}
+        if(mi.updated!=='2026-09-09'){mi.updated='2026-09-09';changed=true;}
+      }
+    }catch(e){}
+    return changed;
+  }
+
   function applyAverages(){
     let changed=false;
     changed=setCandidatePoll('MI','el-sayed','46.6')||changed;
     changed=setCandidatePoll('MI','rogers','44.7')||changed;
     changed=setCandidatePoll('ME','jackson','48.2')||changed;
     changed=setCandidatePoll('ME','collins','45.8')||changed;
+    changed=applyForecastCalls()||changed;
     if(changed&&typeof renderSenate==='function'&&!rendering){
       rendering=true;
       try{renderSenate();}catch(e){}finally{rendering=false;}
