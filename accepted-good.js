@@ -133,6 +133,36 @@
     }
   }
 
+
+function ensureHousePrediction(){
+  const root=document.getElementById('page-home'); if(!root||document.getElementById('housePrediction2026')) return;
+  const shell=root.querySelector('.reference-home-shell')||root.querySelector('.content')||root;
+  const section=document.createElement('section'); section.id='housePrediction2026';
+  section.style.cssText='width:100%;margin:28px 0 10px;display:block';
+  const img=document.createElement('img');
+  img.src='/house-prediction.svg?v=20260908-2208';
+  img.alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.";
+  img.style.cssText='display:block;width:100%;height:auto;border-radius:16px';
+  section.appendChild(img);
+  const metrics=root.querySelector('.reference-metrics');
+  if(metrics) metrics.insertAdjacentElement('afterend',section); else shell.appendChild(section);
+}
+
+function fixAboutPollCount(){
+  const root=document.getElementById('page-about'); if(!root) return;
+  for(const el of leafs(root)){
+    const t=norm(el.textContent); if(!t) continue;
+    if(/\b13\s+polls?\b/i.test(t)){
+      el.textContent=t.replace(/\b13(?=\s+polls?\b)/i,'89');
+      continue;
+    }
+    if(t!=='13') continue;
+    let box=el.parentElement,ok=false;
+    for(let i=0;box&&box!==root&&i<6;i++,box=box.parentElement){if(/poll/i.test(norm(box.textContent))){ok=true;break;}}
+    if(ok) el.textContent='89';
+  }
+}
+
   function enforceMaineData(){
     try{
       if(typeof stateData==='undefined'||!stateData?.ME) return;
@@ -347,7 +377,7 @@
   }
 
   function apply(){
-    addStyle(); buildNav(); ensureArchive(); fixHome(); fixSenate(); activeNav();
+    addStyle(); buildNav(); ensureArchive(); fixHome(); ensureHousePrediction(); fixAboutPollCount(); fixSenate(); activeNav();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
 
