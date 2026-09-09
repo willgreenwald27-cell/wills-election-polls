@@ -96,59 +96,27 @@
 
   function ensureHomeForecastSplit(){
     const root=document.getElementById('page-home'); if(!root) return;
-    const section=document.getElementById('housePrediction2026'); if(!section) return;
-    if(!document.getElementById('homeForecastSplitStyle')){
+
+    if(!document.getElementById('homeForecastRemovedStyle')){
       const st=document.createElement('style');
-      st.id='homeForecastSplitStyle';
-      st.textContent=`
-        #housePrediction2026{margin:28px 0 12px!important;width:100%!important}
-        #homeForecastSplit{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);gap:18px;align-items:stretch;width:100%}
-        #homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0}
-        #homeForecastSplit .house-card{display:flex;align-items:center;justify-content:center;padding:0;background:#f7f9fc}
-        #homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:20px}
-        #homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:340px}
-        #homeForecastSplit .senate-kicker{font:900 12px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#6d7c91;margin-bottom:8px}
-        #homeForecastSplit .senate-title{font:800 clamp(32px,4vw,54px)/1 Georgia,serif;color:#17263d;margin:0 0 22px}
-        #homeForecastSplit .senate-tiebreak{position:absolute;top:18px;right:20px;color:#bd2937;font:900 10px/1.25 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.4px;text-transform:uppercase;text-align:right}
-        #homeForecastSplit .senate-tiebreak strong{display:block;font-size:16px;letter-spacing:.5px;margin-top:3px;color:#bd2937}
-        #homeForecastSplit .senate-numbers{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:end;margin-bottom:16px}
-        #homeForecastSplit .party-block:last-child{text-align:right}
-        #homeForecastSplit .party-label{font:900 15px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.3px;text-transform:uppercase}
-        #homeForecastSplit .party-number{font:900 clamp(58px,7vw,92px)/.9 Georgia,serif;margin-top:7px}
-        #homeForecastSplit .dem{color:#2763b8}.rep{color:#bd2937}
-        #homeForecastSplit .senate-bar{height:24px;border-radius:999px;overflow:hidden;display:flex;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)}
-        #homeForecastSplit .senate-bar .dem{width:50%;background:#2763b8}.senate-bar .rep{width:50%;background:#bd2937}
-        #homeForecastSplit .majority-note{margin-top:10px;font:800 11px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:#6c798b;text-align:center}
-        @media(max-width:760px){
-          #homeForecastSplit{grid-template-columns:1fr;gap:12px}
-          #homeForecastSplit .senate-card{order:1;min-height:300px;padding:24px 20px 22px}
-          #homeForecastSplit .house-card{order:2}
-          #homeForecastSplit .senate-title{font-size:38px;margin-bottom:18px}
-          #homeForecastSplit .senate-tiebreak{top:14px;right:14px;font-size:8px}
-          #homeForecastSplit .senate-tiebreak strong{font-size:13px}
-          #homeForecastSplit .party-number{font-size:64px}
-        }
-      `;
+      st.id='homeForecastRemovedStyle';
+      st.textContent='#page-home #housePrediction2026,#page-home #homeForecastSplit{display:none!important}';
       document.head.appendChild(st);
     }
-    if(section.querySelector('#homeForecastSplit')) return;
-    section.innerHTML=`
-      <div id="homeForecastSplit">
-        <div class="forecast-card house-card">
-          <img src="/house-prediction.svg?v=20260908-2208" alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.">
-        </div>
-        <div class="forecast-card senate-card">
-          <div class="senate-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>
-          <div class="senate-kicker">2026 U.S. Senate</div>
-          <h2 class="senate-title">Will’s Senate Prediction</h2>
-          <div class="senate-numbers">
-            <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">50</div></div>
-            <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">50</div></div>
-          </div>
-          <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
-          <div class="majority-note">51 seats needed for a majority</div>
-        </div>
-      </div>`;
+
+    document.getElementById('homeForecastSplitStyle')?.remove();
+    document.getElementById('homeForecastSplit')?.remove();
+    document.getElementById('housePrediction2026')?.remove();
+
+    for(const img of [...root.querySelectorAll('img')]){
+      const sig=((img.alt||'')+' '+(img.getAttribute('src')||'')).toLowerCase();
+      if(!(/house|senate/.test(sig)&&/prediction|forecast/.test(sig))) continue;
+      let parent=img.parentElement;
+      img.remove();
+      while(parent&&parent!==root&&!norm(parent.textContent)&&parent.children.length===0){
+        const next=parent.parentElement; parent.remove(); parent=next;
+      }
+    }
   }
 
   function removeDuplicateHomeSenatePrediction(){
