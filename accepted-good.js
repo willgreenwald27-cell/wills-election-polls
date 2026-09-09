@@ -53,7 +53,7 @@
     if(document.getElementById('accepted-archive-loader')||document.getElementById('julsepPollArchive')) return;
     const s=document.createElement('script');
     s.id='accepted-archive-loader';
-    s.src='/senate-julsep-archive.js?v=20260908-1236';
+    s.src='/senate-julsep-archive.js?v=20260908-2242';
     document.head.appendChild(s);
   }
 
@@ -126,7 +126,7 @@
       const t=norm(card.textContent).toLowerCase();
       for(const el of leafs(card)){
         const v=norm(el.textContent);
-        if(t.includes('poll')&&t.includes('entered')&&['13','14','88'].includes(v)) el.textContent='89';
+        if(t.includes('poll')&&t.includes('entered')&&['13','14','88','89'].includes(v)) el.textContent='90';
         if(t.includes('toss')&&t.includes('up')&&v==='7') el.textContent='6';
         if(t.includes('latest')&&t.includes('update')&&(/Sep\.? [67], 2026/i.test(v)||v==='2026-09-06'||v==='2026-09-07')) el.textContent='Sep 8, 2026';
       }
@@ -152,14 +152,14 @@ function fixAboutPollCount(){
   const root=document.getElementById('page-about'); if(!root) return;
   for(const el of leafs(root)){
     const t=norm(el.textContent); if(!t) continue;
-    if(/\b13\s+polls?\b/i.test(t)){
-      el.textContent=t.replace(/\b13(?=\s+polls?\b)/i,'89');
+    if(/\b(?:13|89)\s+polls?\b/i.test(t)){
+      el.textContent=t.replace(/\b(?:13|89)(?=\s+polls?\b)/i,'90');
       continue;
     }
-    if(t!=='13') continue;
+    if(!['13','89'].includes(t)) continue;
     let box=el.parentElement,ok=false;
     for(let i=0;box&&box!==root&&i<6;i++,box=box.parentElement){if(/poll/i.test(norm(box.textContent))){ok=true;break;}}
-    if(ok) el.textContent='89';
+    if(ok) el.textContent='90';
   }
 }
 

@@ -1,5 +1,6 @@
 (()=>{
   const POLLS=[
+['2026-09-08','MI','Michigan','Detroit News / Glengariff','Abdul El-Sayed',44,'Mike Rogers',46,'RCP'],
 ['2026-09-07','MN','Minnesota','TIPP**','Peggy Flanagan',44,'Michele Tafoya',42,'RCP'],
 ['2026-09-03','IA','Iowa','Emerson','Ashley Hinson',50,'Josh Turek',45,'RCP'],
 ['2026-09-03','TN','Tennessee','Beacon Center','Bill Hagerty',58,'Marquita Bradshaw',33,'RCP'],
@@ -93,6 +94,7 @@
   const RED='#bd2937';
   let renderingMaine=false;
   let renderingMinnesota=false;
+  let renderingMichigan=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
 
@@ -225,6 +227,37 @@
     select.addEventListener('change',show);show();
   }
 
+  function applyMichiganAverage(){
+    try{
+      if(typeof stateData==='undefined'||!stateData||!stateData.MI) return;
+      const mi=stateData.MI;
+      let changed=false;
+      const setPoll=(slot,last,pct)=>{
+        const name=norm(mi['candidate'+slot]).toLowerCase();
+        if(!name.includes(last)) return;
+        const key='candidate'+slot+'Poll';
+        if(String(mi[key])!==String(pct)){mi[key]=String(pct);changed=true;}
+      };
+      setPoll(1,'el-sayed','46.9'); setPoll(2,'el-sayed','46.9');
+      setPoll(1,'rogers','44.6'); setPoll(2,'rogers','44.6');
+      if(mi.updated!=='2026-09-08'){mi.updated='2026-09-08';changed=true;}
+      if(changed&&typeof renderSenate==='function'&&!renderingMichigan){
+        renderingMichigan=true;
+        try{renderSenate();}finally{renderingMichigan=false;}
+      }
+    }catch(e){console.warn('Michigan polling-average update unavailable',e);}
+  }
+
+  function ensureSep8MichiganPoll(){
+    try{
+      if(typeof polls==='undefined'||!Array.isArray(polls)) return;
+      const exists=polls.some(p=>p&&p.state==='MI'&&p.date==='2026-09-08'&&/Glengariff/i.test(String(p.pollster||'')));
+      if(exists) return;
+      polls.push({date:'2026-09-08',state:'MI',pollster:'Detroit News / Glengariff',sample:'600 likely voters',c1:'Abdul El-Sayed',c1Pct:'44',c2:'Mike Rogers',c2Pct:'46',notes:'RealClearPolling listing · Rogers +2 · ±4% MOE'});
+      if(typeof renderPolls==='function') renderPolls();
+    }catch(e){console.warn('Michigan poll feed update unavailable',e);}
+  }
+
   function applyMinnesotaAverage(){
     try{
       if(typeof stateData==='undefined'||!stateData||!stateData.MN) return;
@@ -275,7 +308,7 @@
     document.head.appendChild(st);
   }
 
-  function apply(){applyMaineCall();applyMinnesotaAverage();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
+  function apply(){applyMaineCall();applyMichiganAverage();applyMinnesotaAverage();ensureSep8MichiganPoll();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
   new MutationObserver(()=>{fixMaineVisibleDetail();ensurePollArchive();}).observe(document.body,{childList:true,subtree:true});
