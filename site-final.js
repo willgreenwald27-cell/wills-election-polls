@@ -169,4 +169,12 @@
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',fixDom);
   window.addEventListener('resize',fixDom);
+
+  window.addEventListener('load',()=>{
+    if(document.querySelector('script[data-sep10-polls]')) return;
+    const s=document.createElement('script');
+    s.src='/sep10-polls-update.js?v=20260910-1004';
+    s.dataset.sep10Polls='1';
+    document.head.appendChild(s);
+  });
 })();
