@@ -1,0 +1,37 @@
+name: Extract polling errors JSON
+on:
+  push:
+    paths:
+      - '.github/workflows/extract-errors-json.yml'
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode embedded site errors
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re,json
+          files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          blob=''.join(Path(f).read_text().strip() for f in files)
+          h=gzip.decompress(base64.b64decode(blob)).decode('utf-8','replace')
+          m=re.search(r"const EMBEDDED_SITE_DATA_B64='([^']+)'",h)
+          if not m:
+            m=re.search(r'EMBEDDED_SITE_DATA_B64\s*=\s*["\']([^"\']+)',h)
+          if not m: raise SystemExit('embedded data constant not found')
+          data=json.loads(base64.b64decode(m.group(1)).decode('utf-8'))
+          errors=data.get('errors',[])
+          Path('errors-current.json').write_text(json.dumps(errors,indent=2))
+          print('errors',len(errors))
+          PY
+      - name: Commit extracted errors
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add errors-current.json
+          git commit -m "Extract current historical polling errors data"
+          git push
