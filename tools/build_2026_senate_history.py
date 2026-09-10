@@ -76,7 +76,7 @@ for ab,spec in TARGET.items():
             continue
         w,ru=oi['winner'],oi['runner']
         polls=[]; source=''; method=''
-        if yr<=2014:
+        if yr<2006:
             candidates=[r for r in stan if r.get('state')==ab and str(r.get('year'))==str(yr) and r.get('election')=='Sen']
             dates=[]
             for r in candidates:
@@ -122,7 +122,7 @@ records.sort(key=lambda r:(r['stateName'],r['year']))
 scored=[r for r in records if r['status'] in {'HIT','MISS'}]
 hits=[r for r in scored if r['status']=='HIT']; misses=[r for r in scored if r['status']=='MISS']
 stats={'states':len(TARGET),'seatCycles':len(records),'scored':len(scored),'hits':len(hits),'misses':len(misses),'wrongWinner':sum(bool(r.get('wrongWinner')) for r in scored),'noPolling':sum(r['status']=='NO POLLING' for r in records),'avgAbsError':round(statistics.mean(r['error'] for r in scored),1) if scored else None,'medianAbsError':round(statistics.median(r['error'] for r in scored),1) if scored else None,'swingMisses':sum(r['status']=='MISS' and r['swing2026'] for r in records),'hitThreshold':3.0}
-payload={'generated':'2026-09-09','scope':'Only Senate seats on the ballot in 2026; four previous cycles for the same seat class.','targetStates':list(TARGET),'swingStates':sorted(SWING),'stats':stats,'records':records,'methodNote':'Older cycles use the Stanford final-three-week dataset; 2016–2022 use RCP-listed polls ending in the final 21 days. Georgia 2020 uses the published RCP Class II runoff aggregate so the two simultaneous Georgia races are not mixed.','sources':[{'name':'Stanford Policy Lab polling-errors','url':'https://github.com/stanford-policylab/polling-errors','note':'Final-three-week polling data through 2014.'},{'name':'Jack Whitcomb / RealClearPolling Senate polls','url':'https://github.com/Jack-Whitcomb/All-US-Senate-polls-2006-2024','note':'RCP-listed Senate polls used for 2016–2022.'},{'name':'FiveThirtyEight election-results','url':'https://github.com/fivethirtyeight/election-results','note':'Candidate names, seat class and official results.'}]}
+payload={'generated':'2026-09-09','scope':'Only Senate seats on the ballot in 2026; four previous cycles for the same seat class.','targetStates':list(TARGET),'swingStates':sorted(SWING),'stats':stats,'records':records,'methodNote':'2002/2004 cycles use the Stanford final-three-week dataset; 2008–2022 use RCP-listed polls ending in the final 21 days. Georgia 2020 uses the published RCP Class II runoff aggregate so the two simultaneous Georgia races are not mixed.','sources':[{'name':'Stanford Policy Lab polling-errors','url':'https://github.com/stanford-policylab/polling-errors','note':'Final-three-week polling data used for the 2002/2004 cycles.'},{'name':'Jack Whitcomb / RealClearPolling Senate polls','url':'https://github.com/Jack-Whitcomb/All-US-Senate-polls-2006-2024','note':'RCP-listed Senate polls used for 2008–2022.'},{'name':'FiveThirtyEight election-results','url':'https://github.com/fivethirtyeight/election-results','note':'Candidate names, seat class and official results.'}]}
 Path('senate-error-history-data.json').write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n')
 
 maine=[r for r in records if r['state']=='ME']
