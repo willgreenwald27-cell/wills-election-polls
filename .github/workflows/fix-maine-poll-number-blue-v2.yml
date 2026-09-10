@@ -1,0 +1,51 @@
+name: Fix Maine Democratic poll number color v2
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-maine-poll-number-blue-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch Maine hover-card colors
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('senate-color-polish.js')
+          s=p.read_text()
+
+          old1="""        row.querySelectorAll('*').forEach(el=>{\n          if(!el.children.length) el.style.setProperty('color','#fff','important');\n        });"""
+          new1="""        row.querySelectorAll('*').forEach(el=>{\n          if(el.children.length) return;\n          const v=norm(el.textContent);\n          el.style.setProperty('color',/^48\\.2%$/.test(v)?BLUE:'#fff','important');\n        });"""
+          if old1 in s:
+              s=s.replace(old1,new1,1)
+
+          old2="if(ok) el.style.setProperty('color','#fff','important');"
+          new2="if(ok) el.style.setProperty('color',/^48\\.2%$/.test(t)?BLUE:'#fff','important');"
+          if old2 in s:
+              s=s.replace(old2,new2,1)
+
+          if "^48\\.2%$/.test(v)?BLUE:'#fff'" not in s or "^48\\.2%$/.test(t)?BLUE:'#fff'" not in s:
+              raise SystemExit('Maine color patch did not apply')
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'senate-color-polish\.js\?v=[0-9-]+','senate-color-polish.js?v=20260909-2239',i)
+          if n!=1:
+              raise SystemExit(f'expected one senate-color-polish cache key, found {n}')
+          idx.write_text(i)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-maine-poll-number-blue-v2.yml .github/workflows/fix-maine-poll-number-blue.yml
+          git add senate-color-polish.js index.html .github/workflows/fix-maine-poll-number-blue-v2.yml .github/workflows/fix-maine-poll-number-blue.yml || true
+          git commit -m "Fix Maine Democratic poll percentage color"
+          git push
