@@ -27,6 +27,16 @@
         if(nh.predictionParty!=='Democrat'){nh.predictionParty='Democrat';changed=true;}
         if(nh.updated!=='2026-09-09'){nh.updated='2026-09-09';changed=true;}
       }
+      if(typeof stateData!=='undefined'&&stateData?.OH){
+        const oh=stateData.OH;
+        for(const slot of [1,2]){
+          const name=norm(oh['candidate'+slot]).toLowerCase();
+          const key='candidate'+slot+'Odds';
+          if(name.includes('husted')&&String(oh[key])!=='55'){oh[key]='55';changed=true;}
+          if(name.includes('brown')&&String(oh[key])!=='45'){oh[key]='45';changed=true;}
+        }
+        if(oh.updated!=='2026-09-09'){oh.updated='2026-09-09';changed=true;}
+      }
       if(typeof stateData!=='undefined'&&stateData?.MI){
         const mi=stateData.MI;
         if(mi.prediction!=='El-Sayed +1.3%'){mi.prediction='El-Sayed +1.3%';changed=true;}
