@@ -1,0 +1,48 @@
+name: Inspect polling errors data
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-polling-errors-data.yml'
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode site and inspect polling-errors implementation
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64,gzip,re
+          files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          blob=''.join(Path(f).read_text().strip() for f in files)
+          h=gzip.decompress(base64.b64decode(blob)).decode('utf-8','replace')
+          out=[]
+          out.append(f'HTML_LENGTH={len(h)}')
+          pats=[
+            r'page-errors',r'renderErrors',r'pollingErrors',r'errorData',r'errorsData',
+            r'Past Polling Errors',r'PAST POLLING ERRORS',r'error-race',r'poll average',
+            r'pollAvg',r'polling average',r'final margin',r'actual margin'
+          ]
+          seen=[]
+          for pat in pats:
+            for m in re.finditer(pat,h,re.I):
+              a=max(0,m.start()-2200); b=min(len(h),m.end()+4200)
+              chunk=h[a:b]
+              key=chunk[:300]
+              if key in seen: continue
+              seen.append(key)
+              out.append('\n\n===== MATCH '+pat+' @ '+str(m.start())+' =====\n'+chunk)
+              if len(seen)>=40: break
+            if len(seen)>=40: break
+          Path('polling-errors-diagnostic.txt').write_text('\n'.join(out))
+          PY
+      - name: Commit diagnostic
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add polling-errors-diagnostic.txt
+          git commit -m "Inspect polling errors implementation"
+          git push
