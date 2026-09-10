@@ -52,12 +52,12 @@
     let changed=false;
     changed=setCandidatePoll('MI','el-sayed','46.6')||changed;
     changed=setCandidatePoll('MI','rogers','44.7')||changed;
-    changed=setCandidatePoll('ME','jackson','48.2')||changed;
-    changed=setCandidatePoll('ME','collins','45.8')||changed;
-    changed=setCandidatePoll('TX','talarico','47.4')||changed;
-    changed=setCandidatePoll('TX','paxton','44.6')||changed;
+    changed=setCandidatePoll('ME','jackson','48.3')||changed;
+    changed=setCandidatePoll('ME','collins','46.0')||changed;
     changed=setCandidatePoll('TX','talarico','47.3')||changed;
     changed=setCandidatePoll('TX','paxton','44.9')||changed;
+    changed=setCandidatePoll('NC','cooper','50.9')||changed;
+    changed=setCandidatePoll('NC','whatley','42.9')||changed;
     changed=applyForecastCalls()||changed;
     if(changed&&typeof renderSenate==='function'&&!rendering){
       rendering=true;
@@ -76,6 +76,9 @@
       add({date:'2026-09-09',state:'MI',pollster:'CNN',sample:'',c1:'Abdul El-Sayed',c1Pct:'47',c2:'Mike Rogers',c2Pct:'44',notes:'RealClearPolling listing · El-Sayed +3'});
       add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});
       add({date:'2026-09-08',state:'TX',pollster:'Univision',sample:'1,000 RV',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'43',notes:'N+ Univision/YouGov · Aug. 27–Sep. 4 · Talarico +5'});
+      add({date:'2026-09-09',state:'TX',pollster:'Fabrizio/Anzalone',sample:'',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'44',notes:'RealClearPolling listing · Talarico +4'});
+      add({date:'2026-09-09',state:'ME',pollster:'YouGov',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'44',notes:'RealClearPolling listing · Jackson +4'});
+      add({date:'2026-09-09',state:'NC',pollster:'Elon University*',sample:'',c1:'Roy Cooper',c1Pct:'49',c2:'Michael Whatley',c2Pct:'38',notes:'RealClearPolling listing · Cooper +11'});
       if(changed&&typeof renderPolls==='function') renderPolls();
     }catch(e){}
   }
@@ -100,8 +103,11 @@
     if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Univision','James Talarico',48,'Ken Paxton',43,'Sep 8'));
     if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','CNN','Troy Jackson',48,'Susan Collins',45));
     if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));
+    if(filter==='ALL'||filter==='NC') list.prepend(row('NC','North Carolina','Elon University*','Roy Cooper',49,'Michael Whatley',38));
+    if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','YouGov','Troy Jackson',48,'Susan Collins',44));
+    if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Fabrizio/Anzalone','James Talarico',48,'Ken Paxton',44));
     const sub=sec.querySelector('.jp-sub');
-    if(sub) sub.textContent='93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';
+    if(sub) sub.textContent='96 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';
     const count=sec.querySelector('.jp-count');
     if(count){
       const total=list.querySelectorAll('.jp-row').length;
@@ -255,7 +261,7 @@ function updateElectionCountdown(){
       for(const el of home.querySelectorAll('*')){
         if(el.children.length) continue;
         const t=norm(el.textContent);
-        if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';
+        if(/^(?:90|92|93|95)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='96';
         if(/Sep\.? 8, 2026/i.test(t)||t==='2026-09-08'){
           if(/latest|update/i.test(norm(el.parentElement?.textContent))) el.textContent='Sep 9, 2026';
         }
@@ -266,8 +272,8 @@ function updateElectionCountdown(){
       for(const el of about.querySelectorAll('*')){
         if(el.children.length) continue;
         const t=norm(el.textContent);
-        if(/\b(?:90|92)\s+polls?\b/i.test(t)) el.textContent=t.replace(/\b(?:90|92)(?=\s+polls?\b)/i,'93');
-        else if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';
+        if(/\b(?:90|92|93|95)\s+polls?\b/i.test(t)) el.textContent=t.replace(/\b(?:90|92|93|95)(?=\s+polls?\b)/i,'96');
+        else if(/^(?:90|92|93|95)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='96';
       }
     }
   }
