@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Rebuild trigger: 2026-seat historical polling database
 import csv, io, json, re, statistics, urllib.request
 from datetime import datetime, date, timedelta
 from pathlib import Path
@@ -77,7 +78,6 @@ for ab,spec in TARGET.items():
         polls=[]; source=''; method=''
         if yr<=2014:
             candidates=[r for r in stan if r.get('state')==ab and str(r.get('year'))==str(yr) and r.get('election')=='Sen']
-            # For runoff states, Stanford includes a later electionDate; use the deciding election.
             dates=[]
             for r in candidates:
                 try: dates.append(datetime.strptime(r.get('electionDate',''),'%Y-%m-%d').date())
@@ -90,7 +90,6 @@ for ab,spec in TARGET.items():
             source='Stanford Policy Lab / FiveThirtyEight-Pollster final-three-week polling dataset'
             method='Average of qualifying Senate polls in the final three weeks of the deciding election.'
         elif ab=='GA' and yr==2020:
-            # RCP published runoff aggregate for the Class II Ossoff-Perdue contest; do not mix in the simultaneous special race.
             if 'ossoff' in w['name'].lower(): polls=[(49.3,48.8,'RCP runoff aggregate')]
             elif 'ossoff' in ru['name'].lower(): polls=[(48.8,49.3,'RCP runoff aggregate')]
             source='RealClearPolitics 2020 Georgia Class II runoff aggregate'
