@@ -1,0 +1,68 @@
+name: Fix homepage split and Texas average
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-home-layout-and-texas-average.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply homepage and Texas fixes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          # Texas RCP average: Talarico 47.4, Paxton 44.6.
+          anchor="    changed=setCandidatePoll('ME','collins','45.8')||changed;\n"
+          tx="    changed=setCandidatePoll('TX','talarico','47.4')||changed;\n    changed=setCandidatePoll('TX','paxton','44.6')||changed;\n"
+          if tx not in s:
+              if anchor not in s:
+                  raise SystemExit('poll average anchor missing')
+              s=s.replace(anchor,anchor+tx,1)
+
+          # Make House and Senate true equal halves with identical card aspect ratio.
+          s=s.replace("#homeForecastSplit{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);gap:18px;align-items:stretch;width:100%}",
+                      "#homeForecastSplit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch;width:100%}")
+          s=s.replace("#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0}",
+                      "#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0;aspect-ratio:1672/941;box-sizing:border-box}")
+          s=s.replace("#homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:340px}",
+                      "#homeForecastSplit .senate-card{position:relative;padding:24px 26px 22px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:0}")
+          s=s.replace("#homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:20px}",
+                      "#homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:20px}")
+          s=s.replace("#homeForecastSplit .senate-title{font:800 clamp(32px,4vw,54px)/1 Georgia,serif;color:#17263d;margin:0 0 22px}",
+                      "#homeForecastSplit .senate-title{font:800 clamp(28px,3.2vw,46px)/1 Georgia,serif;color:#17263d;margin:0 0 18px}")
+          s=s.replace("#homeForecastSplit .party-number{font:900 clamp(58px,7vw,92px)/.9 Georgia,serif;margin-top:7px}",
+                      "#homeForecastSplit .party-number{font:900 clamp(48px,5.7vw,78px)/.9 Georgia,serif;margin-top:7px}")
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2126',i)
+          if n!=1:
+              raise SystemExit(f'expected one sep9 updater cache key, found {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          assert "setCandidatePoll('TX','talarico','47.4')" in out
+          assert "setCandidatePoll('TX','paxton','44.6')" in out
+          assert 'grid-template-columns:repeat(2,minmax(0,1fr))' in out
+          assert 'aspect-ratio:1672/941' in out
+          assert 'sep9-polls-update.js?v=20260909-2126' in idx.read_text()
+          PY
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-home-layout-and-texas-average.yml
+          git add sep9-polls-update.js index.html .github/workflows/fix-home-layout-and-texas-average.yml
+          git commit -m "Fix homepage forecast sizing and Texas polling average"
+          git push
