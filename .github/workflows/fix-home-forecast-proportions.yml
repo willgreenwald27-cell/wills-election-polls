@@ -1,0 +1,70 @@
+name: Fix homepage forecast proportions
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-home-forecast-proportions.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make House and Senate cards true equal halves
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          replacements = {
+            "#homeForecastSplit{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);gap:18px;align-items:stretch;width:100%}":
+            "#homeForecastSplit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch;width:100%}",
+            "#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0}":
+            "#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0;aspect-ratio:16/9;box-sizing:border-box}",
+            "#homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:20px}":
+            "#homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:cover;border-radius:20px}",
+            "#homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:340px}":
+            "#homeForecastSplit .senate-card{position:relative;padding:24px 28px 22px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;height:100%;box-sizing:border-box}",
+            "#homeForecastSplit .senate-title{font:800 clamp(32px,4vw,54px)/1 Georgia,serif;color:#17263d;margin:0 0 22px}":
+            "#homeForecastSplit .senate-title{font:800 clamp(28px,3.2vw,48px)/1 Georgia,serif;color:#17263d;margin:0 0 18px}",
+            "#homeForecastSplit .party-number{font:900 clamp(58px,7vw,92px)/.9 Georgia,serif;margin-top:7px}":
+            "#homeForecastSplit .party-number{font:900 clamp(48px,5.5vw,78px)/.9 Georgia,serif;margin-top:7px}",
+            "#homeForecastSplit .senate-bar{height:24px;border-radius:999px;overflow:hidden;display:flex;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)}":
+            "#homeForecastSplit .senate-bar{height:20px;border-radius:999px;overflow:hidden;display:flex;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)}",
+            "#homeForecastSplit .senate-card{order:1;min-height:300px;padding:24px 20px 22px}":
+            "#homeForecastSplit .senate-card{order:1;padding:22px 20px 20px}"
+          }
+
+          for old,new in replacements.items():
+            if old not in s:
+              raise SystemExit('missing expected CSS snippet: '+old[:90])
+            s=s.replace(old,new,1)
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2130',i)
+          if n!=1:
+            raise SystemExit(f'expected one sep9 updater cache key, found {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          assert 'grid-template-columns:minmax(0,1fr) minmax(0,1fr)' in out
+          assert 'aspect-ratio:16/9' in out
+          assert 'object-fit:cover' in out
+          assert 'min-height:340px' not in out
+          assert 'sep9-polls-update.js?v=20260909-2130' in idx.read_text()
+          PY
+      - name: Commit proportion fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-home-forecast-proportions.yml
+          git add sep9-polls-update.js index.html .github/workflows/fix-home-forecast-proportions.yml
+          git commit -m "Match House and Senate homepage forecast proportions"
+          git push
