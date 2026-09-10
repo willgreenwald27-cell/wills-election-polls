@@ -1,0 +1,44 @@
+name: Refresh House 226-206 forecast
+on:
+  push:
+    paths:
+      - '.github/workflows/refresh-house-226-206.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh House graphic references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          s=s.replace('/house-prediction.svg?v=20260908-2208','/house-prediction.svg?v=20260909-2240')
+          s=s.replace('Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.','Democrats 226 seats, Republicans 206 seats; 218 needed for a majority.')
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2240',i)
+          if n!=1:
+              raise SystemExit(f'expected one updater cache key, found {n}')
+          idx.write_text(i)
+
+          assert 'house-prediction.svg?v=20260909-2240' in p.read_text()
+          assert 'Democrats 226 seats, Republicans 206 seats' in p.read_text()
+          assert 'sep9-polls-update.js?v=20260909-2240' in idx.read_text()
+          PY
+      - name: Commit refresh
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/refresh-house-226-206.yml
+          git add sep9-polls-update.js index.html .github/workflows/refresh-house-226-206.yml
+          git commit -m "Show House prediction as 226-206"
+          git push
