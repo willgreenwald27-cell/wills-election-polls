@@ -1,0 +1,84 @@
+name: Fix homepage forecast layout and Maine colors
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-home-layout-maine-colors.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply homepage and Maine fixes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # 1) Make House and Senate forecast cards exactly 50/50 with the same aspect ratio.
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          old='''#homeForecastSplit{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);gap:18px;align-items:stretch;width:100%}'''
+          new='''#homeForecastSplit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch;width:100%}'''
+          if old in s:
+              s=s.replace(old,new,1)
+          elif new not in s:
+              raise SystemExit('home grid anchor missing')
+
+          old='''#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0}'''
+          new='''#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0;aspect-ratio:1672/941}'''
+          if old in s:
+              s=s.replace(old,new,1)
+          elif new not in s:
+              raise SystemExit('forecast-card anchor missing')
+
+          old='''#homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:340px}'''
+          new='''#homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:0}'''
+          if old in s:
+              s=s.replace(old,new,1)
+          elif new not in s:
+              raise SystemExit('senate-card anchor missing')
+
+          # Keep the same width/height ratio when stacked on mobile too.
+          s=s.replace('''#homeForecastSplit .senate-card{order:1;min-height:300px;padding:24px 20px 22px}''','''#homeForecastSplit .senate-card{order:1;min-height:0;padding:24px 20px 22px}''',1)
+          p.write_text(s)
+
+          # 2) Maine drawer: Democrat label white, percentage blue.
+          m=Path('mobile-home-repair.js')
+          ms=m.read_text()
+          if 'maine-democrat-color-swap-v1' not in ms:
+              anchor="""    const bar=drawer.querySelector('.oddsbar');\n"""
+              if anchor not in ms:
+                  raise SystemExit('mobile color anchor missing')
+              block="""    // maine-democrat-color-swap-v1: on Maine, keep the Democrat label white and the poll percentage blue.\n    if(/\\bMaine\\b/i.test(norm(drawer.textContent))){\n      for(const line of lines){\n        const partyEl=line.querySelector('.candidate-party');\n        if(!partyEl||!/democrat/i.test(norm(partyEl.textContent))) continue;\n        const pctEl=line.querySelector('.candidate-metrics b');\n        partyEl.style.setProperty('color','#fff','important');\n        if(pctEl) pctEl.style.setProperty('color',DEM,'important');\n      }\n    }\n\n"""
+              ms=ms.replace(anchor,block+anchor,1)
+          m.write_text(ms)
+
+          # 3) Cache-bust only the two changed scripts without touching the payload files.
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n1=re.subn(r'sep9-polls-update\\.js\\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2211',i)
+          i,n2=re.subn(r'mobile-home-repair\\.js\\?v=[0-9-]+','mobile-home-repair.js?v=20260909-2211',i)
+          if n1!=1 or n2!=1:
+              raise SystemExit(f'cache key counts sep9={n1}, mobile={n2}')
+          idx.write_text(i)
+
+          # Safety validation: preserve the known-good compressed payload loader.
+          out=idx.read_text()
+          exact="['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']"
+          assert exact in out
+          assert 'document.open();document.write(h);document.close()' in out
+          assert 'grid-template-columns:minmax(0,1fr) minmax(0,1fr)' in p.read_text()
+          assert 'aspect-ratio:1672/941' in p.read_text()
+          assert 'maine-democrat-color-swap-v1' in m.read_text()
+          PY
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-home-layout-maine-colors.yml
+          git add sep9-polls-update.js mobile-home-repair.js index.html .github/workflows/fix-home-layout-maine-colors.yml
+          git commit -m "Fix homepage forecast sizing and Maine Democrat colors"
+          git push
