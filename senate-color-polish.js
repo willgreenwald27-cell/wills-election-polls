@@ -33,7 +33,9 @@
       const t=norm(row.textContent);
       if(/Troy Jackson/i.test(t)&&/48\.2%?/.test(t)&&!/Susan Collins/i.test(t)){
         row.querySelectorAll('*').forEach(el=>{
-          if(!el.children.length) el.style.setProperty('color','#fff','important');
+          if(el.children.length) return;
+          const v=norm(el.textContent);
+          el.style.setProperty('color',/^48\.2%$/.test(v)?BLUE:'#fff','important');
         });
         if(!row.children.length) row.style.setProperty('color','#fff','important');
         break;
@@ -47,7 +49,7 @@
           const tx=norm(p.textContent);
           if(/Maine/i.test(tx)&&/Susan Collins/i.test(tx)){ok=true;break;}
         }
-        if(ok) el.style.setProperty('color','#fff','important');
+        if(ok) el.style.setProperty('color',/^48\.2%$/.test(t)?BLUE:'#fff','important');
       }
     }
   }
