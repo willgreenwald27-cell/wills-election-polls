@@ -1,0 +1,104 @@
+name: Add Sept 9 screenshot Senate polls v3
+on:
+  push:
+    paths:
+      - '.github/workflows/add-sep9-screenshot-polls-v3.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch polls and averages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          # Refresh map averages.
+          s=re.sub(r"changed=setCandidatePoll\('ME','jackson','[^']+'\)\|\|changed;", "changed=setCandidatePoll('ME','jackson','48.3')||changed;", s)
+          s=re.sub(r"changed=setCandidatePoll\('ME','collins','[^']+'\)\|\|changed;", "changed=setCandidatePoll('ME','collins','46.0')||changed;", s)
+          s=re.sub(r"^\s*changed=setCandidatePoll\('TX','(?:talarico|paxton)','[^']+'\)\|\|changed;\n", "", s, flags=re.M)
+          s=re.sub(r"^\s*changed=setCandidatePoll\('NC','(?:cooper|whatley)','[^']+'\)\|\|changed;\n", "", s, flags=re.M)
+          anchor="    changed=setCandidatePoll('ME','collins','46.0')||changed;\n"
+          if anchor not in s:
+              raise SystemExit('average anchor missing')
+          s=s.replace(anchor,anchor+
+            "    changed=setCandidatePoll('TX','talarico','47.3')||changed;\n"
+            "    changed=setCandidatePoll('TX','paxton','44.9')||changed;\n"
+            "    changed=setCandidatePoll('NC','cooper','50.9')||changed;\n"
+            "    changed=setCandidatePoll('NC','whatley','42.9')||changed;\n",1)
+
+          # Add the three Sep. 9 polls to New Polls.
+          native_anchor="      add({date:'2026-09-08',state:'TX',pollster:'Univision',sample:'1,000 RV',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'43',notes:'N+ Univision/YouGov · Aug. 27–Sep. 4 · Talarico +5'});\n"
+          native_block=(
+            "      add({date:'2026-09-09',state:'TX',pollster:'Fabrizio/Anzalone',sample:'',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'44',notes:'RealClearPolling listing · Talarico +4'});\n"
+            "      add({date:'2026-09-09',state:'ME',pollster:'YouGov',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'44',notes:'RealClearPolling listing · Jackson +4'});\n"
+            "      add({date:'2026-09-09',state:'NC',pollster:'Elon University*',sample:'',c1:'Roy Cooper',c1Pct:'49',c2:'Michael Whatley',c2Pct:'38',notes:'RealClearPolling listing · Cooper +11'});\n"
+          )
+          if "pollster:'Fabrizio/Anzalone'" not in s:
+              if native_anchor not in s:
+                  raise SystemExit('native poll anchor missing')
+              s=s.replace(native_anchor,native_anchor+native_block,1)
+
+          # Add matching rows to the archive-style New Polls feed.
+          archive_anchor="    if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));\n"
+          archive_block=(
+            "    if(filter==='ALL'||filter==='NC') list.prepend(row('NC','North Carolina','Elon University*','Roy Cooper',49,'Michael Whatley',38));\n"
+            "    if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','YouGov','Troy Jackson',48,'Susan Collins',44));\n"
+            "    if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Fabrizio/Anzalone','James Talarico',48,'Ken Paxton',44));\n"
+          )
+          if "Fabrizio/Anzalone','James Talarico',48" not in s:
+              if archive_anchor not in s:
+                  raise SystemExit('archive anchor missing')
+              s=s.replace(archive_anchor,archive_anchor+archive_block,1)
+
+          s=re.sub(r"\d+ public general-election matchup polls and snapshots from July 7 through September 9", "96 public general-election matchup polls and snapshots from July 7 through September 9", s, count=1)
+
+          # Keep displayed total in sync where that legacy count is still visible.
+          s=s.replace("if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';",
+                      "if(/^(?:90|92|93|95)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='96';")
+          s=s.replace("if(/\\b(?:90|92)\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b(?:90|92)(?=\\s+polls?\\b)/i,'93');",
+                      "if(/\\b(?:90|92|93|95)\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b(?:90|92|93|95)(?=\\s+polls?\\b)/i,'96');")
+          s=s.replace("else if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';",
+                      "else if(/^(?:90|92|93|95)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='96';")
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260910-1023',i)
+          if n!=1:
+              raise SystemExit(f'expected one updater cache key, got {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          required=[
+            "pollster:'Fabrizio/Anzalone'",
+            "pollster:'YouGov'",
+            "pollster:'Elon University*'",
+            "setCandidatePoll('TX','talarico','47.3')",
+            "setCandidatePoll('TX','paxton','44.9')",
+            "setCandidatePoll('ME','jackson','48.3')",
+            "setCandidatePoll('ME','collins','46.0')",
+            "setCandidatePoll('NC','cooper','50.9')",
+            "setCandidatePoll('NC','whatley','42.9')",
+            "96 public general-election matchup polls"
+          ]
+          for x in required: assert x in out, x
+          assert out.count("setCandidatePoll('TX','talarico'")==1
+          assert out.count("setCandidatePoll('TX','paxton'")==1
+          PY
+      - name: Commit update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/add-sep9-screenshot-polls-v3.yml
+          git add sep9-polls-update.js index.html .github/workflows/add-sep9-screenshot-polls-v3.yml
+          git commit -m "Add Sept 9 TX ME NC polls and refresh Senate averages"
+          git push
