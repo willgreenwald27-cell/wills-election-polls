@@ -42,6 +42,18 @@
       return color;
     });
 
+    // Maine-specific display fix: percentage stays Democratic blue, but the word
+    // "Democrat" is white on the candidate card.
+    if(/\bMaine\b/i.test(norm(drawer.textContent))){
+      for(const line of lines){
+        const partyEl=line.querySelector('.candidate-party');
+        if(!partyEl||!/democrat/i.test(norm(partyEl.textContent))) continue;
+        const pctEl=line.querySelector('.candidate-metrics b');
+        partyEl.style.setProperty('color','#fff','important');
+        if(pctEl) pctEl.style.setProperty('color',DEM,'important');
+      }
+    }
+
     const bar=drawer.querySelector('.oddsbar');
     if(bar){
       const a=bar.querySelector('.oddsbar-a');
