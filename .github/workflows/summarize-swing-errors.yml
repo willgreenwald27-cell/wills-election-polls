@@ -1,0 +1,41 @@
+name: Summarize swing-state polling errors
+on:
+  push:
+    paths:
+      - '.github/workflows/summarize-swing-errors.yml'
+permissions:
+  contents: write
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build swing-state summary
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          target=['Iowa','Alaska','Texas','Maine','New Hampshire','Georgia','North Carolina','Ohio','Nebraska','Michigan']
+          data=json.loads(Path('errors-current.json').read_text())
+          out=[]
+          for state in target:
+            rows=[x for x in data if x.get('state')==state and not x.get('pending')]
+            rows.sort(key=lambda x:int(x.get('year') or 0),reverse=True)
+            out.append(f'## {state} ({len(rows)} races)')
+            for x in rows:
+              p1=float(x['poll1']);p2=float(x['poll2']);a1=float(x['actual1']);a2=float(x['actual2'])
+              pl=x['c1'] if p1>p2 else x['c2'] if p2>p1 else 'TIE'
+              aw=x['c1'] if a1>a2 else x['c2'] if a2>a1 else 'TIE'
+              status='HIT' if pl==aw else 'MISS'
+              out.append(f"{x['year']} | {status} | poll {x['c1']} {p1:.1f}, {x['c2']} {p2:.1f} | result {x['c1']} {a1:.2f}, {x['c2']} {a2:.2f} | {x.get('source','')}")
+            out.append('')
+          Path('swing-errors-summary.txt').write_text('\n'.join(out))
+          PY
+      - name: Commit summary
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add swing-errors-summary.txt
+          git commit -m "Summarize swing-state polling errors"
+          git push
