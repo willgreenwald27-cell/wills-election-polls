@@ -129,8 +129,13 @@
       #page-home #housePrediction2026{margin:28px 0 12px!important;width:100%!important;display:block!important}
       #page-home #homeForecastSplit{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important;width:100%!important}
       #page-home #homeForecastSplit .forecast-card{border:1px solid #dde3ec!important;border-radius:20px!important;background:#fff!important;box-shadow:0 10px 28px rgba(20,34,53,.08)!important;overflow:hidden!important;min-width:0!important;aspect-ratio:1672/941!important;box-sizing:border-box!important}
-      #page-home #homeForecastSplit .house-card{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;background:#f7f9fc!important}
-      #page-home #homeForecastSplit .house-card img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;border-radius:20px!important}
+      #page-home #homeForecastSplit .house-card{position:relative!important;padding:20px 22px!important;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;height:100%!important;box-sizing:border-box!important}
+      #page-home #homeForecastSplit .house-card .senate-title{font-size:clamp(22px,2.55vw,38px)!important}
+      #page-home #homeForecastSplit .house-card .party-number{font-size:clamp(44px,4.8vw,68px)!important}
+      #page-home #homeForecastSplit .house-bar{position:relative!important}
+      #page-home #homeForecastSplit .house-bar .dem{width:52.4138%!important;background:#2763b8!important}
+      #page-home #homeForecastSplit .house-bar .rep{width:47.5862%!important;background:#bd2937!important}
+      #page-home #homeForecastSplit .house-majority-marker{position:absolute!important;left:50.1149%!important;top:-5px!important;width:2px!important;height:28px!important;background:#17263d!important;transform:translateX(-1px)!important;opacity:.8!important}
       #page-home #homeForecastSplit .senate-card{position:relative!important;padding:20px 22px!important;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:0!important}
       #page-home #homeForecastSplit .senate-kicker{font:900 10px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#6d7c91!important;margin-bottom:6px!important}
       #page-home #homeForecastSplit .senate-title{font:800 clamp(25px,3vw,42px)/1 Georgia,serif!important;color:#17263d!important;margin:0 0 14px!important}
@@ -147,7 +152,7 @@
       @media(max-width:760px){
         #page-home #homeForecastSplit{grid-template-columns:1fr!important;gap:12px!important}
         #page-home #homeForecastSplit .senate-card{order:1!important;padding:18px!important}
-        #page-home #homeForecastSplit .house-card{order:2!important}
+        #page-home #homeForecastSplit .house-card{order:2!important;padding:18px!important}
         #page-home #homeForecastSplit .senate-title{font-size:30px!important;margin-bottom:12px!important}
         #page-home #homeForecastSplit .senate-tiebreak{top:12px!important;right:12px!important;font-size:7px!important}
         #page-home #homeForecastSplit .senate-tiebreak strong{font-size:11px!important}
@@ -159,7 +164,14 @@
       section.innerHTML=`
         <div id="homeForecastSplit">
           <div class="forecast-card house-card">
-            <img src="/house-prediction.svg?v=20260908-2208" alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.">
+            <div class="senate-kicker">2026 U.S. House</div>
+            <h2 class="senate-title">Will’s House of Reps Prediction</h2>
+            <div class="senate-numbers">
+              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">228</div></div>
+              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">207</div></div>
+            </div>
+            <div class="senate-bar house-bar" aria-label="House prediction: 228 Democrats and 207 Republicans"><div class="dem"></div><div class="rep"></div><div class="house-majority-marker" aria-hidden="true"></div></div>
+            <div class="majority-note">218 seats needed for a majority</div>
           </div>
           <div class="forecast-card senate-card">
             <div class="senate-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>
