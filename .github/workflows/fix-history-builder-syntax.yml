@@ -1,0 +1,33 @@
+name: Fix Senate history builder syntax
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-history-builder-syntax.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix builder and validate Python
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tools/build_2026_senate_history.py')
+          s=p.read_text()
+          old="jack=list(csv.DictReader(io.StringIO(get(JACK)))"
+          new="jack=list(csv.DictReader(io.StringIO(get(JACK))))"
+          if old not in s:
+              raise SystemExit('expected syntax target not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          python3 -m py_compile tools/build_2026_senate_history.py
+      - name: Commit fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-history-builder-syntax.yml
+          git add tools/build_2026_senate_history.py .github/workflows/fix-history-builder-syntax.yml
+          git commit -m "Fix Senate history builder syntax"
+          git push
