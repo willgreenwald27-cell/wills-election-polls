@@ -133,8 +133,9 @@
       #page-home #homeForecastSplit .house-card .senate-title{font-size:clamp(22px,2.55vw,38px)!important}
       #page-home #homeForecastSplit .house-card .party-number{font-size:clamp(44px,4.8vw,68px)!important}
       #page-home #homeForecastSplit .house-bar{position:relative!important}
-      #page-home #homeForecastSplit .house-bar .dem{width:52.4138%!important;background:#2763b8!important}
-      #page-home #homeForecastSplit .house-bar .rep{width:47.5862%!important;background:#bd2937!important}
+      #page-home #homeForecastSplit .house-bar .dem{width:51.9540%!important;background:#2763b8!important}
+      #page-home #homeForecastSplit .house-bar .rep{width:47.3563%!important;background:#bd2937!important}
+      #page-home #homeForecastSplit .house-bar .uncalled{width:.6897%!important;background:#c8d1dc!important}
       #page-home #homeForecastSplit .house-majority-marker{position:absolute!important;left:50.1149%!important;top:-5px!important;width:2px!important;height:28px!important;background:#17263d!important;transform:translateX(-1px)!important;opacity:.8!important}
       #page-home #homeForecastSplit .senate-card{position:relative!important;padding:20px 22px!important;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;min-height:0!important}
       #page-home #homeForecastSplit .senate-kicker{font:900 10px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#6d7c91!important;margin-bottom:6px!important}
@@ -175,10 +176,10 @@
             <div class="senate-kicker">2026 U.S. House</div>
             <h2 class="senate-title">Will’s House of Reps Prediction</h2>
             <div class="senate-numbers">
-              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">228</div></div>
-              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">207</div></div>
+              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">226</div></div>
+              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">206</div></div>
             </div>
-            <div class="senate-bar house-bar" aria-label="House prediction: 228 Democrats and 207 Republicans"><div class="dem"></div><div class="rep"></div><div class="house-majority-marker" aria-hidden="true"></div></div>
+            <div class="senate-bar house-bar" aria-label="House prediction: 226 Democrats, 206 Republicans, and 3 uncalled seats"><div class="dem"></div><div class="rep"></div><div class="uncalled"></div><div class="house-majority-marker" aria-hidden="true"></div></div>
             <div class="majority-note">218 seats needed for a majority</div>
           </div>
           <div class="forecast-card senate-card">
