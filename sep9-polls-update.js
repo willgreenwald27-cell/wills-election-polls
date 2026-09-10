@@ -54,6 +54,8 @@
     changed=setCandidatePoll('MI','rogers','44.7')||changed;
     changed=setCandidatePoll('ME','jackson','48.2')||changed;
     changed=setCandidatePoll('ME','collins','45.8')||changed;
+    changed=setCandidatePoll('TX','talarico','47.4')||changed;
+    changed=setCandidatePoll('TX','paxton','44.6')||changed;
     changed=setCandidatePoll('TX','talarico','47.3')||changed;
     changed=setCandidatePoll('TX','paxton','44.9')||changed;
     changed=applyForecastCalls()||changed;
