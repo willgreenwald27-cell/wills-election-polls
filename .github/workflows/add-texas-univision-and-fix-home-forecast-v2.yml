@@ -1,0 +1,164 @@
+name: Add Texas Univision poll and fix homepage forecast cards v2
+on:
+  push:
+    paths:
+      - '.github/workflows/add-texas-univision-and-fix-home-forecast-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply robust patch
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          # Add Texas RCP average.
+          if "setCandidatePoll('TX','talarico','47.3')" not in s:
+              anchor="    changed=setCandidatePoll('ME','collins','45.8')||changed;"
+              if anchor not in s: raise SystemExit('average anchor missing')
+              s=s.replace(anchor, anchor+"\n    changed=setCandidatePoll('TX','talarico','47.3')||changed;\n    changed=setCandidatePoll('TX','paxton','44.9')||changed;",1)
+
+          # Make duplicate detection work for every pollster, not only CNN.
+          s=s.replace("String(p.pollster||'')==='CNN'", "String(p.pollster||'')===obj.pollster")
+
+          # Add the N+ Univision / YouGov Texas poll to New Polls.
+          tx_native="      add({date:'2026-09-09',state:'TX',pollster:'Univision',sample:'1,000 RV',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'43',notes:'N+ Univision/YouGov · Aug. 27–Sep. 4 · Talarico +5'});"
+          if tx_native not in s:
+              anchor="      add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});"
+              if anchor not in s: raise SystemExit('native poll anchor missing')
+              s=s.replace(anchor,anchor+'\n'+tx_native,1)
+
+          # Add the Texas row to the archive display.
+          tx_archive="    if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Univision','James Talarico',48,'Ken Paxton',43));"
+          if tx_archive not in s:
+              anchor="    if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));"
+              if anchor not in s: raise SystemExit('archive anchor missing')
+              s=s.replace(anchor,anchor+'\n'+tx_archive,1)
+
+          s=s.replace("if(sub) sub.textContent='92 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';",
+                      "if(sub) sub.textContent='93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';")
+
+          # Replace the old count arithmetic with an actual visible-row count.
+          old="""      const base=Number((count.textContent.match(/\\d+/)||[])[0]||0);
+      const extra=filter==='ALL'?2:((filter==='MI'||filter==='ME')?1:0);
+      const total=base+extra;"""
+          if old in s:
+              s=s.replace(old,"      const total=list.querySelectorAll('.jp-row').length;",1)
+
+          # Restore the forecast section and make House/Senate exactly equal-sized.
+          start=s.find('  function ensureHomeForecastSplit(){')
+          end=s.find('  function removeDuplicateHomeSenatePrediction(){')
+          if start<0 or end<0 or end<=start: raise SystemExit('forecast function boundaries missing')
+          new_fn=r'''  function ensureHomeForecastSplit(){
+    const root=document.getElementById('page-home'); if(!root) return;
+    document.getElementById('homeForecastRemovedStyle')?.remove();
+
+    let section=document.getElementById('housePrediction2026');
+    if(!section){
+      section=document.createElement('section');
+      section.id='housePrediction2026';
+      section.style.cssText='width:100%;margin:28px 0 12px;display:block';
+      const metrics=root.querySelector('.reference-metrics');
+      const shell=root.querySelector('.reference-home-shell')||root.querySelector('.content')||root;
+      if(metrics) metrics.insertAdjacentElement('afterend',section); else shell.appendChild(section);
+    }
+
+    let st=document.getElementById('homeForecastSplitStyle');
+    if(!st){st=document.createElement('style');st.id='homeForecastSplitStyle';document.head.appendChild(st);}
+    st.textContent=`
+      #housePrediction2026{margin:28px 0 12px!important;width:100%!important;display:block!important}
+      #homeForecastSplit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch;width:100%}
+      #homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0;aspect-ratio:1672/941;box-sizing:border-box}
+      #homeForecastSplit .house-card{display:flex;align-items:center;justify-content:center;padding:0;background:#f7f9fc}
+      #homeForecastSplit .house-card img{display:block;width:100%;height:100%;object-fit:contain;border-radius:20px}
+      #homeForecastSplit .senate-card{position:relative;padding:20px 22px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:0}
+      #homeForecastSplit .senate-kicker{font:900 10px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#6d7c91;margin-bottom:6px}
+      #homeForecastSplit .senate-title{font:800 clamp(25px,3vw,42px)/1 Georgia,serif;color:#17263d;margin:0 0 14px}
+      #homeForecastSplit .senate-tiebreak{position:absolute;top:14px;right:16px;color:#bd2937;font:900 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.3px;text-transform:uppercase;text-align:right}
+      #homeForecastSplit .senate-tiebreak strong{display:block;font-size:14px;letter-spacing:.4px;margin-top:2px;color:#bd2937}
+      #homeForecastSplit .senate-numbers{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end;margin-bottom:12px}
+      #homeForecastSplit .party-block:last-child{text-align:right}
+      #homeForecastSplit .party-label{font:900 12px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.1px;text-transform:uppercase}
+      #homeForecastSplit .party-number{font:900 clamp(48px,5vw,72px)/.9 Georgia,serif;margin-top:5px}
+      #homeForecastSplit .dem{color:#2763b8}.rep{color:#bd2937}
+      #homeForecastSplit .senate-bar{height:18px;border-radius:999px;overflow:hidden;display:flex;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)}
+      #homeForecastSplit .senate-bar .dem{width:50%;background:#2763b8}.senate-bar .rep{width:50%;background:#bd2937}
+      #homeForecastSplit .majority-note{margin-top:8px;font:800 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1px;text-transform:uppercase;color:#6c798b;text-align:center}
+      @media(max-width:760px){
+        #homeForecastSplit{grid-template-columns:1fr;gap:12px}
+        #homeForecastSplit .senate-card{order:1;padding:18px 18px}
+        #homeForecastSplit .house-card{order:2}
+        #homeForecastSplit .senate-title{font-size:30px;margin-bottom:12px}
+        #homeForecastSplit .senate-tiebreak{top:12px;right:12px;font-size:7px}
+        #homeForecastSplit .senate-tiebreak strong{font-size:11px}
+        #homeForecastSplit .party-number{font-size:54px}
+      }
+    `;
+
+    if(!section.querySelector('#homeForecastSplit')){
+      section.innerHTML=`
+        <div id="homeForecastSplit">
+          <div class="forecast-card house-card">
+            <img src="/house-prediction.svg?v=20260908-2208" alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.">
+          </div>
+          <div class="forecast-card senate-card">
+            <div class="senate-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>
+            <div class="senate-kicker">2026 U.S. Senate</div>
+            <h2 class="senate-title">Will’s Senate Prediction</h2>
+            <div class="senate-numbers">
+              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">50</div></div>
+              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">50</div></div>
+            </div>
+            <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
+            <div class="majority-note">51 seats needed for a majority</div>
+          </div>
+        </div>`;
+    }
+  }
+
+'''
+          s=s[:start]+new_fn+s[end:]
+
+          # Keep counts current if those widgets remain visible.
+          s=s.replace("if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';",
+                      "if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';")
+          s=s.replace("if(/\\b90\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b90(?=\\s+polls?\\b)/i,'92');",
+                      "if(/\\b(?:90|92)\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b(?:90|92)(?=\\s+polls?\\b)/i,'93');")
+          s=s.replace("else if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';",
+                      "else if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';")
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-1818',i)
+          if n!=1: raise SystemExit(f'expected one cache key, found {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          checks=[
+            "setCandidatePoll('TX','talarico','47.3')",
+            "pollster:'Univision'",
+            "grid-template-columns:repeat(2,minmax(0,1fr))",
+            "aspect-ratio:1672/941",
+            "JD VANCE",
+          ]
+          missing=[x for x in checks if x not in out]
+          if missing: raise SystemExit('missing checks: '+repr(missing))
+          PY
+      - name: Commit update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/add-texas-univision-and-fix-home-forecast-v2.yml
+          git add sep9-polls-update.js index.html .github/workflows/add-texas-univision-and-fix-home-forecast-v2.yml
+          git commit -m "Add Texas Univision poll and restore equal homepage forecast cards"
+          git push
