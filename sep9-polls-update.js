@@ -149,6 +149,11 @@
       #page-home #homeForecastSplit .senate-bar{height:18px!important;border-radius:999px!important;overflow:hidden!important;display:flex!important;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)!important}
       #page-home #homeForecastSplit .senate-bar .dem{width:50%!important;background:#2763b8!important}.senate-bar .rep{width:50%!important;background:#bd2937!important}
       #page-home #homeForecastSplit .majority-note{margin-top:8px!important;font:800 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#6c798b!important;text-align:center!important}
+      #page-home #homeForecastSplit .senate-countdown{margin-top:9px!important;padding-top:8px!important;border-top:1px solid #e2e7ef!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+      #page-home #homeForecastSplit .senate-countdown-label{font:900 8px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#728095!important}
+      #page-home #homeForecastSplit #senateElectionCountdown{font:900 15px/1 Georgia,serif!important;letter-spacing:.2px!important;color:#17263d!important;white-space:nowrap!important}
+      .site-header .nav[data-accepted-nav="1"]>button{font-family:Georgia,"Times New Roman",serif!important;font-weight:700!important;letter-spacing:.2px!important;font-size:12px!important}
+      .site-header .nav[data-accepted-nav="1"]>button.active{font-weight:800!important;letter-spacing:.1px!important}
       @media(max-width:760px){
         #page-home #homeForecastSplit{grid-template-columns:1fr!important;gap:12px!important}
         #page-home #homeForecastSplit .senate-card{order:1!important;padding:18px!important}
@@ -157,6 +162,9 @@
         #page-home #homeForecastSplit .senate-tiebreak{top:12px!important;right:12px!important;font-size:7px!important}
         #page-home #homeForecastSplit .senate-tiebreak strong{font-size:11px!important}
         #page-home #homeForecastSplit .party-number{font-size:54px!important}
+        #page-home #homeForecastSplit .senate-countdown{margin-top:7px!important;padding-top:7px!important}
+        #page-home #homeForecastSplit #senateElectionCountdown{font-size:13px!important}
+        .site-header .nav[data-accepted-nav="1"]>button{font-size:11px!important}
       }
     `;
 
@@ -183,10 +191,35 @@
             </div>
             <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
             <div class="majority-note">51 seats needed for a majority</div>
+            <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
           </div>
         </div>`;
     }
   }
+
+
+function fixHomePastErrorsCTA(){
+  const root=document.getElementById('page-home'); if(!root) return;
+  for(const el of root.querySelectorAll('button,a')){
+    const t=norm(el.textContent).toLowerCase();
+    if(t==='see forecasts'||t==='see forecast'){
+      el.textContent='See past polling errors';
+      el.dataset.pastErrorsCta='1';
+      el.removeAttribute('href');
+    }
+  }
+}
+
+function updateElectionCountdown(){
+  const el=document.getElementById('senateElectionCountdown'); if(!el) return;
+  const target=new Date('2026-11-03T18:00:00-05:00').getTime();
+  let ms=Math.max(0,target-Date.now());
+  const d=Math.floor(ms/86400000); ms%=86400000;
+  const h=Math.floor(ms/3600000); ms%=3600000;
+  const m=Math.floor(ms/60000); ms%=60000;
+  const sec=Math.floor(ms/1000);
+  el.textContent=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
+}
 
   function removeDuplicateHomeSenatePrediction(){
     const root=document.getElementById('page-home'); if(!root) return;
@@ -243,6 +276,8 @@
     ensureNativePolls();
     ensureArchiveRows();
     ensureHomeForecastSplit();
+    fixHomePastErrorsCTA();
+    updateElectionCountdown();
     removeDuplicateHomeSenatePrediction();
     fixCounts();
   }
@@ -250,7 +285,15 @@
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1800);
+  setInterval(updateElectionCountdown,1000);
   new MutationObserver(()=>{clearTimeout(window.__sep9PollTimer);window.__sep9PollTimer=setTimeout(apply,40);}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('change',e=>{if(e.target?.closest?.('#julsepPollArchive')) setTimeout(apply,20);},true);
+
+document.addEventListener('click',e=>{
+  const target=e.target?.closest?.('[data-past-errors-cta]'); if(!target) return;
+  e.preventDefault(); e.stopPropagation();
+  if(typeof window.__acceptedGoodNavigate==='function') window.__acceptedGoodNavigate('errors',true);
+  else document.querySelector('[data-accepted-page="errors"]')?.click();
+},true);
   window.addEventListener('pageshow',apply);
 })();
