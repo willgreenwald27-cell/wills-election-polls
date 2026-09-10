@@ -1,0 +1,42 @@
+## Iowa (2 races)
+2020 | HIT | poll Theresa Greenfield 45.8, Joni Ernst 47.2 | result Theresa Greenfield 45.20, Joni Ernst 51.80 | RCP final pre-election average
+2014 | HIT | poll Bruce Braley 45.7, Joni Ernst 48.0 | result Bruce Braley 43.70, Joni Ernst 52.20 | RCP final pre-election average
+
+## Alaska (2 races)
+2014 | HIT | poll Mark Begich 43.8, Dan Sullivan 46.2 | result Mark Begich 45.80, Dan Sullivan 48.00 | RCP final pre-election average
+2008 | HIT | poll Mark Begich 52.0, Ted Stevens 41.7 | result Mark Begich 47.80, Ted Stevens 46.50 | RCP final pre-election average
+
+## Texas (2 races)
+2024 | HIT | poll Colin Allred 44.8, Ted Cruz 49.2 | result Colin Allred 44.60, Ted Cruz 53.10 | RCP final pre-election average
+2018 | HIT | poll Beto O'Rourke 44.5, Ted Cruz 51.3 | result Beto O'Rourke 48.30, Ted Cruz 50.90 | RCP final pre-election average
+
+## Maine (1 races)
+2020 | MISS | poll Sara Gideon 48.5, Susan Collins 42.0 | result Sara Gideon 42.40, Susan Collins 51.00 | Last published RCP aggregate
+
+## New Hampshire (4 races)
+2022 | HIT | poll Maggie Hassan 48.7, Don Bolduc 47.3 | result Maggie Hassan 53.50, Don Bolduc 44.40 | RCP final pre-election average
+2014 | HIT | poll Jeanne Shaheen 48.8, Scott Brown 48.0 | result Jeanne Shaheen 51.60, Scott Brown 48.40 | RCP final pre-election average
+2008 | HIT | poll Jeanne Shaheen 50.8, John Sununu 41.2 | result Jeanne Shaheen 51.70, John Sununu 45.30 | RCP final pre-election average
+2002 | HIT | poll Jeanne Shaheen 44.5, John E. Sununu 47.0 | result Jeanne Shaheen 46.40, John E. Sununu 50.80 | Average of final 2 public polls
+
+## Georgia (4 races)
+2022 | MISS | poll Raphael Warnock 47.4, Herschel Walker 48.8 | result Raphael Warnock 49.40, Herschel Walker 48.50 | RCP final pre-election average
+2020 | MISS | poll Jon Ossoff 47.0, David Perdue 46.3 | result Jon Ossoff 47.95, David Perdue 49.73 | RCP final pre-election average
+2014 | HIT | poll Michelle Nunn 44.8, David Perdue 47.8 | result Michelle Nunn 45.10, David Perdue 53.00 | RCP final pre-election average
+2008 | HIT | poll Jim Martin 44.0, Saxby Chambliss 47.8 | result Jim Martin 46.80, Saxby Chambliss 49.80 | RCP final pre-election average
+
+## North Carolina (4 races)
+2022 | HIT | poll Cheri Beasley 44.8, Ted Budd 51.0 | result Cheri Beasley 47.30, Ted Budd 50.50 | RCP final pre-election average
+2016 | HIT | poll Deborah Ross 45.0, Richard Burr 47.0 | result Deborah Ross 45.32, Richard Burr 51.11 | RCP final pre-election average
+2014 | MISS | poll Kay Hagan 44.1, Thom Tillis 43.4 | result Kay Hagan 47.30, Thom Tillis 49.00 | RCP final pre-election average
+2008 | HIT | poll Kay Hagan 49.3, Elizabeth Dole 45.0 | result Kay Hagan 52.70, Elizabeth Dole 44.20 | RCP final pre-election average
+
+## Ohio (2 races)
+2024 | HIT | poll Sherrod Brown 46.3, Bernie Moreno 48.0 | result Sherrod Brown 46.50, Bernie Moreno 50.10 | RCP final pre-election average
+2006 | HIT | poll Sherrod Brown 53.3, Mike DeWine 43.3 | result Sherrod Brown 56.00, Mike DeWine 44.00 | RCP final pre-election average
+
+## Nebraska (0 races)
+
+## Michigan (2 races)
+2024 | HIT | poll Elissa Slotkin 48.4, Mike Rogers 46.1 | result Elissa Slotkin 48.64, Mike Rogers 48.30 | RCP final pre-election average
+2020 | HIT | poll Gary Peters 49.8, John James 44.4 | result Gary Peters 49.90, John James 48.20 | RCP final pre-election average
