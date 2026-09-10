@@ -1,0 +1,78 @@
+name: Polish Senate popup colors
+on:
+  push:
+    paths:
+      - '.github/workflows/polish-senate-popup-colors.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add popup color polish
+        shell: bash
+        run: |
+          cat > senate-color-polish.js <<'JS'
+          (()=>{
+            const LIGHT_REP='#e65c66';
+            const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+            const rgb=s=>{const m=String(s||'').match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);return m?[+m[1],+m[2],+m[3]]:null};
+            const isOldRep=c=>{const v=rgb(c);return !!v&&Math.abs(v[0]-189)<=8&&Math.abs(v[1]-41)<=8&&Math.abs(v[2]-55)<=8};
+
+            function inWillsCall(el,root){
+              let p=el.parentElement;
+              for(let i=0;p&&p!==root&&i<7;i++,p=p.parentElement){
+                const t=norm(p.textContent);
+                if(/will[’']s call/i.test(t)) return true;
+              }
+              return false;
+            }
+
+            function apply(){
+              const root=document.getElementById('page-senate');
+              if(!root) return;
+
+              for(const el of root.querySelectorAll('*')){
+                const cs=getComputedStyle(el);
+                if(isOldRep(cs.color)) el.style.setProperty('color',LIGHT_REP,'important');
+              }
+
+              for(const el of root.querySelectorAll('*')){
+                if(el.children.length) continue;
+                if(/^Democrat$/i.test(norm(el.textContent))&&inWillsCall(el,root)){
+                  el.style.setProperty('color','#fff','important');
+                }
+              }
+            }
+
+            apply();
+            [80,250,600,1200,2200].forEach(ms=>setTimeout(apply,ms));
+            setInterval(apply,700);
+            new MutationObserver(()=>{clearTimeout(window.__senateColorPolishTimer);window.__senateColorPolishTimer=setTimeout(apply,30)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+            window.addEventListener('pageshow',apply);
+          })();
+          JS
+
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          if '/senate-color-polish.js?' not in s:
+              needle='document.open();document.write(h);document.close()'
+              if needle not in s: raise SystemExit('loader write anchor missing')
+              s=s.replace(needle,"h=h.replace('</body>','<script src=\"/senate-color-polish.js?v=20260909-2127\"><\\/script></body>');"+needle,1)
+              p.write_text(s)
+          out=p.read_text()
+          assert '/senate-color-polish.js?v=20260909-2127' in out
+          assert "const files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']" in out
+          assert 'document.open();document.write(h);document.close()' in out
+          PY
+      - name: Commit color polish
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/polish-senate-popup-colors.yml
+          git add senate-color-polish.js index.html .github/workflows/polish-senate-popup-colors.yml
+          git commit -m "Polish Senate popup party colors"
+          git push
