@@ -1,0 +1,109 @@
+name: Add Sept 9 Senate polls
+on:
+  push:
+    paths:
+      - '.github/workflows/add-sep9-three-senate-polls.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add polls and refresh Senate averages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          old="""    changed=setCandidatePoll('ME','jackson','48.2')||changed;
+    changed=setCandidatePoll('ME','collins','45.8')||changed;"""
+          new="""    changed=setCandidatePoll('ME','jackson','48.3')||changed;
+    changed=setCandidatePoll('ME','collins','46.0')||changed;
+    changed=setCandidatePoll('TX','talarico','47.3')||changed;
+    changed=setCandidatePoll('TX','paxton','44.9')||changed;
+    changed=setCandidatePoll('NC','cooper','50.9')||changed;
+    changed=setCandidatePoll('NC','whatley','42.9')||changed;"""
+          if old not in s:
+              raise SystemExit('average anchor not found')
+          s=s.replace(old,new,1)
+
+          old="String(p.pollster||'')==='CNN'"
+          new="String(p.pollster||'')===String(obj.pollster||'')"
+          if old in s:
+              s=s.replace(old,new,1)
+
+          anchor="""      add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});"""
+          extra="""
+      add({date:'2026-09-09',state:'TX',pollster:'Fabrizio/Anzalone',sample:'',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'44',notes:'RealClearPolling listing · Talarico +4'});
+      add({date:'2026-09-09',state:'ME',pollster:'YouGov',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'44',notes:'RealClearPolling listing · Jackson +4'});
+      add({date:'2026-09-09',state:'NC',pollster:'Elon University*',sample:'',c1:'Roy Cooper',c1Pct:'49',c2:'Michael Whatley',c2Pct:'38',notes:'RealClearPolling listing · Cooper +11'});"""
+          if extra.strip() not in s:
+              if anchor not in s:
+                  raise SystemExit('native poll anchor not found')
+              s=s.replace(anchor,anchor+extra,1)
+
+          anchor="""    if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));"""
+          extra="""
+    if(filter==='ALL'||filter==='NC') list.prepend(row('NC','North Carolina','Elon University*','Roy Cooper',49,'Michael Whatley',38));
+    if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','YouGov','Troy Jackson',48,'Susan Collins',44));
+    if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Fabrizio/Anzalone','James Talarico',48,'Ken Paxton',44));"""
+          if "Fabrizio/Anzalone','James Talarico',48" not in s:
+              if anchor not in s:
+                  raise SystemExit('archive row anchor not found')
+              s=s.replace(anchor,anchor+extra,1)
+
+          s=s.replace("92 public general-election matchup polls and snapshots from July 7 through September 9", "95 public general-election matchup polls and snapshots from July 7 through September 9")
+
+          old="""    const count=sec.querySelector('.jp-count');
+    if(count){
+      const base=Number((count.textContent.match(/\\d+/)||[])[0]||0);
+      const extra=filter==='ALL'?2:((filter==='MI'||filter==='ME')?1:0);
+      const total=base+extra;
+      count.textContent=`${total} poll${total===1?'':'s'} shown`;
+    }"""
+          new="""    const count=sec.querySelector('.jp-count');
+    if(count){
+      const total=list.querySelectorAll('.jp-row').length;
+      count.textContent=`${total} poll${total===1?'':'s'} shown`;
+    }"""
+          if old in s:
+              s=s.replace(old,new,1)
+
+          s=s.replace("if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';", "if((t==='90'||t==='92')&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='95';")
+          s=s.replace("if(/\\b90\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b90(?=\\s+polls?\\b)/i,'92');", "if(/\\b(?:90|92)\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b(?:90|92)(?=\\s+polls?\\b)/i,'95');")
+          s=s.replace("else if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';", "else if((t==='90'||t==='92')&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='95';")
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\\.js\\?v=[0-9-]+','sep9-polls-update.js?v=20260910-1007',i)
+          if n!=1:
+              raise SystemExit(f'expected one sep9 updater cache key, found {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          for token in [
+              "Fabrizio/Anzalone",
+              "Elon University*",
+              "setCandidatePoll('TX','talarico','47.3')",
+              "setCandidatePoll('NC','cooper','50.9')",
+              "setCandidatePoll('ME','jackson','48.3')",
+              "95 public general-election matchup polls"
+          ]:
+              assert token in out, token
+          assert 'sep9-polls-update.js?v=20260910-1007' in idx.read_text()
+          PY
+      - name: Commit site update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/add-sep9-three-senate-polls.yml
+          git add sep9-polls-update.js index.html .github/workflows/add-sep9-three-senate-polls.yml
+          git commit -m "Add Sept 9 Senate polls and update averages"
+          git push
