@@ -15,21 +15,31 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          from textwrap import dedent
           import re
 
           p=Path('sep9-polls-update.js')
           s=p.read_text()
 
-          # Give the nav a more distinctive editorial type treatment.
           if '#page-home #homeForecastSplit .senate-countdown' not in s:
               css_anchor="      #page-home #homeForecastSplit .majority-note{margin-top:8px!important;font:800 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#6c798b!important;text-align:center!important}\n"
-              css_add="""      #page-home #homeForecastSplit .senate-countdown{margin-top:9px!important;padding-top:8px!important;border-top:1px solid #e2e7ef!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}\n      #page-home #homeForecastSplit .senate-countdown-label{font:900 8px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#728095!important}\n      #page-home #homeForecastSplit #senateElectionCountdown{font:900 15px/1 Georgia,serif!important;letter-spacing:.2px!important;color:#17263d!important;white-space:nowrap!important}\n      .site-header .nav[data-accepted-nav=\"1\"]>button{font-family:Georgia,\"Times New Roman\",serif!important;font-weight:700!important;letter-spacing:.2px!important;font-size:12px!important}\n      .site-header .nav[data-accepted-nav=\"1\"]>button.active{font-weight:800!important;letter-spacing:.1px!important}\n"""
+              css_add=(
+                  "      #page-home #homeForecastSplit .senate-countdown{margin-top:9px!important;padding-top:8px!important;border-top:1px solid #e2e7ef!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}\n"
+                  "      #page-home #homeForecastSplit .senate-countdown-label{font:900 8px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#728095!important}\n"
+                  "      #page-home #homeForecastSplit #senateElectionCountdown{font:900 15px/1 Georgia,serif!important;letter-spacing:.2px!important;color:#17263d!important;white-space:nowrap!important}\n"
+                  "      .site-header .nav[data-accepted-nav=\"1\"]>button{font-family:Georgia,\"Times New Roman\",serif!important;font-weight:700!important;letter-spacing:.2px!important;font-size:12px!important}\n"
+                  "      .site-header .nav[data-accepted-nav=\"1\"]>button.active{font-weight:800!important;letter-spacing:.1px!important}\n"
+              )
               if css_anchor not in s:
                   raise SystemExit('countdown CSS anchor missing')
               s=s.replace(css_anchor,css_anchor+css_add,1)
 
               mobile_anchor="        #page-home #homeForecastSplit .party-number{font-size:54px!important}\n"
-              mobile_add="""        #page-home #homeForecastSplit .senate-countdown{margin-top:7px!important;padding-top:7px!important}\n        #page-home #homeForecastSplit #senateElectionCountdown{font-size:13px!important}\n        .site-header .nav[data-accepted-nav=\"1\"]>button{font-size:11px!important}\n"""
+              mobile_add=(
+                  "        #page-home #homeForecastSplit .senate-countdown{margin-top:7px!important;padding-top:7px!important}\n"
+                  "        #page-home #homeForecastSplit #senateElectionCountdown{font-size:13px!important}\n"
+                  "        .site-header .nav[data-accepted-nav=\"1\"]>button{font-size:11px!important}\n"
+              )
               if mobile_anchor not in s:
                   raise SystemExit('mobile CSS anchor missing')
               s=s.replace(mobile_anchor,mobile_anchor+mobile_add,1)
@@ -42,41 +52,50 @@ jobs:
 
           if 'function fixHomePastErrorsCTA()' not in s:
               fn_anchor='  function removeDuplicateHomeSenatePrediction(){\n'
-              fn=r'''  function fixHomePastErrorsCTA(){
-    const root=document.getElementById('page-home'); if(!root) return;
-    for(const el of root.querySelectorAll('button,a')){
-      const t=norm(el.textContent).toLowerCase();
-      if(t==='see forecasts'||t==='see forecast'){
-        el.textContent='See past polling errors';
-        el.dataset.pastErrorsCta='1';
-        el.removeAttribute('href');
-      }
-    }
-  }
+              fn=dedent('''
+                function fixHomePastErrorsCTA(){
+                  const root=document.getElementById('page-home'); if(!root) return;
+                  for(const el of root.querySelectorAll('button,a')){
+                    const t=norm(el.textContent).toLowerCase();
+                    if(t==='see forecasts'||t==='see forecast'){
+                      el.textContent='See past polling errors';
+                      el.dataset.pastErrorsCta='1';
+                      el.removeAttribute('href');
+                    }
+                  }
+                }
 
-  function updateElectionCountdown(){
-    const el=document.getElementById('senateElectionCountdown'); if(!el) return;
-    const target=new Date('2026-11-03T18:00:00-05:00').getTime();
-    let ms=Math.max(0,target-Date.now());
-    const d=Math.floor(ms/86400000); ms%=86400000;
-    const h=Math.floor(ms/3600000); ms%=3600000;
-    const m=Math.floor(ms/60000); ms%=60000;
-    const sec=Math.floor(ms/1000);
-    el.textContent=ms===0&&Date.now()>=target?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
-  }
+                function updateElectionCountdown(){
+                  const el=document.getElementById('senateElectionCountdown'); if(!el) return;
+                  const target=new Date('2026-11-03T18:00:00-05:00').getTime();
+                  let ms=Math.max(0,target-Date.now());
+                  const d=Math.floor(ms/86400000); ms%=86400000;
+                  const h=Math.floor(ms/3600000); ms%=3600000;
+                  const m=Math.floor(ms/60000); ms%=60000;
+                  const sec=Math.floor(ms/1000);
+                  el.textContent=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
+                }
 
-'''
+              ''')
               if fn_anchor not in s:
                   raise SystemExit('function anchor missing')
               s=s.replace(fn_anchor,fn+fn_anchor,1)
 
-          # Make sure the new CTA and countdown are refreshed every apply cycle.
-          s=s.replace('    ensureHomeForecastSplit();\n    removeDuplicateHomeSenatePrediction();',
-                      '    ensureHomeForecastSplit();\n    fixHomePastErrorsCTA();\n    updateElectionCountdown();\n    removeDuplicateHomeSenatePrediction();',1)
+          old_apply='    ensureHomeForecastSplit();\n    removeDuplicateHomeSenatePrediction();'
+          new_apply='    ensureHomeForecastSplit();\n    fixHomePastErrorsCTA();\n    updateElectionCountdown();\n    removeDuplicateHomeSenatePrediction();'
+          if old_apply in s:
+              s=s.replace(old_apply,new_apply,1)
 
-          if 'data.pastErrorsCta' not in s:
+          if '[data-past-errors-cta]' not in s:
               click_anchor="  document.addEventListener('change',e=>{if(e.target?.closest?.('#julsepPollArchive')) setTimeout(apply,20);},true);\n"
-              click="""  document.addEventListener('click',e=>{\n    const target=e.target?.closest?.('[data-past-errors-cta]'); if(!target) return;\n    e.preventDefault(); e.stopPropagation();\n    if(typeof window.__acceptedGoodNavigate==='function') window.__acceptedGoodNavigate('errors',true);\n    else document.querySelector('[data-accepted-page=\"errors\"]')?.click();\n  },true);\n"""
+              click=dedent('''
+                document.addEventListener('click',e=>{
+                  const target=e.target?.closest?.('[data-past-errors-cta]'); if(!target) return;
+                  e.preventDefault(); e.stopPropagation();
+                  if(typeof window.__acceptedGoodNavigate==='function') window.__acceptedGoodNavigate('errors',true);
+                  else document.querySelector('[data-accepted-page="errors"]')?.click();
+                },true);
+              ''')
               if click_anchor not in s:
                   raise SystemExit('click listener anchor missing')
               s=s.replace(click_anchor,click_anchor+click,1)
