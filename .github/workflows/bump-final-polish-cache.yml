@@ -1,0 +1,34 @@
+name: Refresh final Senate polish script
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-final-polish-cache.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump final polish cache key
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n=re.subn(r'senate-color-polish\.js\?v=[0-9-]+','senate-color-polish.js?v=20260909-2145',s)
+          if n!=1: raise SystemExit(f'expected one senate-color-polish cache key, found {n}')
+          if "const files=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']" not in s: raise SystemExit('loader list changed')
+          if 'document.open();document.write(h);document.close()' not in s: raise SystemExit('loader close missing')
+          p.write_text(s)
+          PY
+      - name: Commit cache refresh
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/bump-final-polish-cache.yml
+          git add index.html .github/workflows/bump-final-polish-cache.yml
+          git commit -m "Refresh final homepage and Senate fixes"
+          git push
