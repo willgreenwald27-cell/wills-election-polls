@@ -1,0 +1,52 @@
+name: Set House card to 226-206
+on:
+  push:
+    paths:
+      - '.github/workflows/set-house-226-206-inline.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update inline House forecast card
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          s=s.replace('#page-home #homeForecastSplit .house-bar .dem{width:52.4138%!important;background:#2763b8!important}', '#page-home #homeForecastSplit .house-bar .dem{width:51.9540%!important;background:#2763b8!important}')
+          s=s.replace('#page-home #homeForecastSplit .house-bar .rep{width:47.5862%!important;background:#bd2937!important}', '#page-home #homeForecastSplit .house-bar .rep{width:47.3563%!important;background:#bd2937!important}\n      #page-home #homeForecastSplit .house-bar .uncalled{width:.6897%!important;background:#c8d1dc!important}')
+          s=s.replace('<div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">228</div></div>', '<div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">226</div></div>')
+          s=s.replace('<div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">207</div></div>', '<div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">206</div></div>')
+          s=s.replace('aria-label="House prediction: 228 Democrats and 207 Republicans"><div class="dem"></div><div class="rep"></div><div class="house-majority-marker"', 'aria-label="House prediction: 226 Democrats, 206 Republicans, and 3 uncalled seats"><div class="dem"></div><div class="rep"></div><div class="uncalled"></div><div class="house-majority-marker"')
+          s=s.replace('Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.', 'Democrats 226 seats, Republicans 206 seats; 218 needed for a majority.')
+          s=s.replace('/house-prediction.svg?v=20260908-2208', '/house-prediction.svg?v=20260909-2242')
+          p.write_text(s)
+
+          out=p.read_text()
+          assert 'party-number dem">226<' in out
+          assert 'party-number rep">206<' in out
+          assert '3 uncalled seats' in out
+          assert 'house-bar .uncalled' in out
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2242',i)
+          if n!=1:
+              raise SystemExit(f'expected one updater cache key, found {n}')
+          idx.write_text(i)
+          assert 'sep9-polls-update.js?v=20260909-2242' in idx.read_text()
+          PY
+      - name: Commit update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/set-house-226-206-inline.yml
+          git add sep9-polls-update.js index.html .github/workflows/set-house-226-206-inline.yml
+          git commit -m "Update House prediction to 226-206"
+          git push
