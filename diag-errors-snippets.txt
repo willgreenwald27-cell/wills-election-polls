@@ -1,0 +1,1574 @@
+
+
+===== error-race =====
+{color:#2763b8}.kalshi-market-pct.rep{color:#bd2937}.kalshi-market-pct.ind{color:#9b7a13}.kalshi-market-pct.osborn{color:#8a5be2}
+.kalshi-no-odds{font-size:12px;color:#6f7886;padding:7px 0 2px}
+.kalshi-selected-card{border-top:1px solid #edf0f4;margin-top:4px;padding-top:12px}.kalshi-selected-empty{font-size:12px;color:#778190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16p
+---
+pct.rep{color:#bd2937}.kalshi-market-pct.ind{color:#9b7a13}.kalshi-market-pct.osborn{color:#8a5be2}
+.kalshi-no-odds{font-size:12px;color:#6f7886;padding:7px 0 2px}
+.kalshi-selected-card{border-top:1px solid #edf0f4;margin-top:4px;padding-top:12px}.kalshi-selected-empty{font-size:12px;color:#778190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{fo
+---
+nt-size:12px;color:#6f7886;padding:7px 0 2px}
+.kalshi-selected-card{border-top:1px solid #edf0f4;margin-top:4px;padding-top:12px}.kalshi-selected-empty{font-size:12px;color:#778190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-abo
+---
+hi-selected-card{border-top:1px solid #edf0f4;margin-top:4px;padding-top:12px}.kalshi-selected-empty{font-size:12px;color:#778190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;displ
+---
+190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-column
+---
+e:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  
+---
+:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1f
+---
+mns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1fr}
+  .error-controls{grid-template-columns:1fr 1fr}.error-control.wide{gri
+---
+
+
+===== renderErrors =====
+ try{
+        const legacy=JSON.parse(localStorage.getItem('willsElectionSite')||'null');
+        if(legacy)applySiteData(legacy);
+      }catch(e){}
+    }
+  }
+
+  Object.entries(stateData).forEach(([ab,x])=>{
+    if(!Object.prototype.hasOwnProperty.call(x,'predictionParty'))x.predictionParty='uncalled';
+    const d=DEFAULT_STATE_DATA[ab];
+    if(d&&x.active){
+      if(!String(x.candidate1||'').trim()){x.candidate1=d.candidate1;x.candidate1Party=d.candidate1Party;}
+      if(!String(x.candidate2||'').trim()){x.candidate2=d.candidate2;x.candidate2Party=d.candidate2Party;}
+      if(!String(x.candidate1Poll??'').trim() && String(d.candidate1Poll??'').trim())x.candidate1Poll=d.candidate1Poll;
+      if(!String(x.candidate2Poll??'').trim() && String(d.candidate2Poll??'').trim())x.candidate2Poll=d.candidate2Poll;
+      if((!x.rating || x.rating==='unrated') && d.rating && d.rating!=='unrated')x.rating=d.rating;
+      if((!x.predictionParty || x.predictionParty==='uncalled') && d.predictionParty && d.predictionParty!=='uncalled')x.predictionParty=d.predictionParty;
+      if(!x.updated && d.updated)x.updated=d.updated;
+    }
+  });
+
+  updateSaveStatus(PUBLISH_READY_MODE
+    ? '✓ PUBLISH-READY — all data is built into this HTML file'
+    : (PORTABLE_DATA_ID && EMBEDDED_SITE_DATA_B64
+      ? '✓ PUBLISH-READY — all data is built into this HTML file'
+      : '✓ Auto-save is on'));
+}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');document.querySelectorAll('[data-page-link]').forEach(b=>b.classList.toggle('active',b.dataset.pageLink===name));window.scrollTo({top:0,behavior:'instant'});if(name==='home')renderHomeDashboard();if(name==='senate')renderSenate();if(name==='errors')renderErrors();if(name==='polls')renderPolls();if(name==='betting')renderBetting();if(name==='about')renderAbout();}
+document.querySelectorAll('[data-page-link]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();showPage(el.dataset.pageLink)}));
+
+function setEditMode(on){editMode=!!on;document.body.classList.toggle('edit-mode',editMode);document.getElementById('editToggle').textContent='Edit mode: '+(editMode?'On':'Off');document.getElementById('senateEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('pollsEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('bettingEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('aboutEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('addErrorBtn').style.display=editMode?'inline-block':'none';if(selectedState)renderDrawer(selectedState);renderErrors();renderPolls();renderBetting();renderAbout();}
+document.getElementById('editToggle').onclick=()=>setEditMode(!editMode);document.getElementById('senateEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('pollsEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('bettingEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('aboutEditBtn').onclick=()=>setEditMode(!editMode);
+
+function renderSenate(){
+  applyPaletteCSS();
+  let d=0,r=0,i=0,t=0,u=0; let latest='';
+  let pd=0,pr=0,pi=0,pu=0;
+  Object.values(stateData).forEach(s=>{
+    const path=document.getElementById('state-'+s.abbr); if(!path)return;
+    const stateFill=s.active ? (RATING_COLORS[s.rating]||RATING_COLORS.unrated) : RATING_COLORS['not-up'];
+    path.style.setProperty('fill',stateFill,'important');
+    path.setAttribute('fill',stateFill);
+    const label=document.querySelector('[data-label="'+s.abbr+'"]');
+    if(label){label.classList.toggle('active-label',s.active && ['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));label.classList.toggle('light-text',s.active && !['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));}
+    if(s.active){
+      if(s.rating.endsWith('-d'))d++;else if(s.rating.endsWith('-r'))r++;else if(s.rating.endsWith('-i'))i++;else if(s.rating==='tossup')t++;else if(s.rating==='unrated')u++;
+      if(s.predictionParty==='Democrat')pd++;else if(s.predictionParty==='Republican')pr++;else if(s.predictionParty==='Independent / Other')pi++;else pu++;
+      if(s.updated && s.updated>latest)latest=s.updated;
+    }
+  });
+  countD.textContent=d;countR.textContent=r;countI.textContent=i;
+  const competitiveTossups=Object.values(stateData).filter(s=>s.active&&(s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''))).length;
+  countT.textContent=competitiveTossups;countU.textContent=u;
+  if(document.getElementById('predCountD')){
+    const totalD=BASELINE_SEATS.Democrat+pd;
+    const totalR=BASELINE_SEATS.Republican+pr;
+    const totalI=BASELINE_SEATS.Independent+pi;
+    const totalU=pu;
+    predCountD.textContent=totalD;
+    predCountR.textContent=totalR;
+    if(document.getElementById('barDem')){
+      barDem.style.width=totalD+'%';
+      barInd.style.width=totalI+'%';
+      barUncalled.style.width=totalU+'%';
+      barRep.style.width=totalR+'%';
+    }
+    if(document.getElementById('indSeatNote')){
+      indSeatNote.textContent=totalI+' Independent';
+    }
+  }
+  mapUpdated.textContent=latest?'Latest entry: '+latest:'No dat
+---
+&& d.predictionParty && d.predictionParty!=='uncalled')x.predictionParty=d.predictionParty;
+      if(!x.updated && d.updated)x.updated=d.updated;
+    }
+  });
+
+  updateSaveStatus(PUBLISH_READY_MODE
+    ? '✓ PUBLISH-READY — all data is built into this HTML file'
+    : (PORTABLE_DATA_ID && EMBEDDED_SITE_DATA_B64
+      ? '✓ PUBLISH-READY — all data is built into this HTML file'
+      : '✓ Auto-save is on'));
+}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');document.querySelectorAll('[data-page-link]').forEach(b=>b.classList.toggle('active',b.dataset.pageLink===name));window.scrollTo({top:0,behavior:'instant'});if(name==='home')renderHomeDashboard();if(name==='senate')renderSenate();if(name==='errors')renderErrors();if(name==='polls')renderPolls();if(name==='betting')renderBetting();if(name==='about')renderAbout();}
+document.querySelectorAll('[data-page-link]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();showPage(el.dataset.pageLink)}));
+
+function setEditMode(on){editMode=!!on;document.body.classList.toggle('edit-mode',editMode);document.getElementById('editToggle').textContent='Edit mode: '+(editMode?'On':'Off');document.getElementById('senateEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('pollsEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('bettingEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('aboutEditBtn').textContent=editMode?'Turn off edit mode':'Turn on edit mode';document.getElementById('addErrorBtn').style.display=editMode?'inline-block':'none';if(selectedState)renderDrawer(selectedState);renderErrors();renderPolls();renderBetting();renderAbout();}
+document.getElementById('editToggle').onclick=()=>setEditMode(!editMode);document.getElementById('senateEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('pollsEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('bettingEditBtn').onclick=()=>setEditMode(!editMode);document.getElementById('aboutEditBtn').onclick=()=>setEditMode(!editMode);
+
+function renderSenate(){
+  applyPaletteCSS();
+  let d=0,r=0,i=0,t=0,u=0; let latest='';
+  let pd=0,pr=0,pi=0,pu=0;
+  Object.values(stateData).forEach(s=>{
+    const path=document.getElementById('state-'+s.abbr); if(!path)return;
+    const stateFill=s.active ? (RATING_COLORS[s.rating]||RATING_COLORS.unrated) : RATING_COLORS['not-up'];
+    path.style.setProperty('fill',stateFill,'important');
+    path.setAttribute('fill',stateFill);
+    const label=document.querySelector('[data-label="'+s.abbr+'"]');
+    if(label){label.classList.toggle('active-label',s.active && ['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));label.classList.toggle('light-text',s.active && !['unrated','tilt-d','tilt-r','tilt-i','tossup'].includes(s.rating));}
+    if(s.active){
+      if(s.rating.endsWith('-d'))d++;else if(s.rating.endsWith('-r'))r++;else if(s.rating.endsWith('-i'))i++;else if(s.rating==='tossup')t++;else if(s.rating==='unrated')u++;
+      if(s.predictionParty==='Democrat')pd++;else if(s.predictionParty==='Republican')pr++;else if(s.predictionParty==='Independent / Other')pi++;else pu++;
+      if(s.updated && s.updated>latest)latest=s.updated;
+    }
+  });
+  countD.textContent=d;countR.textContent=r;countI.textContent=i;
+  const competitiveTossups=Object.values(stateData).filter(s=>s.active&&(s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''))).length;
+  countT.textContent=competitiveTossups;countU.textContent=u;
+  if(document.getElementById('predCountD')){
+    const totalD=BASELINE_SEATS.Democrat+pd;
+    const totalR=BASELINE_SEATS.Republican+pr;
+    const totalI=BASELINE_SEATS.Independent+pi;
+    const totalU=pu;
+    predCountD.textContent=totalD;
+    predCountR.textContent=totalR;
+    if(document.getElementById('barDem')){
+      barDem.style.width=totalD+'%';
+      barInd.style.width=totalI+'%';
+      barUncalled.style.width=totalU+'%';
+      barRep.style.width=totalR+'%';
+    }
+    if(document.getElementById('indSeatNote')){
+      indSeatNote.textContent=totalI+' Independent';
+    }
+  }
+  mapUpdated.textContent=latest?'Latest entry: '+latest:'No data entered yet';
+  const rows=Object.values(stateData).filter(s=>s.active).sort((a,b)=>a.name.localeCompare(b.name));
+  raceBoardBody.innerHTML=rows.map(s=>{const [lead,trail]=orderedStateCandidates(s);return `<tr><td><span class="state-link" data-open-state="${s.abbr}">${s.name}</span></td><td><span class="rating-pill"><span class="rating-dot" style="background:${RATING_COLORS[s.rating]}"></span>${RATING_LABELS[s.rating]}</span></td><td>${s.candidate1||s.candidate2?`${esc(lead.name)} ${fmtPct(lead.poll)} / ${esc(trail.name)} ${fmtPct(trail.poll)}`:'—'}</td><td>${s.candidate1||s.candidate2?`${fmtOdds(lead.odds)} / ${fmtOdds(trail.odds)}`:'—'}</td><td>${s.predictionParty&&s.predictionParty!=='uncalled'?esc(s.predictionParty):'—'}</td><td>${esc(s.updated||'—')}</td></tr>`}).join('');
+  document.querySelectorAll('[data-open-state]').forEach(x=>x.onclick=()=>openState(x.dataset.openState));
+}
+
+
+function pollValue(v){
+  const n=Number(v);
+  return Number.isFinite(n) && S
+---
+),p2=errNum(x.poll2),a1=errNum(x.actual1),a2=errNum(x.actual2);
+  if([p1,p2,a1,a2].some(v=>v===null))return null;
+  return (a1-a2)-(p1-p2);
+}
+function biggestCandidateMiss(x){
+  const vals=[candidateError(x,1),candidateError(x,2)].filter(v=>v!==null).map(Math.abs);
+  return vals.length?Math.max(...vals):-1;
+}
+function errorMissBadge(x,slot){
+  const name=x['c'+slot]||('Candidate '+slot),e=candidateError(x,slot);
+  if(e===null)return `<span class="error-chip pending">Pending</span>`;
+  const a=Math.abs(e);
+  if(a<0.05)return `<span class="error-chip pending">${esc(name)} on target</span>`;
+  return `<span class="error-chip ${e>0?'under':'over'}">${e>0?'Under':'Over'} ${a.toFixed(1)}</span>`;
+}
+function renderErrorFilters(){
+  const years=[...new Set(errors.map(x=>String(x.year||'')).filter(Boolean))].sort((a,b)=>Number(b)-Number(a));
+  const current=errorYearSelect.value||'all';
+  const counts=Object.fromEntries(years.map(y=>[y,errors.filter(x=>String(x.year)===y).length]));
+
+  errorYearSelect.innerHTML='<option value="all">All years</option>'+years.map(y=>`<option value="${esc(y)}">${esc(y)} (${counts[y]})</option>`).join('');
+  if(years.includes(current))errorYearSelect.value=current;else errorYearSelect.value='all';
+
+  errorYearChips.innerHTML=`<button class="error-year-chip ${errorYearSelect.value==='all'?'active':''}" data-error-year="all">All <span class="count">${errors.length}</span></button>`+
+    years.map(y=>`<button class="error-year-chip ${errorYearSelect.value===y?'active':''}" data-error-year="${esc(y)}">${esc(y)} <span class="count">${counts[y]}</span></button>`).join('');
+
+  document.querySelectorAll('[data-error-year]').forEach(btn=>btn.onclick=()=>{
+    const y=btn.dataset.errorYear;
+    errorYearSelect.value=y;
+    errorSortSelect.value='newest';
+    renderErrors();
+    if(y!=='all'){
+      requestAnimationFrame(()=>document.getElementById('errors-year-'+y)?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
+  });
+}
+function errorCardHTML(x){
+  const idx=errors.indexOf(x),wrong=errWrongLeader(x),shift=errMarginShift(x);
+  const p1=errPartyClass(x.c1,x.p1),p2=errPartyClass(x.c2,x.p2);
+  const shiftText=shift===null?'Result pending':Math.abs(shift)<0.05?'No margin shift':`${Math.abs(shift).toFixed(1)} pts toward ${esc(shift>0?(x.c1||'Candidate 1'):(x.c2||'Candidate 2'))}`;
+  return `<article class="card error-race-card">
+    <div class="error-race-card-header">
+      <div><div class="error-race-meta">${esc(x.year||'—')} Senate</div><h3>${esc(x.state||'State')}</h3></div>
+      <div>${wrong?'<span class="error-chip wrong">Wrong leader</span>':''}</div>
+    </div>
+    <div class="error-race-card-headings"><span></span><span class="col-label">Polling</span><span class="col-label">Result</span><span class="col-label">Error</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p1}">${esc(x.c1||'Candidate 1')} (${esc(x.p1||'—')})</span><span class="num">${errPct(x.poll1)}</span><span class="num">${errPct(x.actual1)}</span><span>${errorMissBadge(x,1)}</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p2}">${esc(x.c2||'Candidate 2')} (${esc(x.p2||'—')})</span><span class="num">${errPct(x.poll2)}</span><span class="num">${errPct(x.actual2)}</span><span>${errorMissBadge(x,2)}</span></div>
+    <div class="error-race-foot"><strong>${shiftText}</strong>${wrong?'<span class="error-chip wrong">Polling picked the other winner</span>':''}</div>
+    ${(x.source||x.notes)?`<details class="error-race-source"><summary>Source & notes</summary>${x.source?`<b>${esc(x.source)}</b><br>`:''}${x.notes?esc(x.notes):''}</details>`:''}
+    <div class="error-edit-grid">
+      <input data-i="${idx}" data-k="year" value="${esc(x.year||'')}" placeholder="Year">
+      <input data-i="${idx}" data-k="state" value="${esc(x.state||'')}" placeholder="State">
+      <input data-i="${idx}" data-k="c1" value="${esc(x.c1||'')}" placeholder="Candidate 1">
+      <input data-i="${idx}" data-k="p1" value="${esc(x.p1||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.
+---
+tes):''}</details>`:''}
+    <div class="error-edit-grid">
+      <input data-i="${idx}" data-k="year" value="${esc(x.year||'')}" placeholder="Year">
+      <input data-i="${idx}" data-k="state" value="${esc(x.state||'')}" placeholder="State">
+      <input data-i="${idx}" data-k="c1" value="${esc(x.c1||'')}" placeholder="Candidate 1">
+      <input data-i="${idx}" data-k="p1" value="${esc(x.p1||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.value;
+    if(['poll1','poll2','actual1','actual2'].includes(k)&&inp.value!=='')errors[i][k]=Number(inp.value);
+    save();renderErrors();
+  }));
+  document.querySelectorAll('[data-delete-error]').forEach(btn=>btn.onclick=()=>{
+    errors.splice(Number(btn.dataset.deleteError),1);save();renderErrors();toast('Race deleted');
+  });
+  document.querySelectorAll('[data-error-back-top]').forEach(btn=>btn.onclick=()=>{
+    document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function renderErrors(){
+  addErrorBtn.style.display=editMode?'inline-block':'none';
+  const historical=errors.filter(x=>!x.pending && errNum(x.actual1)!==null && errNum(x.actual2)!==null);
+  errorCount.textContent=historical.length;
+
+  const misses=[];
+  historical.forEach(x=>{
+    const e1=candidateError(x,1),e2=candidateError(x,2);
+    if(e1!==null)misses.push({v:e1,x,name:x.c1});
+    if(e2!==null)misses.push({v:e2,x,name:x.c2});
+  });
+  maeValue.textContent=misses.length?(misses.reduce((a,b)=>a+Math.abs(b.v),0)/misses.length).toFixed(1)+' pts':'—';
+  if(misses.length){
+    const biggest=misses.reduce((a,b)=>Math.abs(b.v)>Math.abs(a.v)?b:a);
+    maxErrorValue.textContent=Math.abs(biggest.v).toFixed(1)+' pts';
+    maxErrorValue.title=`${biggest.name}, ${biggest.x.state} ${biggest.x.year}`;
+  }else maxErrorValue.textContent='—';
+  wrongCallCount.textContent=historical.filter(errWrongLeader).length;
+
+  renderErrorFilters();
+
+  const q=String(errorSearchInput.value||'').trim().toLowerCase();
+  const year=errorYearSelect.value||'all';
+  const sort=errorSortSelect.value||'newest';
+
+  let rows=errors.filter(x=>{
+    if(year!=='all'&&String(x.year)!==year)return false;
+    if(!q)return true;
+    return [x.state,x.c1,x.c2,x.year,x.source,x.notes].some(v=>String(v||'').toLowerCase().includes(q));
+  });
+
+  if(sort==='largest')rows.sort((a,b)=>biggestCandidateMiss(b)-biggestCandidateMiss(a));
+  else if(sort==='shift')rows.sort((a,b)=>Math.abs(errMarginShift(b)||0)-Math.abs(errMarginShift(a)||0));
+  else if(sort==='state')rows.sort((a,b)=>String(a.state||'').localeCompare(String(b.state||''))||Number(b.year)-Number(a.year));
+  else rows.sort((a,b)=>Number(b.year)-Number(a.year)||String(a.state||'').localeCompare(String(b.state||'')));
+
+  errorVisibleCount.textContent=`${rows.length} race${rows.length===1?'':'s'}`;
+
+  if(!rows.length){
+    errorViewDescription.textContent='Try clearing a filter or changing your search';
+    errorsList.innerHTML='<div class="card error-no-results">No races match those filters.</div>';
+    return;
+  }
+
+  if(sort==='newest'){
+    errorViewDescription.textContent=year==='all'?'Grouped by election year':`${year} Senate races`;
+    const years=[...new Set(rows.map(x=>String(x.year)))].sort((a,b)=>Number(b)-Number(a));
+    errorsList.innerHTML=years.map(y=>{
+      const yr=rows.filter(x=>String(x.year)===y);
+      return `<section class="error-year-section" id="errors-year-${esc(y)}">
+        <div class="error-year-section-head">
+          <h2>${esc(y)}</h2>
+          <span class="year-count">${yr.length} race${yr.length===1?'':'s'}</span>
+          <div class="year-rule"></div>
+          <button type="button" data-error-back-top>Back to year index ↑</button>
+        </div>
+        <div class="error-year-grid">${yr.map(errorCardHTML).join('')}</div>
+      </section>`;
+    }).join('');
+  }else{
+    const labels={largest:'Largest polling misses first',shift:'Largest margin shifts first',state:'States A–Z'};
+    errorViewDescription.textContent=labels[sort]||'Filtered races';
+    errorsList.innerHTML=`<div class="error-flat-grid">${rows.map(err
+---
+-i="${idx}" data-k="state" value="${esc(x.state||'')}" placeholder="State">
+      <input data-i="${idx}" data-k="c1" value="${esc(x.c1||'')}" placeholder="Candidate 1">
+      <input data-i="${idx}" data-k="p1" value="${esc(x.p1||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.value;
+    if(['poll1','poll2','actual1','actual2'].includes(k)&&inp.value!=='')errors[i][k]=Number(inp.value);
+    save();renderErrors();
+  }));
+  document.querySelectorAll('[data-delete-error]').forEach(btn=>btn.onclick=()=>{
+    errors.splice(Number(btn.dataset.deleteError),1);save();renderErrors();toast('Race deleted');
+  });
+  document.querySelectorAll('[data-error-back-top]').forEach(btn=>btn.onclick=()=>{
+    document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function renderErrors(){
+  addErrorBtn.style.display=editMode?'inline-block':'none';
+  const historical=errors.filter(x=>!x.pending && errNum(x.actual1)!==null && errNum(x.actual2)!==null);
+  errorCount.textContent=historical.length;
+
+  const misses=[];
+  historical.forEach(x=>{
+    const e1=candidateError(x,1),e2=candidateError(x,2);
+    if(e1!==null)misses.push({v:e1,x,name:x.c1});
+    if(e2!==null)misses.push({v:e2,x,name:x.c2});
+  });
+  maeValue.textContent=misses.length?(misses.reduce((a,b)=>a+Math.abs(b.v),0)/misses.length).toFixed(1)+' pts':'—';
+  if(misses.length){
+    const biggest=misses.reduce((a,b)=>Math.abs(b.v)>Math.abs(a.v)?b:a);
+    maxErrorValue.textContent=Math.abs(biggest.v).toFixed(1)+' pts';
+    maxErrorValue.title=`${biggest.name}, ${biggest.x.state} ${biggest.x.year}`;
+  }else maxErrorValue.textContent='—';
+  wrongCallCount.textContent=historical.filter(errWrongLeader).length;
+
+  renderErrorFilters();
+
+  const q=String(errorSearchInput.value||'').trim().toLowerCase();
+  const year=errorYearSelect.value||'all';
+  const sort=errorSortSelect.value||'newest';
+
+  let rows=errors.filter(x=>{
+    if(year!=='all'&&String(x.year)!==year)return false;
+    if(!q)return true;
+    return [x.state,x.c1,x.c2,x.year,x.source,x.notes].some(v=>String(v||'').toLowerCase().includes(q));
+  });
+
+  if(sort==='largest')rows.sort((a,b)=>biggestCandidateMiss(b)-biggestCandidateMiss(a));
+  else if(sort==='shift')rows.sort((a,b)=>Math.abs(errMarginShift(b)||0)-Math.abs(errMarginShift(a)||0));
+  else if(sort==='state')rows.sort((a,b)=>String(a.state||'').localeCompare(String(b.state||''))||Number(b.year)-Number(a.year));
+  else rows.sort((a,b)=>Number(b.year)-Number(a.year)||String(a.state||'').localeCompare(String(b.state||'')));
+
+  errorVisibleCount.textContent=`${rows.length} race${rows.length===1?'':'s'}`;
+
+  if(!rows.length){
+    errorViewDescription.textContent='Try clearing a filter or changing your search';
+    errorsList.innerHTML='<div class="card error-no-results">No races match those filters.</div>';
+    return;
+  }
+
+  if(sort==='newest'){
+    errorViewDescription.textContent=year==='all'?'Grouped by election year':`${year} Senate races`;
+    const years=[...new Set(rows.map(x=>String(x.year)))].sort((a,b)=>Number(b)-Number(a));
+    errorsList.innerHTML=years.map(y=>{
+      const yr=rows.filter(x=>String(x.year)===y);
+      return `<section class="error-year-section" id="errors-year-${esc(y)}">
+        <div class="error-year-section-head">
+          <h2>${esc(y)}</h2>
+          <span class="year-count">${yr.length} race${yr.length===1?'':'s'}</span>
+          <div class="year-rule"></div>
+          <button type="button" data-error-back-top>Back to year index ↑</button>
+        </div>
+        <div class="error-year-grid">${yr.map(errorCardHTML).join('')}</div>
+      </section>`;
+    }).join('');
+  }else{
+    const labels={largest:'Largest polling misses first',shift:'Largest margin shifts first',state:'States A–Z'};
+    errorViewDescription.textContent=labels[sort]||'Filtered races';
+    errorsList.innerHTML=`<div class="error-flat-grid">${rows.map(errorCardHTML).join('')}</div>`;
+  }
+
+  bindErrorCardEditors();
+}
+errorSearchInput.addEventListener('input',renderErrors);
+errorYearSelect.addEventListener('change',ren
+---
+der="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.value;
+    if(['poll1','poll2','actual1','actual2'].includes(k)&&inp.value!=='')errors[i][k]=Number(inp.value);
+    save();renderErrors();
+  }));
+  document.querySelectorAll('[data-delete-error]').forEach(btn=>btn.onclick=()=>{
+    errors.splice(Number(btn.dataset.deleteError),1);save();renderErrors();toast('Race deleted');
+  });
+  document.querySelectorAll('[data-error-back-top]').forEach(btn=>btn.onclick=()=>{
+    document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function renderErrors(){
+  addErrorBtn.style.display=editMode?'inline-block':'none';
+  const historical=errors.filter(x=>!x.pending && errNum(x.actual1)!==null && errNum(x.actual2)!==null);
+  errorCount.textContent=historical.length;
+
+  const misses=[];
+  historical.forEach(x=>{
+    const e1=candidateError(x,1),e2=candidateError(x,2);
+    if(e1!==null)misses.push({v:e1,x,name:x.c1});
+    if(e2!==null)misses.push({v:e2,x,name:x.c2});
+  });
+  maeValue.textContent=misses.length?(misses.reduce((a,b)=>a+Math.abs(b.v),0)/misses.length).toFixed(1)+' pts':'—';
+  if(misses.length){
+    const biggest=misses.reduce((a,b)=>Math.abs(b.v)>Math.abs(a.v)?b:a);
+    maxErrorValue.textContent=Math.abs(biggest.v).toFixed(1)+' pts';
+    maxErrorValue.title=`${biggest.name}, ${biggest.x.state} ${biggest.x.year}`;
+  }else maxErrorValue.textContent='—';
+  wrongCallCount.textContent=historical.filter(errWrongLeader).length;
+
+  renderErrorFilters();
+
+  const q=String(errorSearchInput.value||'').trim().toLowerCase();
+  const year=errorYearSelect.value||'all';
+  const sort=errorSortSelect.value||'newest';
+
+  let rows=errors.filter(x=>{
+    if(year!=='all'&&String(x.year)!==year)return false;
+    if(!q)return true;
+    return [x.state,x.c1,x.c2,x.year,x.source,x.notes].some(v=>String(v||'').toLowerCase().includes(q));
+  });
+
+  if(sort==='largest')rows.sort((a,b)=>biggestCandidateMiss(b)-biggestCandidateMiss(a));
+  else if(sort==='shift')rows.sort((a,b)=>Math.abs(errMarginShift(b)||0)-Math.abs(errMarginShift(a)||0));
+  else if(sort==='state')rows.sort((a,b)=>String(a.state||'').localeCompare(String(b.state||''))||Number(b.year)-Number(a.year));
+  else rows.sort((a,b)=>Number(b.year)-Number(a.year)||String(a.state||'').localeCompare(String(b.state||'')));
+
+  errorVisibleCount.textContent=`${rows.length} race${rows.length===1?'':'s'}`;
+
+  if(!rows.length){
+    errorViewDescription.textContent='Try clearing a filter or changing your search';
+    errorsList.innerHTML='<div class="card error-no-results">No races match those filters.</div>';
+    return;
+  }
+
+  if(sort==='newest'){
+    errorViewDescription.textContent=year==='all'?'Grouped by election year':`${year} Senate races`;
+    const years=[...new Set(rows.map(x=>String(x.year)))].sort((a,b)=>Number(b)-Number(a));
+    errorsList.innerHTML=years.map(y=>{
+      const yr=rows.filter(x=>String(x.year)===y);
+      return `<section class="error-year-section" id="errors-year-${esc(y)}">
+        <div class="error-year-section-head">
+          <h2>${esc(y)}</h2>
+          <span class="year-count">${yr.length} race${yr.length===1?'':'s'}</span>
+          <div class="year-rule"></div>
+          <button type="button" data-error-back-top>Back to year index ↑</button>
+        </div>
+        <div class="error-year-grid">${yr.map(errorCardHTML).join('')}</div>
+      </section>`;
+    }).join('');
+  }else{
+    const labels={largest:'Largest polling misses first',shift:'Largest margin shifts first',state:'States A–Z'};
+    errorViewDescription.textContent=labels[sort]||'Filtered races';
+    errorsList.innerHTML=`<div class="error-flat-grid">${rows.map(errorCardHTML).join('')}</div>`;
+  }
+
+  bindErrorCardEditors();
+}
+errorSearchInput.addEventListener('input',renderErrors);
+errorYearSelect.addEventListener('change',renderErrors);
+errorSortSelect.addEventListener('change',renderErrors);
+errorClearBtn.addEventListener('click',()=>{
+  errorSearchInput.value='';
+  errorYearSelect.value='all';
+  errorSortSelect.value='newest';
+  renderErrors();
+  document.getEle
+---
+ort==='shift')rows.sort((a,b)=>Math.abs(errMarginShift(b)||0)-Math.abs(errMarginShift(a)||0));
+  else if(sort==='state')rows.sort((a,b)=>String(a.state||'').localeCompare(String(b.state||''))||Number(b.year)-Number(a.year));
+  else rows.sort((a,b)=>Number(b.year)-Number(a.year)||String(a.state||'').localeCompare(String(b.state||'')));
+
+  errorVisibleCount.textContent=`${rows.length} race${rows.length===1?'':'s'}`;
+
+  if(!rows.length){
+    errorViewDescription.textContent='Try clearing a filter or changing your search';
+    errorsList.innerHTML='<div class="card error-no-results">No races match those filters.</div>';
+    return;
+  }
+
+  if(sort==='newest'){
+    errorViewDescription.textContent=year==='all'?'Grouped by election year':`${year} Senate races`;
+    const years=[...new Set(rows.map(x=>String(x.year)))].sort((a,b)=>Number(b)-Number(a));
+    errorsList.innerHTML=years.map(y=>{
+      const yr=rows.filter(x=>String(x.year)===y);
+      return `<section class="error-year-section" id="errors-year-${esc(y)}">
+        <div class="error-year-section-head">
+          <h2>${esc(y)}</h2>
+          <span class="year-count">${yr.length} race${yr.length===1?'':'s'}</span>
+          <div class="year-rule"></div>
+          <button type="button" data-error-back-top>Back to year index ↑</button>
+        </div>
+        <div class="error-year-grid">${yr.map(errorCardHTML).join('')}</div>
+      </section>`;
+    }).join('');
+  }else{
+    const labels={largest:'Largest polling misses first',shift:'Largest margin shifts first',state:'States A–Z'};
+    errorViewDescription.textContent=labels[sort]||'Filtered races';
+    errorsList.innerHTML=`<div class="error-flat-grid">${rows.map(errorCardHTML).join('')}</div>`;
+  }
+
+  bindErrorCardEditors();
+}
+errorSearchInput.addEventListener('input',renderErrors);
+errorYearSelect.addEventListener('change',renderErrors);
+errorSortSelect.addEventListener('change',renderErrors);
+errorClearBtn.addEventListener('click',()=>{
+  errorSearchInput.value='';
+  errorYearSelect.value='all';
+  errorSortSelect.value='newest';
+  renderErrors();
+  document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+});
+addErrorBtn.onclick=()=>{
+  if(!editMode)setEditMode(true);
+  errors.unshift({year:'2024',state:'',c1:'',p1:'D',poll1:'',actual1:'',c2:'',p2:'R',poll2:'',actual2:'',source:'User-entered',notes:'',pending:false});
+  save();renderErrors();toast('New race added');
+};
+
+const COLOR_VAR_MAP={'not-up':'--notup','unrated':'--unrated','tossup':'--toss','tilt-r':'--tilt-r','lean-r':'--lean-r','likely-r':'--likely-r','solid-r':'--solid-r','tilt-d':'--tilt-d','lean-d':'--lean-d','likely-d':'--likely-d','solid-d':'--solid-d','tilt-i':'--tilt-i','lean-i':'--lean-i','likely-i':'--likely-i','solid-i':'--solid-i'};
+function applyPaletteCSS(){Object.entries(COLOR_VAR_MAP).forEach(([k,v])=>document.documentElement.style.setProperty(v,RATING_COLORS[k]));}
+function renderPalette(){paletteGrid.innerHTML=Object.keys(COLOR_VAR_MAP).map(k=>`<div class="palette-item"><label>${RATING_LABELS[k]}</label><input type="color" data-color-key="${k}" value="${RATING_COLORS[k]}"></div>`).join('');paletteGrid.querySelectorAll('input[type=color]').forEach(inp=>inp.addEventListener('input',()=>{RATING_COLORS[inp.dataset.colorKey]=inp.value;applyPaletteCSS();renderSenate();save();}));}
+mapColorsBtn.onclick=()=>{renderPalette();paletteModal.classList.add('show')};paletteClose.onclick=()=>paletteModal.classList.remove('show');paletteDone.onclick=()=>paletteModal.classList.remove('show');paletteModal.onclick=e=>{if(e.target===paletteModal)paletteModal.classList.remove('show')};resetPaletteBtn.onclick=()=>{RATING_COLORS={...DEFAULT_RATING_COLORS};applyPaletteCSS();renderPalette();renderSenate();save();toast('Map colors reset')};
+
+function activeStateOptions(selected=''){return Object.values(stateData).filter(s=>s.active).sort((a,b)=>a.name.localeCompare(b.name)).map(s=>`<option value="${s.abbr}" ${s.abbr===selected?'selected':''}>${s.name}</option>`).join('')}
+function pctBarWidth(a,b){const x=Math.max(0,Number(a)||0),y=Math.max(0,Number(b)||0),t=x+y;return t?x/t*100:50}
+
+
+function renderHomeDashboard(){
+  const active=Object.values(stateData).filter(s=>s.active);
+  const rated=active.filter(s=>s.rating && s.rating!=='unrated');
+  const tossups=active.filter(s=>s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''));
+
+  const ratedEl=document.getElementById('homeRatedRaces');
+  const tossEl=document.getElementById('homeTossups');
+  const pollEl=document.getElementById('homePollCount');
+  const updateEl=document.getElementById('homeLatestUpdate');
+  if(ratedEl) ratedEl.textContent=rated.length;
+  if(tossEl) tossEl.textContent=tossups.length;
+  if(pollEl) pollEl.textContent=polls.length;
+
+  const dates=[
+    ...active.map(s=>s.updated).filter(Boolean),
+    ...polls.map(p=>p.date).filter(Boolean),
+    ...bettingOdds.map(p=>p.date).filter(Boolean)
+  ].sort((a,b)=>b.localeCompare(a));
+
+  if(updateEl){
+    if(dates.length){
+      const d=new Date(dates[0]+'T12:00:00');
+      updateEl.textContent=Number.isNaN(d.getTime())?dates[0]:
+        d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+    }else{
+      updateEl.textContent='—';
+    }
+  }
+
+  document.querySelectorAll('[data-home-state]').
+---
+||0)-Math.abs(errMarginShift(a)||0));
+  else if(sort==='state')rows.sort((a,b)=>String(a.state||'').localeCompare(String(b.state||''))||Number(b.year)-Number(a.year));
+  else rows.sort((a,b)=>Number(b.year)-Number(a.year)||String(a.state||'').localeCompare(String(b.state||'')));
+
+  errorVisibleCount.textContent=`${rows.length} race${rows.length===1?'':'s'}`;
+
+  if(!rows.length){
+    errorViewDescription.textContent='Try clearing a filter or changing your search';
+    errorsList.innerHTML='<div class="card error-no-results">No races match those filters.</div>';
+    return;
+  }
+
+  if(sort==='newest'){
+    errorViewDescription.textContent=year==='all'?'Grouped by election year':`${year} Senate races`;
+    const years=[...new Set(rows.map(x=>String(x.year)))].sort((a,b)=>Number(b)-Number(a));
+    errorsList.innerHTML=years.map(y=>{
+      const yr=rows.filter(x=>String(x.year)===y);
+      return `<section class="error-year-section" id="errors-year-${esc(y)}">
+        <div class="error-year-section-head">
+          <h2>${esc(y)}</h2>
+          <span class="year-count">${yr.length} race${yr.length===1?'':'s'}</span>
+          <div class="year-rule"></div>
+          <button type="button" data-error-back-top>Back to year index ↑</button>
+        </div>
+        <div class="error-year-grid">${yr.map(errorCardHTML).join('')}</div>
+      </section>`;
+    }).join('');
+  }else{
+    const labels={largest:'Largest polling misses first',shift:'Largest margin shifts first',state:'States A–Z'};
+    errorViewDescription.textContent=labels[sort]||'Filtered races';
+    errorsList.innerHTML=`<div class="error-flat-grid">${rows.map(errorCardHTML).join('')}</div>`;
+  }
+
+  bindErrorCardEditors();
+}
+errorSearchInput.addEventListener('input',renderErrors);
+errorYearSelect.addEventListener('change',renderErrors);
+errorSortSelect.addEventListener('change',renderErrors);
+errorClearBtn.addEventListener('click',()=>{
+  errorSearchInput.value='';
+  errorYearSelect.value='all';
+  errorSortSelect.value='newest';
+  renderErrors();
+  document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+});
+addErrorBtn.onclick=()=>{
+  if(!editMode)setEditMode(true);
+  errors.unshift({year:'2024',state:'',c1:'',p1:'D',poll1:'',actual1:'',c2:'',p2:'R',poll2:'',actual2:'',source:'User-entered',notes:'',pending:false});
+  save();renderErrors();toast('New race added');
+};
+
+const COLOR_VAR_MAP={'not-up':'--notup','unrated':'--unrated','tossup':'--toss','tilt-r':'--tilt-r','lean-r':'--lean-r','likely-r':'--likely-r','solid-r':'--solid-r','tilt-d':'--tilt-d','lean-d':'--lean-d','likely-d':'--likely-d','solid-d':'--solid-d','tilt-i':'--tilt-i','lean-i':'--lean-i','likely-i':'--likely-i','solid-i':'--solid-i'};
+function applyPaletteCSS(){Object.entries(COLOR_VAR_MAP).forEach(([k,v])=>document.documentElement.style.setProperty(v,RATING_COLORS[k]));}
+function renderPalette(){paletteGrid.innerHTML=Object.keys(COLOR_VAR_MAP).map(k=>`<div class="palette-item"><label>${RATING_LABELS[k]}</label><input type="color" data-color-key="${k}" value="${RATING_COLORS[k]}"></div>`).join('');paletteGrid.querySelectorAll('input[type=color]').forEach(inp=>inp.addEventListener('input',()=>{RATING_COLORS[inp.dataset.colorKey]=inp.value;applyPaletteCSS();renderSenate();save();}));}
+mapColorsBtn.onclick=()=>{renderPalette();paletteModal.classList.add('show')};paletteClose.onclick=()=>paletteModal.classList.remove('show');paletteDone.onclick=()=>paletteModal.classList.remove('show');paletteModal.onclick=e=>{if(e.target===paletteModal)paletteModal.classList.remove('show')};resetPaletteBtn.onclick=()=>{RATING_COLORS={...DEFAULT_RATING_COLORS};applyPaletteCSS();renderPalette();renderSenate();save();toast('Map colors reset')};
+
+function activeStateOptions(selected=''){return Object.values(stateData).filter(s=>s.active).sort((a,b)=>a.name.localeCompare(b.name)).map(s=>`<option value="${s.abbr}" ${s.abbr===selected?'selected':''}>${s.name}</option>`).join('')}
+function pctBarWidth(a,b){const x=Math.max(0,Number(a)||0),y=Math.max(0,Number(b)||0),t=x+y;return t?x/t*100:50}
+
+
+function renderHomeDashboard(){
+  const active=Object.values(stateData).filter(s=>s.active);
+  const rated=active.filter(s=>s.rating && s.rating!=='unrated');
+  const tossups=active.filter(s=>s.rating==='tossup'||/^tilt-(d|r|i)$/.test(s.rating||''));
+
+  const ratedEl=document.getElementById('homeRatedRaces');
+  const tossEl=document.getElementById('homeTossups');
+  const pollEl=document.getElementById('homePollCount');
+  const updateEl=document.getElementById('homeLatestUpdate');
+  if(ratedEl) ratedEl.textContent=rated.length;
+  if(tossEl) tossEl.textContent=tossups.length;
+  if(pollEl) pollEl.textContent=polls.length;
+
+  const dates=[
+    ...active.map(s=>s.updated).filter(Boolean),
+    ...polls.map(p=>p.date).filter(Boolean),
+    ...bettingOdds.map(p=>p.date).filter(Boolean)
+  ].sort((a,b)=>b.localeCompare(a));
+
+  if(updateEl){
+    if(dates.length){
+      const d=new Date(dates[0]+'T12:00:00');
+      updateEl.textContent=Number.isNaN(d.getTime())?dates[0]:
+        d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+    }else{
+      updateEl.textContent='—';
+    }
+  }
+
+  document.querySelectorAll('[data-home-state]').forEach(path=>{
+    const s=stateData[path.dataset.homeSt
+---
+
+
+===== polling error =====
+ne;fill:#4d5867;font-weight:900}.kalshi-state-label.light-text{fill:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.kalshi-inset-frame{fill:none;stroke:#c9d0dc;stroke-width:1}.kalshi-inset-label{font-size:9px;font-weight:900;letter-spacing:1.5px;fill:#7b8493}
+.kalshi-hover-card{position:absolute;display:none;z-index:8;min-width:245px;max-width:290px;background:#fff;border:1px solid #d9dee7;border-radius:12px;box-shadow:0 8px 28px rgba(14,27,47,.16);padding:12px;pointer-events:none}
+.kalshi-hover-card.show{display:block}.kalshi-hover-top{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid #edf0f4;padding-bottom:8px;margin-bottom:8px}.kalshi-hover-state{font-size:15px;font-weight:950}.kalshi-hover-date{font-size:9px;color:#7b8493}
+.kalshi-market-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:7px 0}.kalshi-market-row+.kalshi-market-row{border-top:1px solid #f0f2f5}.kalshi-market-name{font-weight:850;font-size:12px}.kalshi-market-pct{font-size:20px;font-weight:1000;font-variant-numeric:tabular-nums}.kalshi-market-pct.dem{color:#2763b8}.kalshi-market-pct.rep{color:#bd2937}.kalshi-market-pct.ind{color:#9b7a13}.kalshi-market-pct.osborn{color:#8a5be2}
+.kalshi-no-odds{font-size:12px;color:#6f7886;padding:7px 0 2px}
+.kalshi-selected-card{border-top:1px solid #edf0f4;margin-top:4px;padding-top:12px}.kalshi-selected-empty{font-size:12px;color:#778190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{
+---
+.about-bottom-brand p{font-size:11px;color:#6e7886;margin:0}.about-bottom-logo .about-brand-arc{width:210px;height:auto;display:block;margin-left:auto}
+#page-about .about-editor{margin-top:18px}
+
+@media(max-width:980px){
+  .kalshi-all-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about-brand-hero{grid-template-columns:1fr;padding:34px}.about-logo-stage{min-height:240px}
+  .about-stat-strip{grid-template-columns:repeat(2,1fr)}
+  .about-story-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .kalshi-all-grid{grid-template-columns:1fr}
+  .about-brand-hero{padding:26px 22px;min-height:0}.about-brand-copy h2{font-size:47px}
+  .about-logo-stage{min-height:210px}.about-logo-stage .about-brand-arc{width:270px}.about-logo-stage strong{right:6px;bottom:0;font-size:21px}
+  .about-color-grid{grid-template-columns:1fr}.about-color-card{min-height:160px}
+  .about-method-band{grid-template-columns:1fr}.about-method-icon{width:58px;height:58px}
+  .about-bottom-brand{grid-template-columns:1fr}.about-bottom-logo .about-brand-arc{margin:0;width:180px}
+}
+
+/* v51 — cleaner Kalshi odds typography */
+.kalshi-market-pct,
+.kalshi-selected-values .kalshi-market-pct,
+.kalshi-market-tile-odds b,
+#kalshiMap .kalshi-state-label{
+  font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.kalshi-market-pct{font-weight:750;letter-spacing:-.045em}
+.kalshi-selected-values .kalshi-market-pct{font-weight:720!important;letter-spacing:-.035em}
+.kalshi-market-tile-odds b{font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+#kalshiMap .kalshi-state-label{font-weight:800;letter-spacing:-.25px}
+.kalshi-market-name,.kalshi-market-tile-state{
+  font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:700;
+}
+
+/* v51 — easier Past Polling Errors navigation */
+.error-nav-title{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:13px}
+.error-nav-title>div{display:flex;flex-direction:column;gap:2px}
+.error-nav-title span{font-size:9px;font-weight:950;letter-spacing:1px;color:#758092}
+.error-nav-title strong{font-family:Georgia,serif;font-size:18px;color:#263244}
+.error-year-nav{margin-top:12px;padding-top:11px;border-top:1px solid #edf0f4}
+.error-year-nav>span{display:block;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.8px;color:#7a8493;margin-bottom:7px}
+.error-year-chips{display:flex;gap:7px;overflow:auto;padding:0 0 4px;scrollbar-width:thin}
+.error-year-chip{min-width:54px;padding:7px 10px;font-size:11px}
+.error-year-chip .count{opacity:.6;font-size:9px;margin-left:3px}
+.error-year-chip.active{box-shadow:0 2px 8px rgba(22,36,58,.14)}
+.error-results-line{position:sticky;top:64px;z-index:5;background:rgba(247,249,252,.96);backdrop-filter:blur(7px);padding:8px 2px;border-bottom:1px solid #e7ebf0;margin:8px 0 10px}
+.error-year-section{margin:0 0 20px;scroll-margin-top:112px}
+.error-year-section-head{display:flex;align-items:center;gap:12px;margin:0 2px 9px}
+.error-year-section-head h2{font-family:Georgia,serif;font-size:28px;margin:0;color:#243044}
+.error-year-section-head .year-count{font-size:10px;font-weight:900;color:#748091;background:#eef1f5;border-radius:999px;padding:5px 8px}
+.error-year-section-head .year-rule{height:1px;flex:1;background:linear-gradient(90deg,#cbd6e5,transparent)}
+.error-year-section-head button{border:0;background:none;color:#6c7888;font-size:10px;font-weight:850;cursor:pointer;padding:5px}
+.error-year-grid,.error-flat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{transition:border-color .13s,transform .13s}
+.error-race-card:hover{border-color:#c8d0dc;transform:translateY(-1px)}
+.error-no-results{padding:34px;text-align:center;color:#788291}
+@media(max-width:900px){
+  .error-year-grid,.error-flat-grid{grid-template-columns:1fr}
+  .error-results-line{top:58px}
+}
+@media(max-width:600px){
+  .error-nav-title{align-items:flex-start}
+  .error-nav-title strong{font-size:16px}
+  .error-year-section-head h2{font-size:24px}
+  .error-year-section-head button{display:none}
+}
+
+/* v52 — election prediction hover typography */
+#page-senate .map-hover-margin,
+#page-senate .map-hover-number{
+  font-family:"Avenir Next","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+#page-senate .map-hover-margin{
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+#page-senate .map-hover-number{
+  font-weight:700;
+  letter-spacing:-.035em;
+}
+
+/* v56 — About Me readability fix */
+#page-about .about-story-panel,
+#page-about .about-experience-card,
+#page-about .about-bottom-brand,
+#page-about .about-editor{
+  color:#172033!important;
+}
+#page-about .about-story-panel h2,
+#page-about .about-story-panel h3,
+#page-about .about-experience-card h3,
+#page-about .about-bottom-brand h2,
+#page-about .about-editor label{
+  color:#172033!important;
+}
+#page-about .about-story-panel p,
+#page-about .about-experience-card p,
+#page-about .about-bottom-brand p,
+#page-about .about-section-label,
+#page-about .about-section-title span{
+  color:#5f6977!important;
+}
+#page-about .about-brand-hero,
+#page-about .about-brand-hero h2,
+#page-about .about-brand-hero p,
+#page-about .about-method-band,
+#page-about .about-method-band h2,
+#page-about .about-method-band p,
+#page-about .about
+---
+="8.2" fill="#83a4c3"/><circle cx="153" cy="59" r="8.2" fill="#c6a8ad"/><circle cx="182" cy="62" r="8.2" fill="#dc8f93"/><circle cx="210" cy="68" r="8.2" fill="#e57177"/><circle cx="236" cy="78" r="8.2" fill="#e65059"/><circle cx="259" cy="91" r="8.2" fill="#d9343e"/><circle cx="24" cy="121" r="8.2" fill="#1767b1"/><circle cx="51" cy="110" r="8.2" fill="#2375be"/><circle cx="79" cy="101" r="8.2" fill="#3b84c7"/><circle cx="108" cy="95" r="8.2" fill="#83a4c3"/><circle cx="138" cy="92" r="8.2" fill="#a3afbf"/><circle cx="168" cy="93" r="8.2" fill="#c6a8ad"/><circle cx="198" cy="98" r="8.2" fill="#e57177"/><circle cx="227" cy="106" r="8.2" fill="#e65059"/><circle cx="253" cy="118" r="8.2" fill="#d9343e"/><circle cx="36" cy="144" r="8.2" fill="#1767b1"/><circle cx="64" cy="136" r="8.2" fill="#2375be"/><circle cx="94" cy="129" r="8.2" fill="#5b94c7"/><circle cx="125" cy="125" r="8.2" fill="#83a4c3"/><circle cx="156" cy="126" r="8.2" fill="#c6a8ad"/><circle cx="188" cy="131" r="8.2" fill="#dc8f93"/><circle cx="218" cy="138" r="8.2" fill="#e65059"/><circle cx="245" cy="148" r="8.2" fill="#d9343e"/><circle cx="55" cy="165" r="8.2" fill="#1767b1"/><circle cx="85" cy="159" r="8.2" fill="#3b84c7"/><circle cx="116" cy="155" r="8.2" fill="#83a4c3"/><circle cx="148" cy="156" r="8.2" fill="#c6a8ad"/><circle cx="180" cy="161" r="8.2" fill="#e57177"/><circle cx="211" cy="168" r="8.2" fill="#d9343e"/>
+    </svg></span>
+  <span class="reference-brand-name">Will's Election<br>Polls &amp; Predictions</span>
+</a>
+<nav class="nav">
+<button class="active" data-page-link="home">Home</button>
+<button data-page-link="senate">2026 Senate Prediction</button>
+<button data-page-link="polls">New Polls</button>
+<button data-page-link="betting">Betting Odds</button>
+<button data-page-link="errors">Past Polling Errors</button>
+<button data-page-link="about">About Me</button>
+<button class="admin-btn" id="editToggle">Edit mode: Off</button>
+<button aria-label="Data settings" class="admin-btn" id="settingsBtn">⚙</button>
+</nav>
+</header>
+<main>
+
+<section id="page-home" class="page active reference-home">
+  <div class="reference-home-shell">
+    <section class="reference-hero">
+      <div class="reference-hero-copy">
+        <div class="reference-eyebrow">SAME DATA. A CLEARER PICTURE.</div>
+        <h1>Will's Election<br>Polls &amp; Predictions</h1>
+        <p>Polling, forecasting, and race-by-race predictions for a clearer understanding of what’s next.</p>
+        <div class="reference-hero-actions">
+          <button class="reference-primary" data-page-link="polls">View Latest Polls <span>→</span></button>
+          <button class="reference-secondary" data-page-link="senate">See Forecasts</button>
+        </div>
+      </div>
+
+      <div class="reference-hero-mark">
+        <svg class="brand-arc-hero" viewBox="0 0 285 195" role="img" aria-label="Blue to red forecast arc">
+      <circle cx="20" cy="74" r="8.2" fill="#1767b1"/><circle cx="42" cy="58" r="8.2" fill="#2375be"/><circle cx="65" cy="45" r="8.2" fill="#3b84c7"/><circle cx="90" cy="35" r="8.2" fill="#5b94c7"/><circle cx="116" cy="29" r="8.2" fill="#83a4c3"/><circle cx="143" cy="27" r="8.2" fill="#a3afbf"/><circle cx="170" cy="29" r="8.2" fill="#c6a8ad"/><circle cx="196" cy="35" r="8.2" fill="#dc8f93"/><circle cx="220" cy="45" r="8.2" fill="#e57177"/><circle cx="242" cy="58" r="8.2" fill="#e65059"/><circle cx="263" cy="74" r="8.2" fill="#d9343e"/><circle cx="18" cy="98" r="8.2" fill="#1767b1"/><circle cx="43" cy="84" r="8.2" fill="#2375be"/><circle cx="69" cy="73" r="8.2" fill="#3b84c7"/><circle cx="96" cy="65" r="8.2" fill="#5b94c7"/><circle cx="124" cy="60" r="8.2" fill="#83a4c3"/><circle cx="153" cy="59" r="8.2" fill="#c6a8ad"/><circle cx="182" cy="62" r="8.2" fill="#dc8f93"/><circle cx="210" cy="68" r="8.2" fill="#e57177"/><circle cx="236" cy="78" r="8.2" fill="#e65059"/><circle cx="259" cy="91" r="8.2" fill="#d9343e"/><circle cx="24" cy="121" r="8.2" fill="#1767b1"/><circle cx="51" cy="110" r="8.2" fill="#2375be"/><circle cx="79" cy="101" r="8.2" fill="#3b84c7"/><circle cx="108" cy="95" r="8.2" fill="#83a4c3"/><circle cx="138" cy="92" r="8.2" fill="#a3afbf"/><circle cx="168" cy="93" r="8.2" fill="#c6a8ad"/><circle cx="198" cy="98" r="8.2" fill="#e57177"/><circle cx="227" cy="106" r="8.2" fill="#e65059"/><circle cx="253" cy="118" r="8.2" fill="#d9343e"/><circle cx="36" cy="144" r="8.2" fill="#1767b1"/><circle cx="64" cy="136" r="8.2" fill="#2375be"/><circle cx="94" cy="129" r="8.2" fill="#5b94c7"/><circle cx="125" cy="125" r="8.2" fill="#83a4c3"/><circle cx="156" cy="126" r="8.2" fill="#c6a8ad"/><circle cx="188" cy="131" r="8.2" fill="#dc8f93"/><circle cx="218" cy="138" r="8.2" fill="#e65059"/><circle cx="245" cy="148" r="8.2" fill="#d9343e"/><circle cx="55" cy="165" r="8.2" fill="#1767b1"/><circle cx="85" cy="159" r="8.2" fill="#3b84c7"/><circle cx="116" cy="155" r="8.2" fill="#83a4c3"/><circle cx="148" cy="156" r="8.2" fill="#c6a8ad"/><circle cx="180" cy="161" r="8.2" fill="#e57177"/><circle cx="211" cy="168" r="8.2" fill="#d9343e"/>
+    </svg>
+        <div class="reference-mark-caption">Data. Context. Perspective.</div>
+        <span class="reference-caption-rule"></span>
+      </div>
+    </section>
+
+    <section class="reference-metrics" aria-label="Site snapshot">
+      <article class=
+---
+v>
+<span class="key-range">Tilt → Solid</span>
+</div>
+</div>
+</div>
+<div class="card rating-table-card">
+<div class="card-head"><div><h2>2026 race board</h2><p>A clean state-by-state index generated from the data you enter.</p></div></div>
+<div class="table-wrap"><table class="rating-table"><thead><tr><th>State</th><th>Map shade</th><th>Polling average</th><th>Forecast odds</th><th>Projected winner</th><th>Updated</th></tr></thead><tbody id="raceBoardBody"></tbody></table></div>
+</div>
+</div>
+<aside class="sidebar">
+<div class="card stat-card"><h3>Poll-map snapshot</h3><div class="stats"><div class="stat-row"><span>Democratic poll-rated races</span><b id="countD">0</b></div><div class="stat-row"><span>Republican poll-rated races</span><b id="countR">0</b></div><div class="stat-row"><span>Independent/Other poll-rated</span><b id="countI">0</b></div><div class="stat-row"><span>Toss-ups</span><b id="countT">0</b></div><div class="stat-row"><span>Unrated 2026 races</span><b id="countU">35</b></div></div></div>
+<div class="card how-card"><h3>How to update the map</h3><p>Turn on <strong>Edit mode</strong>, click a 2026 Senate state, enter the candidates and polling averages, choose your projected winner and Tilt/Lean/Likely/Solid strength, then save. The state changes shade immediately.</p></div>
+<div class="card how-card"><h3>2026 map structure</h3><p>The active states are configured from the regular Class II Senate cycle plus the Florida and Ohio special-election seats. Other states remain gray.</p><div class="map-source">Map geometry is embedded directly in this file so it does not depend on an external map service.</div></div>
+</aside>
+</div>
+</div>
+</section>
+<section class="page" id="page-errors">
+<div class="page-head"><div class="page-head-inner"><div><h1>Past Senate Polling Errors</h1><p>A race-by-race look at past Senate elections: where final polling was right, where it missed, and which side it underestimated.</p></div><div class="page-actions"><button class="btn primary sm" id="addErrorBtn">Add race</button></div></div></div>
+<div class="content">
+<div class="errors-summary">
+  <div class="card metric-card"><span>Completed races</span><b id="errorCount">0</b></div>
+  <div class="card metric-card"><span>Mean candidate miss</span><b id="maeValue">—</b></div>
+  <div class="card metric-card"><span>Largest miss</span><b id="maxErrorValue">—</b></div>
+  <div class="card metric-card"><span>Wrong polling leaders</span><b id="wrongCallCount">0</b></div>
+</div>
+
+<div class="card error-control-card" id="errorTopAnchor">
+  <div class="error-nav-title">
+    <div><span>BROWSE THE ARCHIVE</span><strong>Jump to a year, state, or candidate</strong></div>
+    <button class="btn light sm" id="errorClearBtn" type="button">Clear filters</button>
+  </div>
+  <div class="error-controls">
+    <div class="error-control wide"><label>Search</label><input id="errorSearchInput" placeholder="State or candidate — e.g. Michigan, Brown, Collins"/></div>
+    <div class="error-control"><label>Show year</label><select id="errorYearSelect"><option value="all">All years</option></select></div>
+    <div class="error-control"><label>Sort races</label><select id="errorSortSelect"><option value="newest">By election year</option><option value="largest">Biggest candidate miss</option><option value="shift">Biggest margin shift</option><option value="state">State A–Z</option></select></div>
+  </div>
+  <div class="error-year-nav">
+    <span>Election years</span>
+    <div class="error-year-chips" id="errorYearChips"></div>
+  </div>
+  <div class="error-key">
+    <span class="error-chip under">Underestimated</span>
+    <span class="error-chip over">Overestimated</span>
+    <span class="error-chip wrong">Wrong leader</span>
+  </div>
+</div>
+
+<div class="error-results-line"><strong id="errorVisibleCount">0 races</strong><span id="errorViewDescription">Grouped by election year</span></div>
+<div id="errorsList"></div>
+
+<div class="card error-method-simple">
+  <strong>How to read this page</strong>
+  <p><b>Underestimated</b> means a candidate finished higher than the final polling average. <b>Overestimated</b> means the candidate finished lower. “Margin shift” shows how far the final margin moved from the polling margin. Final RCP averages are used where available; some early cycles use a simple average of the final available public polls.</p>
+</div>
+</div>
+</section>
+<section class="page" id="page-polls">
+<div class="page-head"><div class="page-head-inner"><div><h1>New Polls</h1><p>A clean feed for the newest Senate polls you enter. Add the pollster, matchup, percentages, sample, date, and your notes.</p></div><div class="page-actions"><button class="btn primary sm" id="pollsEditBtn">Turn on edit mode</button></div></div></div>
+<div class="content">
+<div class="data-page-grid">
+<div>
+<div class="card entry-form" id="pollEntryForm"><h2>Add a new poll</h2><p>Enter one poll at a time. Your newest entries will appear at the top of the feed.</p>
+<div class="entry-grid">
+<div><label>Date</label><input id="pollDateInput" type="date"/></div><div><label>State</label><select id="pollStateInput"></select></div>
+<div><label>Pollster</label><input id="pollsterInput" placeholder="Pollster / organization"/></div><div><label>Sample</label><input id="pollSampleInput" placeholder
+---
+urrent 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"SC","market":"Kalshi","c1":"Annie Andrews","c1Odds":"13","c2":"Darline Graham","c2Odds":"87","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"SD","market":"Kalshi","c1":"Brian Bengs","c1Odds":"6","c2":"Mike Rounds","c2Odds":"94","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"TN","market":"Kalshi","c1":"Marquita Bradshaw","c1Odds":"3","c2":"Bill Hagerty","c2Odds":"97","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"TX","market":"Kalshi","c1":"James Talarico","c1Odds":"48","c2":"Ken Paxton","c2Odds":"52","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"VA","market":"Kalshi","c1":"Mark Warner","c1Odds":"97","c2":"Bert Mizusawa","c2Odds":"3","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"WV","market":"Kalshi","c1":"Rachel Fetty Anderson","c1Odds":"2","c2":"Shelley Moore Capito","c2Odds":"98","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"WY","market":"Kalshi","c1":"James W. Byrd","c1Odds":"1","c2":"Harriet Hageman","c2Odds":"99","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."}],"aboutData":{"name":"Will Greenwald","headline":"Election forecaster, writer, and student of American politics","bio":"I'm Will, a student, writer, youth civic commissioner, and election-data enthusiast. I'm especially interested in political science, polling, campaigns, public policy, and the way data can make complicated elections easier to understand. I like comparing polls, looking for patterns in past polling errors, and turning all of that information into a clear race-by-race view.","purpose":"I built Will's Election Polls and Predictions because I wanted one place where I could organize the information I actually use when thinking about an election: polling averages, individual polls, market odds, historical polling misses, and my own forecast. The goal is not to pretend elections are certain. It is to make the uncertainty easier to see and explain.","methodology":"My ratings are my own judgment. I use polling averages as a starting point, then compare them with individual polls, historical polling error, the political environment, candidate strength, and market signals. The statistical odds and race ratings on this site are values I enter and maintain; the website does not automatically generate a model or guarantee an outcome.","interests":["Election polling","Political strategy","Public policy","History","Data visualization","Civic engagement"],"experience":[{"title":"Youth Civic Commissioner","detail":"Serve on local climate action and racial equity commissions, bringing a youth perspective to public-policy discussions."},{"title":"Democracy Summer 2026","detail":"Organizing fellow focused on voter education, outreach, redistricting information, and civic participation."},{"title":"Writer","detail":"Contributing writer on democracy and civic engagement, with additional experience self-publishing books."},{"title":"Mock Trial","detail":"Lead prosecutor and Outstanding Attorney award recipient, with experience making evidence-based arguments under pressure."}]},"ratingColors":{"not-up":"#68717e","unrated":"#e5e8ee","tossup":"#f2c94c","tilt-r":"#f2a0a6","lean-r":"#e65c66","likely-r":"#bd2937","solid-r":"#8e1320","tilt-d":"#a9c5ed","lean-d":"#6597da","likely-d":"#2763b8","solid-d":"#173f87","tilt-i":"#eadb96","lean-i":"#ccb14b","likely-i":"#a38318","solid-i":"#715c0a"}};
+const PUBLISH_READY_MODE = true;
+
+const BASELINE_SEATS = { Democrat:34, Republican:31, Independent:0 };
+
+function deepClone(x){return JSON.parse(JSON.stringify(x))}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function fmtPct(v){if(v===null||v===undefined||String(v).trim()==='')return '—'; const n=Number(v); return Number.isFinite(n)?n.toFixed(1)+'%':esc(v)}
+function fmtOdds(v){if(v===null||v===undefined||String(v).trim()==='')return '—'; const n=Number(v); return Number.isFinite(n)?n.toFixed(0)+'%':esc(v)}
+function partyShort(p){return p==='Democrat'?'D':p==='Republican'?'R':p==='Independent / Other'?'I/O':p||'—'}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1500)}
+function currentSiteData(){
+  return {
+    version:4,
+    savedAt:new Date().toISOString(),
+    stateData,
+    errors,
+    polls,
+    bettingOdds,
+    aboutData,
+    ratingColors:RATING_COLORS
+  };
+}
+function applySiteData(obj){
+  if(!obj || typeof obj!=='object')return;
+  if(obj.stateData)stateData={...deepClone(DEFAULT_STATE_DATA),...obj.stateData};
+  if(Array.isArray(obj.errors))errors=obj.errors;
+  if(Array.isArray(obj.polls))polls=obj.polls;
+  if(Array.isArray(obj.bettingOdds))bettingOdds=obj.bettingOdds;
+  if(obj.aboutData)aboutData={...aboutData,...obj.aboutData};
+  if(obj.ratingColors)RATING_COLORS={...DEFAULT_RATING_COLORS,...obj.ratingColors};
+}
+function encodeUtf8Base64(text){
+  const bytes=new
+---
+ep. 6, 2026."},{"date":"2026-09-06","state":"TX","market":"Kalshi","c1":"James Talarico","c1Odds":"48","c2":"Ken Paxton","c2Odds":"52","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"VA","market":"Kalshi","c1":"Mark Warner","c1Odds":"97","c2":"Bert Mizusawa","c2Odds":"3","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"WV","market":"Kalshi","c1":"Rachel Fetty Anderson","c1Odds":"2","c2":"Shelley Moore Capito","c2Odds":"98","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."},{"date":"2026-09-06","state":"WY","market":"Kalshi","c1":"James W. Byrd","c1Odds":"1","c2":"Harriet Hageman","c2Odds":"99","notes":"Kalshi current 2026 Senate race snapshot · Sep. 6, 2026."}],"aboutData":{"name":"Will Greenwald","headline":"Election forecaster, writer, and student of American politics","bio":"I'm Will, a student, writer, youth civic commissioner, and election-data enthusiast. I'm especially interested in political science, polling, campaigns, public policy, and the way data can make complicated elections easier to understand. I like comparing polls, looking for patterns in past polling errors, and turning all of that information into a clear race-by-race view.","purpose":"I built Will's Election Polls and Predictions because I wanted one place where I could organize the information I actually use when thinking about an election: polling averages, individual polls, market odds, historical polling misses, and my own forecast. The goal is not to pretend elections are certain. It is to make the uncertainty easier to see and explain.","methodology":"My ratings are my own judgment. I use polling averages as a starting point, then compare them with individual polls, historical polling error, the political environment, candidate strength, and market signals. The statistical odds and race ratings on this site are values I enter and maintain; the website does not automatically generate a model or guarantee an outcome.","interests":["Election polling","Political strategy","Public policy","History","Data visualization","Civic engagement"],"experience":[{"title":"Youth Civic Commissioner","detail":"Serve on local climate action and racial equity commissions, bringing a youth perspective to public-policy discussions."},{"title":"Democracy Summer 2026","detail":"Organizing fellow focused on voter education, outreach, redistricting information, and civic participation."},{"title":"Writer","detail":"Contributing writer on democracy and civic engagement, with additional experience self-publishing books."},{"title":"Mock Trial","detail":"Lead prosecutor and Outstanding Attorney award recipient, with experience making evidence-based arguments under pressure."}]},"ratingColors":{"not-up":"#68717e","unrated":"#e5e8ee","tossup":"#f2c94c","tilt-r":"#f2a0a6","lean-r":"#e65c66","likely-r":"#bd2937","solid-r":"#8e1320","tilt-d":"#a9c5ed","lean-d":"#6597da","likely-d":"#2763b8","solid-d":"#173f87","tilt-i":"#eadb96","lean-i":"#ccb14b","likely-i":"#a38318","solid-i":"#715c0a"}};
+const PUBLISH_READY_MODE = true;
+
+const BASELINE_SEATS = { Democrat:34, Republican:31, Independent:0 };
+
+function deepClone(x){return JSON.parse(JSON.stringify(x))}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function fmtPct(v){if(v===null||v===undefined||String(v).trim()==='')return '—'; const n=Number(v); return Number.isFinite(n)?n.toFixed(1)+'%':esc(v)}
+function fmtOdds(v){if(v===null||v===undefined||String(v).trim()==='')return '—'; const n=Number(v); return Number.isFinite(n)?n.toFixed(0)+'%':esc(v)}
+function partyShort(p){return p==='Democrat'?'D':p==='Republican'?'R':p==='Independent / Other'?'I/O':p||'—'}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1500)}
+function currentSiteData(){
+  return {
+    version:4,
+    savedAt:new Date().toISOString(),
+    stateData,
+    errors,
+    polls,
+    bettingOdds,
+    aboutData,
+    ratingColors:RATING_COLORS
+  };
+}
+function applySiteData(obj){
+  if(!obj || typeof obj!=='object')return;
+  if(obj.stateData)stateData={...deepClone(DEFAULT_STATE_DATA),...obj.stateData};
+  if(Array.isArray(obj.errors))errors=obj.errors;
+  if(Array.isArray(obj.polls))polls=obj.polls;
+  if(Array.isArray(obj.bettingOdds))bettingOdds=obj.bettingOdds;
+  if(obj.aboutData)aboutData={...aboutData,...obj.aboutData};
+  if(obj.ratingColors)RATING_COLORS={...DEFAULT_RATING_COLORS,...obj.ratingColors};
+}
+function encodeUtf8Base64(text){
+  const bytes=new TextEncoder().encode(text);
+  let binary='';
+  const chunk=0x8000;
+  for(let i=0;i<bytes.length;i+=chunk)binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+  return btoa(binary);
+}
+function decodeUtf8Base64(b64){
+  const binary=atob(b64);
+  const bytes=new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function storageKey(){
+  return PORTABLE_DATA_ID ? `willsElectionSite:${PORTABLE_DATA_ID}` : 'willsElectionSite';
+}
+function updateSaveStatus(message){
+  const el=document.getElementById('saveStatus');
+
+---
+
+
+===== errorData =====
+
+
+===== pastErrors =====
+
+
+===== errorsData =====
+
+
+===== pollingErrors =====
+
+
+===== error-race-matchup =====
+190}.kalshi-selected-content{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.kalshi-selected-content strong{font-size:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat
+---
+e:14px}.kalshi-selected-values{display:flex;gap:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .histori
+---
+:14px;flex-wrap:wrap;font-size:12px}
+.kalshi-entry-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1fr}
+  .er
+---
+mns:repeat(3,minmax(0,1fr))}
+.kalshi-snapshots-card{padding:18px;margin-top:16px}
+
+/* Past polling errors */
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1fr}
+  .error-controls{grid-template-columns:1fr 1fr}.error-control.wide{grid-column
+---
+/
+.error-control-card{padding:15px 16px;margin:14px 0}.error-controls{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}.error-control label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:#6d7786;margin-bottom:5px}.error-control input,.error-control select{width:100%;min-height:40px;border:1px solid #d7dde6;border-radius:8px;padding:8px 10px;background:#fff}
+.error-year-chips{display:flex;gap:6px;overflow:auto;padding:11px 0 1px}.error-year-chip{border:1px solid #d9dee7;background:#fff;border-radius:999px;padding:6px 10px;font-size:10px;font-weight:900;color:#5c6674;white-space:nowrap;cursor:pointer}.error-year-chip.active{background:#16243a;color:#fff;border-color:#16243a}
+.error-key{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.error-results-line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;color:#778190;margin:12px 1px 9px}.error-results-line strong{color:#283241}
+.historical-error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.error-race-card{padding:16px}.error-race-card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.error-race-card-header h3{font-size:17px;margin:0}.error-race-meta{font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#778190;margin-bottom:3px}
+.error-race-matchup{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;align-items:center;border-top:1px solid #edf0f4;padding:9px 0}.error-race-matchup:first-of-type{border-top:0}.error-race-matchup .candidate{font-size:12px;font-weight:850;min-width:0}.error-race-matchup .num{font-size:12px;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}.error-race-matchup .col-label{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#9098a5;text-align:right}.error-race-card-headings{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px 110px;gap:8px;padding:0 0 4px}.error-race-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid #edf0f4;padding-top:10px;margin-top:5px;font-size:11px}.error-race-foot strong{font-size:11px}.error-race-source{font-size:10px;color:#7b8493;margin-top:9px;line-height:1.45}
+.error-edit-grid{display:none;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:12px;border-top:1px solid #edf0f4;padding-top:12px}.edit-mode .error-edit-grid{display:grid}.error-edit-grid input{width:100%;border:1px solid #d9dee7;border-radius:7px;padding:7px;font-size:11px}.error-edit-grid .wide{grid-column:span 2}.error-edit-actions{grid-column:1/-1;display:flex;justify-content:flex-end}
+.error-method-simple{margin-top:14px;padding:15px 17px}.error-method-simple strong{font-size:12px}.error-method-simple p{font-size:11px;color:#697482;line-height:1.55;margin:5px 0 0}
+
+/* About */
+.about-hero{display:flex;gap:20px;align-items:center;padding:24px;margin-bottom:14px}.about-avatar-large{width:92px;height:92px;border-radius:24px;display:grid;place-items:center;background:#14243b;color:#fff;font-family:Georgia,serif;font-size:46px;font-weight:700;flex:0 0 auto}.about-hero-copy h2{font-family:Georgia,serif;font-size:34px;margin:2px 0}.about-eyebrow{font-size:10px;letter-spacing:1.2px;font-weight:900;color:#707b8b}.about-headline{font-size:15px;color:#566172;margin:0 0 12px}.about-interest-tags{display:flex;flex-wrap:wrap;gap:6px}.about-interest-tag{padding:5px 8px;border-radius:999px;background:#f0f3f7;color:#465263;font-size:10px;font-weight:850}
+.about-main-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(250px,.8fr);gap:14px}.about-story{padding:22px}.about-story h2{font-size:21px;margin:0 0 10px}.about-story h3{font-size:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1fr}
+  .error-controls{grid-template-columns:1fr 1fr}.error-control.wide{grid-column:1/-1}
+  .about-main-grid{grid-template-columns:1fr}.about-experience-grid{grid-template-columns:1fr}
+}
+@me
+---
+ize:14px;margin:21px 0 6px}.about-story p{font-size:13px;line-height:1.75;color:#4d5868;margin:0}.about-side-stack{display:grid;gap:12px}.about-principle-card{padding:17px}.about-principle-card span{font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#7b8594}.about-principle-card strong{display:block;font-family:Georgia,serif;font-size:19px;line-height:1.25;margin:7px 0}.about-principle-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+.about-section-head{margin:22px 2px 9px}.about-section-head span{font-size:9px;font-weight:900;letter-spacing:1px;color:#7a8594}.about-section-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0}
+.about-experience-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.about-experience-card{padding:16px}.about-experience-card h3{font-size:14px;margin:0 0 5px}.about-experience-card p{font-size:11px;color:#687382;line-height:1.55;margin:0}
+#page-about .about-editor{margin-top:16px;padding:18px;display:none}.edit-mode #page-about .about-editor{display:block}
+
+@media(max-width:900px){
+  .kalshi-top-stats{grid-template-columns:repeat(2,1fr)}
+  .kalshi-map-head{flex-direction:column}.kalshi-legend{justify-content:flex-start}
+  .kalshi-entry-grid{grid-template-columns:1fr 1fr}
+  .historical-error-grid{grid-template-columns:1fr}
+  .error-controls{grid-template-columns:1fr 1fr}.error-control.wide{grid-column:1/-1}
+  .about-main-grid{grid-template-columns:1fr}.about-experience-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .kalshi-top-stats{grid-template-columns:1fr 1fr}.kalshi-entry-grid{grid-template-columns:1fr}.kalshi-entry-grid .full{grid-column:auto}
+  .error-controls{grid-template-columns:1fr}.error-control.wide{grid-column:auto}
+  .error-race-card-headings,.error-race-matchup{grid-template-columns:minmax(0,1fr) 66px 66px 95px;gap:5px}
+  .error-edit-grid{grid-template-columns:1fr 1fr}.error-edit-grid .wide{grid-column:1/-1}
+  .about-hero{align-items:flex-start}.about-avatar-large{width:72px;height:72px;border-radius:18px;font-size:36px}.about-hero-copy h2{font-size:28px}
+}
+
+#kalshiMap .kalshi-state-label{font-size:8px;letter-spacing:-.15px}
+#kalshiMap .kalshi-state-shape[data-has-odds="true"]{stroke:#fff;stroke-width:1.9}
+#kalshiMap .kalshi-state-shape[data-has-odds="false"][data-active="true"]{fill:#eef1f5!important}
+
+/* v50: all-35 Kalshi board */
+.kalshi-all-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin:22px 2px 9px}
+.kalshi-all-head span{font-size:9px;letter-spacing:1px;font-weight:950;color:#0d6b4d}
+.kalshi-all-head h2{font-family:Georgia,serif;font-size:24px;margin:3px 0 0}
+.kalshi-all-head p{font-size:11px;color:#7a8492;margin:0}
+.kalshi-all-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:18px}
+.kalshi-market-tile{background:#fff;border:1px solid #e0e4ea;border-radius:11px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;cursor:pointer;transition:transform .13s,border-color .13s}
+.kalshi-market-tile:hover{transform:translateY(-1px);border-color:#b8c0cb}
+.kalshi-market-tile-state{font-size:11px;font-weight:950;color:#273244}
+.kalshi-market-tile-match{font-size:10px;color:#788292;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kalshi-market-tile-odds{display:flex;gap:5px;align-items:center}
+.kalshi-market-tile-odds b{min-width:39px;text-align:center;border-radius:7px;padding:5px 6px;font-size:11px;font-variant-numeric:tabular-nums}
+.kalshi-market-tile-odds .d{background:#e8f1fd;color:#2763b8}.kalshi-market-tile-odds .r{background:#fdebed;color:#bd2937}.kalshi-market-tile-odds .i{background:#fff7d8;color:#8b7017}.kalshi-market-tile-odds .o{background:#f0e9ff;color:#8051d2}
+
+/* v50: About Me — branded, colorful, editorial */
+.about-page-head{background:linear-gradient(90deg,#f7f9fc,#fff 42%,#fff4f5)}
+.about-content{padding-top:18px}
+.about-brand-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:24px;align-items:center;min-height:410px;border-radius:20px;padding:42px 44px;background:
+  radial-gradient(circle at 17% 10%,rgba(56,137,225,.35),transparent 31%),
+  radial-gradient(circle at 88% 78%,rgba(224,55,69,.38),transparent 32%),
+  linear-gradient(125deg,#0f55a0 0%,#162b4b 48%,#8e1e2c 100%);color:#fff}
+.about-brand-hero:after{content:"";position:absolute;inset:auto -70px -105px auto;width:300px;height:300px;border:1px solid rgba(255,255,255,.13);border-radius:50%}
+.about-brand-copy{position:relative;z-index:2}.about-brand-kicker{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#dbe9fb}
+.about-brand-copy h2{font-family:Georgia,serif;font-size:62px;line-height:.95;margin:12px 0 9px;letter-spacing:-2px}
+.about-brand-headline{max-width:660px;font-size:18px;line-height:1.45;color:#e9edf4;margin:0 0 16px}
+.about-brand-hero .about-interest-tags{display:flex;flex-wrap:wrap;gap:7px}
+.about-brand-hero .about-interest-tag{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 9px}
+.about-brand-motto{display:flex;align-items:center;gap:9px;margin-top:22px;font-size:9px;font-weight:950;letter-spacing:1.1px;color:#dbe4f0}.about-brand-motto i{width:24px;height:1px;background:rgb
+---
+tion value="all">All years</option>'+years.map(y=>`<option value="${esc(y)}">${esc(y)} (${counts[y]})</option>`).join('');
+  if(years.includes(current))errorYearSelect.value=current;else errorYearSelect.value='all';
+
+  errorYearChips.innerHTML=`<button class="error-year-chip ${errorYearSelect.value==='all'?'active':''}" data-error-year="all">All <span class="count">${errors.length}</span></button>`+
+    years.map(y=>`<button class="error-year-chip ${errorYearSelect.value===y?'active':''}" data-error-year="${esc(y)}">${esc(y)} <span class="count">${counts[y]}</span></button>`).join('');
+
+  document.querySelectorAll('[data-error-year]').forEach(btn=>btn.onclick=()=>{
+    const y=btn.dataset.errorYear;
+    errorYearSelect.value=y;
+    errorSortSelect.value='newest';
+    renderErrors();
+    if(y!=='all'){
+      requestAnimationFrame(()=>document.getElementById('errors-year-'+y)?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
+  });
+}
+function errorCardHTML(x){
+  const idx=errors.indexOf(x),wrong=errWrongLeader(x),shift=errMarginShift(x);
+  const p1=errPartyClass(x.c1,x.p1),p2=errPartyClass(x.c2,x.p2);
+  const shiftText=shift===null?'Result pending':Math.abs(shift)<0.05?'No margin shift':`${Math.abs(shift).toFixed(1)} pts toward ${esc(shift>0?(x.c1||'Candidate 1'):(x.c2||'Candidate 2'))}`;
+  return `<article class="card error-race-card">
+    <div class="error-race-card-header">
+      <div><div class="error-race-meta">${esc(x.year||'—')} Senate</div><h3>${esc(x.state||'State')}</h3></div>
+      <div>${wrong?'<span class="error-chip wrong">Wrong leader</span>':''}</div>
+    </div>
+    <div class="error-race-card-headings"><span></span><span class="col-label">Polling</span><span class="col-label">Result</span><span class="col-label">Error</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p1}">${esc(x.c1||'Candidate 1')} (${esc(x.p1||'—')})</span><span class="num">${errPct(x.poll1)}</span><span class="num">${errPct(x.actual1)}</span><span>${errorMissBadge(x,1)}</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p2}">${esc(x.c2||'Candidate 2')} (${esc(x.p2||'—')})</span><span class="num">${errPct(x.poll2)}</span><span class="num">${errPct(x.actual2)}</span><span>${errorMissBadge(x,2)}</span></div>
+    <div class="error-race-foot"><strong>${shiftText}</strong>${wrong?'<span class="error-chip wrong">Polling picked the other winner</span>':''}</div>
+    ${(x.source||x.notes)?`<details class="error-race-source"><summary>Source & notes</summary>${x.source?`<b>${esc(x.source)}</b><br>`:''}${x.notes?esc(x.notes):''}</details>`:''}
+    <div class="error-edit-grid">
+      <input data-i="${idx}" data-k="year" value="${esc(x.year||'')}" placeholder="Year">
+      <input data-i="${idx}" data-k="state" value="${esc(x.state||'')}" placeholder="State">
+      <input data-i="${idx}" data-k="c1" value="${esc(x.c1||'')}" placeholder="Candidate 1">
+      <input data-i="${idx}" data-k="p1" value="${esc(x.p1||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.value;
+    if(['poll1','poll2','actual1','actual2'].includes(k)&&inp.value!=='')errors[i][k]=Number(inp.value);
+    save();renderErrors();
+  }));
+  document.querySelectorAll('[data-delete-error]').forEach(btn=>btn.onclick=()=>{
+    errors.splice(Number(btn.dataset.deleteError),1);save();renderErrors();toast('Race deleted');
+  });
+  document.querySelectorAll('[data-error-back-top]').forEach(btn=>btn.onclick=()=>{
+    document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function renderErrors(){
+  addErrorBtn.style.display=editMode?'inline-block':'none';
+  const historical=errors.filter(x=>!x.pending && errNum(x.actual1)!==null && errNum(x.actual2)!==null);
+  errorCount.textContent=historical.length;
+
+  const misses=[];
+  historical.forEach(x=>{
+    const e1=candidateError(x,1),e2=candidateError(x,2);
+    if(e1!==null)misses.push({v:e1,x,name:x.c1});
+    if(e2!==null)misses.push({v:e2,x,name:x.c2});
+  });
+  maeValue.textContent=misses.length?(misses.reduce((a,b)=>a+Ma
+---
+error-year-chip ${errorYearSelect.value==='all'?'active':''}" data-error-year="all">All <span class="count">${errors.length}</span></button>`+
+    years.map(y=>`<button class="error-year-chip ${errorYearSelect.value===y?'active':''}" data-error-year="${esc(y)}">${esc(y)} <span class="count">${counts[y]}</span></button>`).join('');
+
+  document.querySelectorAll('[data-error-year]').forEach(btn=>btn.onclick=()=>{
+    const y=btn.dataset.errorYear;
+    errorYearSelect.value=y;
+    errorSortSelect.value='newest';
+    renderErrors();
+    if(y!=='all'){
+      requestAnimationFrame(()=>document.getElementById('errors-year-'+y)?.scrollIntoView({behavior:'smooth',block:'start'}));
+    }
+  });
+}
+function errorCardHTML(x){
+  const idx=errors.indexOf(x),wrong=errWrongLeader(x),shift=errMarginShift(x);
+  const p1=errPartyClass(x.c1,x.p1),p2=errPartyClass(x.c2,x.p2);
+  const shiftText=shift===null?'Result pending':Math.abs(shift)<0.05?'No margin shift':`${Math.abs(shift).toFixed(1)} pts toward ${esc(shift>0?(x.c1||'Candidate 1'):(x.c2||'Candidate 2'))}`;
+  return `<article class="card error-race-card">
+    <div class="error-race-card-header">
+      <div><div class="error-race-meta">${esc(x.year||'—')} Senate</div><h3>${esc(x.state||'State')}</h3></div>
+      <div>${wrong?'<span class="error-chip wrong">Wrong leader</span>':''}</div>
+    </div>
+    <div class="error-race-card-headings"><span></span><span class="col-label">Polling</span><span class="col-label">Result</span><span class="col-label">Error</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p1}">${esc(x.c1||'Candidate 1')} (${esc(x.p1||'—')})</span><span class="num">${errPct(x.poll1)}</span><span class="num">${errPct(x.actual1)}</span><span>${errorMissBadge(x,1)}</span></div>
+    <div class="error-race-matchup"><span class="candidate err-party ${p2}">${esc(x.c2||'Candidate 2')} (${esc(x.p2||'—')})</span><span class="num">${errPct(x.poll2)}</span><span class="num">${errPct(x.actual2)}</span><span>${errorMissBadge(x,2)}</span></div>
+    <div class="error-race-foot"><strong>${shiftText}</strong>${wrong?'<span class="error-chip wrong">Polling picked the other winner</span>':''}</div>
+    ${(x.source||x.notes)?`<details class="error-race-source"><summary>Source & notes</summary>${x.source?`<b>${esc(x.source)}</b><br>`:''}${x.notes?esc(x.notes):''}</details>`:''}
+    <div class="error-edit-grid">
+      <input data-i="${idx}" data-k="year" value="${esc(x.year||'')}" placeholder="Year">
+      <input data-i="${idx}" data-k="state" value="${esc(x.state||'')}" placeholder="State">
+      <input data-i="${idx}" data-k="c1" value="${esc(x.c1||'')}" placeholder="Candidate 1">
+      <input data-i="${idx}" data-k="p1" value="${esc(x.p1||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll1" type="number" step="0.01" value="${esc(x.poll1??'')}" placeholder="Poll 1">
+      <input data-i="${idx}" data-k="actual1" type="number" step="0.01" value="${esc(x.actual1??'')}" placeholder="Result 1">
+      <input data-i="${idx}" data-k="c2" value="${esc(x.c2||'')}" placeholder="Candidate 2">
+      <input data-i="${idx}" data-k="p2" value="${esc(x.p2||'')}" placeholder="Party">
+      <input data-i="${idx}" data-k="poll2" type="number" step="0.01" value="${esc(x.poll2??'')}" placeholder="Poll 2">
+      <input data-i="${idx}" data-k="actual2" type="number" step="0.01" value="${esc(x.actual2??'')}" placeholder="Result 2">
+      <input class="wide" data-i="${idx}" data-k="source" value="${esc(x.source||'')}" placeholder="Source">
+      <input class="wide" data-i="${idx}" data-k="notes" value="${esc(x.notes||'')}" placeholder="Notes">
+      <div class="error-edit-actions"><button class="btn danger sm" data-delete-error="${idx}">Delete race</button></div>
+    </div>
+  </article>`;
+}
+function bindErrorCardEditors(){
+  document.querySelectorAll('#errorsList input[data-i][data-k]').forEach(inp=>inp.addEventListener('change',()=>{
+    const i=Number(inp.dataset.i),k=inp.dataset.k;
+    errors[i][k]=inp.value;
+    if(['poll1','poll2','actual1','actual2'].includes(k)&&inp.value!=='')errors[i][k]=Number(inp.value);
+    save();renderErrors();
+  }));
+  document.querySelectorAll('[data-delete-error]').forEach(btn=>btn.onclick=()=>{
+    errors.splice(Number(btn.dataset.deleteError),1);save();renderErrors();toast('Race deleted');
+  });
+  document.querySelectorAll('[data-error-back-top]').forEach(btn=>btn.onclick=()=>{
+    document.getElementById('errorTopAnchor')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}
+function renderErrors(){
+  addErrorBtn.style.display=editMode?'inline-block':'none';
+  const historical=errors.filter(x=>!x.pending && errNum(x.actual1)!==null && errNum(x.actual2)!==null);
+  errorCount.textContent=historical.length;
+
+  const misses=[];
+  historical.forEach(x=>{
+    const e1=candidateError(x,1),e2=candidateError(x,2);
+    if(e1!==null)misses.push({v:e1,x,name:x.c1});
+    if(e2!==null)misses.push({v:e2,x,name:x.c2});
+  });
+  maeValue.textContent=misses.length?(misses.reduce((a,b)=>a+Math.abs(b.v),0)/misses.length).toFixed(1)+' pts':'—';
+  if(misses.length){
+    const biggest=misses.reduce((a,b)=>Math.abs(b.v)>Math.abs(a.v)?b:a);
+    maxErrorValue.textContent=Math.abs(biggest.v).toFixed(1)+' pts';
+    maxErrorValue.title=`${biggest.name}, ${
+---
