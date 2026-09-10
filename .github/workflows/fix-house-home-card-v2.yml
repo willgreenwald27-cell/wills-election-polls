@@ -1,0 +1,61 @@
+name: Fix House homepage card
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-house-home-card-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild House card to match Senate card
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+
+          old_css="#page-home #homeForecastSplit .house-card{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;background:#f7f9fc!important}\n      #page-home #homeForecastSplit .house-card img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;border-radius:20px!important}"
+          new_css="#page-home #homeForecastSplit .house-card{position:relative!important;padding:20px 22px!important;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;height:100%!important;box-sizing:border-box!important}\n      #page-home #homeForecastSplit .house-card .senate-title{font-size:clamp(22px,2.55vw,38px)!important}\n      #page-home #homeForecastSplit .house-card .party-number{font-size:clamp(44px,4.8vw,68px)!important}\n      #page-home #homeForecastSplit .house-bar{position:relative!important}\n      #page-home #homeForecastSplit .house-bar .dem{width:52.4138%!important;background:#2763b8!important}\n      #page-home #homeForecastSplit .house-bar .rep{width:47.5862%!important;background:#bd2937!important}\n      #page-home #homeForecastSplit .house-majority-marker{position:absolute!important;left:50.1149%!important;top:-5px!important;width:2px!important;height:28px!important;background:#17263d!important;transform:translateX(-1px)!important;opacity:.8!important}"
+          if old_css not in s:
+            raise SystemExit('house css anchor not found')
+          s=s.replace(old_css,new_css,1)
+
+          old_html='''          <div class="forecast-card house-card">\n            <img src="/house-prediction.svg?v=20260908-2208" alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.">\n          </div>'''
+          new_html='''          <div class="forecast-card house-card">\n            <div class="senate-kicker">2026 U.S. House</div>\n            <h2 class="senate-title">Will’s House of Reps Prediction</h2>\n            <div class="senate-numbers">\n              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">228</div></div>\n              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">207</div></div>\n            </div>\n            <div class="senate-bar house-bar" aria-label="House prediction: 228 Democrats and 207 Republicans"><div class="dem"></div><div class="rep"></div><div class="house-majority-marker" aria-hidden="true"></div></div>\n            <div class="majority-note">218 seats needed for a majority</div>\n          </div>'''
+          if old_html not in s:
+            raise SystemExit('house html anchor not found')
+          s=s.replace(old_html,new_html,1)
+
+          # Mobile: keep both cards identical in aspect ratio and stacked cleanly.
+          s=s.replace('#page-home #homeForecastSplit .house-card{order:2!important}', '#page-home #homeForecastSplit .house-card{order:2!important;padding:18px!important}', 1)
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2136',i)
+          if n!=1:
+            raise SystemExit(f'expected one sep9 updater cache key, found {n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          assert 'Will’s House of Reps Prediction</h2>' in out
+          assert 'house-majority-marker' in out
+          assert 'width:52.4138%' in out
+          assert '/house-prediction.svg?' not in out
+          assert 'sep9-polls-update.js?v=20260909-2136' in idx.read_text()
+          PY
+      - name: Commit House card fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/fix-house-home-card-v2.yml
+          git add sep9-polls-update.js index.html .github/workflows/fix-house-home-card-v2.yml
+          git commit -m "Rebuild House homepage forecast card"
+          git push
