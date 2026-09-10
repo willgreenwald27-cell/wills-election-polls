@@ -145,6 +145,14 @@
     }
   }
 
+  function fixNavOrder(){
+    const nav=document.querySelector('.site-header .nav'); if(!nav) return;
+    const senate=nav.querySelector('[data-page-link="senate"]');
+    const errors=nav.querySelector('[data-page-link="errors"]');
+    if(!senate||!errors) return;
+    if(senate.nextElementSibling!==errors) nav.insertBefore(errors,senate.nextElementSibling);
+  }
+
   function fixDom(){
     enforceData();
     wrapRenderer();
@@ -152,6 +160,7 @@
     fixMaine();
     fixPartyVisuals();
     fixHome();
+    fixNavOrder();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;fixDom();});}
 
