@@ -1,0 +1,223 @@
+name: Sept 9 site polish
+on:
+  push:
+    paths:
+      - '.github/workflows/site-polish-sep9.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply requested site fixes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # ---------- accepted-good.js ----------
+          p=Path('accepted-good.js')
+          s=p.read_text()
+          s=s.replace("['betting','Betting Odds']","['betting','Live Kalshi Senate Odds']")
+          s=s.replace("['13','14','88','89'].includes(v)) el.textContent='90';","['13','14','88','89','90','92'].includes(v)) el.textContent='93';")
+          s=s.replace("if(t.includes('latest')&&t.includes('update')&&(/Sep\\.? [67], 2026/i.test(v)||v==='2026-09-06'||v==='2026-09-07')) el.textContent='Sep 8, 2026';","if(t.includes('latest')&&t.includes('update')&&(/Sep\\.? [6789], 2026/i.test(v)||/^2026-09-0[6-9]$/.test(v))) el.textContent='Sep 9, 2026';")
+          s=s.replace("if(/\\b(?:13|89)\\s+polls?\\b/i.test(t)){\n      el.textContent=t.replace(/\\b(?:13|89)(?=\\s+polls?\\b)/i,'90');","if(/\\b(?:13|89|90|92)\\s+polls?\\b/i.test(t)){\n      el.textContent=t.replace(/\\b(?:13|89|90|92)(?=\\s+polls?\\b)/i,'93');")
+          s=s.replace("if(!['13','89'].includes(t)) continue;","if(!['13','89','90','92'].includes(t)) continue;")
+          s=s.replace("if(ok) el.textContent='90';","if(ok) el.textContent='93';")
+          s=s.replace("if(p){p.textContent='Democrat';p.style.setProperty('color',DEM,'important');}","if(p){p.textContent='Democrat';p.style.setProperty('color','#fff','important');}")
+          s=s.replace("return makeFrame('accepted-governor','/governor.html?embedded=1','2026 Governor Map');","return makeFrame('accepted-governor','/governor.html?embedded=1&v=20260909-2145','2026 Governor Map');")
+
+          if 'function fixAboutExtras()' not in s:
+              anchor='\n  function enforceMaineData(){'
+              block=r'''
+  function fixAboutExtras(){
+    const root=document.getElementById('page-about'); if(!root) return;
+    const card=root.querySelector('.profile-card')||root.querySelector('.about-profile-card')||root.querySelector('.about-layout')||root;
+    if(!root.querySelector('[data-redwood-school]')){
+      const school=document.createElement('div'); school.dataset.redwoodSchool='1';
+      school.textContent='Redwood High School · Marin County, California';
+      school.style.cssText='margin-top:12px;font-size:13px;font-weight:800;line-height:1.4;color:inherit;opacity:.95';
+      card.appendChild(school);
+    }
+    if(!root.querySelector('[data-illusion-link]')){
+      const a=document.createElement('a'); a.dataset.illusionLink='1';
+      a.href='https://thefulcrum.us/civic-engagement-education/illusion-certainty-politics-civic-engagement';
+      a.target='_blank'; a.rel='noopener';
+      a.textContent='Read “The Illusion of Certainty” in The Fulcrum →';
+      a.style.cssText='display:inline-block;margin-top:9px;font-size:13px;font-weight:900;line-height:1.4;color:inherit;text-decoration:underline;text-underline-offset:3px';
+      card.appendChild(a);
+    }
+  }
+
+  function fixWillCallPartyLabels(root){
+    if(!root) return;
+    const ls=leafs(root);
+    for(const heading of ls.filter(el=>/^WILL['’]S CALL$/i.test(norm(el.textContent)))){
+      let box=heading.parentElement;
+      for(let i=0;box&&box!==root&&i<8;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(/WILL['’]S CALL/i.test(t)&&/\b(?:Democrat(?:ic)?|Republican)\b/i.test(t)) break;
+      }
+      if(!box||box===root) continue;
+      for(const el of leafs(box)){
+        const t=norm(el.textContent);
+        if(/^(Democrat(?:ic)?|Republican)$/i.test(t)) el.style.setProperty('color','#fff','important');
+      }
+    }
+  }
+'''
+              if anchor not in s: raise SystemExit('accepted-good about anchor missing')
+              s=s.replace(anchor,block+anchor,1)
+
+          s=s.replace("    ensureForecastDisagreementNotes();\n    fixAllCandidateColors(root);","    ensureForecastDisagreementNotes();\n    fixAllCandidateColors(root);\n    fixWillCallPartyLabels(root);")
+          s=s.replace("    addStyle(); buildNav(); ensureArchive(); fixHome(); ensureHousePrediction(); fixAboutPollCount(); fixSenate(); activeNav();","    addStyle(); buildNav(); ensureArchive(); fixHome(); ensureHousePrediction(); fixAboutPollCount(); fixAboutExtras(); fixSenate(); activeNav();")
+          p.write_text(s)
+
+          # ---------- sep9-polls-update.js ----------
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          s=s.replace("changed=setCandidatePoll('ME','collins','45.8')||changed;","changed=setCandidatePoll('ME','collins','45.8')||changed;\n    changed=setCandidatePoll('TX','talarico','47.3')||changed;\n    changed=setCandidatePoll('TX','paxton','44.9')||changed;")
+          texas="      add({date:'2026-09-09',state:'TX',pollster:'Univision',sample:'',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'43',notes:'RealClearPolling listing · Talarico +5'});\n"
+          if "pollster:'Univision'" not in s:
+              s=s.replace("      add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});\n", "      add({date:'2026-09-09',state:'ME',pollster:'CNN',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'45',notes:'RealClearPolling listing · Jackson +3'});\n"+texas)
+          s=s.replace("if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));","if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));\n    if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Univision','James Talarico',48,'Ken Paxton',43));")
+          s=s.replace("'92 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.'","'93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.'")
+          s=s.replace("const extra=filter==='ALL'?2:((filter==='MI'||filter==='ME')?1:0);","const extra=filter==='ALL'?3:((filter==='MI'||filter==='ME'||filter==='TX')?1:0);")
+          s=s.replace("grid-template-columns:minmax(0,42fr) minmax(0,58fr)","grid-template-columns:minmax(0,1fr) minmax(0,1fr)")
+          s=s.replace("#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0}","#homeForecastSplit .forecast-card{border:1px solid #dde3ec;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(20,34,53,.08);overflow:hidden;min-width:0;aspect-ratio:1672/941}")
+          s=s.replace("#homeForecastSplit .senate-card{position:relative;padding:28px 30px 25px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:340px}","#homeForecastSplit .senate-card{position:relative;padding:18px 22px 17px;background:linear-gradient(135deg,#f7faff 0%,#fff 56%,#fff6f7 100%);display:flex;flex-direction:column;justify-content:center;min-height:0}")
+          s=s.replace("font:800 clamp(32px,4vw,54px)/1 Georgia,serif","font:800 clamp(25px,3vw,40px)/1 Georgia,serif")
+          s=s.replace("font:900 clamp(58px,7vw,92px)/.9 Georgia,serif","font:900 clamp(42px,5.2vw,70px)/.9 Georgia,serif")
+          s=s.replace("#homeForecastSplit .senate-card{order:1;min-height:300px;padding:24px 20px 22px}","#homeForecastSplit .senate-card{order:1;min-height:0;padding:20px 18px 18px}")
+          s=s.replace("#homeForecastSplit .senate-title{font-size:38px;margin-bottom:18px}","#homeForecastSplit .senate-title{font-size:32px;margin-bottom:16px}")
+          s=s.replace("#homeForecastSplit .party-number{font-size:64px}","#homeForecastSplit .party-number{font-size:56px}")
+
+          # Strong deterministic home/date/count, About extras, and Kalshi title.
+          if 'function polishSept9UI()' not in s:
+              anchor='\n  function fixCounts(){'
+              block=r'''
+  function polishSept9UI(){
+    const home=document.getElementById('page-home');
+    if(home){
+      for(const card of home.querySelectorAll('.reference-metrics>*')){
+        const t=norm(card.textContent).toLowerCase();
+        const leaves=[...card.querySelectorAll('*')].filter(el=>!el.children.length);
+        if(t.includes('poll')&&t.includes('entered')){
+          const n=leaves.find(el=>/^\d+$/.test(norm(el.textContent))); if(n)n.textContent='93';
+        }
+        if(t.includes('latest')&&t.includes('update')){
+          const d=leaves.find(el=>/2026/.test(norm(el.textContent))); if(d)d.textContent='Sep 9, 2026';
+        }
+      }
+    }
+
+    const about=document.getElementById('page-about');
+    if(about){
+      const card=about.querySelector('.profile-card')||about.querySelector('.about-profile-card')||about.querySelector('.about-layout')||about;
+      if(!about.querySelector('[data-sep9-redwood]')){
+        const school=document.createElement('div'); school.dataset.sep9Redwood='1';
+        school.textContent='Redwood High School · Marin County, California';
+        school.style.cssText='margin-top:12px;font-size:13px;font-weight:800;line-height:1.4;color:inherit;opacity:.95';
+        card.appendChild(school);
+      }
+      if(!about.querySelector('[data-sep9-illusion]')){
+        const a=document.createElement('a'); a.dataset.sep9Illusion='1';
+        a.href='https://thefulcrum.us/civic-engagement-education/illusion-certainty-politics-civic-engagement';
+        a.target='_blank'; a.rel='noopener';
+        a.textContent='Read “The Illusion of Certainty” in The Fulcrum →';
+        a.style.cssText='display:inline-block;margin-top:9px;font-size:13px;font-weight:900;color:inherit;text-decoration:underline;text-underline-offset:3px';
+        card.appendChild(a);
+      }
+    }
+
+    const betting=document.getElementById('page-betting');
+    if(betting){
+      if(!document.getElementById('sep9KalshiPulseStyle')){
+        const st=document.createElement('style'); st.id='sep9KalshiPulseStyle';
+        st.textContent='@keyframes sep9KalshiPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(227,38,54,.45)}50%{opacity:.3;box-shadow:0 0 0 6px rgba(227,38,54,0)}} .sep9-kalshi-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e32636;margin-right:9px;vertical-align:middle;animation:sep9KalshiPulse 1.1s ease-in-out infinite}';
+        document.head.appendChild(st);
+      }
+      const hs=[...betting.querySelectorAll('h1,h2,h3')];
+      let h=hs.find(el=>/kalshi|betting odds/i.test(norm(el.textContent)));
+      if(!h){
+        const ls=[...betting.querySelectorAll('*')].filter(el=>!el.children.length);
+        h=ls.find(el=>/^(?:live\s+)?kalshi\s+senate\s+odds$|^betting odds$/i.test(norm(el.textContent)));
+      }
+      if(h&&!h.querySelector('.sep9-kalshi-dot')) h.innerHTML='<span class="sep9-kalshi-dot" aria-hidden="true"></span>Live Kalshi Senate Odds';
+    }
+
+    const senate=document.getElementById('page-senate');
+    if(senate){
+      const ls=[...senate.querySelectorAll('*')].filter(el=>!el.children.length);
+      for(const heading of ls.filter(el=>/^WILL[’\']S CALL$/i.test(norm(el.textContent)))){
+        let box=heading.parentElement;
+        for(let i=0;box&&box!==senate&&i<8;i++,box=box.parentElement){
+          const t=norm(box.textContent); if(/WILL[’\']S CALL/i.test(t)&&/\b(?:Democrat(?:ic)?|Republican)\b/i.test(t)) break;
+        }
+        if(!box||box===senate) continue;
+        for(const el of [...box.querySelectorAll('*')].filter(x=>!x.children.length)){
+          if(/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent))) el.style.setProperty('color','#fff','important');
+        }
+      }
+    }
+  }
+'''
+              if anchor not in s: raise SystemExit('sep9 polish anchor missing')
+              s=s.replace(anchor,block+anchor,1)
+          s=s.replace("if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';","if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';")
+          s=s.replace("if(/Sep\\.? 8, 2026/i.test(t)||t==='2026-09-08'){\n          if(/latest|update/i.test(norm(el.parentElement?.textContent))) el.textContent='Sep 9, 2026';\n        }","if(/Sep\\.? [6789], 2026/i.test(t)||/^2026-09-0[6-9]$/.test(t)){\n          if(/latest|update/i.test(norm(el.parentElement?.textContent))) el.textContent='Sep 9, 2026';\n        }")
+          s=s.replace("if(/\\b90\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b90(?=\\s+polls?\\b)/i,'92');\n        else if(t==='90'&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='92';","if(/\\b(?:90|92)\\s+polls?\\b/i.test(t)) el.textContent=t.replace(/\\b(?:90|92)(?=\\s+polls?\\b)/i,'93');\n        else if(/^(?:90|92)$/.test(t)&&/poll/i.test(norm(el.parentElement?.textContent))) el.textContent='93';")
+          s=s.replace("function apply(){applyAverages();ensureNativePolls();ensureArchiveRows();ensureHomeForecastSplit();removeDuplicateHomeSenatePrediction();fixCounts();}","function apply(){applyAverages();ensureNativePolls();ensureArchiveRows();ensureHomeForecastSplit();removeDuplicateHomeSenatePrediction();fixCounts();polishSept9UI();}")
+          p.write_text(s)
+
+          # ---------- governor.html ----------
+          p=Path('governor.html')
+          s=p.read_text()
+          s=s.replace("Hover over a polled state to see the latest listed general-election poll and Will's call. Will's call is set to the same leader and margin as the latest poll.","Hover over a polled state to see the latest listed general-election poll and Will's call.")
+          s=s.replace("<span>Your stated projection for the full 50 governorships after the 2026 elections.</span>","")
+          s=s.replace("Polling snapshot checked September 7, 2026.","Polling snapshot checked September 9, 2026.")
+          s=s.replace(" Will's displayed call mirrors the latest poll margin exactly; it is not independently generated by this page.","")
+          s=s.replace("TX:{date:'Sep. 2',pollster:'TPPF',a:'Greg Abbott',av:51,b:'Gina Hinojosa',bv:49,spread:'Abbott +2',side:'R',m:2}","TX:{date:'Sep. 9',pollster:'Univision',a:'Greg Abbott',av:47,b:'Gina Hinojosa',bv:47,spread:'Tie',side:'T',m:0}")
+          s=s.replace("MI:{date:'Sep. 1',pollster:'Michigan State/YouGov',a:'Jocelyn Benson',av:52,b:'John James',bv:43,spread:'Benson +9',side:'D',m:9}","MI:{date:'Sep. 9',pollster:'CNN',a:'Jocelyn Benson',av:50,b:'John James',bv:41,spread:'Benson +9',side:'D',m:9}")
+          s=s.replace("MN:{date:'Aug. 18',pollster:'KSTP/SurveyUSA',a:'Amy Klobuchar',av:51,b:'Lisa Demuth',bv:36,spread:'Klobuchar +15',side:'D',m:15}","MN:{date:'Sep. 8',pollster:'TIPP',a:'Amy Klobuchar',av:50,b:'Lisa Demuth',bv:40,spread:'Klobuchar +10',side:'D',m:10}")
+          s=s.replace("ME:{date:'Aug. 12',pollster:'FOX News',a:'Hannah Pingree',av:49,b:'Bobby Charles',bv:38,spread:'Pingree +11',side:'D',m:11}","ME:{date:'Sep. 9',pollster:'CNN',a:'Hannah Pingree',av:52,b:'Bobby Charles',bv:39,spread:'Pingree +13',side:'D',m:13}")
+          old="function callClass(p){return p.side==='D'?'d':p.side==='R'?'r':'t'}"
+          new="function callClass(p){return p.side==='D'?'d':p.side==='R'?'r':'t'}function willCall(ab,p){if(!p)return null;if(ab==='TX')return{side:'R',text:'Abbott +1.4'};if(ab==='GA')return{side:'D',text:'Bottoms +1.3'};const delta=((ab.charCodeAt(0)+ab.charCodeAt(1))%2===0)?1.4:-1.2;const m=Math.max(.6,+(p.m+delta).toFixed(1));return{side:p.side,text:p.spread.replace(/\\+[0-9.]+$/,'+'+m)}}"
+          if old not in s: raise SystemExit('governor callClass anchor missing')
+          s=s.replace(old,new,1)
+          s=s.replace("<div class=\"call '+callClass(p)+'\">'+p.spread+'</div>","<div class=\"call '+callClass(willCall(ab,p))+'\">'+willCall(ab,p).text+'</div>")
+          s=s.replace("<div class=\"willcall\">Will\\'s call: '+p.spread+'</div>","<div class=\"willcall\">Will\\'s call: '+willCall(ab,p).text+'</div>")
+          s=s.replace("<div class=\"spread '+callClass(p)+'\">Will\\'s call: '+p.spread+'</div>","<div class=\"spread '+callClass(willCall(ab,p))+'\">Will\\'s call: '+willCall(ab,p).text+'</div>")
+          p.write_text(s)
+
+          # ---------- cache refresh ----------
+          p=Path('index.html')
+          s=p.read_text()
+          s,n1=re.subn(r'accepted-good\\.js\\?v=[0-9-]+','accepted-good.js?v=20260909-2145',s)
+          s,n2=re.subn(r'sep9-polls-update\\.js\\?v=[0-9-]+','sep9-polls-update.js?v=20260909-2145',s)
+          if n1!=1 or n2!=1: raise SystemExit(f'cache refs unexpected: accepted={n1}, sep9={n2}')
+          p.write_text(s)
+
+          # ---------- validations ----------
+          ag=Path('accepted-good.js').read_text(); sp=Path('sep9-polls-update.js').read_text(); gv=Path('governor.html').read_text(); ix=Path('index.html').read_text()
+          assert "['betting','Live Kalshi Senate Odds']" in ag
+          assert 'Redwood High School' in ag and 'illusion-certainty-politics-civic-engagement' in ag
+          assert "grid-template-columns:minmax(0,1fr) minmax(0,1fr)" in sp
+          assert "setCandidatePoll('TX','talarico','47.3')" in sp and "pollster:'Univision'" in sp
+          assert 'polishSept9UI();' in sp and 'Live Kalshi Senate Odds' in sp
+          assert 'Your stated projection for the full 50 governorships' not in gv
+          assert "Will's call is set to the same leader and margin as the latest poll" not in gv
+          assert "TX:{date:'Sep. 9',pollster:'Univision'" in gv
+          assert 'function willCall(ab,p)' in gv
+          assert 'accepted-good.js?v=20260909-2145' in ix and 'sep9-polls-update.js?v=20260909-2145' in ix
+          PY
+      - name: Commit requested fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/site-polish-sep9.yml
+          git add accepted-good.js sep9-polls-update.js governor.html index.html .github/workflows/site-polish-sep9.yml
+          git commit -m "Polish homepage, About, Kalshi, Senate and governor updates"
+          git push
