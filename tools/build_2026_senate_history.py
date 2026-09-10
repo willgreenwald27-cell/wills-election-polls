@@ -61,7 +61,7 @@ def official_index(rows):
     return out
 
 stan=list(csv.DictReader(io.StringIO(get(STANFORD)),delimiter='\t'))
-jack=list(csv.DictReader(io.StringIO(get(JACK)))
+jack=list(csv.DictReader(io.StringIO(get(JACK))))
 results=list(csv.DictReader(io.StringIO(get(RESULTS))))
 official=official_index(results)
 records=[]
