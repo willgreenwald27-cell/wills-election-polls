@@ -1,0 +1,27 @@
+name: Fix Maine call label
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-maine-call-label.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply Maine call UI patch
+        run: |
+          python tools/fix-maine-call-label.py
+          node --check site-layout-polish.js
+          node --check senate-current-sync.js
+      - name: Commit production changes
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm -f tools/fix-maine-call-label.py .github/workflows/fix-maine-call-label.yml
+          git add index.html site-layout-polish.js senate-current-sync.js
+          git commit -m 'Show Republican as Maine call'
+          git push origin main
