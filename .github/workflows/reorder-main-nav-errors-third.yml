@@ -1,0 +1,37 @@
+name: Reorder main navigation
+on:
+  push:
+    paths:
+      - '.github/workflows/reorder-main-nav-errors-third.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Put Past Polling Errors third
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          anchor='/*static-governor-nav-v1*/'
+          if anchor not in s:
+              raise SystemExit('governor nav anchor not found')
+          if '/*nav-order-errors-third-v1*/' in s:
+              raise SystemExit('nav order patch already present')
+          inject="""/*static-governor-nav-v1*/h=h.replace('<button data-page-link=\"errors\">Past Polling Errors</button>','');h=h.replace('<button type=\"button\" data-governor-link onclick=\"window.location.href=\\\'/governor.html\\\'\">2026 Governor Map</button>','<button data-page-link=\"errors\">Past Polling Errors</button><button type=\"button\" data-governor-link onclick=\"window.location.href=\\\'/governor.html\\\'\">2026 Governor Map</button>');/*nav-order-errors-third-v1*/"""
+          s=s.replace(anchor,inject,1)
+          p.write_text(s)
+          PY
+          grep -q 'nav-order-errors-third-v1' index.html
+      - name: Commit production change
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Move Past Polling Errors to third tab'
+          git push
