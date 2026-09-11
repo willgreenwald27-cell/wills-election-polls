@@ -1,0 +1,38 @@
+name: Load Senate party labels
+on:
+  push:
+    paths:
+      - '.github/workflows/load-senate-party-labels.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load final party-label script
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          loader="h=h.replace('</body>','<script src=\"/senate-party-labels.js?v=20260911-001\"><\\/script></body>');"
+          anchor='document.open();document.write(h);document.close()'
+          if 'senate-party-labels.js?v=' in s:
+              s=re.sub(r'senate-party-labels\.js\?v=[0-9A-Za-z._-]+','senate-party-labels.js?v=20260911-001',s,count=1)
+          else:
+              if anchor not in s: raise SystemExit('document anchor missing')
+              s=s.replace(anchor,loader+anchor,1)
+          p.write_text(s)
+          PY
+      - name: Commit production update
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Load Senate party labels'
+          git push
