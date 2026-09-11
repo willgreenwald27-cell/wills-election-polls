@@ -1,0 +1,881 @@
+{
+  "unique_site_polls": 95,
+  "averages": {
+    "AK": {
+      "state": "Alaska",
+      "candidate1": "Mary Peltola",
+      "candidate2": "Dan Sullivan",
+      "poll_count": 4,
+      "candidate1_avg": 50.5,
+      "candidate2_avg": 46.5,
+      "current_candidate1": "49.7",
+      "current_candidate2": "47.7",
+      "polls": [
+        {
+          "date": "2026-09-02",
+          "pollster": "Alaska Survey Research",
+          "c1": "Mary Peltola",
+          "c1Pct": 51.0,
+          "c2": "Dan Sullivan",
+          "c2Pct": 49.0
+        },
+        {
+          "date": "2026-08-17",
+          "pollster": "Data for Progress",
+          "c1": "Mary Peltola",
+          "c1Pct": 53.0,
+          "c2": "Dan Sullivan",
+          "c2Pct": 47.0
+        },
+        {
+          "date": "2026-08-11",
+          "pollster": "Alaska Survey Research",
+          "c1": "Mary Peltola",
+          "c1Pct": 51.0,
+          "c2": "Dan Sullivan",
+          "c2Pct": 49.0
+        },
+        {
+          "date": "2026-08-04",
+          "pollster": "Data for Progress",
+          "c1": "Mary Peltola",
+          "c1Pct": 47.0,
+          "c2": "Dan Sullivan",
+          "c2Pct": 41.0
+        }
+      ]
+    },
+    "AR": {
+      "state": "Arkansas",
+      "candidate1": "Hallie Shoffner",
+      "candidate2": "Tom Cotton",
+      "poll_count": 1,
+      "candidate1_avg": 43.0,
+      "candidate2_avg": 46.0,
+      "current_candidate1": "41.0",
+      "current_candidate2": "47.5",
+      "polls": [
+        {
+          "date": "2026-07-25",
+          "pollster": "2040 Strategy Group",
+          "c1": "Tom Cotton",
+          "c1Pct": 46.0,
+          "c2": "Hallie Shoffner",
+          "c2Pct": 43.0
+        }
+      ]
+    },
+    "GA": {
+      "state": "Georgia",
+      "candidate1": "Jon Ossoff",
+      "candidate2": "Mike Collins",
+      "poll_count": 1,
+      "candidate1_avg": 50.0,
+      "candidate2_avg": 43.0,
+      "current_candidate1": "50.7",
+      "current_candidate2": "43.2",
+      "polls": [
+        {
+          "date": "2026-08-18",
+          "pollster": "InsiderAdvantage",
+          "c1": "Jon Ossoff",
+          "c1Pct": 50.0,
+          "c2": "Mike Collins",
+          "c2Pct": 43.0
+        }
+      ]
+    },
+    "IA": {
+      "state": "Iowa",
+      "candidate1": "Josh Turek",
+      "candidate2": "Ashley Hinson",
+      "poll_count": 6,
+      "candidate1_avg": 44.7,
+      "candidate2_avg": 45.0,
+      "current_candidate1": "45.2",
+      "current_candidate2": "46.6",
+      "polls": [
+        {
+          "date": "2026-09-03",
+          "pollster": "Emerson",
+          "c1": "Ashley Hinson",
+          "c1Pct": 50.0,
+          "c2": "Josh Turek",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-08-29",
+          "pollster": "Wedgewood Polls",
+          "c1": "Ashley Hinson",
+          "c1Pct": 50.0,
+          "c2": "Josh Turek",
+          "c2Pct": 48.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (RV)",
+          "c1": "Josh Turek",
+          "c1Pct": 41.0,
+          "c2": "Ashley Hinson",
+          "c2Pct": 36.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (LV)",
+          "c1": "Josh Turek",
+          "c1Pct": 48.0,
+          "c2": "Ashley Hinson",
+          "c2Pct": 41.0
+        },
+        {
+          "date": "2026-08-26",
+          "pollster": "Suffolk University",
+          "c1": "Ashley Hinson",
+          "c1Pct": 45.0,
+          "c2": "Josh Turek",
+          "c2Pct": 41.0
+        },
+        {
+          "date": "2026-08-06",
+          "pollster": "Emerson",
+          "c1": "Ashley Hinson",
+          "c1Pct": 48.0,
+          "c2": "Josh Turek",
+          "c2Pct": 45.0
+        }
+      ]
+    },
+    "ID": {
+      "state": "Idaho",
+      "candidate1": "Todd Achilles",
+      "candidate2": "Jim Risch",
+      "poll_count": 1,
+      "candidate1_avg": 30.0,
+      "candidate2_avg": 34.0,
+      "current_candidate1": "18.0",
+      "current_candidate2": "52.0",
+      "polls": [
+        {
+          "date": "2026-08-07",
+          "pollster": "Bullfinch Group",
+          "c1": "James Risch",
+          "c1Pct": 34.0,
+          "c2": "Todd Achilles",
+          "c2Pct": 30.0
+        }
+      ]
+    },
+    "KS": {
+      "state": "Kansas",
+      "candidate1": "Adam Hamilton",
+      "candidate2": "Roger Marshall",
+      "poll_count": 1,
+      "candidate1_avg": 45.0,
+      "candidate2_avg": 46.0,
+      "current_candidate1": "45.0",
+      "current_candidate2": "46.0",
+      "polls": [
+        {
+          "date": "2026-08-10",
+          "pollster": "Public Policy Polling",
+          "c1": "Roger Marshall",
+          "c1Pct": 46.0,
+          "c2": "Adam Hamilton",
+          "c2Pct": 45.0
+        }
+      ]
+    },
+    "MA": {
+      "state": "Massachusetts",
+      "candidate1": "Ed Markey",
+      "candidate2": "John Deaton",
+      "poll_count": 2,
+      "candidate1_avg": 50.0,
+      "candidate2_avg": 30.0,
+      "current_candidate1": "50.0",
+      "current_candidate2": "30.0",
+      "polls": [
+        {
+          "date": "2026-08-26",
+          "pollster": "UNH",
+          "c1": "Ed Markey",
+          "c1Pct": 49.0,
+          "c2": "John Deaton",
+          "c2Pct": 30.0
+        },
+        {
+          "date": "2026-08-17",
+          "pollster": "UMass Amherst",
+          "c1": "Ed Markey",
+          "c1Pct": 51.0,
+          "c2": "John Deaton",
+          "c2Pct": 30.0
+        }
+      ]
+    },
+    "ME": {
+      "state": "Maine",
+      "candidate1": "Troy Jackson",
+      "candidate2": "Susan Collins",
+      "poll_count": 9,
+      "candidate1_avg": 47.7,
+      "candidate2_avg": 44.2,
+      "current_candidate1": "48.2",
+      "current_candidate2": "45.4",
+      "polls": [
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (RV)",
+          "c1": "Troy Jackson",
+          "c1Pct": 40.0,
+          "c2": "Susan Collins",
+          "c2Pct": 40.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (LV)",
+          "c1": "Troy Jackson",
+          "c1Pct": 50.0,
+          "c2": "Susan Collins",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-12",
+          "pollster": "FOX News",
+          "c1": "Troy Jackson",
+          "c1Pct": 48.0,
+          "c2": "Susan Collins",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-08-10",
+          "pollster": "Beacon Research / Shaw & Co.",
+          "c1": "Troy Jackson",
+          "c1Pct": 48.0,
+          "c2": "Susan Collins",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-08-01",
+          "pollster": "Hart Research Associates",
+          "c1": "Troy Jackson",
+          "c1Pct": 49.0,
+          "c2": "Susan Collins",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-07-20",
+          "pollster": "UNH Survey Center",
+          "c1": "Troy Jackson",
+          "c1Pct": 49.0,
+          "c2": "Susan Collins",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-07-07",
+          "pollster": "Public Policy Polling",
+          "c1": "Troy Jackson",
+          "c1Pct": 49.0,
+          "c2": "Susan Collins",
+          "c2Pct": 44.0
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "CNN",
+          "c1": "Troy Jackson",
+          "c1Pct": 48.0,
+          "c2": "Susan Collins",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "YouGov",
+          "c1": "Troy Jackson",
+          "c1Pct": 48.0,
+          "c2": "Susan Collins",
+          "c2Pct": 44.0
+        }
+      ]
+    },
+    "MI": {
+      "state": "Michigan",
+      "candidate1": "Abdul El-Sayed",
+      "candidate2": "Mike Rogers",
+      "poll_count": 15,
+      "candidate1_avg": 45.4,
+      "candidate2_avg": 44.5,
+      "current_candidate1": "46.9",
+      "current_candidate2": "44.6",
+      "polls": [
+        {
+          "date": "2026-09-08",
+          "pollster": "Detroit News / Glengariff",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 44.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-09-01",
+          "pollster": "Michigan State / YouGov",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 50.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-08-29",
+          "pollster": "EPIC-MRA",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 47.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (RV)",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 41.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 35.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (LV)",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 47.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-20",
+          "pollster": "Fabrizio / Anzalone",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 48.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 47.0
+        },
+        {
+          "date": "2026-08-19",
+          "pollster": "Susquehanna",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 46.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 39.0
+        },
+        {
+          "date": "2026-08-18",
+          "pollster": "TIPP Insights",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 45.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-13",
+          "pollster": "FOX News",
+          "c1": "Mike Rogers",
+          "c1Pct": 51.0,
+          "c2": "Abdul El-Sayed",
+          "c2Pct": 47.0
+        },
+        {
+          "date": "2026-08-10",
+          "pollster": "Beacon Research / Shaw & Co.",
+          "c1": "Mike Rogers",
+          "c1Pct": 51.0,
+          "c2": "Abdul El-Sayed",
+          "c2Pct": 47.0
+        },
+        {
+          "date": "2026-08-10",
+          "pollster": "TIPP Insights",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 45.44,
+          "c2": "Mike Rogers",
+          "c2Pct": 42.27
+        },
+        {
+          "date": "2026-08-02",
+          "pollster": "EPIC-MRA",
+          "c1": "Mike Rogers",
+          "c1Pct": 46.0,
+          "c2": "Abdul El-Sayed",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-07-31",
+          "pollster": "MIRS / Mitchell Research",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 45.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-07-24",
+          "pollster": "Glengariff Group",
+          "c1": "Mike Rogers",
+          "c1Pct": 49.0,
+          "c2": "Abdul El-Sayed",
+          "c2Pct": 38.7
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "CNN",
+          "c1": "Abdul El-Sayed",
+          "c1Pct": 47.0,
+          "c2": "Mike Rogers",
+          "c2Pct": 44.0
+        }
+      ]
+    },
+    "MN": {
+      "state": "Minnesota",
+      "candidate1": "Peggy Flanagan",
+      "candidate2": "Michele Tafoya",
+      "poll_count": 2,
+      "candidate1_avg": 45.0,
+      "candidate2_avg": 41.5,
+      "current_candidate1": "46.5",
+      "current_candidate2": "41.0",
+      "polls": [
+        {
+          "date": "2026-09-07",
+          "pollster": "TIPP**",
+          "c1": "Peggy Flanagan",
+          "c1Pct": 44.0,
+          "c2": "Michele Tafoya",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-18",
+          "pollster": "KSTP / SurveyUSA",
+          "c1": "Peggy Flanagan",
+          "c1Pct": 46.0,
+          "c2": "Michele Tafoya",
+          "c2Pct": 41.0
+        }
+      ]
+    },
+    "MT": {
+      "state": "Montana",
+      "candidate1": "Seth Bodnar",
+      "candidate2": "Kurt Alme",
+      "poll_count": 2,
+      "candidate1_avg": 48.0,
+      "candidate2_avg": 45.0,
+      "current_candidate1": "",
+      "current_candidate2": "",
+      "polls": [
+        {
+          "date": "2026-08-04",
+          "pollster": "Hart Research Associates",
+          "c1": "Kurt Alme",
+          "c1Pct": 46.0,
+          "c2": "Seth Bodnar",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-07-26",
+          "pollster": "GQR",
+          "c1": "Seth Bodnar",
+          "c1Pct": 50.0,
+          "c2": "Kurt Alme",
+          "c2Pct": 44.0
+        }
+      ]
+    },
+    "NC": {
+      "state": "North Carolina",
+      "candidate1": "Roy Cooper",
+      "candidate2": "Michael Whatley",
+      "poll_count": 9,
+      "candidate1_avg": 50.4,
+      "candidate2_avg": 40.7,
+      "current_candidate1": "50.7",
+      "current_candidate2": "42.3",
+      "polls": [
+        {
+          "date": "2026-08-21",
+          "pollster": "High Point University",
+          "c1": "Roy Cooper",
+          "c1Pct": 50.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-08-13",
+          "pollster": "Carolina Journal / Harper",
+          "c1": "Roy Cooper",
+          "c1Pct": 52.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 39.0
+        },
+        {
+          "date": "2026-08-12",
+          "pollster": "Elon University",
+          "c1": "Roy Cooper",
+          "c1Pct": 53.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-10",
+          "pollster": "Carolina Forward / Change Research",
+          "c1": "Roy Cooper",
+          "c1Pct": 50.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-08-07",
+          "pollster": "Change Research",
+          "c1": "Roy Cooper",
+          "c1Pct": 50.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 41.0
+        },
+        {
+          "date": "2026-08-01",
+          "pollster": "Change Research",
+          "c1": "Roy Cooper",
+          "c1Pct": 50.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 41.0
+        },
+        {
+          "date": "2026-07-31",
+          "pollster": "YouGov",
+          "c1": "Roy Cooper",
+          "c1Pct": 47.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 33.0
+        },
+        {
+          "date": "2026-07-29",
+          "pollster": "FOX News",
+          "c1": "Roy Cooper",
+          "c1Pct": 53.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 44.0
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "Elon University*",
+          "c1": "Roy Cooper",
+          "c1Pct": 49.0,
+          "c2": "Michael Whatley",
+          "c2Pct": 38.0
+        }
+      ]
+    },
+    "NH": {
+      "state": "New Hampshire",
+      "candidate1": "Chris Pappas",
+      "candidate2": "John E. Sununu",
+      "poll_count": 3,
+      "candidate1_avg": 42.3,
+      "candidate2_avg": 41.0,
+      "current_candidate1": "45.3",
+      "current_candidate2": "43.3",
+      "polls": [
+        {
+          "date": "2026-08-30",
+          "pollster": "Fabrizio, Lee & Associates",
+          "c1": "John Sununu",
+          "c1Pct": 37.0,
+          "c2": "Chris Pappas",
+          "c2Pct": 36.0
+        },
+        {
+          "date": "2026-08-26",
+          "pollster": "UNH",
+          "c1": "John Sununu",
+          "c1Pct": 45.0,
+          "c2": "Chris Pappas",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-08-20",
+          "pollster": "St. Anselm",
+          "c1": "Chris Pappas",
+          "c1Pct": 48.0,
+          "c2": "John Sununu",
+          "c2Pct": 41.0
+        }
+      ]
+    },
+    "NM": {
+      "state": "New Mexico",
+      "candidate1": "Ben Ray Luján",
+      "candidate2": "Larry Marker",
+      "poll_count": 2,
+      "candidate1_avg": 53.0,
+      "candidate2_avg": 38.0,
+      "current_candidate1": "53.0",
+      "current_candidate2": "38.0",
+      "polls": [
+        {
+          "date": "2026-09-01",
+          "pollster": "Albuquerque Journal",
+          "c1": "Ben Ray Luján",
+          "c1Pct": 53.0,
+          "c2": "Larry Marker",
+          "c2Pct": 38.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Research & Polling Inc.",
+          "c1": "Ben Ray Luján",
+          "c1Pct": 53.0,
+          "c2": "Larry Marker",
+          "c2Pct": 38.0
+        }
+      ]
+    },
+    "OH": {
+      "state": "Ohio",
+      "candidate1": "Sherrod Brown",
+      "candidate2": "Jon Husted",
+      "poll_count": 5,
+      "candidate1_avg": 47.8,
+      "candidate2_avg": 41.4,
+      "current_candidate1": "49.3",
+      "current_candidate2": "46.7",
+      "polls": [
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (RV)",
+          "c1": "Sherrod Brown",
+          "c1Pct": 40.0,
+          "c2": "Jon Husted",
+          "c2Pct": 33.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (LV)",
+          "c1": "Sherrod Brown",
+          "c1Pct": 46.0,
+          "c2": "Jon Husted",
+          "c2Pct": 41.0
+        },
+        {
+          "date": "2026-08-13",
+          "pollster": "FOX News",
+          "c1": "Sherrod Brown",
+          "c1Pct": 53.0,
+          "c2": "Jon Husted",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-08-10",
+          "pollster": "Beacon Research / Shaw & Co.",
+          "c1": "Sherrod Brown",
+          "c1Pct": 53.0,
+          "c2": "Jon Husted",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-08-04",
+          "pollster": "Tulchin Research",
+          "c1": "Sherrod Brown",
+          "c1Pct": 47.0,
+          "c2": "Jon Husted",
+          "c2Pct": 43.0
+        }
+      ]
+    },
+    "RI": {
+      "state": "Rhode Island",
+      "candidate1": "Jack Reed",
+      "candidate2": "Raymond McKay",
+      "poll_count": 1,
+      "candidate1_avg": 51.0,
+      "candidate2_avg": 31.0,
+      "current_candidate1": "51.0",
+      "current_candidate2": "31.0",
+      "polls": [
+        {
+          "date": "2026-08-26",
+          "pollster": "UNH",
+          "c1": "Jack Reed",
+          "c1Pct": 51.0,
+          "c2": "Allen McKay",
+          "c2Pct": 31.0
+        }
+      ]
+    },
+    "SC": {
+      "state": "South Carolina",
+      "candidate1": "Annie Andrews",
+      "candidate2": "Darline Graham",
+      "poll_count": 3,
+      "candidate1_avg": 37.7,
+      "candidate2_avg": 42.0,
+      "current_candidate1": "",
+      "current_candidate2": "",
+      "polls": [
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (RV)",
+          "c1": "Annie Andrews",
+          "c1Pct": 34.0,
+          "c2": "Darline Graham",
+          "c2Pct": 34.0
+        },
+        {
+          "date": "2026-08-28",
+          "pollster": "Abacus Data (LV)",
+          "c1": "Darline Graham",
+          "c1Pct": 51.0,
+          "c2": "Annie Andrews",
+          "c2Pct": 38.0
+        },
+        {
+          "date": "2026-08-24",
+          "pollster": "Impact Research",
+          "c1": "Darline Graham",
+          "c1Pct": 41.0,
+          "c2": "Annie Andrews",
+          "c2Pct": 41.0
+        }
+      ]
+    },
+    "TN": {
+      "state": "Tennessee",
+      "candidate1": "Marquita Bradshaw",
+      "candidate2": "Bill Hagerty",
+      "poll_count": 3,
+      "candidate1_avg": 32.3,
+      "candidate2_avg": 55.7,
+      "current_candidate1": "",
+      "current_candidate2": "",
+      "polls": [
+        {
+          "date": "2026-09-03",
+          "pollster": "Beacon Center",
+          "c1": "Bill Hagerty",
+          "c1Pct": 58.0,
+          "c2": "Marquita Bradshaw",
+          "c2Pct": 33.0
+        },
+        {
+          "date": "2026-08-26",
+          "pollster": "Targoz Market Research (RV)",
+          "c1": "Bill Hagerty",
+          "c1Pct": 51.0,
+          "c2": "Marquita Bradshaw",
+          "c2Pct": 31.0
+        },
+        {
+          "date": "2026-08-26",
+          "pollster": "Targoz Market Research (LV)",
+          "c1": "Bill Hagerty",
+          "c1Pct": 58.0,
+          "c2": "Marquita Bradshaw",
+          "c2Pct": 33.0
+        }
+      ]
+    },
+    "TX": {
+      "state": "Texas",
+      "candidate1": "James Talarico",
+      "candidate2": "Ken Paxton",
+      "poll_count": 11,
+      "candidate1_avg": 47.7,
+      "candidate2_avg": 45.1,
+      "current_candidate1": "47.4",
+      "current_candidate2": "44.8",
+      "polls": [
+        {
+          "date": "2026-09-02",
+          "pollster": "TPPF / Overton Insights",
+          "c1": "James Talarico",
+          "c1Pct": 50.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 50.0
+        },
+        {
+          "date": "2026-08-27",
+          "pollster": "Texas Public Opinion Research",
+          "c1": "James Talarico",
+          "c1Pct": 48.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 42.0
+        },
+        {
+          "date": "2026-08-26",
+          "pollster": "Overton Insights",
+          "c1": "Ken Paxton",
+          "c1Pct": 50.0,
+          "c2": "James Talarico",
+          "c2Pct": 50.0
+        },
+        {
+          "date": "2026-08-25",
+          "pollster": "University of Texas",
+          "c1": "James Talarico",
+          "c1Pct": 42.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 39.0
+        },
+        {
+          "date": "2026-08-13",
+          "pollster": "Emerson",
+          "c1": "Ken Paxton",
+          "c1Pct": 47.0,
+          "c2": "James Talarico",
+          "c2Pct": 46.0
+        },
+        {
+          "date": "2026-08-07",
+          "pollster": "Texas A&M / Siena",
+          "c1": "James Talarico",
+          "c1Pct": 47.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-08-04",
+          "pollster": "TSU / YouGov",
+          "c1": "James Talarico",
+          "c1Pct": 47.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-07-31",
+          "pollster": "YouGov Blue",
+          "c1": "James Talarico",
+          "c1Pct": 48.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 45.0
+        },
+        {
+          "date": "2026-07-30",
+          "pollster": "FOX News",
+          "c1": "James Talarico",
+          "c1Pct": 51.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 48.0
+        },
+        {
+          "date": "2026-09-08",
+          "pollster": "Univision",
+          "c1": "James Talarico",
+          "c1Pct": 48.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 43.0
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "Fabrizio/Anzalone",
+          "c1": "James Talarico",
+          "c1Pct": 48.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 44.0
+        }
+      ]
+    }
+  }
+}
