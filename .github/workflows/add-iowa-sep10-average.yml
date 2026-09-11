@@ -1,0 +1,40 @@
+name: Add Iowa Sep 10 polls to averages
+on:
+  push:
+    paths:
+      - '.github/workflows/add-iowa-sep10-average.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add Iowa polls and refresh cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('senate-julsep-archive.js')
+          s=p.read_text()
+          anchor="  const POLLS=[\n"
+          rows="['2026-09-10','IA','Iowa','YouGov','Ashley Hinson',43,'Josh Turek',45,'RCP'],\n['2026-09-10','IA','Iowa','Rasmussen Reports*','Ashley Hinson',40,'Josh Turek',45,'RCP'],\n"
+          if "'Rasmussen Reports*','Ashley Hinson',40,'Josh Turek',45" not in s:
+              if anchor not in s: raise SystemExit('poll archive anchor not found')
+              s=s.replace(anchor,anchor+rows,1)
+              p.write_text(s)
+          i=Path('index.html')
+          h=i.read_text()
+          h=h.replace('senate-julsep-archive.js?v=20260911-0015','senate-julsep-archive.js?v=20260911-1333',1)
+          h=h.replace('senate-auto-averages.js?v=20260911-0756','senate-auto-averages.js?v=20260911-1333',1)
+          i.write_text(h)
+          PY
+          node --check senate-julsep-archive.js
+          grep -q "Rasmussen Reports.*Ashley Hinson.*40.*Josh Turek.*45" senate-julsep-archive.js
+          grep -q "YouGov.*Ashley Hinson.*43.*Josh Turek.*45" senate-julsep-archive.js
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-julsep-archive.js index.html
+          git commit -m 'Add Sep 10 Iowa polls to Senate average' || exit 0
+          git push origin main
