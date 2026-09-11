@@ -24,10 +24,10 @@ jobs:
           for x in polls:
               rows.append({'date':x[0],'state':x[1],'pollster':x[3],'c1':x[4],'c1Pct':float(x[5]),'c2':x[6],'c2Pct':float(x[7]),'source':'archive'})
 
-          pat=re.compile(r"add\(\{date:'([^']+)',state:'([^']+)',pollster:'([^']+)',sample:'[^']*',c1:'([^']+)',c1Pct:'([^']+)',c2:'([^']+)',c2Pct:'([^']+)'",re.S)
-          for fn in ['sep9-polls-update.js','sep10-polls-update.js']:
+          objpat=re.compile(r"(?:add\(|polls\.push\()\{date:'([^']+)',state:'([^']+)',pollster:'([^']+)',sample:'[^']*',c1:'([^']+)',c1Pct:'([^']+)',c2:'([^']+)',c2Pct:'([^']+)'",re.S)
+          for fn in ['sep9-polls-update.js','sep10-polls-update.js','sept9-final-ui.js']:
               txt=Path(fn).read_text()
-              for date,state,pollster,c1,p1,c2,p2 in pat.findall(txt):
+              for date,state,pollster,c1,p1,c2,p2 in objpat.findall(txt):
                   rows.append({'date':date,'state':state,'pollster':pollster,'c1':c1,'c1Pct':float(p1),'c2':c2,'c2Pct':float(p2),'source':fn})
 
           def norm_pollster(s):
@@ -37,7 +37,8 @@ jobs:
               return re.sub(r'[^a-z0-9-]+','',name.lower().split()[-1])
           dedup=[]; seen=set()
           for r in rows:
-              key=(r['state'],r['date'],norm_pollster(r['pollster']),tuple(sorted([last(r['c1']),last(r['c2'])])))
+              vals=tuple(sorted([(last(r['c1']),round(r['c1Pct'],3)),(last(r['c2']),round(r['c2Pct'],3))]))
+              key=(r['state'],r['date'],norm_pollster(r['pollster']),vals)
               if key in seen: continue
               seen.add(key); dedup.append(r)
 
@@ -63,11 +64,14 @@ jobs:
                   'polls':[{'date':x[0]['date'],'pollster':x[0]['pollster'],'c1':x[0]['c1'],'c1Pct':x[0]['c1Pct'],'c2':x[0]['c2'],'c2Pct':x[0]['c2Pct']} for x in hits]
               }
           Path('poll-average-audit.json').write_text(json.dumps(out,indent=2,ensure_ascii=False)+'\n')
+          Path('poll-average-summary.csv').write_text('abbr,state,candidate1,candidate1_avg,candidate2,candidate2_avg,poll_count\n'+''.join(
+              f"{ab},{v['state']},{v['candidate1']},{v['candidate1_avg']},{v['candidate2']},{v['candidate2_avg']},{v['poll_count']}\n" for ab,v in out['averages'].items()
+          ))
           PY
       - name: Commit audit
         run: |
           git config user.name 'Will Election Polls Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add poll-average-audit.json
+          git add poll-average-audit.json poll-average-summary.csv
           git commit -m 'Generate Senate polling average audit'
           git push origin main
