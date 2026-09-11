@@ -35,14 +35,14 @@
           if(name.includes('husted')&&String(oh[key])!=='55'){oh[key]='55';changed=true;}
           if(name.includes('brown')&&String(oh[key])!=='45'){oh[key]='45';changed=true;}
         }
-        if(oh.updated!=='2026-09-09'){oh.updated='2026-09-09';changed=true;}
+        if(oh.updated!=='2026-09-10'){oh.updated='2026-09-10';changed=true;}
       }
       if(typeof stateData!=='undefined'&&stateData?.MI){
         const mi=stateData.MI;
         if(mi.prediction!=='El-Sayed +1.3%'){mi.prediction='El-Sayed +1.3%';changed=true;}
         if(mi.predictionParty!=='Democrat'){mi.predictionParty='Democrat';changed=true;}
         if('call' in mi&&mi.call!=='El-Sayed +1.3%'){mi.call='El-Sayed +1.3%';changed=true;}
-        if(mi.updated!=='2026-09-09'){mi.updated='2026-09-09';changed=true;}
+        if(mi.updated!=='2026-09-10'){mi.updated='2026-09-10';changed=true;}
       }
     }catch(e){}
     return changed;
@@ -50,15 +50,20 @@
 
   function applyAverages(){
     let changed=false;
-    changed=setCandidatePoll('MI','el-sayed','45.4')||changed;
-    changed=setCandidatePoll('MI','rogers','44.5')||changed;
+    changed=setCandidatePoll('MI','el-sayed','46.5')||changed;
+    changed=setCandidatePoll('MI','rogers','44.7')||changed;
     changed=setCandidatePoll('ME','jackson','47.7')||changed;
     changed=setCandidatePoll('ME','collins','44.2')||changed;
     changed=setCandidatePoll('TX','talarico','47.8')||changed;
     changed=setCandidatePoll('TX','paxton','44.9')||changed;
     changed=setCandidatePoll('NC','cooper','50.4')||changed;
     changed=setCandidatePoll('NC','whatley','40.7')||changed;
+    changed=setCandidatePoll('OH','brown','49.3')||changed;
+    changed=setCandidatePoll('OH','husted','46.7')||changed;
+    changed=setCandidatePoll('SC','graham','45.0')||changed;
+    changed=setCandidatePoll('SC','andrews','43.0')||changed;
     changed=applyForecastCalls()||changed;
+    try{if(typeof stateData!=='undefined'&&stateData?.SC&&stateData.SC.updated!=='2026-09-10'){stateData.SC.updated='2026-09-10';changed=true;}}catch(e){}
     if(changed&&typeof renderSenate==='function'&&!rendering){
       rendering=true;
       try{renderSenate();}catch(e){}finally{rendering=false;}
@@ -79,6 +84,9 @@
       add({date:'2026-09-09',state:'TX',pollster:'Fabrizio/Anzalone',sample:'',c1:'James Talarico',c1Pct:'48',c2:'Ken Paxton',c2Pct:'44',notes:'RealClearPolling listing · Talarico +4'});
       add({date:'2026-09-09',state:'ME',pollster:'YouGov',sample:'',c1:'Troy Jackson',c1Pct:'48',c2:'Susan Collins',c2Pct:'44',notes:'RealClearPolling listing · Jackson +4'});
       add({date:'2026-09-09',state:'NC',pollster:'Elon University*',sample:'',c1:'Roy Cooper',c1Pct:'49',c2:'Michael Whatley',c2Pct:'38',notes:'RealClearPolling listing · Cooper +11'});
+      add({date:'2026-09-10',state:'MI',pollster:'Trafalgar Group*',sample:'1,079 LV',c1:'Abdul El-Sayed',c1Pct:'46',c2:'Mike Rogers',c2Pct:'45',notes:'RealClearPolling · El-Sayed +1'});
+      add({date:'2026-09-10',state:'SC',pollster:'InsiderAdvantage',sample:'',c1:'Graham Nordone',c1Pct:'45',c2:'Annie Andrews',c2Pct:'43',notes:'RealClearPolling · Graham Nordone +2'});
+      add({date:'2026-09-10',state:'OH',pollster:'InsiderAdvantage',sample:'',c1:'Sherrod Brown',c1Pct:'47',c2:'Jon Husted',c2Pct:'42',notes:'RealClearPolling · Brown +5'});
       if(changed&&typeof renderPolls==='function') renderPolls();
     }catch(e){}
   }
@@ -101,13 +109,16 @@
     const filter=select?.value||'ALL';
     sec.querySelectorAll('[data-sep9cnn]').forEach(el=>el.remove());
     if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Univision','James Talarico',48,'Ken Paxton',43,'Sep 8'));
+    if(filter==='ALL'||filter==='SC') list.prepend(row('SC','South Carolina','InsiderAdvantage','Graham Nordone',45,'Annie Andrews',43,'Sep 10'));
+    if(filter==='ALL'||filter==='OH') list.prepend(row('OH','Ohio','InsiderAdvantage','Sherrod Brown',47,'Jon Husted',42,'Sep 10'));
+    if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','Trafalgar Group*','Abdul El-Sayed',46,'Mike Rogers',45,'Sep 10'));
     if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','CNN','Troy Jackson',48,'Susan Collins',45));
     if(filter==='ALL'||filter==='MI') list.prepend(row('MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44));
     if(filter==='ALL'||filter==='NC') list.prepend(row('NC','North Carolina','Elon University*','Roy Cooper',49,'Michael Whatley',38));
     if(filter==='ALL'||filter==='ME') list.prepend(row('ME','Maine','YouGov','Troy Jackson',48,'Susan Collins',44));
     if(filter==='ALL'||filter==='TX') list.prepend(row('TX','Texas','Fabrizio/Anzalone','James Talarico',48,'Ken Paxton',44));
     const sub=sec.querySelector('.jp-sub');
-    if(sub) sub.textContent='96 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';
+    if(sub) sub.textContent='99 public general-election matchup polls and snapshots from July 7 through September 10, including alternate matchups that were publicly tested during the period.';
     const count=sec.querySelector('.jp-count');
     if(count){
       const total=list.querySelectorAll('.jp-row').length;
