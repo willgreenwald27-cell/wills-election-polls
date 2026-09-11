@@ -9,15 +9,16 @@
     const st=document.createElement('style');
     st.id='sept11FinalStyle';
     st.textContent=`
-      #page-senate .wg-me-final-call{margin:9px 0 0!important;padding:12px 14px!important;border-radius:10px!important;background:linear-gradient(135deg,#9d2f43,#bd2937)!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important;box-sizing:border-box!important}
+      #page-senate .wg-me-final-call{margin:9px 0 0!important;padding:12px 14px!important;border-radius:10px!important;background:#bd2937!important;background-image:none!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important;box-sizing:border-box!important}
       #page-senate .wg-me-final-call .wg-me-call-kicker{display:block!important;margin:0 0 4px!important;color:#ffd7dc!important;font:900 9px/1.1 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1.2px!important;text-transform:uppercase!important}
       #page-senate .wg-me-final-call .wg-me-call-line{display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:wrap!important}
       #page-senate .wg-me-final-call .wg-me-party{font-family:Georgia,'Times New Roman',serif!important;font-size:21px!important;line-height:1.08!important;font-weight:800!important;color:#fff!important}
-      #page-senate .wg-me-final-call .wg-me-rating{display:inline-flex!important;align-items:center!important;padding:4px 8px!important;border-radius:999px!important;background:#ff7f8c!important;color:#361018!important;font:900 9px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:.65px!important;text-transform:uppercase!important}
+      #page-senate .wg-me-final-call .wg-me-rating{display:inline-flex!important;align-items:center!important;padding:4px 8px!important;border-radius:999px!important;background:#ff9aa3!important;color:#3d1117!important;font:900 9px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:.65px!important;text-transform:uppercase!important}
       #page-senate .wg-me-final-call .wg-me-margin{display:block!important;margin-top:7px!important;color:#fff!important;font:700 12px/1.25 Inter,ui-sans-serif,system-ui,sans-serif!important}
       #page-senate .wg-me-final-why{margin:12px 0 0!important;padding:15px 16px!important;border:0!important;border-radius:10px!important;background:#f7f8fb!important;color:#26384f!important;font:500 12px/1.45 Inter,ui-sans-serif,system-ui,sans-serif!important;box-sizing:border-box!important}
       #page-senate .wg-me-final-why b{display:block!important;margin-bottom:8px!important;color:#61718a!important;font-size:10px!important;line-height:1.1!important;font-weight:900!important;letter-spacing:1.2px!important;text-transform:uppercase!important}
       #page-senate .wg-me-final-why span{display:block!important;color:#26384f!important}
+      #page-senate .wg-rep-call-solid{background:#bd2937!important;background-image:none!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important}
     `;
     document.head.appendChild(st);
   }
@@ -125,12 +126,42 @@
     let why=existing[0]||document.createElement('div');
     existing.slice(1).forEach(el=>el.remove());
     why.className='maine-why-note wg-me-final-why';
-    why.innerHTML='<b>WHY MY FORECAST DIFFERS</b><span>Why my forecast differs from the polling average: Collins has been underestimated by 5+ points in three straight cycles.</span>';
+    why.innerHTML='<b>WHY MY FORECAST DIFFERS</b><span>Collins has been underestimated by 5+ points in three straight cycles.</span>';
     if(win){
       let block=win;
       while(block.parentElement&&block.parentElement!==box&&block.parentElement.getBoundingClientRect().height<90)block=block.parentElement;
       block.insertAdjacentElement('afterend',why);
     }else if(!why.parentElement){box.appendChild(why);}
+  }
+
+  function standardizeRepCalls(){
+    const root=document.getElementById('page-senate');if(!root)return;
+    const calls=leafs(root).filter(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent))&&el.getClientRects().length);
+    for(const call of calls){
+      let cur=call.parentElement,best=null;
+      for(let i=0;cur&&cur!==root&&i<8;i++,cur=cur.parentElement){
+        const t=norm(cur.textContent),r=cur.getBoundingClientRect();
+        if(/Win odds/i.test(t)||(/^MY PREDICTION/i.test(t)&&i>0))break;
+        if(r.width>=180&&r.height>=45&&r.height<=210)best=cur;
+      }
+      if(!best)continue;
+      const parts=leafs(best);
+      if(!parts.some(el=>/^Republican$/i.test(norm(el.textContent))))continue;
+      best.classList.add('wg-rep-call-solid');
+      best.style.setProperty('background','#bd2937','important');
+      best.style.setProperty('background-image','none','important');
+      best.style.setProperty('border','2px solid #e65c66','important');
+      best.style.setProperty('box-shadow','0 8px 24px rgba(189,41,55,.20)','important');
+      for(const el of parts){
+        const t=norm(el.textContent);
+        if(/^TILT REPUBLICAN$/i.test(t)){
+          el.style.setProperty('background','#ff9aa3','important');
+          el.style.setProperty('color','#3d1117','important');
+        }else{
+          el.style.setProperty('color','#fff','important');
+        }
+      }
+    }
   }
 
   function apply(){
@@ -139,6 +170,7 @@
     forceHomeDate();
     forceMaineColor();
     fixMainePopup();
+    standardizeRepCalls();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();
