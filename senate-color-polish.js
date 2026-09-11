@@ -81,7 +81,7 @@
     const demW=senate?'49%':'52.4138%', repW=senate?'51%':'47.5862%';
     const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
-      ${senate?'<div class="final-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>':''}
+      
       <div class="final-kicker">${kicker}</div>
       <h2 class="final-title">${title}</h2>
       <div class="final-numbers">

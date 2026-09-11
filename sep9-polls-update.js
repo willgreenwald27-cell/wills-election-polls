@@ -189,7 +189,6 @@
             <div class="majority-note">218 seats needed for a majority</div>
           </div>
           <div class="forecast-card senate-card">
-            <div class="senate-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>
             <div class="senate-kicker">2026 U.S. Senate</div>
             <h2 class="senate-title">Will’s Senate Prediction</h2>
             <div class="senate-numbers">

@@ -168,9 +168,9 @@
       #page-errors .ipe-shock-route span{font-size:10px;color:rgba(255,255,255,.68);text-transform:uppercase;letter-spacing:.45px}
       #page-errors .ipe-shock-route b{display:block;font-size:18px;color:#fff;margin-top:3px}
       #page-errors .ipe-shock-route i{font-style:normal;color:rgba(255,255,255,.75)}
-      #page-errors .ipe-shock-foot{position:absolute;left:20px;right:20px;bottom:17px;display:flex;justify-content:space-between;gap:8px;align-items:end}
+      #page-errors .ipe-shock-foot{justify-content:flex-end;position:absolute;left:20px;right:20px;bottom:17px;display:flex;justify-content:space-between;gap:8px;align-items:end}
       #page-errors .ipe-shock-foot small{font-size:10px;color:rgba(255,255,255,.72)}
-      #page-errors .ipe-shock-foot em{font-style:normal;font-size:20px;font-weight:1000;color:#fff}
+      #page-errors .ipe-shock-foot em{font-size:18px!important;font-style:normal;font-size:20px;font-weight:1000;color:#fff}
       #page-errors .ipe-swing-organized{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
       #page-errors .ipe-swing-state{background:#fff;border:1px solid #dbe3ed;border-radius:18px;overflow:hidden;box-shadow:0 12px 32px rgba(19,39,72,.07)}
       #page-errors .ipe-swing-toggle{width:100%;border:0;background:linear-gradient(135deg,#102b52,#1f4777);color:#fff;padding:17px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;cursor:pointer}
@@ -416,7 +416,7 @@
     host.innerHTML=order.map(ab=>{
       const rows=swingStateRecords(ab), scored=rows.filter(r=>r.pollCount&&absError(r)!==null), avg=stateAverageMiss(scored), direction=stateAverageDirection(scored), bias=stateBiasLabel(direction), name=rows[0]?.stateName||ab;
       const newest=rows[0], older=rows[rows.length-1];
-      return `<button type="button" class="ipe-shock" data-ipe-state="${esc(ab)}"><span class="ipe-shock-bias ${bias.cls}">${bias.text}</span><span class="ipe-shock-rank">${rows.length} Senate races · ${older?.year||'—'}–${newest?.year||'—'}</span><strong>${esc(name)}</strong><div class="ipe-shock-cands"><span class="ipe-cand-pill d">Democratic <i>D</i></span><span class="ipe-cand-vs">+</span><span class="ipe-cand-pill r">Republican <i>R</i></span></div><div class="ipe-shock-route"><div><span>Scored races</span><b>${scored.length}</b></div><i>→</i><div><span>All races shown</span><b>${rows.length}</b></div></div><div class="ipe-shock-foot"><em>${avg===null?'—':avg.toFixed(1)+' pts avg'}</em></div></button>`;
+      return `<button type="button" class="ipe-shock" data-ipe-state="${esc(ab)}"><span class="ipe-shock-bias ${bias.cls}">${bias.text}</span><span class="ipe-shock-rank">${rows.length} Senate races · ${older?.year||'—'}–${newest?.year||'—'}</span><strong>${esc(name)}</strong><div class="ipe-shock-cands"><span class="ipe-cand-pill d">Democratic <i>D</i></span><span class="ipe-cand-vs">+</span><span class="ipe-cand-pill r">Republican <i>R</i></span></div><div class="ipe-shock-foot"><em>${avg===null?'—':avg.toFixed(1)+' pts avg'}</em></div></button>`;
     }).join('');
     host.querySelectorAll('[data-ipe-state]').forEach(btn=>btn.addEventListener('click',()=>openStateStory(btn.dataset.ipeState)));
   }

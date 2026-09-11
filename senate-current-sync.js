@@ -74,14 +74,22 @@
       const call=ls.findIndex(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
       if(call>=0){
         const p=ls.slice(call+1,call+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-        if(p)p.textContent='Republican';
+        if(p)p.textContent='Susan Collins';
         const copy=box.querySelector('.prediction-copy');if(copy)copy.textContent='Collins +1.3%';
       }
       const proj=ls.findIndex(el=>/^MY PROJECTED WINNER$/i.test(norm(el.textContent)));
       if(proj>=0){
         const p=ls.slice(proj+1,proj+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-        if(p)p.textContent='Republican';
+        if(p)p.textContent='Susan Collins';
       }
+      let why=box.querySelector('.maine-why-note');
+      if(!why){
+        why=document.createElement('div');
+        why.className='maine-why-note';
+        box.appendChild(why);
+      }
+      why.textContent='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
+      why.style.cssText='margin-top:12px;padding:12px 14px;border-radius:12px;background:#fff3f4;border:1px solid #f1b8bd;color:#7f2330;font:800 12px/1.5 Inter,system-ui,sans-serif;letter-spacing:.05px';
     }
   }
 
@@ -113,6 +121,7 @@
       if(/Democrats/i.test(t)&&/Republicans/i.test(t)&&/51 seats needed for a majority/i.test(t))break;
     }
     if(!card||card===root)return;
+    card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
     if(nums.length>=2){nums[0].textContent='49';nums[1].textContent='51';}
     const all=leafs(card);
