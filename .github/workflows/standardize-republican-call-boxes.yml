@@ -1,0 +1,61 @@
+name: Standardize Republican call boxes
+on:
+  push:
+    paths:
+      - '.github/workflows/standardize-republican-call-boxes.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply Republican call-box style
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('sept11-final.js')
+          s=p.read_text()
+
+          css_anchor="      #page-senate .wg-me-final-why span{display:block!important;color:#26384f!important}\n"
+          css_add="      #page-senate .wg-republican-call-solid{background:#bd2937!important;background-image:none!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important}\n"
+          if css_add not in s:
+              if css_anchor not in s: raise SystemExit('CSS anchor missing')
+              s=s.replace(css_anchor,css_anchor+css_add,1)
+
+          fn="""\n  function standardizeRepublicanCalls(){\n    const root=document.getElementById('page-senate');if(!root)return;\n    const calls=leafs(root).filter(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent))&&el.getClientRects().length);\n    for(const call of calls){\n      let cur=call.parentElement,best=null;\n      for(let i=0;cur&&cur!==root&&i<8;i++,cur=cur.parentElement){\n        const t=norm(cur.textContent),r=cur.getBoundingClientRect();\n        if(/Win odds/i.test(t)||(/^MY PREDICTION/i.test(t)&&i>0))break;\n        if(r.width>=180&&r.height>=45&&r.height<=210)best=cur;\n      }\n      if(!best)continue;\n      const parts=leafs(best);\n      const party=parts.find(el=>/^Republican$/i.test(norm(el.textContent)));\n      if(!party)continue;\n      best.classList.add('wg-republican-call-solid');\n      best.style.setProperty('background','#bd2937','important');\n      best.style.setProperty('background-image','none','important');\n      best.style.setProperty('border','2px solid #e65c66','important');\n      for(const el of parts){\n        const t=norm(el.textContent);\n        if(/^TILT REPUBLICAN$/i.test(t)){\n          el.style.setProperty('background','#ff9aa3','important');\n          el.style.setProperty('color','#3d1117','important');\n        }else{\n          el.style.setProperty('color','#fff','important');\n        }\n      }\n    }\n  }\n"""
+          if 'function standardizeRepublicanCalls(){' not in s:
+              anchor='\n  function apply(){\n'
+              if anchor not in s: raise SystemExit('apply anchor missing')
+              s=s.replace(anchor,fn+anchor,1)
+
+          old="    fixMaineColor();\n    fixMainePopup();\n"
+          new="    fixMaineColor();\n    fixMainePopup();\n    standardizeRepublicanCalls();\n"
+          if 'standardizeRepublicanCalls();' not in s:
+              if old not in s: raise SystemExit('apply body anchor missing')
+              s=s.replace(old,new,1)
+
+          p.write_text(s)
+
+          idx=Path('index.html')
+          i=idx.read_text()
+          i,n=re.subn(r'sept11-final\.js\?v=[0-9A-Za-z._-]+','sept11-final.js?v=20260911-003',i,count=1)
+          if n!=1: raise SystemExit(f'cache key replacement count={n}')
+          idx.write_text(i)
+
+          out=p.read_text()
+          if 'wg-republican-call-solid' not in out or 'standardizeRepublicanCalls();' not in out:
+              raise SystemExit('style/function check failed')
+          PY
+          node --check sept11-final.js
+      - name: Commit production update
+        run: |
+          git config user.name "Will Election Polls Bot"
+          git config user.email "actions@users.noreply.github.com"
+          rm -f .github/workflows/standardize-republican-call-boxes.yml
+          git add sept11-final.js index.html .github/workflows/standardize-republican-call-boxes.yml
+          git commit -m "Standardize Republican Senate call boxes"
+          git push
