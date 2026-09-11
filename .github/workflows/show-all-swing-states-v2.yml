@@ -1,0 +1,44 @@
+name: Show all swing states v2
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/show-all-swing-states-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch Past Polling Errors swing cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('senate-error-history.js')
+          s=p.read_text()
+          css="#page-errors .ipe-shock strong{display:block;font-family:Georgia,serif;font-size:26px;line-height:1;margin:8px 0 11px;color:#fff}"
+          extra="#page-errors .ipe-shock-cands{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 11px}#page-errors .ipe-cand-pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:6px 8px;border:1px solid rgba(255,255,255,.32);font-size:7px;font-weight:950;line-height:1;color:#fff;max-width:46%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#page-errors .ipe-cand-pill i{font-style:normal;font-size:6px;opacity:.82}.ipe-cand-pill.d{background:#1f6fca}.ipe-cand-pill.r{background:#c84050}.ipe-cand-pill.i{background:#7955c5}.ipe-cand-vs{font-size:6px;font-weight:1000;color:rgba(255,255,255,.6);text-transform:uppercase}"
+          if 'ipe-shock-cands' not in s:
+              s=s.replace(css,css+extra,1)
+          new="  function renderShocks(){\n    const host=document.getElementById('ipeShocks'); if(!host)return;\n    const all=shockRows();\n    const order=(data?.swingStates||[]).filter(ab=>(data?.targetStates||[]).includes(ab));\n    const rows=order.map(ab=>all.filter(z=>z.r.state===ab).sort((a,b)=>Math.abs(b.g)-Math.abs(a.g))[0]).filter(Boolean);\n    if(!rows.length){host.innerHTML='<div class=\"ipe-source\">No scored swing-state historical races are available.</div>';return}\n    host.innerHTML=rows.map(z=>{const r=z.r,p=drMargin(r,'poll'),a=drMargin(r,'actual'),idx=data.records.indexOf(r);return `<button type=\"button\" class=\"ipe-shock\" data-ipe-story=\"${idx}\"><span class=\"ipe-shock-rank\">${esc(r.year)} U.S. Senate${r.wrongWinner?' · leader reversed':''}</span><strong>${esc(r.stateName)}</strong><div class=\"ipe-shock-cands\"><span class=\"ipe-cand-pill ${partyCardClass(r.winnerParty)}\">${esc(r.winner)} <i>${esc(shortParty(r.winnerParty))}</i></span><span class=\"ipe-cand-vs\">vs</span><span class=\"ipe-cand-pill ${partyCardClass(r.runnerUpParty)}\">${esc(r.runnerUp)} <i>${esc(shortParty(r.runnerUpParty))}</i></span></div><div class=\"ipe-shock-route\"><div><span>Final polls</span><b>${marginLabel(p)}</b></div><i>→</i><div><span>Actual result</span><b>${marginLabel(a)}</b></div></div><div class=\"ipe-shock-foot\"><small>${esc(r.matchup||'')}</small><em>${Math.abs(z.g).toFixed(1)} pts miss</em></div></button>`}).join('');\n    host.querySelectorAll('[data-ipe-story]').forEach(btn=>btn.addEventListener('click',()=>openStory(Number(btn.dataset.ipeStory))));\n  }"
+          s,n=re.subn(r"  function renderShocks\(\)\{.*?\n  \}\n\n  function openStory",new+"\n\n  function openStory",s,count=1,flags=re.S)
+          if n!=1:
+              raise SystemExit('renderShocks replacement failed')
+          s=s.replace('Historical polling misses for the states currently grouped as 2026 Senate battlegrounds. These are the largest prior polling misses in that group; click any card for a full-screen race story.','Historical polling misses for every state in the current 2026 Senate swing-state group. Each card shows that state’s largest saved polling miss; click any card for a full-screen race story.')
+          p.write_text(s)
+          PY
+          node --check senate-error-history.js
+          grep -q "const rows=order.map" senate-error-history.js
+          grep -q "ipe-cand-pill" senate-error-history.js
+      - name: Commit patch
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-error-history.js
+          git diff --cached --quiet && exit 0
+          git commit -m 'Show all swing states with party-coded candidates'
+          git push origin main
