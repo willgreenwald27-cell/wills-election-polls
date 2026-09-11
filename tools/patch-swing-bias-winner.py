@@ -78,3 +78,4 @@ s=s.replace(old,new,1)
 
 p.write_text(s)
 print('patched swing-state bias labels and result-only winner display')
+# trigger
