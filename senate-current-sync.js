@@ -33,14 +33,6 @@
       if(typeof stateData==='undefined'||!stateData) return false;
       let changed=false;
       const set=(s,k,v)=>{if(String(s[k]??'')!==String(v)){s[k]=v;changed=true;}};
-      for(const [ab,byLast] of Object.entries(AVG)){
-        const s=stateData[ab]; if(!s) continue;
-        for(const slot of [1,2]){
-          const value=byLast[last(s['candidate'+slot])];
-          if(value!==undefined) set(s,'candidate'+slot+'Poll',value);
-        }
-        set(s,'updated','2026-09-10');
-      }
       const me=stateData.ME;
       if(me){
         set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);set(me,'updated','2026-09-10');
