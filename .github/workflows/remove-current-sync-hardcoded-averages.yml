@@ -1,0 +1,46 @@
+name: Remove current sync hard-coded averages
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-current-sync-hardcoded-averages.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stop old sync from overwriting archive averages
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('senate-current-sync.js')
+          s=p.read_text()
+          old=re.compile(r"\s*for\(const \[ab,byLast\] of Object\.entries\(AVG\)\)\{.*?\n\s*\}\n\s*const me=stateData\.ME;",re.S)
+          m=old.search(s)
+          if not m:
+              raise SystemExit('AVG sync loop not found')
+          s=s[:m.start()]+'\n      const me=stateData.ME;'+s[m.end():]
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          s=re.sub(r'/senate-current-sync\.js\?v=[^"<]+','/senate-current-sync.js?v=20260911-0035',s)
+          s=re.sub(r'/senate-auto-averages\.js\?v=[^"<]+','/senate-auto-averages.js?v=20260911-0035',s)
+          p.write_text(s)
+          PY
+          node --check senate-current-sync.js
+          ! sed -n '/function syncData(){/,/function forceMaine(){/p' senate-current-sync.js | grep -q "candidate.*Poll"
+          grep -q "const me=stateData.ME" senate-current-sync.js
+          grep -q 'senate-auto-averages.js?v=20260911-0035' index.html
+      - name: Commit production update
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-current-sync.js index.html
+          git commit -m 'Stop stale sync from overwriting Senate poll averages'
+          git push
