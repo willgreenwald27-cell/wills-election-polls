@@ -74,13 +74,13 @@
       const call=ls.findIndex(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
       if(call>=0){
         const p=ls.slice(call+1,call+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-        if(p)p.textContent='Susan Collins';
+        if(p)p.textContent='Republican';
         const copy=box.querySelector('.prediction-copy');if(copy)copy.textContent='Collins +1.3%';
       }
       const proj=ls.findIndex(el=>/^MY PROJECTED WINNER$/i.test(norm(el.textContent)));
       if(proj>=0){
         const p=ls.slice(proj+1,proj+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-        if(p)p.textContent='Susan Collins';
+        if(p)p.textContent='Republican';
       }
       let why=box.querySelector('.maine-why-note');
       if(!why){
