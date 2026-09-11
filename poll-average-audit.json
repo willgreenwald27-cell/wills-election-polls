@@ -1,5 +1,5 @@
 {
-  "unique_site_polls": 95,
+  "unique_site_polls": 97,
   "averages": {
     "AK": {
       "state": "Alaska",
@@ -149,9 +149,9 @@
       "state": "Idaho",
       "candidate1": "Todd Achilles",
       "candidate2": "Jim Risch",
-      "poll_count": 1,
-      "candidate1_avg": 30.0,
-      "candidate2_avg": 34.0,
+      "poll_count": 2,
+      "candidate1_avg": 34.0,
+      "candidate2_avg": 33.5,
       "current_candidate1": "18.0",
       "current_candidate2": "52.0",
       "polls": [
@@ -162,6 +162,14 @@
           "c1Pct": 34.0,
           "c2": "Todd Achilles",
           "c2Pct": 30.0
+        },
+        {
+          "date": "2026-08-07",
+          "pollster": "Bullfinch Group",
+          "c1": "Todd Achilles",
+          "c1Pct": 38.0,
+          "c2": "James Risch",
+          "c2Pct": 33.0
         }
       ]
     },
@@ -781,9 +789,9 @@
       "state": "Texas",
       "candidate1": "James Talarico",
       "candidate2": "Ken Paxton",
-      "poll_count": 11,
-      "candidate1_avg": 47.7,
-      "candidate2_avg": 45.1,
+      "poll_count": 12,
+      "candidate1_avg": 47.8,
+      "candidate2_avg": 44.9,
       "current_candidate1": "47.4",
       "current_candidate2": "44.8",
       "polls": [
@@ -874,6 +882,14 @@
           "c1Pct": 48.0,
           "c2": "Ken Paxton",
           "c2Pct": 44.0
+        },
+        {
+          "date": "2026-09-09",
+          "pollster": "Univision",
+          "c1": "James Talarico",
+          "c1Pct": 48.0,
+          "c2": "Ken Paxton",
+          "c2Pct": 43.0
         }
       ]
     }
