@@ -1,0 +1,33 @@
+name: Remove duplicate mobile party labels
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-mobile-party-fallback.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove fallback loader
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n=re.subn(r'<script src="/senate-party-labels\.js\?v=[^"]+"><\\/script>','',s,count=1)
+          if n != 1:
+              raise SystemExit(f'party-label loader removal count={n}')
+          p.write_text(s)
+          PY
+      - name: Commit production fix
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove duplicate mobile party label fallback'
+          git push
