@@ -1,0 +1,29 @@
+name: Fix Maine popup and history UI
+on:
+  push:
+    paths:
+      - 'tools/fix-maine-popup-and-history.py'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply UI patch
+        run: |
+          python tools/fix-maine-popup-and-history.py
+          node --check senate-current-sync.js
+          node --check senate-color-polish.js
+          node --check sep9-polls-update.js
+          node --check senate-error-history.js
+      - name: Commit production changes
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm -f tools/fix-maine-popup-and-history.py .github/workflows/fix-maine-popup-and-history.yml
+          git add index.html senate-current-sync.js senate-color-polish.js sep9-polls-update.js senate-error-history.js
+          git commit -m 'Refine Maine popup and polling error cards'
+          git push origin main
