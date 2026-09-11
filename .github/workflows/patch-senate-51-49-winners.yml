@@ -1,0 +1,29 @@
+name: Patch Senate 51-49 and winner checks
+on:
+  push:
+    paths:
+      - 'tools/patch-senate-51-49-winners.py'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply production patch
+        run: |
+          python tools/patch-senate-51-49-winners.py
+          node --check site-final.js
+          node --check accepted-good.js
+          node --check senate-error-history.js
+      - name: Commit production changes and clean patch files
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          rm tools/patch-senate-51-49-winners.py
+          rm .github/workflows/patch-senate-51-49-winners.yml
+          git add site-final.js accepted-good.js senate-error-history.js index.html tools/patch-senate-51-49-winners.py .github/workflows/patch-senate-51-49-winners.yml
+          git commit -m 'Set Senate prediction to 51-49 with Collins winning Maine'
+          git push origin main
