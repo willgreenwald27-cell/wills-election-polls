@@ -1,0 +1,38 @@
+name: Patch Past Polling Errors card styling
+on:
+  push:
+    paths:
+      - 'tools/patch-error-cards-susan-style.py'
+      - '.github/workflows/patch-error-cards-susan-style.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply card styling patch
+        run: |
+          python tools/patch-error-cards-susan-style.py
+          node --check senate-error-history.js
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n=re.subn(r'senate-error-history\.js\?v=[0-9-]+','senate-error-history.js?v=20260911-0150',s,count=1)
+          if n != 1:
+              raise SystemExit(f'expected one script ref, found {n}')
+          p.write_text(s)
+          PY
+      - name: Commit production update and remove patch files
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          rm tools/patch-error-cards-susan-style.py
+          rm .github/workflows/patch-error-cards-susan-style.yml
+          git add senate-error-history.js index.html tools/patch-error-cards-susan-style.py .github/workflows/patch-error-cards-susan-style.yml
+          git commit -m 'Refine polling error cards and winner check styling'
+          git push origin main
