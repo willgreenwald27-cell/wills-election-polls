@@ -100,6 +100,7 @@
 ['2026-07-07','ME','Maine','Public Policy Polling','Susan Collins',48,'Janet Mills',37,'CTM'],
 ['2026-07-07','ME','Maine','Public Policy Polling','Susan Collins',47,'Shenna Bellows',47,'CTM']
   ];
+  window.__SENATE_POLL_ARCHIVE__=POLLS;
   const RED='#bd2937';
   let renderingMaine=false;
   let renderingMinnesota=false;
