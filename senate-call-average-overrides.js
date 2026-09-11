@@ -1,6 +1,6 @@
 (()=>{
   const CALLS={
-    ME:{rating:'tilt-r',predictionParty:'Republican',prediction:'Collins +1.3%'},
+    ME:{rating:'tilt-r',predictionParty:'Republican',prediction:'Collins +1.3%',notes:'Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).'},
     IA:{rating:'tilt-r',predictionParty:'Republican',prediction:'Hinson +3.2%'},
     KS:{rating:'likely-r',predictionParty:'Republican',prediction:'Marshall +6.9%'},
     NE:{rating:'lean-r',predictionParty:'Republican',prediction:'Ricketts +4.3%'}
@@ -28,12 +28,11 @@
         for(const [k,v] of Object.entries(vals)){
           if(s[k]!==v){s[k]=v;changed=true;}
         }
-        if(s.updated!=='2026-09-07'){s.updated='2026-09-07';changed=true;}
+        if(s.updated!=='2026-09-10'){s.updated='2026-09-10';changed=true;}
       }
       for(const [ab,byName] of Object.entries(POLL_AVERAGES)){
         const s=stateData[ab]; if(!s) continue;
         for(const [name,value] of Object.entries(byName)) if(setCandidatePoll(s,name,value)) changed=true;
-        if(s.updated!=='2026-09-07'){s.updated='2026-09-07';changed=true;}
       }
       if(changed && typeof renderSenate==='function' && !rendering){
         rendering=true;
