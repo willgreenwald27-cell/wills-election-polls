@@ -104,9 +104,9 @@
       const me=stateData.ME;
       let changed=false;
       const set=(k,v)=>{if(String(me[k]===undefined?'':me[k])!==String(v)){me[k]=v;changed=true;}};
-      set('rating','tilt-d'); set('predictionParty','Democrat'); set('prediction','Jackson +0.4%'); set('updated','2026-09-08');
-      for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(k,'Democrat');
-      if('call' in me) set('call','Jackson +0.4%');
+      set('rating','tilt-r'); set('predictionParty','Republican'); set('prediction','Collins +1.3%'); set('notes','Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).'); set('updated','2026-09-10');
+      for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(k,'Republican');
+      if('call' in me) set('call','Collins +1.3%');
       if(norm(me.candidate1)==='Susan Collins') set('candidate1Odds','48');
       if(norm(me.candidate2)==='Susan Collins') set('candidate2Odds','48');
       if(norm(me.candidate1)==='Troy Jackson') set('candidate1Odds','52');
@@ -122,7 +122,7 @@
     const root=document.getElementById('page-senate');
     if(!root) return;
     root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{
-      if(el.namespaceURI==='http://www.w3.org/2000/svg'||/^(path|rect|polygon)$/i.test(el.tagName||'')) el.style.setProperty('fill','#d3e2f7','important');
+      if(el.namespaceURI==='http://www.w3.org/2000/svg'||/^(path|rect|polygon)$/i.test(el.tagName||'')) el.style.setProperty('fill','#f8c6ca','important');
     });
     const ls=leafs(root);
     const maine=ls.find(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length);
@@ -136,8 +136,8 @@
     const bl=leafs(box);
     bl.forEach(el=>{
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Democratic';
-      if(t==='Collins +1.3%'||t==='No prediction text entered yet.') el.textContent='Jackson +0.4%';
+      if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Republican';
+      if(t==='Jackson +0.4%'||t==='No prediction text entered yet.') el.textContent='Collins +1.3%';
     });
     const projected=bl.find(el=>/^MY PROJECTED WINNER$/i.test(norm(el.textContent)));
     const prediction=bl.find(el=>/^PREDICTION$/i.test(norm(el.textContent)));
@@ -148,7 +148,7 @@
         const y=el.getBoundingClientRect().top;
         return y>=y0&&y<y1&&/^(Democrat|Democratic|Republican)$/i.test(norm(el.textContent));
       });
-      if(value) value.textContent='Democrat';
+      if(value) value.textContent='Republican';
     }
   }
 
@@ -238,8 +238,8 @@
         const key='candidate'+slot+'Poll';
         if(String(mi[key])!==String(pct)){mi[key]=String(pct);changed=true;}
       };
-      setPoll(1,'el-sayed','46.9'); setPoll(2,'el-sayed','46.9');
-      setPoll(1,'rogers','44.6'); setPoll(2,'rogers','44.6');
+      setPoll(1,'el-sayed','45.4'); setPoll(2,'el-sayed','45.4');
+      setPoll(1,'rogers','44.5'); setPoll(2,'rogers','44.5');
       if(mi.updated!=='2026-09-08'){mi.updated='2026-09-08';changed=true;}
       if(changed&&typeof renderSenate==='function'&&!renderingMichigan){
         renderingMichigan=true;

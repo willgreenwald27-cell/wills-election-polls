@@ -84,7 +84,7 @@
         for(const slot of [1,2]){
           const name=norm(s['candidate'+slot]).toLowerCase();
           const key='candidate'+slot+'Poll';
-          if(name.includes('talarico')&&String(s[key])!=='47.3'){s[key]='47.3';changed=true;}
+          if(name.includes('talarico')&&String(s[key])!=='47.8'){s[key]='47.8';changed=true;}
           if(name.includes('paxton')&&String(s[key])!=='44.9'){s[key]='44.9';changed=true;}
         }
         if(s.updated!=='2026-09-09'){s.updated='2026-09-09';changed=true;}

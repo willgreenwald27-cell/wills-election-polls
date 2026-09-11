@@ -50,14 +50,14 @@
 
   function applyAverages(){
     let changed=false;
-    changed=setCandidatePoll('MI','el-sayed','46.6')||changed;
-    changed=setCandidatePoll('MI','rogers','44.7')||changed;
-    changed=setCandidatePoll('ME','jackson','48.3')||changed;
-    changed=setCandidatePoll('ME','collins','46.0')||changed;
-    changed=setCandidatePoll('TX','talarico','47.3')||changed;
+    changed=setCandidatePoll('MI','el-sayed','45.4')||changed;
+    changed=setCandidatePoll('MI','rogers','44.5')||changed;
+    changed=setCandidatePoll('ME','jackson','47.7')||changed;
+    changed=setCandidatePoll('ME','collins','44.2')||changed;
+    changed=setCandidatePoll('TX','talarico','47.8')||changed;
     changed=setCandidatePoll('TX','paxton','44.9')||changed;
-    changed=setCandidatePoll('NC','cooper','50.9')||changed;
-    changed=setCandidatePoll('NC','whatley','42.9')||changed;
+    changed=setCandidatePoll('NC','cooper','50.4')||changed;
+    changed=setCandidatePoll('NC','whatley','40.7')||changed;
     changed=applyForecastCalls()||changed;
     if(changed&&typeof renderSenate==='function'&&!rendering){
       rendering=true;
@@ -154,7 +154,7 @@
       #page-home #homeForecastSplit .party-number{font:900 clamp(48px,5vw,72px)/.9 Georgia,serif!important;margin-top:5px!important}
       #page-home #homeForecastSplit .dem{color:#2763b8!important}.rep{color:#bd2937!important}
       #page-home #homeForecastSplit .senate-bar{height:18px!important;border-radius:999px!important;overflow:hidden!important;display:flex!important;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)!important}
-      #page-home #homeForecastSplit .senate-bar .dem{width:50%!important;background:#2763b8!important}.senate-bar .rep{width:50%!important;background:#bd2937!important}
+      #page-home #homeForecastSplit .senate-bar .dem{width:49%!important;background:#2763b8!important}.senate-bar .rep{width:51%!important;background:#bd2937!important}
       #page-home #homeForecastSplit .majority-note{margin-top:8px!important;font:800 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#6c798b!important;text-align:center!important}
       #page-home #homeForecastSplit .senate-countdown{margin-top:9px!important;padding-top:8px!important;border-top:1px solid #e2e7ef!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
       #page-home #homeForecastSplit .senate-countdown-label{font:900 8px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#728095!important}
@@ -193,10 +193,10 @@
             <div class="senate-kicker">2026 U.S. Senate</div>
             <h2 class="senate-title">Will’s Senate Prediction</h2>
             <div class="senate-numbers">
-              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">50</div></div>
-              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">50</div></div>
+              <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">49</div></div>
+              <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">51</div></div>
             </div>
-            <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
+            <div class="senate-bar" aria-label="Senate prediction: 49 Democrats and 51 Republicans"><div class="dem"></div><div class="rep"></div></div>
             <div class="majority-note">51 seats needed for a majority</div>
             <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
           </div>

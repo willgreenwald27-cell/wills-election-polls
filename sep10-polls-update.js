@@ -1,9 +1,9 @@
 (()=>{
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const AVG={
-    TX:{talarico:'47.4',paxton:'44.8'},
-    ME:{jackson:'48.2',collins:'45.4'},
-    NC:{cooper:'50.7',whatley:'42.3'}
+    TX:{talarico:'47.8',paxton:'44.9'},
+    ME:{jackson:'47.7',collins:'44.2'},
+    NC:{cooper:'50.4',whatley:'40.7'}
   };
   let wrapped=false;
 

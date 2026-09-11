@@ -1,36 +1,36 @@
 abbr,name,candidate1,candidate1Party,candidate1Poll,candidate2,candidate2Party,candidate2Poll,rating,prediction,predictionParty,updated
-AK,Alaska,Mary Peltola,Democrat,49.7,Dan Sullivan,Republican,47.7,tilt-d,,Democrat,2026-09-06
+AK,Alaska,Mary Peltola,Democrat,50.5,Dan Sullivan,Republican,46.5,tilt-d,,Democrat,2026-09-10
 AL,Alabama,Everett Wess,Democrat,32.0,Barry Moore,Republican,47.0,solid-r,,Republican,2026-09-06
-AR,Arkansas,Hallie Shoffner,Democrat,41.0,Tom Cotton,Republican,47.5,solid-r,,Republican,2026-09-06
+AR,Arkansas,Hallie Shoffner,Democrat,43.0,Tom Cotton,Republican,46.0,solid-r,,Republican,2026-09-10
 CO,Colorado,John Hickenlooper,Democrat,,Mark Baisley,Republican,,solid-d,,Democrat,2026-09-06
 DE,Delaware,Chris Coons,Democrat,,Michael Katz,Republican,,solid-d,,Democrat,2026-09-06
 FL,Florida,Angie Nixon,Democrat,39.0,Ashley Moody,Republican,48.5,likely-r,,Republican,2026-09-06
-GA,Georgia,Jon Ossoff,Democrat,50.7,Mike Collins,Republican,43.2,likely-d,,Democrat,2026-09-06
-IA,Iowa,Josh Turek,Democrat,45.2,Ashley Hinson,Republican,46.6,tilt-r,,Republican,2026-09-06
-ID,Idaho,Todd Achilles,Independent,18.0,Jim Risch,Republican,52.0,solid-r,,Republican,2026-09-06
+GA,Georgia,Jon Ossoff,Democrat,50.0,Mike Collins,Republican,43.0,likely-d,,Democrat,2026-09-10
+IA,Iowa,Josh Turek,Democrat,44.7,Ashley Hinson,Republican,45.0,tilt-r,,Republican,2026-09-10
+ID,Idaho,Todd Achilles,Independent,34.0,Jim Risch,Republican,33.5,solid-r,,Republican,2026-09-10
 IL,Illinois,Juliana Stratton,Democrat,,Don Tracy,Republican,,solid-d,,Democrat,2026-09-06
-KS,Kansas,Adam Hamilton,Democrat,45.0,Roger Marshall,Republican,46.0,likely-r,,Republican,2026-09-06
+KS,Kansas,Adam Hamilton,Democrat,45.0,Roger Marshall,Republican,46.0,likely-r,,Republican,2026-09-10
 KY,Kentucky,Charles Booker,Democrat,,Andy Barr,Republican,,solid-r,,Republican,2026-09-06
 LA,Louisiana,Jamie Davis,Democrat,,Julia Letlow,Republican,,solid-r,,Republican,2026-09-06
-MA,Massachusetts,Ed Markey,Democrat,50.0,John Deaton,Republican,30.0,solid-d,,Democrat,2026-09-06
-ME,Maine,Troy Jackson,Democrat,48.2,Susan Collins,Republican,45.4,tilt-d,,Democrat,2026-09-10
-MI,Michigan,Abdul El-Sayed,Democrat,46.9,Mike Rogers,Republican,44.6,tilt-d,,Democrat,2026-09-06
-MN,Minnesota,Peggy Flanagan,Democrat,46.5,Michele Tafoya,Republican,41.0,likely-d,,Democrat,2026-09-06
+MA,Massachusetts,Ed Markey,Democrat,50.0,John Deaton,Republican,30.0,solid-d,,Democrat,2026-09-10
+ME,Maine,Troy Jackson,Democrat,47.7,Susan Collins,Republican,44.2,tilt-r,Collins +1.3%,Republican,2026-09-10
+MI,Michigan,Abdul El-Sayed,Democrat,45.4,Mike Rogers,Republican,44.5,tilt-d,,Democrat,2026-09-10
+MN,Minnesota,Peggy Flanagan,Democrat,45.0,Michele Tafoya,Republican,41.5,likely-d,,Democrat,2026-09-10
 MS,Mississippi,Scott Colom,Democrat,41.0,Cindy Hyde-Smith,Republican,47.0,likely-r,,Republican,2026-09-06
-MT,Montana,Seth Bodnar,Independent,,Kurt Alme,Republican,,solid-r,,Republican,2026-09-06
-NC,North Carolina,Roy Cooper,Democrat,50.7,Michael Whatley,Republican,42.3,likely-d,,Democrat,2026-09-10
+MT,Montana,Seth Bodnar,Independent,48.0,Kurt Alme,Republican,45.0,solid-r,,Republican,2026-09-10
+NC,North Carolina,Roy Cooper,Democrat,50.4,Michael Whatley,Republican,40.7,likely-d,,Democrat,2026-09-10
 NE,Nebraska,Dan Osborn,,47.0,Pete Ricketts,Republican,47.0,lean-r,,Republican,2026-09-06
-NH,New Hampshire,Chris Pappas,Democrat,45.3,John E. Sununu,Republican,43.3,lean-d,,Democrat,2026-09-06
+NH,New Hampshire,Chris Pappas,Democrat,42.3,John E. Sununu,Republican,41.0,lean-d,,Democrat,2026-09-10
 NJ,New Jersey,Cory Booker,Democrat,,Justin Murphy,Republican,,solid-d,,Democrat,2026-09-06
-NM,New Mexico,Ben Ray Luján,Democrat,53.0,Larry Marker,Republican,38.0,solid-d,,Democrat,2026-09-06
-OH,Ohio,Sherrod Brown,Democrat,49.3,Jon Husted,Republican,46.7,tilt-r,,Republican,2026-09-06
+NM,New Mexico,Ben Ray Luján,Democrat,53.0,Larry Marker,Republican,38.0,solid-d,,Democrat,2026-09-10
+OH,Ohio,Sherrod Brown,Democrat,47.8,Jon Husted,Republican,41.4,tilt-r,,Republican,2026-09-10
 OK,Oklahoma,N'Kiyla Jasmine Thomas,Democrat,,Kevin Hern,Republican,,solid-r,,Republican,2026-09-06
 OR,Oregon,Jeff Merkley,Democrat,,David Brock Smith,Republican,,solid-d,,Democrat,2026-09-06
-RI,Rhode Island,Jack Reed,Democrat,51.0,Raymond McKay,Republican,31.0,solid-d,,Democrat,2026-09-06
-SC,South Carolina,Annie Andrews,Democrat,,Darline Graham,Republican,,likely-r,,Republican,2026-09-06
+RI,Rhode Island,Jack Reed,Democrat,51.0,Raymond McKay,Republican,31.0,solid-d,,Democrat,2026-09-10
+SC,South Carolina,Annie Andrews,Democrat,37.7,Darline Graham,Republican,42.0,likely-r,,Republican,2026-09-10
 SD,South Dakota,Brian Bengs,Independent,33.4,Mike Rounds,Republican,47.6,solid-r,,Republican,2026-09-06
-TN,Tennessee,Marquita Bradshaw,Democrat,,Bill Hagerty,Republican,,solid-r,,Republican,2026-09-06
-TX,Texas,James Talarico,Democrat,47.4,Ken Paxton,Republican,44.8,tilt-r,Paxton +0.3%,Republican,2026-09-10
+TN,Tennessee,Marquita Bradshaw,Democrat,32.3,Bill Hagerty,Republican,55.7,solid-r,,Republican,2026-09-10
+TX,Texas,James Talarico,Democrat,47.8,Ken Paxton,Republican,44.9,tilt-r,Paxton +0.3%,Republican,2026-09-10
 VA,Virginia,Mark Warner,Democrat,,Bert Mizusawa,Republican,,solid-d,,Democrat,2026-09-06
 WV,West Virginia,Rachel Fetty Anderson,Democrat,,Shelley Moore Capito,Republican,,solid-r,,Republican,2026-09-06
 WY,Wyoming,James W. Byrd,Democrat,,Harriet Hageman,Republican,,solid-r,,Republican,2026-09-06

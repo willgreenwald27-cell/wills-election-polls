@@ -62,7 +62,7 @@
       for(const slot of [1,2]){
         const name=norm(s['candidate'+slot]).toLowerCase();
         const key='candidate'+slot+'Poll';
-        if(name.includes('talarico')&&String(s[key])!=='47.3'){s[key]='47.3';changed=true;}
+        if(name.includes('talarico')&&String(s[key])!=='47.8'){s[key]='47.8';changed=true;}
         if(name.includes('paxton')&&String(s[key])!=='44.9'){s[key]='44.9';changed=true;}
       }
       if(s.updated!=='2026-09-09'){s.updated='2026-09-09';changed=true;}
@@ -77,8 +77,8 @@
     const senate=kind==='senate';
     const title=senate?'Will’s Senate Prediction':'Will’s House of Reps Prediction';
     const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
-    const dem=senate?'50':'228', rep=senate?'50':'207';
-    const demW=senate?'50%':'52.4138%', repW=senate?'50%':'47.5862%';
+    const dem=senate?'49':'228', rep=senate?'51':'207';
+    const demW=senate?'49%':'52.4138%', repW=senate?'51%':'47.5862%';
     const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       ${senate?'<div class="final-tiebreak">Tiebreak vote<strong>JD VANCE</strong></div>':''}
