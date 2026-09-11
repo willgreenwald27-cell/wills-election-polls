@@ -1,0 +1,30 @@
+name: Cache bust Ohio label fix
+on:
+  push:
+    paths:
+      - '.github/workflows/cache-bust-ohio-label-fix.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Refresh Senate history context cache
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old='senate-history-context.js?v=20260911-1344'
+          new='senate-history-context.js?v=20260911-1347'
+          if old not in s: raise SystemExit('context cache reference not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh Ohio party label fix'
+          git push origin main
