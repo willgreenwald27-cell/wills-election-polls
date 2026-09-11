@@ -103,6 +103,7 @@
   }
 
   function ensureArchiveRows(){
+    return;
     const sec=document.getElementById('julsepPollArchive'); if(!sec) return;
     const list=sec.querySelector('.jp-list'); if(!list) return;
     const select=sec.querySelector('select');

@@ -1,5 +1,14 @@
 (()=>{
   const POLLS=[
+['2026-09-10','MI','Michigan','Trafalgar Group*','Abdul El-Sayed',46,'Mike Rogers',45,'RCP'],
+['2026-09-10','SC','South Carolina','InsiderAdvantage','Graham Nordone',45,'Annie Andrews',43,'RCP'],
+['2026-09-10','OH','Ohio','InsiderAdvantage','Sherrod Brown',47,'Jon Husted',42,'RCP'],
+['2026-09-09','MI','Michigan','CNN','Abdul El-Sayed',47,'Mike Rogers',44,'RCP'],
+['2026-09-09','ME','Maine','CNN','Troy Jackson',48,'Susan Collins',45,'RCP'],
+['2026-09-09','TX','Texas','Fabrizio/Anzalone','James Talarico',48,'Ken Paxton',44,'RCP'],
+['2026-09-09','ME','Maine','YouGov','Troy Jackson',48,'Susan Collins',44,'RCP'],
+['2026-09-09','NC','North Carolina','Elon University*','Roy Cooper',49,'Michael Whatley',38,'RCP'],
+['2026-09-08','TX','Texas','Univision','James Talarico',48,'Ken Paxton',43,'RCP'],
 ['2026-09-08','MI','Michigan','Detroit News / Glengariff','Abdul El-Sayed',44,'Mike Rogers',46,'RCP'],
 ['2026-09-07','MN','Minnesota','TIPP**','Peggy Flanagan',44,'Michele Tafoya',42,'RCP'],
 ['2026-09-03','IA','Iowa','Emerson','Ashley Hinson',50,'Josh Turek',45,'RCP'],
@@ -217,7 +226,7 @@
     const host=root.querySelector('.content')||root;
     const sec=document.createElement('section');
     sec.id='julsepPollArchive';
-    sec.innerHTML=`<div class="jp-head"><div class="jp-kicker">Expanded Senate Poll Archive</div><h2>July–September 2026 Senate polls</h2><div class="jp-sub">90 public general-election matchup polls and snapshots from July 7 through September 8, including alternate matchups that were publicly tested during the period.</div><div class="jp-controls"><select aria-label="Filter Senate polls by state"><option value="ALL">All states</option></select><span class="jp-count"></span></div></div><div class="jp-list"></div><div class="jp-source">Compiled from public listings at <a href="https://www.realclearpolling.com/latest-polls/senate" target="_blank" rel="noopener">RealClearPolling</a> and <a href="https://www.callthemap.com/polls?view=senate" target="_blank" rel="noopener">Call the Map</a>. Dates follow the source listing/field-date convention; duplicate source representations are retained only where they reflect a distinct listed sample or release.</div>`;
+    sec.innerHTML=`<div class="jp-head"><div class="jp-kicker">Expanded Senate Poll Archive</div><h2>July–September 2026 Senate polls</h2><div class="jp-sub">99 public general-election matchup polls and snapshots from July 7 through September 10, including alternate matchups that were publicly tested during the period.</div><div class="jp-controls"><select aria-label="Filter Senate polls by state"><option value="ALL">All states</option></select><span class="jp-count"></span></div></div><div class="jp-list"></div><div class="jp-source">Compiled from public listings at <a href="https://www.realclearpolling.com/latest-polls/senate" target="_blank" rel="noopener">RealClearPolling</a> and <a href="https://www.callthemap.com/polls?view=senate" target="_blank" rel="noopener">Call the Map</a>. Dates follow the source listing/field-date convention; duplicate source representations are retained only where they reflect a distinct listed sample or release.</div>`;
     host.appendChild(sec);
     const select=sec.querySelector('select');
     const states=[...new Map(POLLS.map(p=>[p[1],p[2]])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
