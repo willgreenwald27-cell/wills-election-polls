@@ -32,10 +32,20 @@
         for(const slot of [1,2]){
           const name=norm(oh['candidate'+slot]).toLowerCase();
           const key='candidate'+slot+'Odds';
-          if(name.includes('husted')&&String(oh[key])!=='55'){oh[key]='55';changed=true;}
-          if(name.includes('brown')&&String(oh[key])!=='45'){oh[key]='45';changed=true;}
+          if(name.includes('husted')&&String(oh[key])!=='50'){oh[key]='50';changed=true;}
+          if(name.includes('brown')&&String(oh[key])!=='50'){oh[key]='50';changed=true;}
         }
         if(oh.updated!=='2026-09-10'){oh.updated='2026-09-10';changed=true;}
+      }
+      if(typeof stateData!=='undefined'&&stateData?.IA){
+        const ia=stateData.IA;
+        for(const slot of [1,2]){
+          const name=norm(ia['candidate'+slot]).toLowerCase();
+          const key='candidate'+slot+'Odds';
+          if(name.includes('hinson')&&String(ia[key])!=='59'){ia[key]='59';changed=true;}
+          if(name.includes('turek')&&String(ia[key])!=='41'){ia[key]='41';changed=true;}
+        }
+        if(ia.updated!=='2026-09-11'){ia.updated='2026-09-11';changed=true;}
       }
       if(typeof stateData!=='undefined'&&stateData?.MI){
         const mi=stateData.MI;
