@@ -167,9 +167,9 @@ function fixAboutPollCount(){
     try{
       if(typeof stateData==='undefined'||!stateData?.ME) return;
       const s=stateData.ME;
-      s.rating='tilt-d'; s.predictionParty='Democrat'; s.prediction='Jackson +0.4%'; s.updated='2026-09-08';
-      for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in s) s[k]='Democrat';
-      if('call' in s) s.call='Jackson +0.4%';
+      s.rating='tilt-r'; s.predictionParty='Republican'; s.prediction='Collins +1.3%'; s.notes='Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).'; s.updated='2026-09-10';
+      for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in s) s[k]='Republican';
+      if('call' in s) s.call='Collins +1.3%';
       if(norm(s.candidate1)==='Susan Collins') s.candidate1Odds='48';
       if(norm(s.candidate2)==='Susan Collins') s.candidate2Odds='48';
       if(norm(s.candidate1)==='Troy Jackson') s.candidate1Odds='52';
