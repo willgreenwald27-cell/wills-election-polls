@@ -29,8 +29,10 @@
       #page-senate .wg-call-card{margin-top:9px!important;padding:12px 14px!important;border-radius:10px!important;background:linear-gradient(135deg,#9d2f43,#bd2937)!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important;box-sizing:border-box!important}
       #page-senate .wg-call-card .wg-call-winner{font-family:Georgia,'Times New Roman',serif!important;font-size:21px!important;line-height:1.08!important;font-weight:800!important;color:#fff!important}
       #page-senate .wg-call-card .prediction-copy{display:block!important;margin-top:6px!important;font-family:Georgia,'Times New Roman',serif!important;font-size:15px!important;line-height:1.2!important;font-weight:800!important;color:#fff!important}
-      #page-senate .wg-maine-panel .maine-why-note{margin:11px 0 0!important;padding:11px 0 0!important;border:0!important;border-top:1px solid rgba(255,255,255,.15)!important;border-radius:0!important;background:transparent!important;color:#e8eef7!important;font:700 12px/1.5 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:0!important}
-      #page-senate .wg-maine-panel .maine-why-note b{color:#fff!important}
+      #page-senate .wg-maine-panel .maine-why-note{margin:12px 0 0!important;padding:15px 16px!important;border:0!important;border-radius:10px!important;background:#f7f8fb!important;color:#26384f!important;font:500 12px/1.45 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:0!important;box-shadow:none!important}
+      #page-senate .wg-maine-panel .maine-why-note b{display:block!important;margin-bottom:8px!important;color:#61718a!important;font-size:10px!important;line-height:1.1!important;font-weight:900!important;letter-spacing:1.2px!important;text-transform:uppercase!important}
+      #page-senate .wg-maine-panel .maine-why-note span{display:block!important;color:#26384f!important;font-weight:500!important}
+      #page-senate .wg-call-card .wg-call-heading{display:block!important;margin:0 0 4px!important;color:#ffd7dc!important;font:900 9px/1.1 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1.2px!important;text-transform:uppercase!important}
       #page-home .senate-tiebreak,#page-home .final-tiebreak{display:none!important}
 
       #page-errors .ipe-swing{margin-top:34px!important}
@@ -87,6 +89,7 @@
     }
     if(callCard&&callCard!==box){
       callCard.classList.add('wg-call-card');
+      if(heading){heading.classList.add('wg-call-heading');if(!callCard.contains(heading))callCard.prepend(heading);}
       const callLeaves=leafs(callCard);
       let winner=callLeaves.find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
       if(!winner)winner=callLeaves.find(el=>/^Susan Collins$/i.test(norm(el.textContent)));
@@ -107,7 +110,7 @@
 
     let why=box.querySelector('.maine-why-note');
     if(!why){why=document.createElement('div');why.className='maine-why-note';box.appendChild(why);}
-    why.innerHTML='<b>Why I think Maine could go red:</b> Collins has been underestimated by 5+ points in three straight cycles.';
+    why.innerHTML='<b>WHY MY FORECAST DIFFERS</b><span>Why my forecast differs from the polling average: Collins has been underestimated by 5+ points in three straight cycles.</span>';
   }
 
   function markSenateBalance(){
