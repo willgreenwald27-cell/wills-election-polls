@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 WHY = "Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020)."
 
@@ -123,9 +124,7 @@ p.write_text(s)
 p = Path('index.html')
 s = p.read_text()
 for filename in ['site-final.js','accepted-good.js','senate-error-history.js']:
-    import re
-    s,n=re.subn(filename.replace('.',r'\\.')+r'\\?v=[0-9-]+', filename+'?v=20260910-1852', s, count=1)
+    s,n=re.subn(re.escape(filename)+r'\?v=[0-9-]+', filename+'?v=20260910-1858', s, count=1)
     if n!=1: raise SystemExit(f'index cache-bust marker not found for {filename}: {n}')
 p.write_text(s)
 print('patched Senate 51-49, Maine Collins call, rationale, and all winner checks')
-# trigger
