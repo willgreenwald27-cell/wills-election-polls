@@ -20,7 +20,7 @@ jobs:
           node --check senate-current-sync.js
           grep -q 'WHY MY FORECAST DIFFERS' site-layout-polish.js
           grep -q "textContent='Republican'" senate-current-sync.js
-          grep -q 'site-layout-polish.js?v=20260910-1944' index.html
+          grep -q 'site-layout-polish.js?v=20260910-1946' index.html
       - name: Commit production changes and clean helper files
         run: |
           git config user.name 'Will Election Polls Bot'
