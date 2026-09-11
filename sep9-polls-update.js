@@ -50,18 +50,6 @@
 
   function applyAverages(){
     let changed=false;
-    changed=setCandidatePoll('MI','el-sayed','46.5')||changed;
-    changed=setCandidatePoll('MI','rogers','44.7')||changed;
-    changed=setCandidatePoll('ME','jackson','47.7')||changed;
-    changed=setCandidatePoll('ME','collins','44.2')||changed;
-    changed=setCandidatePoll('TX','talarico','47.8')||changed;
-    changed=setCandidatePoll('TX','paxton','44.9')||changed;
-    changed=setCandidatePoll('NC','cooper','50.4')||changed;
-    changed=setCandidatePoll('NC','whatley','40.7')||changed;
-    changed=setCandidatePoll('OH','brown','49.3')||changed;
-    changed=setCandidatePoll('OH','husted','46.7')||changed;
-    changed=setCandidatePoll('SC','graham','45.0')||changed;
-    changed=setCandidatePoll('SC','andrews','43.0')||changed;
     changed=applyForecastCalls()||changed;
     try{if(typeof stateData!=='undefined'&&stateData?.SC&&stateData.SC.updated!=='2026-09-10'){stateData.SC.updated='2026-09-10';changed=true;}}catch(e){}
     if(changed&&typeof renderSenate==='function'&&!rendering){
