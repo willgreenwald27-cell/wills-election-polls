@@ -1,0 +1,49 @@
+name: Enable Senate auto averages
+on:
+  push:
+    paths:
+      - '.github/workflows/enable-senate-auto-averages.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expose archive data and load auto averages last
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p=Path('senate-julsep-archive.js')
+          s=p.read_text()
+          if 'window.__SENATE_POLL_ARCHIVE__=POLLS;' not in s:
+              anchor='  ];\n  const RED='
+              if anchor not in s:
+                  raise SystemExit('archive end anchor not found')
+              s=s.replace(anchor, "  ];\n  window.__SENATE_POLL_ARCHIVE__=POLLS;\n  const RED=", 1)
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          if '/senate-auto-averages.js?' not in s:
+              anchor="h=h.replace('</body>','</body>');document.open();"
+              inject="h=h.replace('</body>','<script src=\"/senate-auto-averages.js?v=20260911-0025\"><\\/script></body>');h=h.replace('</body>','</body>');document.open();"
+              if anchor not in s:
+                  raise SystemExit('final loader anchor not found')
+              s=s.replace(anchor,inject,1)
+          p.write_text(s)
+          PY
+          node --check senate-julsep-archive.js
+          node --check senate-auto-averages.js
+          grep -q 'window.__SENATE_POLL_ARCHIVE__=POLLS' senate-julsep-archive.js
+          grep -q 'senate-auto-averages.js?v=20260911-0025' index.html
+      - name: Commit production update
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-julsep-archive.js index.html
+          git commit -m 'Recalculate Senate popup averages from all polls'
+          git push
