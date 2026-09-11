@@ -1,0 +1,38 @@
+name: Patch swing bias and winner display
+on:
+  push:
+    paths:
+      - 'tools/patch-swing-bias-winner.py'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch Past Polling Errors
+        run: |
+          python tools/patch-swing-bias-winner.py
+          node --check senate-error-history.js
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n=re.subn(r'senate-error-history\.js\?v=[0-9-]+','senate-error-history.js?v=20260911-0142',s,count=1)
+          if n != 1:
+              raise SystemExit(f'expected one script ref, found {n}')
+          p.write_text(s)
+          PY
+          grep -o 'senate-error-history.js?v=[0-9-]*' index.html
+      - name: Commit site update and clean patch files
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          rm tools/patch-swing-bias-winner.py
+          rm .github/workflows/patch-swing-bias-winner.yml
+          git add senate-error-history.js index.html tools/patch-swing-bias-winner.py .github/workflows/patch-swing-bias-winner.yml
+          git commit -m 'Add swing-state underestimation labels and winner checks'
+          git push origin main
