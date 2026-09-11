@@ -1,0 +1,26 @@
+name: Fix Maine red call card
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-maine-red-call-card.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply red Maine call card
+        run: |
+          python tools/fix-maine-red-call-card.py
+          node --check site-layout-polish.js
+      - name: Commit production changes
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm -f tools/fix-maine-red-call-card.py .github/workflows/fix-maine-red-call-card.yml
+          git add index.html site-layout-polish.js
+          git commit -m 'Use red Maine call card with white text'
+          git push origin main
