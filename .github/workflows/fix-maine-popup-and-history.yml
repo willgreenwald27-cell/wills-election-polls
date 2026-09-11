@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'tools/fix-maine-popup-and-history.py'
+      - '.github/workflows/fix-maine-popup-and-history.yml'
 permissions:
   contents: write
 jobs:
