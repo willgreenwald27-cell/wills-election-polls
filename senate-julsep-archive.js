@@ -1,5 +1,7 @@
 (()=>{
   const POLLS=[
+['2026-09-10','IA','Iowa','YouGov','Ashley Hinson',43,'Josh Turek',45,'RCP'],
+['2026-09-10','IA','Iowa','Rasmussen Reports*','Ashley Hinson',40,'Josh Turek',45,'RCP'],
 ['2026-09-10','MI','Michigan','Trafalgar Group*','Abdul El-Sayed',46,'Mike Rogers',45,'RCP'],
 ['2026-09-10','SC','South Carolina','InsiderAdvantage','Graham Nordone',45,'Annie Andrews',43,'RCP'],
 ['2026-09-10','OH','Ohio','InsiderAdvantage','Sherrod Brown',47,'Jon Husted',42,'RCP'],
