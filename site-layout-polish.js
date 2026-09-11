@@ -26,9 +26,9 @@
       #page-senate .wg-maine-panel .candidate-name{font-size:15px!important;line-height:1.2!important}
       #page-senate .wg-maine-panel .candidate-party{margin-top:2px!important;font-size:10px!important;letter-spacing:.65px!important}
       #page-senate .wg-maine-panel .candidate-metrics b,#page-senate .wg-maine-panel .candidate-metrics strong{font-size:20px!important}
-      #page-senate .wg-call-card{margin-top:9px!important;padding:12px 14px!important;border-radius:10px!important;background:#fff!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.14)!important;box-sizing:border-box!important}
-      #page-senate .wg-call-card .wg-call-winner{font-family:Georgia,'Times New Roman',serif!important;font-size:21px!important;line-height:1.08!important;font-weight:800!important;color:#bd2937!important}
-      #page-senate .wg-call-card .prediction-copy{display:block!important;margin-top:6px!important;font-family:Georgia,'Times New Roman',serif!important;font-size:15px!important;line-height:1.2!important;font-weight:800!important;color:#7f2330!important}
+      #page-senate .wg-call-card{margin-top:9px!important;padding:12px 14px!important;border-radius:10px!important;background:linear-gradient(135deg,#9d2f43,#bd2937)!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important;box-sizing:border-box!important}
+      #page-senate .wg-call-card .wg-call-winner{font-family:Georgia,'Times New Roman',serif!important;font-size:21px!important;line-height:1.08!important;font-weight:800!important;color:#fff!important}
+      #page-senate .wg-call-card .prediction-copy{display:block!important;margin-top:6px!important;font-family:Georgia,'Times New Roman',serif!important;font-size:15px!important;line-height:1.2!important;font-weight:800!important;color:#fff!important}
       #page-senate .wg-maine-panel .maine-why-note{margin:11px 0 0!important;padding:11px 0 0!important;border:0!important;border-top:1px solid rgba(255,255,255,.15)!important;border-radius:0!important;background:transparent!important;color:#e8eef7!important;font:700 12px/1.5 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:0!important}
       #page-senate .wg-maine-panel .maine-why-note b{color:#fff!important}
       #page-home .senate-tiebreak,#page-home .final-tiebreak{display:none!important}
