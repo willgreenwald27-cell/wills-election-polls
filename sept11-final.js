@@ -33,6 +33,10 @@
       me.updated='2026-09-11';
       for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) me[k]='Republican';
       if('call' in me)me.call='Collins +1.3%';
+      if(norm(me.candidate1)==='Susan Collins')me.candidate1Odds='54';
+      if(norm(me.candidate2)==='Susan Collins')me.candidate2Odds='54';
+      if(norm(me.candidate1)==='Troy Jackson')me.candidate1Odds='46';
+      if(norm(me.candidate2)==='Troy Jackson')me.candidate2Odds='46';
     }catch(e){}
   }
 
@@ -90,6 +94,12 @@
   function fixMainePopup(){
     const box=findMainePopup();if(!box)return;
     const all=leafs(box);
+    for(const el of all){
+      const t=norm(el.textContent);
+      if(/^Susan Collins:\s*\d+(?:\.\d+)?%$/i.test(t))el.textContent='Susan Collins: 54%';
+      if(/^Troy Jackson:\s*\d+(?:\.\d+)?%$/i.test(t))el.textContent='Troy Jackson: 46%';
+    }
+
     const myPred=all.find(el=>/^MY PREDICTION$/i.test(norm(el.textContent)));
     const win=all.find(el=>/^Win odds/i.test(norm(el.textContent)));
     let card=findCallBlock(box);
@@ -101,9 +111,20 @@
     card.className='wg-me-final-call';
     card.innerHTML='<span class="wg-me-call-kicker">WILL\'S CALL</span><div class="wg-me-call-line"><span class="wg-me-party">Republican</span><span class="wg-me-rating">TILT REPUBLICAN</span></div><span class="wg-me-margin">Collins +1.3%</span>';
 
-    let why=box.querySelector('.wg-me-final-why,.maine-why-note');
-    if(!why){why=document.createElement('div');}
-    why.className='wg-me-final-why';
+    const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+    const bar=box.querySelector('.oddsbar');
+    if(bar&&lines.length>=2){
+      const names=lines.map(line=>norm(line.querySelector('.candidate-name')?.textContent));
+      const odds=names.map(n=>n==='Susan Collins'?54:n==='Troy Jackson'?46:null);
+      const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
+      if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
+      if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');
+    }
+
+    const existing=[...box.querySelectorAll('.wg-me-final-why,.maine-why-note')];
+    let why=existing[0]||document.createElement('div');
+    existing.slice(1).forEach(el=>el.remove());
+    why.className='maine-why-note wg-me-final-why';
     why.innerHTML='<b>WHY MY FORECAST DIFFERS</b><span>Why my forecast differs from the polling average: Collins has been underestimated by 5+ points in three straight cycles.</span>';
     if(win){
       let block=win;
