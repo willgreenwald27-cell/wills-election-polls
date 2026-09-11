@@ -37,11 +37,14 @@
     }
     if(!box||box===root)return;
     const visibleLeaves=leafs(box).filter(el=>el.getClientRects().length);
-    const hasDem=visibleLeaves.some(el=>/^DEMOCRAT(?:IC)?$/i.test(norm(el.textContent))&&!el.classList.contains('wg-sticky-party-label'));
-    const hasRep=visibleLeaves.some(el=>/^REPUBLICAN$/i.test(norm(el.textContent))&&!el.classList.contains('wg-sticky-party-label'));
     const nums=visibleLeaves.filter(el=>/^\d+$/.test(norm(el.textContent))).sort((a,b)=>a.getBoundingClientRect().left-b.getBoundingClientRect().left);
     if(nums.length<2)return;
     const left=nums[0],right=nums[nums.length-1];
+    const ly=left.getBoundingClientRect().top+left.getBoundingClientRect().height/2;
+    const ry=right.getBoundingClientRect().top+right.getBoundingClientRect().height/2;
+    const near=(el,y)=>{const r=el.getBoundingClientRect();const cy=r.top+r.height/2;return Math.abs(cy-y)<70;};
+    const hasDem=visibleLeaves.some(el=>/^DEMOCRAT(?:IC)?$/i.test(norm(el.textContent))&&!el.classList.contains('wg-sticky-party-label')&&near(el,ly));
+    const hasRep=visibleLeaves.some(el=>/^REPUBLICAN$/i.test(norm(el.textContent))&&!el.classList.contains('wg-sticky-party-label')&&near(el,ry));
     if(!hasDem){const lab=document.createElement('span');lab.className='wg-sticky-party-label dem';lab.textContent='DEMOCRATIC';left.parentElement?.insertBefore(lab,left);}
     if(!hasRep){const lab=document.createElement('span');lab.className='wg-sticky-party-label rep';lab.textContent='REPUBLICAN';right.parentElement?.appendChild(lab);}
   }
