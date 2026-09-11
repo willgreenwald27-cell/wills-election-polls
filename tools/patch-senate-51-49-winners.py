@@ -128,3 +128,4 @@ for filename in ['site-final.js','accepted-good.js','senate-error-history.js']:
     if n!=1: raise SystemExit(f'index cache-bust marker not found for {filename}: {n}')
 p.write_text(s)
 print('patched Senate 51-49, Maine Collins call, rationale, and all winner checks')
+# trigger
