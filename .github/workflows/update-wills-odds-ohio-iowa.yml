@@ -1,0 +1,69 @@
+name: Update Will statistical odds Ohio Iowa
+on:
+  push:
+    paths:
+      - '.github/workflows/update-wills-odds-ohio-iowa.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Update Ohio and Iowa Will odds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          old="""      if(typeof stateData!=='undefined'&&stateData?.OH){
+        const oh=stateData.OH;
+        for(const slot of [1,2]){
+          const name=norm(oh['candidate'+slot]).toLowerCase();
+          const key='candidate'+slot+'Odds';
+          if(name.includes('husted')&&String(oh[key])!=='55'){oh[key]='55';changed=true;}
+          if(name.includes('brown')&&String(oh[key])!=='45'){oh[key]='45';changed=true;}
+        }
+        if(oh.updated!=='2026-09-10'){oh.updated='2026-09-10';changed=true;}
+      }
+"""
+          new="""      if(typeof stateData!=='undefined'&&stateData?.OH){
+        const oh=stateData.OH;
+        for(const slot of [1,2]){
+          const name=norm(oh['candidate'+slot]).toLowerCase();
+          const key='candidate'+slot+'Odds';
+          if((name.includes('husted')||name.includes('brown'))&&String(oh[key])!=='50'){oh[key]='50';changed=true;}
+        }
+        if(oh.updated!=='2026-09-11'){oh.updated='2026-09-11';changed=true;}
+      }
+      if(typeof stateData!=='undefined'&&stateData?.IA){
+        const ia=stateData.IA;
+        for(const slot of [1,2]){
+          const name=norm(ia['candidate'+slot]).toLowerCase();
+          const key='candidate'+slot+'Odds';
+          if(name.includes('hinson')&&String(ia[key])!=='59'){ia[key]='59';changed=true;}
+          if(name.includes('turek')&&String(ia[key])!=='41'){ia[key]='41';changed=true;}
+        }
+        if(ia.updated!=='2026-09-11'){ia.updated='2026-09-11';changed=true;}
+      }
+"""
+          if old not in s: raise SystemExit('Ohio odds block not found')
+          p.write_text(s.replace(old,new,1))
+          i=Path('index.html')
+          h=i.read_text()
+          import re
+          h,n=re.subn(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260911-1336',h,count=1)
+          if n!=1: raise SystemExit('sep9 cache reference not found')
+          i.write_text(h)
+          PY
+          node --check sep9-polls-update.js
+          grep -q "name.includes('hinson').*59" sep9-polls-update.js
+          grep -q "name.includes('turek').*41" sep9-polls-update.js
+          grep -q "name.includes('husted').*name.includes('brown').*50" sep9-polls-update.js
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add sep9-polls-update.js index.html
+          git commit -m 'Update Will statistical odds for Ohio and Iowa'
+          git push origin main
