@@ -1,0 +1,102 @@
+name: Texas tossup and 49-49-2 Senate forecast v2
+on:
+  push:
+    paths:
+      - '.github/workflows/texas-tossup-49-49-2-v2.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply Texas tossup and seat totals
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('senate-current-sync.js')
+          s=p.read_text()
+          if "const tx=stateData.TX;" not in s:
+              anchor="""      const oh=stateData.OH;\n      if(oh){\n        set(oh,'rating','tossup');set(oh,'predictionParty','Tossup');set(oh,'prediction','Tossup');set(oh,'notes','');set(oh,'updated','2026-09-11');\n        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in oh) set(oh,k,'Tossup');\n        if('call' in oh) set(oh,'call','Tossup');\n      }\n"""
+              tx="""      const tx=stateData.TX;\n      if(tx){\n        set(tx,'rating','tossup');set(tx,'predictionParty','Tossup');set(tx,'prediction','Tossup');set(tx,'notes','');set(tx,'updated','2026-09-12');\n        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Tossup');\n        if('call' in tx) set(tx,'call','Tossup');\n      }\n"""
+              if anchor not in s: raise SystemExit('Ohio sync anchor not found')
+              s=s.replace(anchor,anchor+tx,1)
+          if 'function forceTexas(){' not in s:
+              anchor='\n  function forceSenateSummary(){'
+              txfunc=r'''
+  function forceTexas(){
+    const root=document.getElementById('page-senate'); if(!root)return;
+    root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
+      el.style.setProperty('fill',TOSSUP,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',TOSSUP,'important');
+    });
+    const labels=leafs(root).filter(el=>norm(el.textContent)==='Texas'&&el.getClientRects().length);
+    for(const label of labels){
+      let box=label.parentElement;
+      for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(/WILL[’']S CALL/i.test(t)&&(/AVG POLLS/i.test(t)||/MY PREDICTION/i.test(t))) break;
+      }
+      if(!box||box===root)continue;
+      const ls=leafs(box);
+      for(const el of ls){
+        const t=norm(el.textContent);
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Toss-up';
+        if(/^(Republican|Democrat(?:ic)?|TILT REPUBLICAN|LEAN REPUBLICAN|LIKELY REPUBLICAN|SOLID REPUBLICAN)$/i.test(t)){
+          const nearCall=norm(el.parentElement?.textContent||'');
+          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent='Tossup';
+        }
+      }
+      const callLeaf=ls.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
+      if(callLeaf){
+        let card=callLeaf.parentElement;
+        for(let i=0;card&&card!==box&&i<4;i++,card=card.parentElement){
+          const t=norm(card.textContent);
+          if(/WILL[’']S CALL/i.test(t)&&t.length<180) break;
+        }
+        if(card&&card!==box){
+          card.style.setProperty('background',TOSSUP,'important');
+          card.style.setProperty('border-color','#d9ad22','important');
+          card.style.setProperty('color','#fff','important');
+          card.querySelectorAll('*').forEach(el=>el.style.setProperty('color','#fff','important'));
+          const vals=leafs(card);
+          const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
+          if(party)party.textContent='Tossup';
+          const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
+          if(rating)rating.textContent='TOSSUP';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tossup';
+        }
+      }
+    }
+  }
+'''
+              if anchor not in s: raise SystemExit('summary anchor not found')
+              s=s.replace(anchor,'\n'+txfunc+anchor,1)
+          s=s.replace("?\'50\':\'49\'","?'49':'49'")
+          s=s.replace("el.textContent='1 TOSSUP';","el.textContent='2 TOSSUPS';")
+          s=s.replace("if(r)r.style.setProperty('width','50%','important');","if(r)r.style.setProperty('width','49%','important');")
+          s=s.replace("if(y){y.style.setProperty('width','1%','important');","if(y){y.style.setProperty('width','2%','important');")
+          s=s.replace("if(nums.length>=2){nums[0].textContent='49';nums[1].textContent='50';}","if(nums.length>=2){nums[0].textContent='49';nums[1].textContent='49';}")
+          s=s.replace("if(/^Republicans?:\\s*51$/i.test(t))el.textContent=t.replace(/51$/,'50');","if(/^Republicans?:\\s*(?:50|51)$/i.test(t))el.textContent=t.replace(/(?:50|51)$/,'49');")
+          s=s.replace("s.textContent='1 TOSSUP';","s.textContent='2 TOSSUPS';")
+          s=s.replace("aria-label','Senate prediction: 49 Democrats, 50 Republicans, and 1 tossup'","aria-label','Senate prediction: 49 Democrats, 49 Republicans, and 2 tossups'")
+          s=s.replace("forceMaine();forceOhio();forceSenateSummary();forceHome();","forceMaine();forceOhio();forceTexas();forceSenateSummary();forceHome();")
+          p.write_text(s)
+          i=Path('index.html')
+          h=i.read_text()
+          h,n=re.subn(r'senate-current-sync\.js\?v=[0-9-]+','senate-current-sync.js?v=20260912-1253',h,count=1)
+          if n!=1: raise SystemExit('cache reference not found')
+          i.write_text(h)
+          PY
+          node --check senate-current-sync.js
+          grep -q "const tx=stateData.TX" senate-current-sync.js
+          grep -q "function forceTexas" senate-current-sync.js
+          grep -q "2 TOSSUPS" senate-current-sync.js
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-current-sync.js index.html
+          git commit -m 'Set Texas tossup and Senate forecast to 49-49 with 2 tossups'
+          git push origin main
