@@ -1,0 +1,163 @@
+name: Definitive Senate home count and Texas Ohio box fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/definitive-senate-home-box-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Append definitive browser override and bump cache key
+        shell: bash
+        run: |
+          if ! grep -q 'WG_DEFINITIVE_51_49_V2' site-ux-polish.js; then
+            cat >> site-ux-polish.js <<'EOF'
+
+/* WG_DEFINITIVE_51_49_V2 */
+(()=>{
+  'use strict';
+  const BLUE='#d3e2f7', BLUE_BORDER='#8fb3e5', BLUE_TEXT='#173f87';
+  const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+  const leafs=root=>root?[...root.querySelectorAll('*')].filter(el=>el.children.length===0):[];
+
+  function setStateData(){
+    try{
+      if(typeof stateData==='undefined'||!stateData)return;
+      for(const ab of ['TX','OH']){
+        const s=stateData[ab]; if(!s)continue;
+        s.rating='tilt-d'; s.predictionParty='Democratic'; s.prediction='Tilt Democratic'; s.notes='';
+        if('callParty' in s)s.callParty='Democratic';
+        if('call' in s)s.call='Tilt Democratic';
+      }
+    }catch(e){}
+  }
+
+  function blueStateAndCall(ab,stateName){
+    const root=document.getElementById('page-senate'); if(!root)return;
+    root.querySelectorAll(`[data-state="${ab}"],[data-state="${ab}"] path,[data-abbr="${ab}"],[data-abbr="${ab}"] path,[data-state-abbr="${ab}"],[data-state-abbr="${ab}"] path,#${ab},#${ab} path,#state-${ab},#state-${ab} path`).forEach(el=>{
+      el.style.setProperty('fill',BLUE,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',BLUE,'important');
+    });
+
+    for(const label of leafs(root).filter(el=>norm(el.textContent)===stateName&&el.getClientRects().length)){
+      let box=label.parentElement;
+      for(let i=0;box&&box!==root&&i<15;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(/WILL[’']S CALL/i.test(t)&&(/AVG POLLS|POLL AVERAGE|MY PREDICTION/i.test(t)))break;
+      }
+      if(!box||box===root)continue;
+
+      for(const el of leafs(box)){
+        const t=norm(el.textContent);
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
+      }
+      const copy=box.querySelector('.prediction-copy'); if(copy)copy.textContent='Tilt Democratic';
+
+      const callLeaf=leafs(box).find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
+      if(callLeaf){
+        let card=callLeaf.parentElement;
+        for(let i=0;card&&card!==box&&i<6;i++,card=card.parentElement){
+          const t=norm(card.textContent);
+          if(/WILL[’']S CALL/i.test(t)&&t.length<280)break;
+        }
+        if(card&&card!==box){
+          card.style.setProperty('background',BLUE,'important');
+          card.style.setProperty('background-color',BLUE,'important');
+          card.style.setProperty('border-color',BLUE_BORDER,'important');
+          card.style.setProperty('color',BLUE_TEXT,'important');
+          card.querySelectorAll('*').forEach(el=>{
+            el.style.setProperty('color',BLUE_TEXT,'important');
+            if(/^(TOSSUP|TILT REPUBLICAN|REPUBLICAN)$/i.test(norm(el.textContent)))el.textContent=/TILT/i.test(norm(el.textContent))?'TILT DEMOCRATIC':'Democratic';
+          });
+          const vals=leafs(card);
+          const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
+          if(party)party.textContent='Democratic';
+          const rating=vals.find(el=>/^(TOSSUP|TILT|LEAN|LIKELY|SOLID)(?:\s+(REPUBLICAN|DEMOCRAT(?:IC)?))?$/i.test(norm(el.textContent)));
+          if(rating)rating.textContent='TILT DEMOCRATIC';
+          const pc=card.querySelector('.prediction-copy'); if(pc)pc.textContent='Tilt Democratic';
+        }
+      }
+
+      for(const heading of leafs(box).filter(el=>/^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)))){
+        let n=heading.parentElement;
+        for(let i=0;n&&n!==box&&i<6;i++,n=n.parentElement){
+          const t=norm(n.textContent);
+          if(/^WHY MY FORECAST DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
+        }
+      }
+    }
+  }
+
+  function forceHomeCount(){
+    const root=document.getElementById('page-home'); if(!root)return;
+    const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
+    if(!title)return;
+    let card=title.parentElement;
+    for(let i=0;card&&card!==root&&i<10;i++,card=card.parentElement){
+      const t=norm(card.textContent);
+      if(/Democrats?/i.test(t)&&/Republicans?/i.test(t)&&(/majority/i.test(t)||/51 seats/i.test(t)))break;
+    }
+    if(!card||card===root)return;
+
+    card.querySelectorAll('.senate-tiebreak,.final-tiebreak,.will-tossup-count').forEach(el=>el.remove());
+    const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
+    if(nums[0])nums[0].textContent='51';
+    if(nums[1])nums[1].textContent='49';
+
+    for(const label of leafs(card).filter(el=>/^Democrats?$/i.test(norm(el.textContent)))){
+      const branch=label.parentElement;
+      const n=leafs(branch).find(el=>/^\d+$/.test(norm(el.textContent)));
+      if(n)n.textContent='51';
+    }
+    for(const label of leafs(card).filter(el=>/^Republicans?$/i.test(norm(el.textContent)))){
+      const branch=label.parentElement;
+      const n=leafs(branch).find(el=>/^\d+$/.test(norm(el.textContent)));
+      if(n)n.textContent='49';
+    }
+    for(const el of leafs(card)){
+      const t=norm(el.textContent);
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^1\s+TOSSUP$/i.test(t)||/^1\s+INDEPENDENT$/i.test(t)){el.textContent='';el.style.setProperty('display','none','important');}
+    }
+
+    const bar=card.querySelector('.senate-bar,.final-bar,.forecast-bar,[class*="senate-bar"]');
+    if(bar){
+      const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
+      if(d)d.style.setProperty('width','51%','important');
+      if(r)r.style.setProperty('width','49%','important');
+      bar.querySelectorAll('.tossup,.toss-up,[data-tossup]').forEach(el=>el.remove());
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');
+    }
+  }
+
+  function apply(){setStateData();blueStateAndCall('TX','Texas');blueStateAndCall('OH','Ohio');forceHomeCount();}
+  apply(); [30,100,300,700,1400,3000].forEach(ms=>setTimeout(apply,ms));
+  setInterval(apply,60);
+  new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  window.addEventListener('pageshow',apply); window.addEventListener('resize',apply);
+})();
+EOF
+          fi
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          s=s.replace('/site-ux-polish.js?v=20260913-2230','/site-ux-polish.js?v=20260913-2248')
+          p.write_text(s)
+          PY
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add site-ux-polish.js index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix home Senate count and Texas Ohio call boxes'
+          git push
