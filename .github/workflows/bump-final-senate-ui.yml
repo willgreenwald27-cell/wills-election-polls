@@ -1,0 +1,25 @@
+name: Bump final Senate UI
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-final-senate-ui.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh final Senate UI cache
+        shell: bash
+        run: |
+          python3 -c "from pathlib import Path; import re; p=Path('index.html'); s=p.read_text(); s,n=re.subn(r'site-ux-polish\\.js\\?v=[0-9A-Za-z._-]+','site-ux-polish.js?v=20260913-2230',s,count=1); assert n==1, 'site-ux-polish loader not found'; p.write_text(s)"
+      - name: Commit production refresh
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Refresh final Senate 51-49 UI'
+          git push
