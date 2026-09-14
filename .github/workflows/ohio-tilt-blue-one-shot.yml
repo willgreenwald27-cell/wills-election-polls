@@ -1,0 +1,47 @@
+name: Ohio tilt blue one-shot
+on:
+  push:
+    paths:
+      - '.github/workflows/ohio-tilt-blue-one-shot.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make Ohio tilt Democratic and keep Texas tossup
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p=Path('index.html')
+          s=p.read_text()
+
+          old="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='likely-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';"
+          new="if(stateData.NH&&stateData.NH.active)stateData.NH.rating='likely-d';if(stateData.ME&&stateData.ME.active)stateData.ME.rating='tilt-r';if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.callParty='Democratic';stateData.OH.prediction='Tilt Democratic';}if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tossup';stateData.TX.predictionParty='Tossup';stateData.TX.callParty='Tossup';stateData.TX.prediction='Tossup';}"
+          if old not in s:
+              raise SystemExit('renderSenate rating hook not found')
+          s=s.replace(old,new,1)
+
+          if "OH:'Tossup'" not in s:
+              raise SystemExit('Ohio call override not found')
+          s=s.replace("OH:'Tossup'","OH:'Tilt Democratic'",1)
+
+          if "TX:'Paxton +0.3%'" in s:
+              s=s.replace("TX:'Paxton +0.3%'","TX:'Tossup'",1)
+          elif "TX:'Tossup'" not in s:
+              raise SystemExit('Texas call override not found')
+
+          p.write_text(s)
+          PY
+          rm -f .github/workflows/ohio-tilt-blue-one-shot.yml
+      - name: Commit targeted Ohio change
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html .github/workflows/ohio-tilt-blue-one-shot.yml
+          git commit -m 'Make Ohio tilt blue and keep Texas tossup'
+          git push
