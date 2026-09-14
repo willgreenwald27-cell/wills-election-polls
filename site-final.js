@@ -29,6 +29,17 @@
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
+      for(const abbr of ['TX','OH']){
+        const race=stateData[abbr];
+        if(!race||!race.active) continue;
+        race.rating='tilt-d';
+        race.predictionParty='Democratic';
+        race.prediction='Tilt Democratic';
+        race.notes='';
+        race.updated='2026-09-13';
+        if('callParty' in race) race.callParty='Democratic';
+        if('call' in race) race.call='Tilt Democratic';
+      }
     }catch(e){}
   }
 
@@ -50,7 +61,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value=/^REPUBLICAN$/i.test(t)?'51':'49';
+      const value=/^REPUBLICAN$/i.test(t)?'49':'51';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
@@ -148,23 +159,29 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) nums[0].textContent='49';
-      if(nums[1]) nums[1].textContent='51';
+      if(nums[0]) nums[0].textContent='51';
+      if(nums[1]) nums[1].textContent='49';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*50$/i.test(t)) el.textContent=t.replace(/50$/,'49');
-        if(/^Republicans?:\s*50$/i.test(t)) el.textContent=t.replace(/50$/,'51');
+        if(/^Democrats?:\s*(?:49|50|51)$/i.test(t)) el.textContent=t.replace(/\d+$/,'51');
+        if(/^Republicans?:\s*(?:49|50|51)$/i.test(t)) el.textContent=t.replace(/\d+$/,'49');
         if(/^50 seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)) el.textContent='49 seats';
-          if(/Republican/i.test(parent)) el.textContent='51 seats';
+          if(/Democrat/i.test(parent)) el.textContent='51 seats';
+          if(/Republican/i.test(parent)) el.textContent='49 seats';
+        }
+      }
+      for(const el of [...senateCard.querySelectorAll('p,small,.muted,.note,.forecast-note,.senate-note,.senate-explanation,.forecast-explanation')]){
+        const t=norm(el.textContent);
+        if(t.length>18&&(/(?:prediction|forecast).{0,100}(?:poll|average)/i.test(t)||/(?:poll|average).{0,100}(?:prediction|forecast)/i.test(t))){
+          el.remove();
         }
       }
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0]) kids[0].style.setProperty('width','49%','important');
-        if(kids[1]) kids[1].style.setProperty('width','51%','important');
+        if(kids[0]) kids[0].style.setProperty('width','51%','important');
+        if(kids[1]) kids[1].style.setProperty('width','49%','important');
       }
     }
   }
