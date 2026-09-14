@@ -6,7 +6,7 @@
     if(!root)return;
     const leaves=[...root.querySelectorAll('*')].filter(el=>el.children.length===0&&el.getClientRects().length);
     for(const nameEl of leaves.filter(el=>/^Graham Nordone$/i.test(norm(el.textContent)))){
-      nameEl.style.setProperty('color','#bd2937','important');
+      nameEl.style.setProperty('color','#17263d','important');
       let row=nameEl.parentElement;
       for(let i=0;row&&row!==root&&i<5;i++,row=row.parentElement){
         const t=norm(row.textContent);
@@ -24,6 +24,6 @@
       if(candidates[0])candidates[0].style.setProperty('background','#bd2937','important');
     }
   }
-  fix();[100,350,800,1600,3200].forEach(ms=>setTimeout(fix,ms));setInterval(fix,1200);
-  new MutationObserver(()=>requestAnimationFrame(fix)).observe(document.body,{childList:true,subtree:true});
+  fix();[100,350,800,1600,3200].forEach(ms=>setTimeout(fix,ms));setInterval(fix,600);
+  new MutationObserver(()=>requestAnimationFrame(fix)).observe(document.body,{childList:true,subtree:true,characterData:true});
 })();
