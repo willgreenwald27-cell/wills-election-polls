@@ -1,0 +1,66 @@
+name: Fix polls nav countdown and Senate labels
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-polls-nav-countdown-labels.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          anchor="      add({date:'2026-09-10',state:'OH',pollster:'InsiderAdvantage',sample:'',c1:'Sherrod Brown',c1Pct:'47',c2:'Jon Husted',c2Pct:'42',notes:'RealClearPolling · Brown +5'});"
+          additions=[
+          "      add({date:'2026-09-12',state:'NC',pollster:'Trafalgar Group*',sample:'',c1:'Roy Cooper',c1Pct:'48',c2:'Michael Whatley',c2Pct:'42',notes:'RealClearPolling · Cooper +6'});",
+          "      add({date:'2026-09-12',state:'GA',pollster:'Trafalgar Group*',sample:'',c1:'Jon Ossoff',c1Pct:'49',c2:'Mike Collins',c2Pct:'43',notes:'RealClearPolling · Ossoff +6'});",
+          "      add({date:'2026-09-10',state:'IA',pollster:'YouGov',sample:'',c1:'Ashley Hinson',c1Pct:'43',c2:'Josh Turek',c2Pct:'45',notes:'RealClearPolling · Turek +2'});",
+          "      add({date:'2026-09-10',state:'IA',pollster:'Rasmussen Reports*',sample:'',c1:'Ashley Hinson',c1Pct:'40',c2:'Josh Turek',c2Pct:'45',notes:'RealClearPolling · Turek +5'});",
+          "      add({date:'2026-09-10',state:'MN',pollster:'Quantus Insights',sample:'',c1:'Peggy Flanagan',c1Pct:'48',c2:'Michele Tafoya',c2Pct:'44',notes:'RealClearPolling · Flanagan +4'});",
+          "      add({date:'2026-09-10',state:'FL',pollster:'Quantus Insights',sample:'',c1:'Ashley Moody',c1Pct:'50',c2:'Jasmine Nixon',c2Pct:'43',notes:'RealClearPolling · Moody +7'});"
+          ]
+          if anchor not in s: raise SystemExit('poll insertion anchor missing')
+          for line in additions:
+              if line not in s:
+                  s=s.replace(anchor,anchor+'\n'+line,1)
+                  anchor=line
+          p.write_text(s)
+
+          p=Path('senate-history-context.js')
+          s=p.read_text()
+          old="    root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());\n    if(!window.matchMedia('(min-width:900px)').matches)return;"
+          new="    if(!window.matchMedia('(min-width:900px)').matches){root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());return;}\n    if(document.querySelector('script[src*=\"site-ux-polish.js\"]'))return;"
+          if old not in s: raise SystemExit('label function anchor missing')
+          p.write_text(s.replace(old,new,1))
+
+          p=Path('index.html')
+          s=p.read_text()
+          s=re.sub(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260913-2120',s,count=1)
+          s=re.sub(r'senate-history-context\.js\?v=[0-9-]+','senate-history-context.js?v=20260913-2120',s,count=1)
+          if 'site-ux-polish.js' not in s:
+              needle='document.open();document.write(h);document.close()'
+              repl='h=h.replace(\'</body>\',\'<script src="/site-ux-polish.js?v=20260913-2120"><\\/script></body>\');'+needle
+              if needle not in s: raise SystemExit('loader end anchor missing')
+              s=s.replace(needle,repl,1)
+          p.write_text(s)
+          PY
+          node --check sep9-polls-update.js
+          node --check senate-history-context.js
+          node --check site-ux-polish.js
+          grep -q "2026-09-12',state:'NC'" sep9-polls-update.js
+          grep -q "2026-09-12',state:'GA'" sep9-polls-update.js
+          grep -q "site-ux-polish.js?v=20260913-2120" index.html
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add sep9-polls-update.js senate-history-context.js index.html
+          git commit -m 'Show latest polls and fix Senate desktop UI'
+          git push origin main
