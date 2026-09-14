@@ -8,6 +8,8 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-12','NC','North Carolina','Trafalgar Group*','Roy Cooper',48,'Michael Whatley',42,'User-provided poll'],
+    ['2026-09-12','GA','Georgia','Trafalgar Group*','Jon Ossoff',49,'Mike Collins',43,'User-provided poll'],
     ['2026-09-10','IA','Iowa','YouGov','Ashley Hinson',43,'Josh Turek',45,'User-provided poll'],
     ['2026-09-10','MN','Minnesota','Quantus Insights','Peggy Flanagan',48,'Michele Tafoya',44,'User-provided poll'],
     ['2026-09-10','FL','Florida Special Election','Quantus Insights','Ashley Moody',50,'Jasmine Nixon',43,'User-provided poll']
@@ -44,7 +46,7 @@
     try{
       if(Array.isArray(window.polls)){
         for(const row of NEW_POLLS){
-          const obj={date:row[0],state:row[1],pollster:row[3],sample:'',c1:row[4],c1Pct:String(row[5]),c2:row[6],c2Pct:String(row[7]),notes:row[1]==='IA'?'Turek +2':row[1]==='MN'?'Flanagan +4':'Moody +7'};
+          const obj={date:row[0],state:row[1],pollster:row[3],sample:'',c1:row[4],c1Pct:String(row[5]),c2:row[6],c2Pct:String(row[7]),notes:row[1]==='NC'?'Cooper +6':row[1]==='GA'?'Ossoff +6':row[1]==='IA'?'Turek +2':row[1]==='MN'?'Flanagan +4':'Moody +7'};
           const exists=window.polls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&norm(p.pollster)===norm(obj.pollster)&&same(p.c1,obj.c1)&&same(p.c2,obj.c2));
           if(!exists){window.polls.push(obj);nativeChanged=true;}
         }
@@ -73,7 +75,7 @@
           const key='candidate'+slot+'Poll';
           if(String(s[key])!==avg){s[key]=avg;changed=true;}
         }
-        if(s.updated!=='2026-09-11'){s.updated='2026-09-11';changed=true;}
+        if(s.updated!=='2026-09-12'){s.updated='2026-09-12';changed=true;}
       }
       if(changed&&typeof renderSenate==='function'&&!rendering){
         rendering=true;
