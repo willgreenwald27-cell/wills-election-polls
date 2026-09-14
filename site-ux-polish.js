@@ -2,6 +2,28 @@
   'use strict';
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>root?[...root.querySelectorAll('*')].filter(el=>el.children.length===0):[];
+  let raf=0;
+
+  function ensureStyle(){
+    if(document.getElementById('wgSeatPartyPseudoStyle'))return;
+    const st=document.createElement('style');
+    st.id='wgSeatPartyPseudoStyle';
+    st.textContent=`
+      @media(min-width:900px){
+        #page-senate .wg-seat-party-block{position:relative!important;overflow:visible!important}
+        #page-senate .wg-seat-party-block.wg-seat-dem::before,
+        #page-senate .wg-seat-party-block.wg-seat-rep::before{
+          position:absolute!important;top:-14px!important;z-index:999!important;display:block!important;
+          font:900 10px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1.1px!important;
+          text-transform:uppercase!important;white-space:nowrap!important;opacity:1!important;visibility:visible!important;
+          pointer-events:none!important
+        }
+        #page-senate .wg-seat-party-block.wg-seat-dem::before{content:'DEMOCRATIC';left:0!important;color:#2763b8!important}
+        #page-senate .wg-seat-party-block.wg-seat-rep::before{content:'REPUBLICAN';right:0!important;color:#bd2937!important}
+      }
+    `;
+    document.head.appendChild(st);
+  }
 
   function reorderNav(){
     const nav=document.querySelector('.site-header .nav');if(!nav)return;
@@ -19,64 +41,62 @@
     const days=Math.max(0,Math.ceil((election-today)/86400000));
     for(const el of leafs(root)){
       const t=norm(el.textContent);
-      if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t)) el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
+      if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
     }
   }
 
   function keepPartyLabels(){
+    ensureStyle();
     const root=document.getElementById('page-senate');if(!root)return;
-    if(!window.matchMedia('(min-width:900px)').matches){root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());return;}
+    root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());
+    root.querySelectorAll('.wg-seat-party-block').forEach(el=>el.classList.remove('wg-seat-party-block','wg-seat-dem','wg-seat-rep'));
+    if(!window.matchMedia('(min-width:900px)').matches)return;
+
     const marker=leafs(root).find(el=>el.getClientRects().length&&/50\s*\+\s*VP\s+FOR\s+MAJORITY/i.test(norm(el.textContent)));
     if(!marker)return;
     let box=marker.parentElement;
-    for(let i=0;box&&box!==root&&i<8;i++,box=box.parentElement){
-      if(box.querySelectorAll('.party-block').length>=2||box.querySelectorAll('.party-number,.final-party-number').length>=2)break;
+    for(let i=0;box&&box!==root&&i<9;i++,box=box.parentElement){
+      const nums=[...box.querySelectorAll('.party-number,.final-party-number')].filter(el=>el.getClientRects().length);
+      if(nums.length>=2)break;
+      const plain=leafs(box).filter(el=>el.getClientRects().length&&/^49$/.test(norm(el.textContent)));
+      if(plain.length>=2)break;
     }
     if(!box||box===root)return;
-    let blocks=[...box.querySelectorAll('.party-block')].filter(el=>el.getClientRects().length);
-    if(blocks.length<2){
-      const nums=[...box.querySelectorAll('.party-number,.final-party-number')].filter(el=>el.getClientRects().length);
-      blocks=nums.map(n=>n.parentElement).filter(Boolean);
-    }
-    if(blocks.length<2)return;
-    const ordered=blocks.slice().sort((a,b)=>a.getBoundingClientRect().left-b.getBoundingClientRect().left);
-    const demBlock=ordered[0],repBlock=ordered[ordered.length-1];
-    const ensure=(block,cls,text,before)=>{
-      if(!block)return;
-      let label=block.querySelector('.wg-sticky-party-label.'+cls);
-      if(!label){
-        label=document.createElement('span');label.className='wg-sticky-party-label '+cls;label.textContent=text;
-        const num=block.querySelector('.party-number,.final-party-number');
-        if(before&&num)block.insertBefore(label,num);else if(num)num.insertAdjacentElement('afterend',label);else block.appendChild(label);
+
+    let nums=[...box.querySelectorAll('.party-number,.final-party-number')].filter(el=>el.getClientRects().length);
+    if(nums.length<2)nums=leafs(box).filter(el=>el.getClientRects().length&&/^49$/.test(norm(el.textContent)));
+    if(nums.length<2)return;
+    nums.sort((a,b)=>a.getBoundingClientRect().left-b.getBoundingClientRect().left);
+    const left=nums[0],right=nums[nums.length-1];
+    const demBlock=left.closest('.party-block')||left.parentElement;
+    const repBlock=right.closest('.party-block')||right.parentElement;
+    if(demBlock){demBlock.classList.add('wg-seat-party-block','wg-seat-dem');demBlock.style.setProperty('overflow','visible','important');}
+    if(repBlock){repBlock.classList.add('wg-seat-party-block','wg-seat-rep');repBlock.style.setProperty('overflow','visible','important');}
+
+    for(const el of leafs(box)){
+      const t=norm(el.textContent);
+      if(/^(DEMOCRAT(?:IC)?|REPUBLICAN)$/i.test(t)){
+        el.style.setProperty('opacity','0','important');
+        el.style.setProperty('visibility','hidden','important');
       }
-      label.textContent=text;
-      label.style.setProperty('display','block','important');
-      label.style.setProperty('opacity','1','important');
-      label.style.setProperty('visibility','visible','important');
-      label.style.setProperty('position','relative','important');
-      label.style.setProperty('z-index','20','important');
-      label.style.setProperty('pointer-events','none','important');
-      label.style.setProperty('color',cls==='dem'?'#2763b8':'#bd2937','important');
-      [...block.querySelectorAll('*')].filter(el=>el!==label&&!el.classList.contains('wg-sticky-party-label')&&new RegExp('^'+(cls==='dem'?'DEMOCRAT(?:IC)?':'REPUBLICAN')+'$','i').test(norm(el.textContent))).forEach(el=>el.style.setProperty('visibility','hidden','important'));
-    };
-    ensure(demBlock,'dem','DEMOCRATIC',true);
-    ensure(repBlock,'rep','REPUBLICAN',false);
-  }
-
-  function fixGraham(){
-    const root=document.getElementById('page-polls');if(!root)return;
-    const visible=leafs(root).filter(el=>el.getClientRects().length);
-    for(const el of visible.filter(x=>/^Graham Nordone$/i.test(norm(x.textContent)))){
-      el.style.setProperty('color','#17263d','important');
-      let row=el.parentElement;
-      for(let i=0;row&&row!==root&&i<5;i++,row=row.parentElement){if(/Graham Nordone/i.test(norm(row.textContent))&&/45(?:\.0)?%?/.test(norm(row.textContent)))break;}
-      if(!row||row===root)continue;
-      row.querySelectorAll('*').forEach(x=>{const t=norm(x.textContent);if(/^45(?:\.0)?%$/.test(t))x.style.setProperty('color','#bd2937','important');});
     }
   }
 
-  function apply(){reorderNav();electionCountdown();keepPartyLabels();fixGraham();}
-  apply();[50,150,300,600,1000,1600,2500,4000].forEach(ms=>setTimeout(apply,ms));setInterval(apply,250);
-  new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  function fixGrahamText(){
+    const root=document.getElementById('page-polls');if(!root)return;
+    for(const el of leafs(root).filter(x=>x.getClientRects().length&&/^Graham Nordone$/i.test(norm(x.textContent)))){
+      el.style.setProperty('color','#17263d','important');
+    }
+  }
+
+  function apply(){reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();}
+  function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
+
+  ensureStyle();apply();
+  [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
+  setInterval(apply,150);
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  document.addEventListener('mousemove',e=>{if(e.target?.closest?.('#page-senate'))setTimeout(apply,0);},true);
+  document.addEventListener('mouseover',e=>{if(e.target?.closest?.('#page-senate'))setTimeout(apply,0);},true);
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();
