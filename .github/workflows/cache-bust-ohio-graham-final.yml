@@ -1,0 +1,22 @@
+name: Cache bust final Ohio and Graham fixes
+on:
+  push:
+    paths:
+      - '.github/workflows/cache-bust-ohio-graham-final.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Refresh script cache refs
+        run: |
+          python -c "from pathlib import Path; import re; p=Path('index.html'); s=p.read_text(); s,n1=re.subn(r'poll-color-fix\\.js\\?v=[0-9-]+','poll-color-fix.js?v=20260913-2131',s,count=1); s,n2=re.subn(r'site-ux-polish\\.js\\?v=[0-9-]+','site-ux-polish.js?v=20260913-2131',s,count=1); assert n1==1 and n2==1, (n1,n2); p.write_text(s)"
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh final Ohio hover and Graham bar fixes'
+          git push origin main
