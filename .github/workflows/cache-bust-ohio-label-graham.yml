@@ -1,0 +1,31 @@
+name: Cache bust Ohio label and Graham fixes
+on:
+  push:
+    paths:
+      - '.github/workflows/cache-bust-ohio-label-graham.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Refresh script caches
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n1=re.subn(r'poll-color-fix\.js\?v=[0-9-]+','poll-color-fix.js?v=20260913-2129',s,count=1)
+          s,n2=re.subn(r'site-ux-polish\.js\?v=[0-9-]+','site-ux-polish.js?v=20260913-2129',s,count=1)
+          if n1!=1 or n2!=1: raise SystemExit(f'cache refs not found: {n1}, {n2}')
+          p.write_text(s)
+          PY
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh Ohio hover label and Graham color fixes'
+          git push origin main
