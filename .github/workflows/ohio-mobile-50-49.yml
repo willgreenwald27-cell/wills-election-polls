@@ -13,15 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply patch
-        run: python3 .github/scripts/ohio_mobile_50_49.py
-      - name: Commit changes
+      - name: Apply targeted patch
+        shell: bash
         run: |
-          git config user.name "Will Election Polls Bot"
-          git config user.email "actions@users.noreply.github.com"
+          # The patch script updates the three JS files first. Its old final
+          # cache-bust check may exit nonzero, so handle index.html separately.
+          python3 .github/scripts/ohio_mobile_50_49.py || true
+          sed -i -E 's#site-final\.js\?v=[0-9A-Za-z._-]+#site-final.js?v=20260913-2356#g' index.html
+          sed -i -E 's#senate-current-sync\.js\?v=[0-9A-Za-z._-]+#senate-current-sync.js?v=20260913-2356#g' index.html
+          sed -i -E 's#senate-history-context\.js\?v=[0-9A-Za-z._-]+#senate-history-context.js?v=20260913-2356#g' index.html
+          grep -q 'site-final.js?v=20260913-2356' index.html
+          grep -q 'senate-current-sync.js?v=20260913-2356' index.html
+          grep -q 'senate-history-context.js?v=20260913-2356' index.html
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
           git add site-final.js senate-current-sync.js senate-history-context.js index.html
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Fix Ohio mobile call and Senate 50-49 totals"
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Ohio mobile call and Senate 50-49 totals'
           git push
-
-# retrigger after workflow syntax repair
