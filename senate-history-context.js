@@ -141,8 +141,8 @@
 
   function restoreDesktopPartyLabels(){
     const root=document.getElementById('page-senate');if(!root)return;
-    root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());
-    if(!window.matchMedia('(min-width:900px)').matches)return;
+    if(!window.matchMedia('(min-width:900px)').matches){root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());return;}
+    if(document.querySelector('script[src*="site-ux-polish.js"]'))return;
     const leaves=leafs(root).filter(el=>el.getClientRects().length);
     const marker=leaves.find(el=>/50\s*\+\s*VP\s+FOR\s+MAJORITY/i.test(norm(el.textContent)));
     if(!marker)return;

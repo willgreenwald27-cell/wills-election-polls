@@ -85,6 +85,12 @@
       add({date:'2026-09-10',state:'MI',pollster:'Trafalgar Group*',sample:'1,079 LV',c1:'Abdul El-Sayed',c1Pct:'46',c2:'Mike Rogers',c2Pct:'45',notes:'RealClearPolling · El-Sayed +1'});
       add({date:'2026-09-10',state:'SC',pollster:'InsiderAdvantage',sample:'',c1:'Graham Nordone',c1Pct:'45',c2:'Annie Andrews',c2Pct:'43',notes:'RealClearPolling · Graham Nordone +2'});
       add({date:'2026-09-10',state:'OH',pollster:'InsiderAdvantage',sample:'',c1:'Sherrod Brown',c1Pct:'47',c2:'Jon Husted',c2Pct:'42',notes:'RealClearPolling · Brown +5'});
+      add({date:'2026-09-12',state:'NC',pollster:'Trafalgar Group*',sample:'',c1:'Roy Cooper',c1Pct:'48',c2:'Michael Whatley',c2Pct:'42',notes:'RealClearPolling · Cooper +6'});
+      add({date:'2026-09-12',state:'GA',pollster:'Trafalgar Group*',sample:'',c1:'Jon Ossoff',c1Pct:'49',c2:'Mike Collins',c2Pct:'43',notes:'RealClearPolling · Ossoff +6'});
+      add({date:'2026-09-10',state:'IA',pollster:'YouGov',sample:'',c1:'Ashley Hinson',c1Pct:'43',c2:'Josh Turek',c2Pct:'45',notes:'RealClearPolling · Turek +2'});
+      add({date:'2026-09-10',state:'IA',pollster:'Rasmussen Reports*',sample:'',c1:'Ashley Hinson',c1Pct:'40',c2:'Josh Turek',c2Pct:'45',notes:'RealClearPolling · Turek +5'});
+      add({date:'2026-09-10',state:'MN',pollster:'Quantus Insights',sample:'',c1:'Peggy Flanagan',c1Pct:'48',c2:'Michele Tafoya',c2Pct:'44',notes:'RealClearPolling · Flanagan +4'});
+      add({date:'2026-09-10',state:'FL',pollster:'Quantus Insights',sample:'',c1:'Ashley Moody',c1Pct:'50',c2:'Jasmine Nixon',c2Pct:'43',notes:'RealClearPolling · Moody +7'});
       if(changed&&typeof renderPolls==='function') renderPolls();
     }catch(e){}
   }
