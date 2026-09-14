@@ -29,6 +29,8 @@
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
+      if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tossup';stateData.TX.predictionParty='Tossup';stateData.TX.prediction='Tossup';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Tossup';if('call' in stateData.TX)stateData.TX.call='Tossup';}
     }catch(e){}
   }
 
@@ -50,7 +52,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value=/^REPUBLICAN$/i.test(t)?'51':'49';
+      const value=/^REPUBLICAN$/i.test(t)?'49':'50';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
@@ -148,23 +150,24 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) nums[0].textContent='49';
-      if(nums[1]) nums[1].textContent='51';
+      if(nums[0]) nums[0].textContent='50';
+      if(nums[1]) nums[1].textContent='49';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*50$/i.test(t)) el.textContent=t.replace(/50$/,'49');
-        if(/^Republicans?:\s*50$/i.test(t)) el.textContent=t.replace(/50$/,'51');
+        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'49');
         if(/^50 seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)) el.textContent='49 seats';
-          if(/Republican/i.test(parent)) el.textContent='51 seats';
+          if(/Democrat/i.test(parent)) el.textContent='50 seats';
+          if(/Republican/i.test(parent)) el.textContent='49 seats';
         }
       }
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0]) kids[0].style.setProperty('width','49%','important');
-        if(kids[1]) kids[1].style.setProperty('width','51%','important');
+        if(kids[0]) kids[0].style.setProperty('width','50%','important');
+        if(kids[1]) kids[1].style.setProperty('width','49%','important');
+        if(kids[2]) kids[2].style.setProperty('width','1%','important');
       }
     }
   }
