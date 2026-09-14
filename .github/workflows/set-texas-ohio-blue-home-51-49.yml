@@ -21,19 +21,20 @@ jobs:
           s = p.read_text()
 
           nh = "      if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';\n"
-          override = """      if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
-      for(const abbr of ['TX','OH']){
-        const race=stateData[abbr];
-        if(!race||!race.active) continue;
-        race.rating='tilt-d';
-        race.predictionParty='Democratic';
-        race.prediction='Tilt Democratic';
-        race.notes='';
-        race.updated='2026-09-13';
-        if('callParty' in race) race.callParty='Democratic';
-        if('call' in race) race.call='Tilt Democratic';
-      }
-"""
+          override = (
+              "      if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';\n"
+              "      for(const abbr of ['TX','OH']){\n"
+              "        const race=stateData[abbr];\n"
+              "        if(!race||!race.active) continue;\n"
+              "        race.rating='tilt-d';\n"
+              "        race.predictionParty='Democratic';\n"
+              "        race.prediction='Tilt Democratic';\n"
+              "        race.notes='';\n"
+              "        race.updated='2026-09-13';\n"
+              "        if('callParty' in race) race.callParty='Democratic';\n"
+              "        if('call' in race) race.call='Tilt Democratic';\n"
+              "      }\n"
+          )
           if override not in s:
               if nh not in s:
                   raise SystemExit('NH anchor not found')
@@ -49,18 +50,17 @@ jobs:
           s = s.replace("if(kids[0]) kids[0].style.setProperty('width','49%','important');", "if(kids[0]) kids[0].style.setProperty('width','51%','important');", 1)
           s = s.replace("if(kids[1]) kids[1].style.setProperty('width','51%','important');", "if(kids[1]) kids[1].style.setProperty('width','49%','important');", 1)
 
-          home_anchor = """      const bar=senateCard.querySelector('.senate-bar');
-      if(bar){
-"""
-          home_explanation = """      for(const el of [...senateCard.querySelectorAll('p,small,.muted,.note,.forecast-note,.senate-note,.senate-explanation,.forecast-explanation')]){
-        const t=norm(el.textContent);
-        if(t.length>18&&(/(?:prediction|forecast).{0,100}(?:poll|average)/i.test(t)||/(?:poll|average).{0,100}(?:prediction|forecast)/i.test(t))){
-          el.remove();
-        }
-      }
-      const bar=senateCard.querySelector('.senate-bar');
-      if(bar){
-"""
+          home_anchor = "      const bar=senateCard.querySelector('.senate-bar');\n      if(bar){\n"
+          home_explanation = (
+              "      for(const el of [...senateCard.querySelectorAll('p,small,.muted,.note,.forecast-note,.senate-note,.senate-explanation,.forecast-explanation')]){\n"
+              "        const t=norm(el.textContent);\n"
+              "        if(t.length>18&&(/(?:prediction|forecast).{0,100}(?:poll|average)/i.test(t)||/(?:poll|average).{0,100}(?:prediction|forecast)/i.test(t))){\n"
+              "          el.remove();\n"
+              "        }\n"
+              "      }\n"
+              "      const bar=senateCard.querySelector('.senate-bar');\n"
+              "      if(bar){\n"
+          )
           if home_explanation not in s:
               if home_anchor not in s:
                   raise SystemExit('home Senate bar anchor not found')
@@ -72,7 +72,7 @@ jobs:
           h = idx.read_text()
           h = h.replace("OH:'Tossup'", "OH:'Tilt Democratic'", 1)
           h = h.replace("TX:'Paxton +0.3%'", "TX:'Tilt Democratic'", 1)
-          h2, n = re.subn(r'site-final\\.js\\?v=[0-9A-Za-z._-]+', 'site-final.js?v=20260913-2201', h, count=1)
+          h2, n = re.subn(r'site-final\.js\?v=[0-9A-Za-z._-]+', 'site-final.js?v=20260913-2202', h, count=1)
           if n != 1:
               raise SystemExit('site-final loader not found exactly once')
           idx.write_text(h2)
