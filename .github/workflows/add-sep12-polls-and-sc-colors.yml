@@ -1,0 +1,109 @@
+name: Add Sep 12 polls and fix SC colors
+on:
+  push:
+    paths:
+      - '.github/workflows/add-sep12-polls-and-sc-colors.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add polls, averages, and SC party colors
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          # 1) Authoritative archive: add Sep 12 NC/GA plus static MN/FL rows so averages persist.
+          p=Path('senate-julsep-archive.js')
+          s=p.read_text()
+          marker='  const POLLS=[\n'
+          rows=(
+            "['2026-09-12','NC','North Carolina','Trafalgar Group*','Roy Cooper',48,'Michael Whatley',42,'RCP'],\n"
+            "['2026-09-12','GA','Georgia','Trafalgar Group*','Jon Ossoff',49,'Mike Collins',43,'RCP'],\n"
+            "['2026-09-10','MN','Minnesota','Quantus Insights','Peggy Flanagan',48,'Michele Tafoya',44,'RCP'],\n"
+            "['2026-09-10','FL','Florida Special Election','Quantus Insights','Ashley Moody',50,'Jasmine Nixon',43,'RCP'],\n"
+          )
+          for row in reversed(rows.strip().splitlines()):
+              if row.rstrip(',') not in s:
+                  s=s.replace(marker,marker+row+'\n',1)
+          p.write_text(s)
+
+          # 2) Auto averages + native New Polls feed: add the two new Sep 12 polls.
+          p=Path('senate-auto-averages.js')
+          s=p.read_text()
+          anchor='  const NEW_POLLS=[\n'
+          add=(
+            "    ['2026-09-12','NC','North Carolina','Trafalgar Group*','Roy Cooper',48,'Michael Whatley',42,'User-provided poll'],\n"
+            "    ['2026-09-12','GA','Georgia','Trafalgar Group*','Jon Ossoff',49,'Mike Collins',43,'User-provided poll'],\n"
+          )
+          if "'2026-09-12','NC','North Carolina','Trafalgar Group*'" not in s:
+              s=s.replace(anchor,anchor+add,1)
+          # Give the native cards correct spread notes for all injected rows.
+          old="notes:row[1]==='IA'?'Turek +2':row[1]==='MN'?'Flanagan +4':'Moody +7'"
+          new="notes:row[1]==='NC'?'Cooper +6':row[1]==='GA'?'Ossoff +6':row[1]==='IA'?'Turek +2':row[1]==='MN'?'Flanagan +4':'Moody +7'"
+          if old in s: s=s.replace(old,new,1)
+          s=s.replace("if(s.updated!=='2026-09-11'){s.updated='2026-09-11';changed=true;}","if(s.updated!=='2026-09-12'){s.updated='2026-09-12';changed=true;}",1)
+          p.write_text(s)
+
+          # 3) Correct Graham Nordone to Republican red on New Polls cards.
+          p=Path('sep9-polls-update.js')
+          s=p.read_text()
+          if 'function fixGrahamNordoneColors(){' not in s:
+              insert=r'''
+  function fixGrahamNordoneColors(){
+    const root=document.getElementById('page-polls');if(!root)return;
+    const leaves=[...root.querySelectorAll('*')].filter(el=>el.children.length===0&&el.getClientRects().length);
+    for(const nameEl of leaves.filter(el=>/^Graham Nordone$/i.test(norm(el.textContent)))){
+      let row=nameEl.parentElement;
+      for(let i=0;row&&row!==root&&i<5;i++,row=row.parentElement){
+        const t=norm(row.textContent);
+        if(/Graham Nordone/i.test(t)&&/45(?:\.0)?%?/.test(t))break;
+      }
+      if(!row||row===root)continue;
+      row.querySelectorAll('*').forEach(el=>{
+        const t=norm(el.textContent);
+        if(/^Graham Nordone$/i.test(t)||/^45(?:\.0)?%$/.test(t))el.style.setProperty('color','#bd2937','important');
+      });
+      const bars=[...row.querySelectorAll('div,span,i')].filter(el=>{
+        const cs=getComputedStyle(el),r=el.getBoundingClientRect();
+        return r.width>40&&r.height>4&&r.height<32&&cs.backgroundColor!=='rgba(0, 0, 0, 0)';
+      });
+      if(bars.length){
+        bars.sort((a,b)=>b.getBoundingClientRect().width-a.getBoundingClientRect().width);
+        bars[0].style.setProperty('background','#bd2937','important');
+      }
+    }
+  }
+'''
+              anchor='\n  function ensureArchiveRows(){'
+              if anchor not in s: raise SystemExit('sep9 anchor not found')
+              s=s.replace(anchor,'\n'+insert+anchor,1)
+          s=s.replace("if(changed&&typeof renderPolls==='function') renderPolls();","if(changed&&typeof renderPolls==='function') renderPolls();\n      setTimeout(fixGrahamNordoneColors,0);",1)
+          # Ensure it is reapplied after later rerenders.
+          if 'setInterval(fixGrahamNordoneColors,1200);' not in s:
+              s=s.replace("  function ensureArchiveRows(){", "  setInterval(fixGrahamNordoneColors,1200);\n\n  function ensureArchiveRows(){",1)
+          p.write_text(s)
+
+          # 4) Cache-bust all touched scripts.
+          p=Path('index.html')
+          s=p.read_text()
+          import re
+          s=re.sub(r'senate-julsep-archive\.js\?v=[0-9-]+','senate-julsep-archive.js?v=20260913-2028',s,count=1)
+          s=re.sub(r'senate-auto-averages\.js\?v=[0-9-]+','senate-auto-averages.js?v=20260913-2028',s,count=1)
+          s=re.sub(r'sep9-polls-update\.js\?v=[0-9-]+','sep9-polls-update.js?v=20260913-2028',s,count=1)
+          p.write_text(s)
+          PY
+          node --check senate-julsep-archive.js
+          node --check senate-auto-averages.js
+          node --check sep9-polls-update.js
+          grep -q "2026-09-12','NC','North Carolina','Trafalgar Group" senate-julsep-archive.js
+          grep -q "2026-09-12','GA','Georgia','Trafalgar Group" senate-julsep-archive.js
+          grep -q "fixGrahamNordoneColors" sep9-polls-update.js
+          git config user.name 'Will Election Polls Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add senate-julsep-archive.js senate-auto-averages.js sep9-polls-update.js index.html
+          git commit -m 'Add Sep 12 NC and GA polls and fix SC party color'
+          git push origin main
