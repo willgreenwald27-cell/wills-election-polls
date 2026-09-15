@@ -99,7 +99,48 @@
     }
   }
 
-  function apply(){reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();}
+  function fixKansasOdds(){
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.KS){
+        const ks=stateData.KS;
+        const setOdds=(nameKey,oddsKey)=>{
+          const name=norm(ks[nameKey]);
+          if(/Marshall/i.test(name))ks[oddsKey]='77';
+          if(/Hamilton/i.test(name))ks[oddsKey]='23';
+        };
+        setOdds('candidate1','candidate1Odds');
+        setOdds('candidate2','candidate2Odds');
+      }
+    }catch(e){}
+    const root=document.getElementById('page-senate');if(!root)return;
+    const labels=leafs(root).filter(el=>/^Kansas$/i.test(norm(el.textContent))&&el.getClientRects().length);
+    for(const label of labels){
+      let box=label.parentElement;
+      for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(/Marshall/i.test(t)&&/Hamilton/i.test(t)&&/(WIN ODDS|STATISTICAL ODDS|WILL[’']S CALL)/i.test(t))break;
+      }
+      if(!box||box===root)continue;
+      for(const el of leafs(box)){
+        const t=norm(el.textContent);
+        if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'77%');
+        if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'23%');
+      }
+      const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+      const bar=box.querySelector('.oddsbar');
+      if(bar&&lines.length>=2){
+        const odds=lines.map(line=>{
+          const name=norm(line.querySelector('.candidate-name')?.textContent);
+          return /Marshall/i.test(name)?77:/Hamilton/i.test(name)?23:null;
+        });
+        const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
+        if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
+        if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');
+      }
+    }
+  }
+
+  function apply(){reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();}
   function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
 
   ensureStyle();apply();
