@@ -1,0 +1,1 @@
+Trigger fresh navigation script cache key after final click/order fix.
