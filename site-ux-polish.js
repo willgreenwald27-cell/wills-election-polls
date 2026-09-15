@@ -32,7 +32,12 @@
     const items=[...nav.children];
     const senate=nav.querySelector('[data-page-link="senate"]')||items.find(el=>/^2026 Senate Prediction$/i.test(norm(el.textContent)));
     const errors=items.find(el=>/^Past Polling Errors$/i.test(norm(el.textContent)));
-    if(senate&&errors&&senate.nextElementSibling!==errors)nav.insertBefore(senate,errors);
+    const polls=nav.querySelector('[data-page-link="polls"]')||items.find(el=>/^New Polls$/i.test(norm(el.textContent)));
+    if(senate&&errors&&polls){
+      nav.prepend(senate);
+      senate.after(errors);
+      errors.after(polls);
+    }
   }
 
   function electionCountdown(){
