@@ -10,35 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply state and UI fixes
+      - name: Remove stale tossup label
         shell: bash
         run: |
-          python3 .github/scripts/stabilize-ohio-texas.py || true
           python3 - <<'PY'
           from pathlib import Path
+          p=Path('senate-history-context.js'); s=p.read_text()
+          s=s.replace("if(/^\\d+\\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='1 TOSSUP';","if(/^\\d+\\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='0 TOSSUP';",1)
+          p.write_text(s)
           p=Path('index.html'); s=p.read_text()
-          old="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tossup';stateData.TX.predictionParty='Tossup';stateData.TX.callParty='Tossup';stateData.TX.prediction='Tossup';}"
-          new="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.callParty='Republican';stateData.TX.prediction='Tilt Republican';}"
-          if old in s: s=s.replace(old,new,1)
-          if "TX:'Tossup'" in s: s=s.replace("TX:'Tossup'","TX:'Tilt Republican'",1)
-          for name,oldv,newv in [
-              ('site-final.js','20260913-2356','20260914-1826'),
-              ('senate-current-sync.js','20260913-2356','20260914-1826'),
-              ('senate-history-context.js','20260913-2356','20260914-1826')]:
-              token=f'{name}?v={oldv}'
-              i=s.rfind(token)
-              if i<0:
-                  print('cache token not found:',token)
-                  continue
-              s=s[:i]+f'{name}?v={newv}'+s[i+len(token):]
+          old='senate-history-context.js?v=20260914-1826'; new='senate-history-context.js?v=20260914-1827'
+          i=s.rfind(old)
+          if i>=0: s=s[:i]+new+s[i+len(old):]
           p.write_text(s)
           PY
-      - name: Commit stable forecast
+      - name: Commit final totals
         shell: bash
         run: |
           git config user.name 'Will Election Polls Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add site-final.js senate-current-sync.js senate-history-context.js index.html
+          git add senate-history-context.js index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Stop Ohio flashing and set Texas tilt red'
+          git commit -m 'Finalize 50-50 Senate totals after Texas tilt red'
           git push
