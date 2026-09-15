@@ -20,8 +20,8 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text()
-          old = 'site-ux-polish.js?v=20260913-2136'
-          new = 'site-ux-polish.js?v=20260914-2046'
+          old = 'site-ux-polish.js?v=20260914-2045'
+          new = 'site-ux-polish.js?v=20260914-2050'
           if old not in s:
               raise SystemExit(f'Expected cache key not found: {old}')
           p.write_text(s.replace(old, new, 1))
@@ -32,6 +32,6 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html
-          git commit -m "Cache-bump navigation fix"
+          git commit -m "Cache-bump navigation click fix"
           git push
-# trigger navigation cache bump
+# trigger fresh navigation cache bump 2050
