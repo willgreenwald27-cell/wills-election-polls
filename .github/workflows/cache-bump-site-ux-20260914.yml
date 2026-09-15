@@ -3,7 +3,7 @@ name: Cache bump site UX
 on:
   push:
     paths:
-      - '.github/workflows/cache-bump-site-ux-20260914.yml'
+      - 'nav-cache-trigger.txt'
 
 permissions:
   contents: write
@@ -14,22 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Bump site UX cache key
+        shell: bash
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text()
-          old = 'site-ux-polish.js?v=20260913-2136'
-          new = 'site-ux-polish.js?v=20260914-2045'
+          p=Path('index.html')
+          s=p.read_text()
+          old='site-ux-polish.js?v=20260914-2045'
+          new='site-ux-polish.js?v=20260914-2052'
           if old not in s:
               raise SystemExit(f'Expected cache key not found: {old}')
-          p.write_text(s.replace(old, new, 1))
+          p.write_text(s.replace(old,new,1))
           PY
       - name: Commit cache bump
+        shell: bash
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html
-          git commit -m 'Cache-bump navigation fix'
+          git commit -m "Cache-bump final navigation fix"
           git push
-# trigger once
