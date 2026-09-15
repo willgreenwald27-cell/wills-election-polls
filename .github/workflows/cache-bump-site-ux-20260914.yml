@@ -18,13 +18,15 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           p=Path('index.html')
           s=p.read_text()
-          old='site-ux-polish.js?v=20260914-2045'
-          new='site-ux-polish.js?v=20260914-2052'
-          if old not in s:
-              raise SystemExit(f'Expected cache key not found: {old}')
-          p.write_text(s.replace(old,new,1))
+          new='site-ux-polish.js?v=20260914-2055'
+          s,n=re.subn(r'site-ux-polish\.js\?v=[0-9-]+',new,s,count=1)
+          if n!=1:
+              raise SystemExit(f'Expected exactly one site UX cache key, found {n}')
+          p.write_text(s)
+          print(new)
           PY
       - name: Commit cache bump
         shell: bash
