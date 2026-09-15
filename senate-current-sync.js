@@ -43,6 +43,12 @@
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
+      const ks=stateData.KS;
+      if(ks){
+        set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'updated','2026-09-14');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
+        if('call' in ks) set(ks,'call','Marshall +4.9%');
+      }
       const oh=stateData.OH;
       if(oh){
         set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-14');
