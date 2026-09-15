@@ -10,8 +10,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply stable Ohio and Texas forecast
-        run: python3 .github/scripts/stabilize-ohio-texas.py
+      - name: Apply state and UI fixes
+        shell: bash
+        run: |
+          python3 .github/scripts/stabilize-ohio-texas.py || true
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          old="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tossup';stateData.TX.predictionParty='Tossup';stateData.TX.callParty='Tossup';stateData.TX.prediction='Tossup';}"
+          new="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.callParty='Republican';stateData.TX.prediction='Tilt Republican';}"
+          if old in s: s=s.replace(old,new,1)
+          if "TX:'Tossup'" in s: s=s.replace("TX:'Tossup'","TX:'Tilt Republican'",1)
+          for name,oldv,newv in [
+              ('site-final.js','20260913-2356','20260914-1826'),
+              ('senate-current-sync.js','20260913-2356','20260914-1826'),
+              ('senate-history-context.js','20260913-2356','20260914-1826')]:
+              token=f'{name}?v={oldv}'
+              i=s.rfind(token)
+              if i<0:
+                  print('cache token not found:',token)
+                  continue
+              s=s[:i]+f'{name}?v={newv}'+s[i+len(token):]
+          p.write_text(s)
+          PY
       - name: Commit stable forecast
         shell: bash
         run: |
