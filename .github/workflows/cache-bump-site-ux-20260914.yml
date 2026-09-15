@@ -32,3 +32,4 @@ jobs:
           git add index.html
           git commit -m 'Cache-bump navigation fix'
           git push
+# trigger once
