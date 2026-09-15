@@ -30,9 +30,9 @@
   function reorderNav(){
     const nav=document.querySelector('.site-header .nav');if(!nav)return;
     const items=[...nav.children];
-    const home=items.find(el=>/^Home$/i.test(norm(el.textContent)));
+    const senate=nav.querySelector('[data-page-link="senate"]')||items.find(el=>/^2026 Senate Prediction$/i.test(norm(el.textContent)));
     const errors=items.find(el=>/^Past Polling Errors$/i.test(norm(el.textContent)));
-    if(home&&errors&&home.nextElementSibling!==errors)nav.insertBefore(errors,home.nextElementSibling);
+    if(senate&&errors&&senate.nextElementSibling!==errors)nav.insertBefore(senate,errors);
   }
 
   function electionCountdown(){
