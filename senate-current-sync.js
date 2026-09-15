@@ -45,9 +45,15 @@
       }
       const oh=stateData.OH;
       if(oh){
-        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-13');
+        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-14');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in oh) set(oh,k,'Democratic');
         if('call' in oh) set(oh,'call','Tilt Democratic');
+      }
+      const tx=stateData.TX;
+      if(tx){
+        set(tx,'rating','tilt-r');set(tx,'predictionParty','Republican');set(tx,'prediction','Tilt Republican');set(tx,'notes','');set(tx,'updated','2026-09-14');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Republican');
+        if('call' in tx) set(tx,'call','Tilt Republican');
       }
       return changed;
     }catch(e){console.warn('Audited Senate data sync unavailable',e);return false;}
@@ -157,22 +163,22 @@
         if(!/REPUBLICAN/i.test(text)||!/DEMOCRAT/i.test(text))continue;
         const branch=label.parentElement;
         const n=leafs(branch).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'49':'50';
+        if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'50':'50';
         break;
       }
     }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^0\s+INDEPENDENT$/i.test(t)||/^0\s+TOSSUP$/i.test(t))el.textContent='1 TOSSUP';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='0 TOSSUP';
     }
     const bars=[...root.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
     for(const bar of bars){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
       if(d)d.style.setProperty('width','50%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(r)r.style.setProperty('width','50%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
-      if(y){y.style.setProperty('width','1%','important');y.style.setProperty('background',TOSSUP,'important');y.style.setProperty('display','block','important');}
+      if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
     }
   }
 
@@ -188,32 +194,25 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='49';}
+    if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='50';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
       if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-      if(/^0\s+TOSSUP$/i.test(t)||/^0\s+INDEPENDENT$/i.test(t))el.textContent='1 TOSSUP';
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSSUP';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
       if(d)d.style.setProperty('width','50%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(r)r.style.setProperty('width','50%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
-      if(y){y.style.setProperty('width','1%','important');y.style.setProperty('background',TOSSUP,'important');y.style.setProperty('display','block','important');}
-      bar.setAttribute('aria-label','Senate prediction: 50 Democrats, 49 Republicans, and 1 tossup');
+      if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
+      bar.setAttribute('aria-label','Senate prediction: 50 Democrats and 50 Republicans');
     }
-    if(!card.querySelector('.will-tossup-count')){
-      const note=card.querySelector('.majority-note')||card.querySelector('.senate-countdown')||bar;
-      if(note){
-        const s=document.createElement('div');s.className='will-tossup-count';s.textContent='1 TOSSUP';
-        s.style.cssText='margin-top:7px;text-align:center;color:#b58a00;font:900 10px/1.2 Inter,system-ui,sans-serif;letter-spacing:1.2px';
-        note.insertAdjacentElement('afterend',s);
-      }
-    }
+    card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
 
   function apply(){
@@ -223,7 +222,6 @@
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();[80,250,700,1600,3200].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,1200);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  document.addEventListener('click',e=>{if(e.target?.closest?.('#page-senate')){setTimeout(apply,0);setTimeout(apply,120);}},true);
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();
