@@ -1,1 +1,1 @@
-Trigger fresh navigation script cache key after final click/order fix.
+Trigger final navigation script cache key 2055 after click/order repair.
