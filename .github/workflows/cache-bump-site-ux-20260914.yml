@@ -1,0 +1,34 @@
+name: Cache bump site UX
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cache-bump-site-ux-20260914.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump site UX cache key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = 'site-ux-polish.js?v=20260913-2136'
+          new = 'site-ux-polish.js?v=20260914-2045'
+          if old not in s:
+              raise SystemExit(f'Expected cache key not found: {old}')
+          p.write_text(s.replace(old, new, 1))
+          PY
+      - name: Commit cache bump
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Cache-bump navigation fix'
+          git push
