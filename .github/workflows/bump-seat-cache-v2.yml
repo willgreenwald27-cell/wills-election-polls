@@ -1,3 +1,4 @@
+# trigger cache bump
 name: Bump seat balance cache
 on:
   push:
