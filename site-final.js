@@ -142,6 +142,7 @@
 
   function fixHome(){
     const root=document.getElementById('page-home'); if(!root) return;
+    for(const el of leafs(root)){if(/^(Sep(?:tember)?\s+(?:11|12),?\s+2026)$/i.test(norm(el.textContent)))el.textContent='Sep 15, 2026';}
     for(const card of root.querySelectorAll('.reference-metrics>*')){
       const t=norm(card.textContent).toLowerCase();
       if(t.includes('poll')&&t.includes('entered')) leafs(card).forEach(el=>{if(norm(el.textContent)==='13')el.textContent='88';});
