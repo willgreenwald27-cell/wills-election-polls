@@ -1,4 +1,4 @@
-name: Bump stabilized Senate script caches
+name: Bump site UX polish v2
 on:
   push:
     paths:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Bump stabilized Senate scripts
+      - name: Bump Senate placement fix
         shell: bash
         run: |
           python3 - <<'PY'
@@ -18,19 +18,19 @@ jobs:
           import re
           p=Path('index.html')
           s=p.read_text()
-          s,n1=re.subn(r'senate-color-polish\.js\?v=[0-9A-Za-z._-]+','senate-color-polish.js?v=20260916-001',s,count=1)
-          s,n2=re.subn(r'site-ux-polish\.js\?v=[0-9A-Za-z._-]+','site-ux-polish.js?v=20260916-001',s,count=1)
-          if n1!=1 or n2!=1:
-              raise SystemExit(f'loader refs not found exactly once: color={n1}, ux={n2}')
-          p.write_text(s)
+          old=s
+          s,n=re.subn(r'site-ux-polish\.js\?v=[0-9A-Za-z._-]+','site-ux-polish.js?v=20260913-2136',s,count=1)
+          if n!=1:
+              raise SystemExit('site-ux-polish loader not found exactly once')
+          if s!=old:
+              p.write_text(s)
           PY
-      - name: Commit cache bump
+      - name: Commit production update
         shell: bash
         run: |
           git config user.name 'Will Election Polls Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Bump stabilized Senate script caches'
-          git pull --rebase origin main
+          git commit -m 'Bump Senate party placement fix'
           git push

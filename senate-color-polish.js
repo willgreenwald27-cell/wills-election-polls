@@ -65,12 +65,7 @@
         if(name.includes('talarico')&&String(s[key])!=='47.8'){s[key]='47.8';changed=true;}
         if(name.includes('paxton')&&String(s[key])!=='44.9'){s[key]='44.9';changed=true;}
       }
-      if(s.updated!=='2026-09-15'){s.updated='2026-09-15';changed=true;}
-      if(s.rating!=='tilt-d'){s.rating='tilt-d';changed=true;}
-      if(s.predictionParty!=='Democratic'){s.predictionParty='Democratic';changed=true;}
-      if(s.callParty!=='Democratic'){s.callParty='Democratic';changed=true;}
-      if(s.prediction!=='Tilt Democratic'){s.prediction='Tilt Democratic';changed=true;}
-      if(String(s.notes||'')!==''){s.notes='';changed=true;}
+      if(s.updated!=='2026-09-09'){s.updated='2026-09-09';changed=true;}
       if(changed&&typeof renderSenate==='function'&&!rendering){
         rendering=true;
         try{renderSenate();}catch(e){}finally{rendering=false;}
@@ -82,8 +77,8 @@
     const senate=kind==='senate';
     const title=senate?'Will’s Senate Prediction':'Will’s House of Reps Prediction';
     const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
-    const dem=senate?'51':'228', rep=senate?'49':'207';
-    const demW=senate?'51%':'52.4138%', repW=senate?'49%':'47.5862%';
+    const dem=senate?'49':'228', rep=senate?'51':'207';
+    const demW=senate?'49%':'52.4138%', repW=senate?'51%':'47.5862%';
     const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
@@ -150,5 +145,7 @@
 
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
+  setInterval(apply,700);
+  new MutationObserver(()=>{clearTimeout(window.__senateColorPolishTimer);window.__senateColorPolishTimer=setTimeout(apply,35)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);
 })();
