@@ -277,7 +277,7 @@
 
   function apply(){
     const changed=syncData();
-    // Data is synchronized in place; do not trigger a competing Senate rerender.
+    if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}
     forceMaine();forceOhio();forceTexas();forceSenateSummary();forceHome();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
