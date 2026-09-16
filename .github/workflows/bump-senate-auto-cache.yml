@@ -1,0 +1,37 @@
+name: Bump Senate poll cache
+
+on:
+  push:
+    paths:
+      - '.github/workflows/bump-senate-auto-cache.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Refresh Senate poll script cache key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old='/senate-auto-averages.js?v=20260915-1722'
+          new='/senate-auto-averages.js?v=20260915-2105'
+          if old not in s:
+              raise SystemExit('Expected Senate auto averages cache key not found')
+          p.write_text(s.replace(old,new))
+          PY
+      - name: Commit cache refresh
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/bump-senate-auto-cache.yml
+          git add index.html
+          git commit -m 'Refresh Sep 15 Senate poll script cache'
+          git push
