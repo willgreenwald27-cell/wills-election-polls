@@ -39,6 +39,19 @@
     return NaN;
   }
 
+  function updateHomeDate(){
+    try{
+      const root=document.getElementById('page-home');
+      if(!root) return;
+      const text=v=>String(v||'').replace(/\s+/g,' ').trim();
+      for(const el of root.querySelectorAll('*')){
+        if(el.children.length) continue;
+        const t=text(el.textContent);
+        if(/^(Sep(?:tember)?\s+(?:11|12),?\s+2026)$/i.test(t)) el.textContent='Sep 15, 2026';
+      }
+    }catch(e){}
+  }
+
   function ensureNewPolls(){
     let nativeChanged=false;
     try{
@@ -51,20 +64,22 @@
       }
     }catch(e){}
     try{
-      if(Array.isArray(window.polls)){
+      const nativePolls=(typeof polls!=='undefined'&&Array.isArray(polls))?polls:(Array.isArray(window.polls)?window.polls:null);
+      if(nativePolls){
         for(const row of NEW_POLLS){
           const obj={date:row[0],state:row[1],pollster:row[3],sample:'',c1:row[4],c1Pct:String(row[5]),c2:row[6],c2Pct:String(row[7]),notes:row[8]||'User-provided poll'};
-          const exists=window.polls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&norm(p.pollster)===norm(obj.pollster)&&same(p.c1,obj.c1)&&same(p.c2,obj.c2));
-          if(!exists){window.polls.push(obj);nativeChanged=true;}
+          const exists=nativePolls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&norm(p.pollster)===norm(obj.pollster)&&same(p.c1,obj.c1)&&same(p.c2,obj.c2));
+          if(!exists){nativePolls.push(obj);nativeChanged=true;}
         }
       }
-      if(nativeChanged&&typeof window.renderPolls==='function'){
-        try{window.renderPolls();}catch(e){}
+      if(nativeChanged&&typeof renderPolls==='function'){
+        try{renderPolls();}catch(e){}
       }
     }catch(e){}
   }
 
   function apply(){
+    updateHomeDate();
     try{
       ensureNewPolls();
       const rows=window.__SENATE_POLL_ARCHIVE__;
