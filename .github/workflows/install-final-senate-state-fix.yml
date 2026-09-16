@@ -1,0 +1,51 @@
+name: Install final Senate state fix
+on:
+  push:
+    paths:
+      - '.github/workflows/install-final-senate-state-fix.yml'
+permissions:
+  contents: write
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable final fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          # Stop senate-current-sync from forcing a second render after it updates data.
+          p=Path('senate-current-sync.js')
+          s=p.read_text()
+          old="    if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}"
+          if old in s:
+              s=s.replace(old,"    // Data is synchronized in place; do not trigger a competing Senate rerender.")
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          static_css='<style id="final-senate-static">#page-senate [data-state="TX"],#page-senate [data-state="TX"] path,#page-senate [data-abbr="TX"],#page-senate [data-abbr="TX"] path,#page-senate [data-state-abbr="TX"],#page-senate [data-state-abbr="TX"] path,#page-senate #TX,#page-senate #TX path,#page-senate #state-TX,#page-senate #state-TX path{fill:#d3e2f7!important}#page-senate .senate-bar,#page-senate .balance-bar,#page-senate .senate-balance-bar,#page-home .senate-card .senate-bar,#page-home .will-senate-card .senate-bar{background:linear-gradient(to right,#2763b8 0 51%,#bd2937 51% 100%)!important}#page-senate .senate-bar>*,#page-senate .balance-bar>*,#page-senate .senate-balance-bar>*,#page-home .senate-card .senate-bar>*,#page-home .will-senate-card .senate-bar>*{background:transparent!important;background-color:transparent!important}</style>'
+          install="h=h.replace('</head>',"+repr(static_css+"</head>")+");h=h.replace('</body>','<script src=\"/final-senate-state-fix-20260915.js\"></script></body>');"
+          marker='document.open();document.write(h);document.close()'
+          if '/final-senate-state-fix-20260915.js' not in s:
+              if marker not in s: raise SystemExit('loader marker not found')
+              s=s.replace(marker,install+marker)
+          # Fresh cache keys for scripts that still matter.
+          for oldv,newv in [
+              ('senate-current-sync.js?v=20260915-2140','senate-current-sync.js?v=20260915-2204'),
+              ('site-final.js?v=20260915-2140','site-final.js?v=20260915-2204'),
+              ('sept9-final-ui.js?v=20260915-2140','sept9-final-ui.js?v=20260915-2204'),
+              ('sept11-final.js?v=20260915-2140','sept11-final.js?v=20260915-2204'),
+              ('site-ux-polish.js?v=20260915-2140','site-ux-polish.js?v=20260915-2204')]:
+              s=s.replace(oldv,newv)
+          p.write_text(s)
+          PY
+      - name: Commit final stable state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html senate-current-sync.js
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Stabilize Texas and Senate balance display"
+          git push
