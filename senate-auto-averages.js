@@ -8,6 +8,7 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-14','MN','Minnesota','co/efficient*','Peggy Flanagan',43,'Michele Tafoya',42,'Flanagan +1'],
     ['2026-09-14','TX','Texas','Telemundo/Mason-Dixon*','James Talarico',46,'Ken Paxton',43,'Talarico +3'],
     ['2026-09-14','IA','Iowa','Cygnal**','Ashley Hinson',43,'Josh Turek',43,'Tie'],
     ['2026-09-14','SC','South Carolina','Rasmussen Reports','Graham Nordone',48,'Annie Andrews',43,'Graham Nordone +5'],
