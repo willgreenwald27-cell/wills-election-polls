@@ -1,0 +1,52 @@
+name: Stabilize Senate home and Texas
+on:
+  push:
+    paths:
+      - '.github/workflows/stabilize-senate-home-tx.yml'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make display state consistent
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('site-final.js')
+          s=p.read_text()
+          s=s.replace("const value=/^REPUBLICAN$/i.test(t)?'50':'50';","const value=/^REPUBLICAN$/i.test(t)?'49':'51';")
+          s=s.replace("if(nums[0]) nums[0].textContent='50';","if(nums[0]) nums[0].textContent='51';")
+          s=s.replace("if(nums[1]) nums[1].textContent='50';","if(nums[1]) nums[1].textContent='49';")
+          s=s.replace("if(/^Democrats?:\\s*\\d+$/i.test(t)) el.textContent=t.replace(/\\d+$/,'50');","if(/^Democrats?:\\s*\\d+$/i.test(t)) el.textContent=t.replace(/\\d+$/,'51');")
+          s=s.replace("if(/^Republicans?:\\s*\\d+$/i.test(t)) el.textContent=t.replace(/\\d+$/,'50');","if(/^Republicans?:\\s*\\d+$/i.test(t)) el.textContent=t.replace(/\\d+$/,'49');")
+          s=s.replace("if(/^50 seats$/i.test(t)){","if(/^(?:49|50|51) seats$/i.test(t)){")
+          s=s.replace("if(/Democrat/i.test(parent)) el.textContent='50 seats';","if(/Democrat/i.test(parent)) el.textContent='51 seats';")
+          s=s.replace("if(/Republican/i.test(parent)) el.textContent='50 seats';","if(/Republican/i.test(parent)) el.textContent='49 seats';")
+          s=s.replace("kids[0].style.setProperty('width','50%','important');","kids[0].style.setProperty('width','51%','important');")
+          s=s.replace("kids[1].style.setProperty('width','50%','important');","kids[1].style.setProperty('width','49%','important');")
+          marker="function fixHome(){\n    const root=document.getElementById('page-home'); if(!root) return;"
+          repl=marker+"\n    for(const el of leafs(root)){if(/^(Sep(?:tember)?\\s+(?:11|12),?\\s+2026)$/i.test(norm(el.textContent)))el.textContent='Sep 15, 2026';}"
+          if marker in s and "Sep 15, 2026" not in s[s.find(marker):s.find(marker)+500]:
+              s=s.replace(marker,repl,1)
+          # Texas must stay blue / Tilt Democratic in this late-running script.
+          s=s.replace("stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Tilt Republican'","stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Tilt Democratic'")
+          p.write_text(s)
+
+          p=Path('index.html')
+          s=p.read_text()
+          for name in ['site-final.js','senate-current-sync.js','senate-auto-averages.js']:
+              s=re.sub(r'('+re.escape(name)+r'\?v=)[0-9A-Za-z._-]+',r'\g<1>20260915-2118',s)
+          p.write_text(s)
+          PY
+      - name: Commit update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site-final.js index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Stabilize Sep 15 date, 51-49 balance, and Texas blue'
+          git push
