@@ -132,7 +132,25 @@
     }
   }
 
-  function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();}
+  function fixHomeSenateCount(){
+    const root=document.getElementById('page-home');if(!root)return;
+    const card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');if(!card)return;
+    const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
+    if(nums[0])nums[0].textContent='51';
+    if(nums[1])nums[1].textContent='49';
+    for(const el of leafs(card)){
+      const t=norm(el.textContent);
+      if(/^Democrats?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+      if(/^Republicans?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^\d+\s+seats$/i.test(t)){
+        const p=norm(el.parentElement?.textContent);
+        if(/Democrat/i.test(p))el.textContent='51 seats';
+        if(/Republican/i.test(p))el.textContent='49 seats';
+      }
+    }
+  }
+
+  function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
   function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
 
   installNavClickRepair();apply();
