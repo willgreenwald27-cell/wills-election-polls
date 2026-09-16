@@ -102,6 +102,8 @@
     changed=false;
     if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
     changed=false;
+    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
+    changed=false;
     if(changed&&typeof renderSenate==='function'&&!renderingSenate){
       renderingSenate=true;
       try{renderSenate();}catch(e){}finally{renderingSenate=false;}
