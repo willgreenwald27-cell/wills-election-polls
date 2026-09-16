@@ -150,23 +150,23 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) nums[0].textContent='50';
-      if(nums[1]) nums[1].textContent='50';
+      if(nums[0]) nums[0].textContent='51';
+      if(nums[1]) nums[1].textContent='49';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
-        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
-        if(/^50 seats$/i.test(t)){
+        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'51');
+        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'49');
+        if(/^\d+ seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)) el.textContent='50 seats';
-          if(/Republican/i.test(parent)) el.textContent='50 seats';
+          if(/Democrat/i.test(parent)) el.textContent='51 seats';
+          if(/Republican/i.test(parent)) el.textContent='49 seats';
         }
       }
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0]) kids[0].style.setProperty('width','50%','important');
-        if(kids[1]) kids[1].style.setProperty('width','50%','important');
+        if(kids[0]) kids[0].style.setProperty('width','51%','important');
+        if(kids[1]) kids[1].style.setProperty('width','49%','important');
         if(kids[2]){kids[2].style.setProperty('width','0%','important');kids[2].style.setProperty('display','none','important');}
       }
     }
