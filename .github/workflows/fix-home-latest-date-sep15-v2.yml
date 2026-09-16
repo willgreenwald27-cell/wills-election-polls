@@ -1,0 +1,65 @@
+name: Fix homepage latest date to Sep 15
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-home-latest-date-sep15-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch homepage latest date
+        run: |
+          cat > home-latest-date.js <<'EOF'
+          (()=>{
+            'use strict';
+            const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+            function apply(){
+              const root=document.getElementById('page-home')||document.body;
+              if(!root)return;
+              const els=[...root.querySelectorAll('*')];
+              const latest=els.find(el=>el.children.length===0&&/^Latest Update$/i.test(norm(el.textContent)));
+              if(latest){
+                let box=latest.parentElement;
+                for(let i=0;box&&i<6;i++,box=box.parentElement){
+                  const leaves=[...box.querySelectorAll('*')].filter(el=>el.children.length===0);
+                  const date=leaves.find(el=>/^(Sep(?:tember)?\s+11,?\s+2026|Sep(?:tember)?\s+12,?\s+2026)$/i.test(norm(el.textContent)));
+                  if(date){date.textContent='Sep 15, 2026';break;}
+                }
+              }
+              for(const el of els){
+                if(el.children.length===0&&/^(Sep(?:tember)?\s+11,?\s+2026|Sep(?:tember)?\s+12,?\s+2026)$/i.test(norm(el.textContent))) el.textContent='Sep 15, 2026';
+              }
+            }
+            apply();
+            [50,150,400,900,1800,3200].forEach(ms=>setTimeout(apply,ms));
+            window.addEventListener('pageshow',apply);
+          })();
+          EOF
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old="h=h.replace('Sep 11, 2026','Sep 15, 2026');"
+          if old in s:
+              s=s.replace(old,"h=h.replace(/Sep\\s+11,\\s+2026/g,'Sep 15, 2026').replace(/September\\s+11,\\s+2026/g,'Sep 15, 2026');",1)
+          inject="h=h.replace('</body>','<script src=\"home-latest-date.js?v=20260915-1738\"></script></body>');"
+          if 'home-latest-date.js?v=20260915-1738' not in s:
+              marker="h=h.replace('</head>',publicLock+'</head>');"
+              assert marker in s, 'loader marker not found'
+              s=s.replace(marker,marker+inject,1)
+          p.write_text(s)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html home-latest-date.js
+          git diff --cached --quiet && exit 0
+          git commit -m 'Force homepage latest update to Sep 15'
+          git push
