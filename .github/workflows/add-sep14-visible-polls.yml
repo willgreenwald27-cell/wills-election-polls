@@ -1,0 +1,37 @@
+name: Add Sep 14 visible Senate polls
+
+on:
+  push:
+    paths:
+      - 'senate-auto-averages.js'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh Senate auto-average cache key
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          s,n=re.subn(r'senate-auto-averages\.js\?v=[0-9-]+','senate-auto-averages.js?v=20260915-1717',s,count=1)
+          if n!=1:
+              raise SystemExit(f'expected one senate-auto-averages cache key, found {n}')
+          p.write_text(s)
+          PY
+      - name: Commit cache refresh
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          rm -f .github/workflows/add-sep14-visible-polls.yml
+          git add index.html .github/workflows/add-sep14-visible-polls.yml
+          git commit -m "Cache-bump Sep 14 Senate polls"
+          git push
