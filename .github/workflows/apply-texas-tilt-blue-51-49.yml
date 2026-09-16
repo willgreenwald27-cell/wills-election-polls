@@ -1,4 +1,4 @@
-name: Apply Texas tilt blue and 51-49 Senate update
+name: Align Texas blue source and refresh cache
 
 on:
   push:
@@ -15,44 +15,29 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Patch Senate source and cache key
+      - name: Align loader source
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          p = Path('senate-current-sync.js')
-          s = p.read_text()
-          old = "set(tx,'rating','tilt-r');set(tx,'predictionParty','Republican');set(tx,'prediction','Tilt Republican');set(tx,'notes','');set(tx,'updated','2026-09-14');\n        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Republican');\n        if('call' in tx) set(tx,'call','Tilt Republican');"
-          new = "set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic');set(tx,'notes','');set(tx,'updated','2026-09-15');\n        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');\n        if('call' in tx) set(tx,'call','Tilt Democratic');"
-          assert old in s, 'Texas source block not found'
-          s = s.replace(old, new, 1)
-          if 'function forceTexas()' not in s:
-              m = re.search(r"\n  function forceOhio\(\)\{.*?\n  \}\n(?=\n  function forceSenateSummary)", s, re.S)
-              assert m, 'forceOhio function not found'
-              tx = m.group(0).replace('forceOhio','forceTexas',1).replace('Ohio','Texas').replace('OH','TX')
-              s = s[:m.end()] + tx + s[m.end():]
-          s = s.replace("if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'50':'50';", "if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'49':'51';", 1)
-          s = s.replace("if(d)d.style.setProperty('width','50%','important');\n      if(r)r.style.setProperty('width','50%','important');", "if(d)d.style.setProperty('width','51%','important');\n      if(r)r.style.setProperty('width','49%','important');", 1)
-          s = s.replace("if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='50';}", "if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}", 1)
-          s = s.replace("if(/^Democrats?:\\s*\\d+$/i.test(t))el.textContent=t.replace(/\\d+$/,'50');", "if(/^Democrats?:\\s*\\d+$/i.test(t))el.textContent=t.replace(/\\d+$/,'51');", 1)
-          s = s.replace("if(/^Republicans?:\\s*\\d+$/i.test(t))el.textContent=t.replace(/\\d+$/,'50');", "if(/^Republicans?:\\s*\\d+$/i.test(t))el.textContent=t.replace(/\\d+$/,'49');", 1)
-          s = s.replace("if(d)d.style.setProperty('width','50%','important');\n      if(r)r.style.setProperty('width','50%','important');", "if(d)d.style.setProperty('width','51%','important');\n      if(r)r.style.setProperty('width','49%','important');", 1)
-          s = s.replace("bar.setAttribute('aria-label','Senate prediction: 50 Democrats and 50 Republicans');", "bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');", 1)
-          s = s.replace("forceMaine();forceOhio();forceSenateSummary();forceHome();", "forceMaine();forceOhio();forceTexas();forceSenateSummary();forceHome();", 1)
-          p.write_text(s)
-          idx = Path('index.html')
-          h = idx.read_text()
-          h2, n = re.subn(r"senate-current-sync\.js\?v=[0-9A-Za-z._-]+", "senate-current-sync.js?v=20260915-1724", h)
-          if n == 0:
-              h2, n = re.subn(r"senate-current-sync\.js", "senate-current-sync.js?v=20260915-1724", h, count=1)
-          assert n > 0, 'senate-current-sync cache reference not found in index.html'
-          idx.write_text(h2)
+          p=Path('senate-current-sync.js')
+          s=p.read_text()
+          assert "set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic')" in s
+          idx=Path('index.html')
+          h=idx.read_text()
+          old="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.callParty='Republican';stateData.TX.prediction='Tilt Republican';}"
+          new="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';}"
+          if old in h:
+              h=h.replace(old,new,1)
+          h,n=re.subn(r"senate-current-sync\.js\?v=[0-9A-Za-z._-]+","senate-current-sync.js?v=20260915-1733",h)
+          assert n>0
+          idx.write_text(h)
           PY
       - name: Commit changes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add senate-current-sync.js index.html
+          git add index.html
           git diff --cached --quiet && exit 0
-          git commit -m 'Set Texas tilt Democratic and Senate 51-49'
+          git commit -m 'Align Texas Democratic source and refresh cache'
           git push
