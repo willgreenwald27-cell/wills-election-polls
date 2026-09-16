@@ -137,7 +137,6 @@
 
   installNavClickRepair();apply();
   [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,750);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();

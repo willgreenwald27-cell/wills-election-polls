@@ -49,12 +49,12 @@
       if(!/latest\s+update/i.test(t))continue;
       for(const el of leafs(card)){
         const x=norm(el.textContent);
-        if(/^(?:Sep(?:t(?:ember)?)?\.?\s+\d{1,2},?\s+2026|2026-09-\d{2})$/i.test(x))el.textContent='Sep 11, 2026';
+        if(/^(?:Sep(?:t(?:ember)?)?\.?\s+\d{1,2},?\s+2026|2026-09-\d{2})$/i.test(x))el.textContent='Sep 15, 2026';
       }
     }
     for(const el of leafs(root)){
       const t=norm(el.textContent);
-      if(/^Last updated\s*[:·-]?\s*(?:Sep(?:t(?:ember)?)?\.?\s+\d{1,2},?\s+2026|2026-09-\d{2})$/i.test(t))el.textContent='Last updated September 11, 2026';
+      if(/^Last updated\s*[:·-]?\s*(?:Sep(?:t(?:ember)?)?\.?\s+\d{1,2},?\s+2026|2026-09-\d{2})$/i.test(t))el.textContent='Last updated September 15, 2026';
     }
   }
 
@@ -175,7 +175,6 @@
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();
   [80,250,700,1500,3000].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,500);
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);
   window.addEventListener('resize',apply);
