@@ -1,0 +1,35 @@
+name: Cache-bust homepage Senate count
+
+on:
+  push:
+    paths:
+      - 'home-seat-cachebust.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump only site-ux-polish cache key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          old = 'site-ux-polish.js?v=20260914-2055'
+          new = 'site-ux-polish.js?v=20260916-0627'
+          if old not in s:
+              raise SystemExit(f'Expected cache key not found: {old}')
+          s2 = s.replace(old, new, 1)
+          p.write_text(s2)
+          PY
+      - name: Commit cache bust
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Load fresh homepage Senate count script'
+          git push
