@@ -132,61 +132,12 @@
     }
   }
 
-  function fixSeatBalance(){
-    const senate=document.getElementById('page-senate');
-    if(senate){
-      const d=senate.querySelector('.balance-party.dem strong');
-      const r=senate.querySelector('.balance-party.rep strong');
-      if(d)d.textContent='51';
-      if(r)r.textContent='49';
-      const row=senate.querySelector('.balance-count-row');
-      if(row){
-        const dem=row.querySelector('.balance-party.dem');
-        const rep=row.querySelector('.balance-party.rep');
-        if(dem){const n=[...dem.querySelectorAll('*')].find(x=>/^\d+$/.test(norm(x.textContent)));if(n)n.textContent='51';}
-        if(rep){const n=[...rep.querySelectorAll('*')].find(x=>/^\d+$/.test(norm(x.textContent)));if(n)n.textContent='49';}
-      }
-      const bar=senate.querySelector('.senate-bar,.balance-bar');
-      if(bar){
-        const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0])kids[0].style.setProperty('width','51%','important');
-        if(kids[1])kids[1].style.setProperty('width','49%','important');
-        if(kids[2]){kids[2].style.setProperty('width','0%','important');kids[2].style.setProperty('display','none','important');}
-      }
-    }
-    const home=document.getElementById('page-home');
-    if(home){
-      const card=home.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
-      if(card){
-        const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-        if(nums[0])nums[0].textContent='51';
-        if(nums[1])nums[1].textContent='49';
-        for(const el of leafs(card)){
-          const t=norm(el.textContent);
-          if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
-          if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-          if(t==='50'){
-            const pt=norm(el.parentElement?.textContent||'');
-            if(/Democrat/i.test(pt))el.textContent='51';
-            else if(/Republican/i.test(pt))el.textContent='49';
-          }
-        }
-        const bar=card.querySelector('.senate-bar');
-        if(bar){
-          const kids=[...bar.children].filter(x=>x.tagName!=='B');
-          if(kids[0])kids[0].style.setProperty('width','51%','important');
-          if(kids[1])kids[1].style.setProperty('width','49%','important');
-          if(kids[2]){kids[2].style.setProperty('width','0%','important');kids[2].style.setProperty('display','none','important');}
-        }
-      }
-    }
-  }
-
-  function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixSeatBalance();}
+  function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();}
   function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
 
   installNavClickRepair();apply();
   [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  setInterval(apply,750);
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();

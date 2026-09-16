@@ -30,7 +30,7 @@
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
       if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Tilt Democratic';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Tilt Republican';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Republican';if('call' in stateData.TX)stateData.TX.call='Tilt Republican';}
     }catch(e){}
   }
 
@@ -52,7 +52,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value=/^REPUBLICAN$/i.test(t)?'49':'51';
+      const value=/^REPUBLICAN$/i.test(t)?'50':'50';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
@@ -142,7 +142,6 @@
 
   function fixHome(){
     const root=document.getElementById('page-home'); if(!root) return;
-    for(const el of leafs(root)){if(/^(Sep(?:tember)?\s+(?:11|12),?\s+2026)$/i.test(norm(el.textContent)))el.textContent='Sep 15, 2026';}
     for(const card of root.querySelectorAll('.reference-metrics>*')){
       const t=norm(card.textContent).toLowerCase();
       if(t.includes('poll')&&t.includes('entered')) leafs(card).forEach(el=>{if(norm(el.textContent)==='13')el.textContent='88';});
@@ -151,23 +150,23 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) nums[0].textContent='51';
-      if(nums[1]) nums[1].textContent='49';
+      if(nums[0]) nums[0].textContent='50';
+      if(nums[1]) nums[1].textContent='50';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'51');
-        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'49');
-        if(/^\d+ seats$/i.test(t)){
+        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^50 seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)) el.textContent='51 seats';
-          if(/Republican/i.test(parent)) el.textContent='49 seats';
+          if(/Democrat/i.test(parent)) el.textContent='50 seats';
+          if(/Republican/i.test(parent)) el.textContent='50 seats';
         }
       }
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0]) kids[0].style.setProperty('width','51%','important');
-        if(kids[1]) kids[1].style.setProperty('width','49%','important');
+        if(kids[0]) kids[0].style.setProperty('width','50%','important');
+        if(kids[1]) kids[1].style.setProperty('width','50%','important');
         if(kids[2]){kids[2].style.setProperty('width','0%','important');kids[2].style.setProperty('display','none','important');}
       }
     }

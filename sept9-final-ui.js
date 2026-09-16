@@ -34,7 +34,7 @@
         const n=leaves.find(el=>/^\d+$/.test(norm(el.textContent))); if(n)n.textContent='93';
       }
       if(t.includes('latest')&&t.includes('update')){
-        const d=leaves.find(el=>/2026/.test(norm(el.textContent))); if(d)d.textContent='Sep 15, 2026';
+        const d=leaves.find(el=>/2026/.test(norm(el.textContent))); if(d)d.textContent='Sep 9, 2026';
       }
     }
   }
@@ -87,23 +87,9 @@
           if(name.includes('talarico')&&String(s[key])!=='47.8'){s[key]='47.8';changed=true;}
           if(name.includes('paxton')&&String(s[key])!=='44.9'){s[key]='44.9';changed=true;}
         }
-        if(s.updated!=='2026-09-15'){s.updated='2026-09-15';changed=true;}
-        s.rating='tilt-d';s.predictionParty='Democratic';s.callParty='Democratic';s.prediction='Tilt Democratic';s.notes='';
+        if(s.updated!=='2026-09-09'){s.updated='2026-09-09';changed=true;}
       }
     }catch(e){}
-    changed=false; // do not trigger a competing Senate rerender
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
-    if(stateData?.TX){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';}
-    changed=false;
     if(changed&&typeof renderSenate==='function'&&!renderingSenate){
       renderingSenate=true;
       try{renderSenate();}catch(e){}finally{renderingSenate=false;}
@@ -161,6 +147,7 @@
   }
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
+  setInterval(apply,1400);
   new MutationObserver(()=>{clearTimeout(window.__sept9FinalTimer);window.__sept9FinalTimer=setTimeout(apply,45);}).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',apply);
 })();
