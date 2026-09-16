@@ -15,7 +15,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          # Stop senate-current-sync from forcing a second render after it updates data.
           p=Path('senate-current-sync.js')
           s=p.read_text()
           old="    if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}"
@@ -31,7 +30,6 @@ jobs:
           if '/final-senate-state-fix-20260915.js' not in s:
               if marker not in s: raise SystemExit('loader marker not found')
               s=s.replace(marker,install+marker)
-          # Fresh cache keys for scripts that still matter.
           for oldv,newv in [
               ('senate-current-sync.js?v=20260915-2140','senate-current-sync.js?v=20260915-2204'),
               ('site-final.js?v=20260915-2140','site-final.js?v=20260915-2204'),
@@ -49,3 +47,4 @@ jobs:
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Stabilize Texas and Senate balance display"
           git push
+# trigger 20260915-2208
