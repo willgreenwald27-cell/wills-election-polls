@@ -1,4 +1,4 @@
-name: Cache-bust homepage Senate count
+name: Fix Ohio Texas notes and latest polls
 
 on:
   push:
@@ -13,23 +13,58 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Bump only site-ux-polish cache key
+      - name: Apply only requested Senate popup and poll-feed fixes
         run: |
           python - <<'PY'
           from pathlib import Path
+
+          # 1) Texas + Ohio only: remove any "WHY MY ... DIFFERS" block in their existing popup cleanup.
+          p = Path('senate-current-sync.js')
+          s = p.read_text()
+          old1 = "for(const heading of leafs(box).filter(el=>/^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)))){"
+          new1 = "for(const heading of leafs(box).filter(el=>/^WHY MY .*DIFFERS(?:\\b|$)/i.test(norm(el.textContent)))){"
+          old2 = "if(/^WHY MY FORECAST DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}"
+          new2 = "if(/^WHY MY .*DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}"
+          if s.count(old1) != 2 or s.count(old2) != 2:
+              raise SystemExit(f'Unexpected Ohio/Texas why-block anchors: {s.count(old1)}, {s.count(old2)}')
+          s = s.replace(old1, new1).replace(old2, new2)
+          p.write_text(s)
+
+          # 2) Add the seven user-supplied polls to the native New Polls data source.
+          p = Path('sep9-polls-update.js')
+          s = p.read_text()
+          if "Telemundo/Mason-Dixon*" not in s:
+              anchor = "      if(changed&&typeof renderPolls==='function') renderPolls();"
+              if anchor not in s:
+                  raise SystemExit('New Polls insertion anchor not found')
+              rows = """      add({date:'2026-09-15',state:'TX',pollster:'Telemundo/Mason-Dixon*',sample:'',c1:'James Talarico',c1Pct:'46',c2:'Ken Paxton',c2Pct:'43',notes:'Talarico +3'});
+      add({date:'2026-09-15',state:'IA',pollster:'Cygnal**',sample:'',c1:'Ashley Hinson',c1Pct:'43',c2:'Josh Turek',c2Pct:'43',notes:'Tie'});
+      add({date:'2026-09-15',state:'SC',pollster:'Rasmussen Reports',sample:'',c1:'Graham Nordone',c1Pct:'48',c2:'Annie Andrews',c2Pct:'43',notes:'Graham Nordone +5'});
+      add({date:'2026-09-15',state:'GA',pollster:'Rasmussen Reports',sample:'',c1:'Jon Ossoff',c1Pct:'51',c2:'Mike Collins',c2Pct:'42',notes:'Ossoff +9'});
+      add({date:'2026-09-15',state:'NH',pollster:'co/efficient',sample:'',c1:'Chris Pappas',c1Pct:'46',c2:'Chris Sununu',c2Pct:'46',notes:'Tie'});
+      add({date:'2026-09-15',state:'AK',pollster:'Rasmussen Reports',sample:'',c1:'Dan Sullivan',c1Pct:'39',c2:'Mary Peltola',c2Pct:'39',notes:'RCV 1st Round · J. Sullivan 7 · Heikes 6'});
+      add({date:'2026-09-15',state:'MN',pollster:'co/efficient*',sample:'',c1:'Peggy Flanagan',c1Pct:'43',c2:'Michele Tafoya',c2Pct:'42',notes:'Flanagan +1'});
+"""
+              s = s.replace(anchor, rows + anchor, 1)
+          p.write_text(s)
+
+          # 3) Cache-bust only the two scripts changed above.
           p = Path('index.html')
           s = p.read_text()
-          old = 'site-ux-polish.js?v=20260914-2055'
-          new = 'site-ux-polish.js?v=20260916-0627'
-          if old not in s:
-              raise SystemExit(f'Expected cache key not found: {old}')
-          s2 = s.replace(old, new, 1)
-          p.write_text(s2)
+          replacements = {
+              'senate-current-sync.js?v=20260914-1826':'senate-current-sync.js?v=20260916-2113',
+              'sep9-polls-update.js?v=20260913-2120':'sep9-polls-update.js?v=20260916-2113',
+          }
+          for old,new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'Expected cache key not found: {old}')
+              s = s.replace(old,new,1)
+          p.write_text(s)
           PY
-      - name: Commit cache bust
+      - name: Commit requested fixes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          git commit -m 'Load fresh homepage Senate count script'
+          git add senate-current-sync.js sep9-polls-update.js index.html
+          git commit -m 'Remove Texas Ohio why blocks and show latest polls'
           git push
