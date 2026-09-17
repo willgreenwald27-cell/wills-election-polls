@@ -1,4 +1,4 @@
-name: Align Texas blue source and refresh cache
+name: Embed Homepage Senate 51-49 Fix
 
 on:
   push:
@@ -15,29 +15,79 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Align loader source
+      - name: Embed Senate-only homepage override
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
-          import re
-          p=Path('senate-current-sync.js')
-          s=p.read_text()
-          assert "set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic')" in s
-          idx=Path('index.html')
-          h=idx.read_text()
-          old="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.callParty='Republican';stateData.TX.prediction='Tilt Republican';}"
-          new="if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.callParty='Democratic';stateData.TX.prediction='Tilt Democratic';}"
-          if old in h:
-              h=h.replace(old,new,1)
-          h,n=re.subn(r"senate-current-sync\.js\?v=[0-9A-Za-z._-]+","senate-current-sync.js?v=20260915-1733",h)
-          assert n>0
-          idx.write_text(h)
+          import base64, gzip
+
+          parts = ['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          encoded = ''.join(Path(p).read_text() for p in parts)
+          html = gzip.decompress(base64.b64decode(encoded)).decode('utf-8')
+
+          marker = 'wg-home-senate-embedded-51-49-v1'
+          if marker not in html:
+              script = r'''
+<script id="wg-home-senate-embedded-51-49-v1">
+(()=>{
+  const text=e=>String(e?.textContent||'').replace(/\s+/g,' ').trim();
+  const leaves=r=>r?[...r.querySelectorAll('*')].filter(e=>e.children.length===0):[];
+  function fix(){
+    const root=document.getElementById('page-home');
+    if(!root)return;
+    const candidates=[...root.querySelectorAll('*')].filter(el=>{
+      const t=text(el);
+      if(!/senate/i.test(t))return false;
+      return leaves(el).filter(x=>text(x)==='50').length>=2;
+    }).sort((a,b)=>{
+      const ah=/house/i.test(text(a))?1:0;
+      const bh=/house/i.test(text(b))?1:0;
+      if(ah!==bh)return ah-bh;
+      return a.querySelectorAll('*').length-b.querySelectorAll('*').length;
+    });
+    const card=candidates[0];
+    if(!card)return;
+    const fifties=leaves(card).filter(x=>text(x)==='50');
+    let dem=null,rep=null;
+    for(const x of fifties){
+      let n=x;
+      let ctx='';
+      for(let i=0;n&&n!==card&&i<5;i++,n=n.parentElement)ctx+=' '+text(n);
+      if(!dem&&/democrat/i.test(ctx))dem=x;
+      if(!rep&&/republican/i.test(ctx))rep=x;
+    }
+    if(dem)dem.textContent='51';
+    if(rep)rep.textContent='49';
+    if(!dem&&!rep&&fifties.length>=2){fifties[0].textContent='51';fifties[1].textContent='49';}
+    else {
+      const left=fifties.filter(x=>x!==dem&&x!==rep);
+      if(!dem&&left[0])left[0].textContent='51';
+      if(!rep&&left[1])left[1].textContent='49';
+    }
+    for(const el of leaves(card)){
+      const t=text(el);
+      if(/^Democrats?\s*:?\s*50$/i.test(t))el.textContent=t.replace(/50$/,'51');
+      if(/^Republicans?\s*:?\s*50$/i.test(t))el.textContent=t.replace(/50$/,'49');
+    }
+  }
+  fix();
+  [50,150,350,700,1200,2200,4000].forEach(ms=>setTimeout(fix,ms));
+  setInterval(fix,900);
+  new MutationObserver(fix).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+'''
+              html = html.replace('</body>', script + '</body>', 1)
+
+          out = base64.b64encode(gzip.compress(html.encode('utf-8'), mtime=0)).decode('ascii')
+          size = (len(out) + len(parts) - 1) // len(parts)
+          for i,p in enumerate(parts):
+              Path(p).write_text(out[i*size:(i+1)*size])
           PY
-      - name: Commit changes
+      - name: Commit page payload
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          git diff --cached --quiet && exit 0
-          git commit -m 'Align Texas Democratic source and refresh cache'
+          git add d0.txt d1.txt d2.txt d3.txt d4.txt d5.txt d6.txt d7.txt d8a.txt d8b.txt d9.txt
+          git commit -m 'Embed homepage Senate 51-49 fix in page payload' || exit 0
           git push
