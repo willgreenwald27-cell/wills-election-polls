@@ -30,7 +30,7 @@
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
       if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Tilt Republican';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Republican';if('call' in stateData.TX)stateData.TX.call='Tilt Republican';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Tilt Democratic';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Tilt Democratic';}
     }catch(e){}
   }
 
@@ -52,7 +52,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value=/^REPUBLICAN$/i.test(t)?'50':'50';
+      const value=/^REPUBLICAN$/i.test(t)?'49':'51';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
