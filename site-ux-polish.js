@@ -134,33 +134,22 @@
 
   function fixHomeSenateCount(){
     const root=document.getElementById('page-home');if(!root)return;
-    let card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
-    if(!card){
-      const title=leafs(root).find(el=>/Senate/i.test(norm(el.textContent))&&!/House/i.test(norm(el.textContent)));
-      if(title){
-        let node=title.parentElement;
-        for(let i=0;node&&node!==root&&i<10;i++,node=node.parentElement){
-          const t=norm(node.textContent);
-          const nums=node.querySelectorAll('.party-number,.final-party-number');
-          if(/Senate/i.test(t)&&!/House/i.test(t)&&nums.length>=2){card=node;break;}
-        }
+    const senateLabels=leafs(root).filter(el=>/senate/i.test(norm(el.textContent)));
+    let card=null;
+    for(const label of senateLabels){
+      let node=label.parentElement;
+      for(let i=0;node&&node!==root&&i<12;i++,node=node.parentElement){
+        const fifties=leafs(node).filter(el=>norm(el.textContent)==='50');
+        if(fifties.length===2){card=node;break;}
       }
+      if(card)break;
     }
-    if(!card||card===root)return;
-    const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0])nums[0].textContent='51';
-    if(nums[1])nums[1].textContent='49';
-    for(const el of leafs(card)){
-      const t=norm(el.textContent);
-      if(/^Democrats?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
-      if(/^Republicans?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-      if(/^\d+\s+seats$/i.test(t)){
-        const p=norm(el.parentElement?.textContent);
-        if(/Democrat/i.test(p))el.textContent='51 seats';
-        if(/Republican/i.test(p))el.textContent='49 seats';
-      }
+    if(!card)return;
+    const fifties=leafs(card).filter(el=>norm(el.textContent)==='50');
+    if(fifties.length===2){
+      fifties[0].textContent='51';
+      fifties[1].textContent='49';
     }
-    const bar=card.querySelector('.senate-bar,.final-bar,.forecast-bar,.seat-bar');if(bar){const d=bar.querySelector('.dem,.democratic,[data-party=dem]'),r=bar.querySelector('.rep,.republican,[data-party=rep]');if(d)d.style.setProperty('width','51%','important');if(r)r.style.setProperty('width','49%','important');const y=bar.querySelector('.tossup,.toss-up,[data-tossup]');if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');}
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
