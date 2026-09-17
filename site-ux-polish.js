@@ -134,7 +134,19 @@
 
   function fixHomeSenateCount(){
     const root=document.getElementById('page-home');if(!root)return;
-    let card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');if(!card)card=root;
+    let card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
+    if(!card){
+      const title=leafs(root).find(el=>/Senate/i.test(norm(el.textContent))&&!/House/i.test(norm(el.textContent)));
+      if(title){
+        let node=title.parentElement;
+        for(let i=0;node&&node!==root&&i<10;i++,node=node.parentElement){
+          const t=norm(node.textContent);
+          const nums=node.querySelectorAll('.party-number,.final-party-number');
+          if(/Senate/i.test(t)&&!/House/i.test(t)&&nums.length>=2){card=node;break;}
+        }
+      }
+    }
+    if(!card||card===root)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
     if(nums[0])nums[0].textContent='51';
     if(nums[1])nums[1].textContent='49';
