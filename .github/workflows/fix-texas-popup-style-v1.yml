@@ -1,0 +1,81 @@
+name: Fix Texas popup style
+
+on:
+  push:
+    paths:
+      - 'fix-texas-popup-style.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove Texas-only call-card styling
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          # 1) Last-loaded Texas stability script: keep data/color stability,
+          # but stop forcing a unique call-card palette.
+          p=Path('senate-click-stability.js')
+          s=p.read_text()
+          old="""        card.style.setProperty('background',BLUE,'important');
+        card.style.setProperty('background-image','none','important');
+        card.style.setProperty('border-color',BLUE_BORDER,'important');
+        card.style.setProperty('color',BLUE_DARK,'important');
+        card.querySelectorAll('*').forEach(el=>el.style.setProperty('color',BLUE_DARK,'important'));
+"""
+          new="""        card.style.removeProperty('background');
+        card.style.removeProperty('background-image');
+        card.style.removeProperty('border-color');
+        card.style.removeProperty('color');
+        card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
+"""
+          if old not in s:
+              raise SystemExit('Texas stability card style block not found')
+          s=s.replace(old,new,1)
+          p.write_text(s)
+
+          # 2) Senate current sync: edit only forceTexas(), not forceOhio().
+          p=Path('senate-current-sync.js')
+          s=p.read_text()
+          a=s.index('  function forceTexas(){')
+          b=s.index('  function forceSenateSummary(){',a)
+          pre,tx,post=s[:a],s[a:b],s[b:]
+          old2="""          card.style.setProperty('background',TILT_BLUE,'important');
+          card.style.setProperty('background-image','none','important');
+          card.style.setProperty('border-color',TILT_BLUE_BORDER,'important');
+          card.style.setProperty('color',BLUE_DARK,'important');
+          card.querySelectorAll('*').forEach(el=>el.style.setProperty('color',BLUE_DARK,'important'));
+"""
+          new2="""          card.style.removeProperty('background');
+          card.style.removeProperty('background-image');
+          card.style.removeProperty('border-color');
+          card.style.removeProperty('color');
+          card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
+"""
+          if old2 not in tx:
+              raise SystemExit('forceTexas card style block not found')
+          tx=tx.replace(old2,new2,1)
+          p.write_text(pre+tx+post)
+
+          # 3) Cache-bump only these two scripts in the loader.
+          p=Path('index.html')
+          s=p.read_text()
+          s,n1=re.subn(r'senate-current-sync\.js\?v=[0-9-]+','senate-current-sync.js?v=20260916-2227',s)
+          s,n2=re.subn(r'senate-click-stability\.js\?v=[0-9-]+','senate-click-stability.js?v=20260916-2227',s)
+          if n1<1 or n2<1:
+              raise SystemExit(f'Cache refs missing: current={n1}, stability={n2}')
+          p.write_text(s)
+          PY
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add senate-click-stability.js senate-current-sync.js index.html
+          git commit -m 'Match Texas popup styling to normal Senate call cards'
+          git push
