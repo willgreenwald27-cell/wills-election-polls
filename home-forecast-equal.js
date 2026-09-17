@@ -30,6 +30,19 @@
     }
   }
 
+  function removeLatestUpdateMetric(){
+    const root=document.getElementById('page-home');
+    if(!root) return;
+    const metrics=root.querySelector('.reference-metrics');
+    if(!metrics) return;
+    for(const card of [...metrics.children]){
+      const t=norm(card.textContent).toLowerCase();
+      if(t.includes('latest')&&t.includes('update')) card.remove();
+    }
+    const count=metrics.children.length;
+    if(count>0) metrics.style.setProperty('grid-template-columns',`repeat(${count},minmax(0,1fr))`,'important');
+  }
+
   function applyEqualForecastCards(){
     const split=document.getElementById('homeForecastSplit');
     if(split){
@@ -113,6 +126,7 @@
             #homeForecastSplit .house-card{order:2!important}
             #homeForecastSplit .senate-title{font-size:clamp(28px,8vw,40px)!important}
             #homeForecastSplit .party-number{font-size:clamp(46px,14vw,68px)!important}
+            #page-home .reference-metrics{grid-template-columns:1fr!important}
           }
         `;
         document.head.appendChild(st);
@@ -131,6 +145,7 @@
       }
     }
 
+    removeLatestUpdateMetric();
     removeOhioTexasForecastWhy();
   }
 
