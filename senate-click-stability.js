@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const BLUE='#d3e2f7', BLUE_BORDER='#a9c5ed', BLUE_DARK='#173f87';
+  const BLUE='#d3e2f7';
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   let queued=false;
 
@@ -82,11 +82,12 @@
         if(/WILL[’']S CALL/i.test(t)&&t.length<220)break;
       }
       if(card&&card!==panel){
-        card.style.setProperty('background',BLUE,'important');
-        card.style.setProperty('background-image','none','important');
-        card.style.setProperty('border-color',BLUE_BORDER,'important');
-        card.style.setProperty('color',BLUE_DARK,'important');
-        card.querySelectorAll('*').forEach(el=>el.style.setProperty('color',BLUE_DARK,'important'));
+        // Remove Texas-only inline palette so the normal Senate call-card CSS applies.
+        card.style.removeProperty('background');
+        card.style.removeProperty('background-image');
+        card.style.removeProperty('border-color');
+        card.style.removeProperty('color');
+        card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
         if(party)party.textContent='Democratic';
@@ -116,6 +117,6 @@
       setTimeout(apply,0);setTimeout(apply,80);setTimeout(apply,180);
     }
   },true);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);
 })();
