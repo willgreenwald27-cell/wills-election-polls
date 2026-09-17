@@ -1,0 +1,23 @@
+name: Bump Texas popup cache
+
+on:
+  push:
+    paths:
+      - 'bump-texas-popup-cache.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump Texas popup script cache
+        run: |
+          sed -i -E 's/senate-click-stability\.js\?v=[0-9-]+/senate-click-stability.js?v=20260916-2230/g' index.html
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Refresh Texas popup styling script'
+          git push
