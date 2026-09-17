@@ -1,0 +1,81 @@
+name: Add Sep 16 Senate polls
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-sep16-senate-polls.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Sep 16 polls and refresh averages
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Add the five fully visible September 16 polls to the live poll feed/archive.
+          p = Path('senate-auto-averages.js')
+          s = p.read_text()
+          marker = "  const NEW_POLLS=[\n"
+          rows = (
+              "    ['2026-09-16','TX','Texas','Emerson*','James Talarico',47,'Ken Paxton',46,'Talarico +1'],\n"
+              "    ['2026-09-16','TX','Texas','Texas A&M/Siena','James Talarico',49,'Ken Paxton',43,'Talarico +6'],\n"
+              "    ['2026-09-16','MI','Michigan','Emerson','Abdul El-Sayed',48,'Mike Rogers',46,'El-Sayed +2'],\n"
+              "    ['2026-09-16','MI','Michigan','Washington Post','Abdul El-Sayed',48,'Mike Rogers',45,'El-Sayed +3'],\n"
+              "    ['2026-09-16','AK','Alaska','Fabrizio/Anzalone','Mary Peltola',46,'Dan Sullivan',41,'RCV 1st round · Peltola 46 · Sullivan 41 · J. Sullivan 4 · Heikes 3'],\n"
+          )
+          if "['2026-09-16','TX','Texas','Emerson*'" not in s:
+              assert s.count(marker) == 1
+              s = s.replace(marker, marker + rows, 1)
+          p.write_text(s)
+
+          # Refresh the active hard-coded averages so older sync logic cannot overwrite them.
+          p = Path('senate-current-sync.js')
+          s = p.read_text()
+          replacements = {
+              "AK:{'peltola':'50.5','sullivan':'46.5'}": "AK:{'peltola':'47.8','sullivan':'44.3'}",
+              "MI:{'el-sayed':'45.4','rogers':'44.5'}": "MI:{'el-sayed':'45.7','rogers':'44.6'}",
+              "TX:{'talarico':'47.8','paxton':'44.9'}": "TX:{'talarico':'47.6','paxton':'44.9'}",
+              "set(tx,'updated','2026-09-15')": "set(tx,'updated','2026-09-16')",
+          }
+          for old, new in replacements.items():
+              if old in s:
+                  s = s.replace(old, new, 1)
+              else:
+                  assert new in s, old
+          p.write_text(s)
+
+          # Keep the last-loaded Texas controller from reverting the new poll date.
+          p = Path('senate-click-stability.js')
+          s = p.read_text()
+          old = "tx.updated='2026-09-15';"
+          new = "tx.updated='2026-09-16';"
+          if old in s:
+              s = s.replace(old, new, 1)
+          else:
+              assert new in s
+          p.write_text(s)
+
+          # Exact cache bumps only; do not restructure the loader.
+          p = Path('index.html')
+          s = p.read_text()
+          stamp = '20260917-1002'
+          for name in ['senate-current-sync.js','senate-auto-averages.js','senate-click-stability.js']:
+              pat = re.compile(re.escape(name) + r'\?v=[0-9-]+')
+              hits = pat.findall(s)
+              assert len(hits) == 1, (name, hits)
+              s = pat.sub(name + '?v=' + stamp, s, count=1)
+          p.write_text(s)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add senate-auto-averages.js senate-current-sync.js senate-click-stability.js index.html
+          git diff --cached --check
+          git commit -m 'Add Sep 16 Senate polls'
+          git push
