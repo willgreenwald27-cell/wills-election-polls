@@ -23,8 +23,6 @@ jobs:
 
           p = Path('site-ux-polish.js')
           s = p.read_text()
-
-          # Disable the older homepage helper so it cannot touch the House card.
           s = s.replace('fixHomeSenateCount();', '')
 
           marker = '/* wg-home-senate-51-49-v3 */'
@@ -66,10 +64,7 @@ jobs:
         else if(/Republican/i.test(pt))el.textContent='49 seats';
       }
     }
-    const bars=[...card.querySelectorAll('*')].filter(e=>{
-      const c=(e.className||'').toString();
-      return /bar|fill|segment/i.test(c);
-    });
+    const bars=[...card.querySelectorAll('*')].filter(e=>/bar|fill|segment/i.test((e.className||'').toString()));
     for(const e of bars){
       const c=(e.className||'').toString();
       if(/dem/i.test(c))e.style.setProperty('width','51%','important');
@@ -86,7 +81,7 @@ jobs:
 
           idx = Path('index.html')
           h = idx.read_text()
-          h, count = re.subn(r'site-ux-polish\.js\?v=[0-9A-Za-z._-]+', 'site-ux-polish.js?v=20260916-2058', h)
+          h, count = re.subn(r'site-ux-polish\.js\?v=[0-9A-Za-z._-]+', 'site-ux-polish.js?v=20260916-2101', h)
           if count == 0:
               raise SystemExit('site-ux-polish cache key not found in index.html')
           idx.write_text(h)
@@ -99,3 +94,4 @@ jobs:
           git add site-ux-polish.js index.html
           git commit -m 'Force homepage Senate to 51-49 without touching House' || exit 0
           git push
+# retrigger
