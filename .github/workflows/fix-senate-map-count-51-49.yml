@@ -1,0 +1,78 @@
+name: Fix Senate Map Count 51-49
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-senate-map-count-51-49.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Enforce Senate map count at 51-49 Democratic
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('site-ux-polish.js')
+          s = p.read_text()
+
+          marker = "  function fixHomeSenateCount(){"
+          fn = r'''  function fixSenateMapCount(){
+    const root=document.getElementById('page-senate');if(!root)return;
+    const row=root.querySelector('.balance-count-row');
+    if(row){
+      const dem=row.querySelector('.balance-party.dem');
+      const rep=row.querySelector('.balance-party.rep');
+      const dn=dem?.querySelector('strong');
+      const rn=rep?.querySelector('strong');
+      if(dn)dn.textContent='51';
+      if(rn)rn.textContent='49';
+      for(const el of leafs(row)){
+        const t=norm(el.textContent);
+        if(/^Democrats?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+        if(/^Republicans?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      }
+    }
+    const key=root.querySelector('.compact-forecast-key');
+    if(key){
+      const kd=key.querySelector('.key-side.democratic');
+      const kr=key.querySelector('.key-side.republican');
+      for(const el of leafs(kd))if(/^\d+$/.test(norm(el.textContent)))el.textContent='51';
+      for(const el of leafs(kr))if(/^\d+$/.test(norm(el.textContent)))el.textContent='49';
+    }
+    for(const el of root.querySelectorAll('[aria-label*="Senate prediction"],[aria-label*="Senate Prediction"]')){
+      el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');
+    }
+  }
+
+'''
+          if 'function fixSenateMapCount()' not in s:
+              s = s.replace(marker, fn + marker)
+
+          s = s.replace(
+              "function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}",
+              "function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixSenateMapCount();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}"
+          )
+          p.write_text(s)
+
+          idx = Path('index.html')
+          h = idx.read_text()
+          h = re.sub(r"site-ux-polish\.js\?v=[A-Za-z0-9._-]+", "site-ux-polish.js?v=20260916-1958", h)
+          idx.write_text(h)
+          PY
+      - name: Commit update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-senate-map-count-51-49.yml
+          git add site-ux-polish.js index.html
+          git commit -m 'Set Senate map count to 51-49 Democratic' || exit 0
+          git push
