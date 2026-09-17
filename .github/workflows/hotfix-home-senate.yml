@@ -1,0 +1,43 @@
+name: Hotfix Homepage Senate
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hotfix-home-senate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch Senate card targeting
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          p=Path('site-ux-polish.js')
+          s=p.read_text()
+          old=base64.b64decode('bGV0IGNhcmQ9cm9vdC5xdWVyeVNlbGVjdG9yKCcjaG9tZUZvcmVjYXN0U3BsaXQgLnNlbmF0ZS1jYXJkLC53aWxsLXNlbmF0ZS1jYXJkJyk7aWYoIWNhcmQpY2FyZD1yb290Ow==').decode()
+          new=base64.b64decode('bGV0IGNhcmQ9cm9vdC5xdWVyeVNlbGVjdG9yKCcjaG9tZUZvcmVjYXN0U3BsaXQgLnNlbmF0ZS1jYXJkLC53aWxsLXNlbmF0ZS1jYXJkJyk7CiAgICBpZighY2FyZCl7CiAgICAgIGNvbnN0IHRpdGxlPWxlYWZzKHJvb3QpLmZpbmQoZWw9Pi9TZW5hdGUvaS50ZXN0KG5vcm0oZWwudGV4dENvbnRlbnQpKSYmIS9Ib3VzZS9pLnRlc3Qobm9ybShlbC50ZXh0Q29udGVudCkpKTsKICAgICAgaWYodGl0bGUpewogICAgICAgIGxldCBub2RlPXRpdGxlLnBhcmVudEVsZW1lbnQ7CiAgICAgICAgZm9yKGxldCBpPTA7bm9kZSYmbm9kZSE9PXJvb3QmJmk8MTA7aSsrLG5vZGU9bm9kZS5wYXJlbnRFbGVtZW50KXsKICAgICAgICAgIGNvbnN0IHQ9bm9ybShub2RlLnRleHRDb250ZW50KTsKICAgICAgICAgIGNvbnN0IG51bXM9bm9kZS5xdWVyeVNlbGVjdG9yQWxsKCcucGFydHktbnVtYmVyLC5maW5hbC1wYXJ0eS1udW1iZXInKTsKICAgICAgICAgIGlmKC9TZW5hdGUvaS50ZXN0KHQpJiYhL0hvdXNlL2kudGVzdCh0KSYmbnVtcy5sZW5ndGg+PTIpe2NhcmQ9bm9kZTticmVhazt9CiAgICAgICAgfQogICAgICB9CiAgICB9CiAgICBpZighY2FyZHx8Y2FyZD09PXJvb3QpcmV0dXJuOw==').decode()
+          if old not in s:
+              raise SystemExit('old homepage fallback not found')
+          p.write_text(s.replace(old,new,1))
+          idx=Path('index.html')
+          h=idx.read_text()
+          import re
+          h=re.sub(r'site-ux-polish\.js\?v=[A-Za-z0-9._-]+','site-ux-polish.js?v=20260916-2025',h)
+          idx.write_text(h)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/hotfix-home-senate.yml
+          git add site-ux-polish.js index.html
+          git commit -m 'Fix homepage Senate count without touching House'
+          git push
