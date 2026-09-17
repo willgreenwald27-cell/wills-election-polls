@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   const AVG={
-    AK:{'peltola':'50.5','sullivan':'46.5'},
+    AK:{'peltola':'47.8','sullivan':'44.3'},
     AR:{'shoffner':'43.0','cotton':'46.0'},
     GA:{'ossoff':'50.0','collins':'43.0'},
     IA:{'turek':'44.4','hinson':'44.4'},
@@ -9,7 +9,7 @@
     KS:{'hamilton':'45.0','marshall':'46.0'},
     MA:{'markey':'50.0','deaton':'30.0'},
     ME:{'jackson':'47.5','collins':'44.5'},
-    MI:{'el-sayed':'45.4','rogers':'44.5'},
+    MI:{'el-sayed':'45.7','rogers':'44.6'},
     MN:{'flanagan':'44.6','tafoya':'42.2'},
     MT:{'bodnar':'48.0','alme':'45.0'},
     NC:{'cooper':'50.4','whatley':'40.7'},
@@ -19,7 +19,7 @@
     RI:{'reed':'51.0','mckay':'31.0'},
     SC:{'andrews':'37.7','graham':'42.0'},
     TN:{'bradshaw':'32.3','hagerty':'55.7'},
-    TX:{'talarico':'47.8','paxton':'44.9'}
+    TX:{'talarico':'47.6','paxton':'44.9'}
   };
   const MAINE_NOTE='Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
   const RED_LIGHT='#f8c6ca';
@@ -57,7 +57,7 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic');set(tx,'notes','');set(tx,'updated','2026-09-15');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic');set(tx,'notes','');set(tx,'updated','2026-09-16');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
         if('call' in tx) set(tx,'call','Tilt Democratic');
       }

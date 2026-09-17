@@ -13,7 +13,7 @@
         tx.predictionParty='Democratic';
         tx.prediction='Tilt Democratic';
         tx.notes='';
-        tx.updated='2026-09-15';
+        tx.updated='2026-09-16';
         for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
         if('call' in tx)tx.call='Tilt Democratic';
       }

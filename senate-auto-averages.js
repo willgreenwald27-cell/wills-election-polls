@@ -8,6 +8,11 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-16','TX','Texas','Emerson*','James Talarico',47,'Ken Paxton',46,'Talarico +1'],
+    ['2026-09-16','TX','Texas','Texas A&M/Siena','James Talarico',49,'Ken Paxton',43,'Talarico +6'],
+    ['2026-09-16','MI','Michigan','Emerson','Abdul El-Sayed',48,'Mike Rogers',46,'El-Sayed +2'],
+    ['2026-09-16','MI','Michigan','Washington Post','Abdul El-Sayed',48,'Mike Rogers',45,'El-Sayed +3'],
+    ['2026-09-16','AK','Alaska','Fabrizio/Anzalone','Mary Peltola',46,'Dan Sullivan',41,'RCV 1st round · Peltola 46 · Sullivan 41 · J. Sullivan 4 · Heikes 3'],
     ['2026-09-15','ME','Maine','Quantus Insights','Troy Jackson',46,'Susan Collins',47,'Collins +1'],
     ['2026-09-15','MN','Minnesota','KSTP/SurveyUSA*','Peggy Flanagan',42,'Michele Tafoya',42,'Tie'],
     ['2026-09-15','OH','Ohio','Bowling Green/YouGov*','Sherrod Brown',48,'Jon Husted',45,'Brown +3'],
