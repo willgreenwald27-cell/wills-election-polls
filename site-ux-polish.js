@@ -134,7 +134,7 @@
 
   function fixHomeSenateCount(){
     const root=document.getElementById('page-home');if(!root)return;
-    const card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');if(!card)return;
+    let card=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');if(!card)card=root;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
     if(nums[0])nums[0].textContent='51';
     if(nums[1])nums[1].textContent='49';
@@ -148,6 +148,7 @@
         if(/Republican/i.test(p))el.textContent='49 seats';
       }
     }
+    const bar=card.querySelector('.senate-bar,.final-bar,.forecast-bar,.seat-bar');if(bar){const d=bar.querySelector('.dem,.democratic,[data-party=dem]'),r=bar.querySelector('.rep,.republican,[data-party=rep]');if(d)d.style.setProperty('width','51%','important');if(r)r.style.setProperty('width','49%','important');const y=bar.querySelector('.tossup,.toss-up,[data-tossup]');if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');}
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
