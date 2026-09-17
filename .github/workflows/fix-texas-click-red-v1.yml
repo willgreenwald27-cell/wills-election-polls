@@ -1,0 +1,45 @@
+name: Fix Texas click red and popup explanation
+
+on:
+  push:
+    paths:
+      - 'fix-texas-click-red.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-loader:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load fresh Texas stability scripts last
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('index.html')
+          s=p.read_text()
+
+          s2,n=re.subn(r'senate-history-context\.js\?v=[0-9-]+','senate-history-context.js?v=20260916-2135',s,count=1)
+          if n!=1:
+              raise SystemExit(f'Expected one senate-history-context loader, found {n}')
+          s=s2
+
+          if 'senate-click-stability.js?v=20260916-2135' not in s:
+              marker='document.open();document.write(h);document.close()'
+              if marker not in s:
+                  raise SystemExit('Loader document.open marker not found')
+              inject="h=h.replace('</body>','<script src=\"/senate-click-stability.js?v=20260916-2135\"><\\/script></body>');"
+              s=s.replace(marker,inject+marker,1)
+
+          p.write_text(s)
+          PY
+      - name: Commit loader fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Load stable Texas click behavior and remove popup explanation'
+          git push
