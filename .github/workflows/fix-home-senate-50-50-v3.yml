@@ -1,0 +1,101 @@
+name: Fix Homepage Senate 51-49 V3
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-home-senate-50-50-v3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch homepage Senate totals precisely
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('site-ux-polish.js')
+          s = p.read_text()
+
+          # Disable the older homepage helper so it cannot touch the House card.
+          s = s.replace('fixHomeSenateCount();', '')
+
+          marker = '/* wg-home-senate-51-49-v3 */'
+          if marker not in s:
+              s += r'''
+
+/* wg-home-senate-51-49-v3 */
+(()=>{
+  const n=v=>String(v||'').replace(/\s+/g,' ').trim();
+  const leaves=r=>r?[...r.querySelectorAll('*')].filter(e=>e.children.length===0):[];
+  function fix(){
+    const root=document.getElementById('page-home');
+    if(!root)return;
+    const senateLeaves=leaves(root).filter(e=>/senate/i.test(n(e.textContent)));
+    let card=null;
+    for(const title of senateLeaves){
+      let node=title.parentElement;
+      for(let i=0;node&&node!==root&&i<12;i++,node=node.parentElement){
+        const t=n(node.textContent);
+        if(!/senate/i.test(t)||/house/i.test(t))continue;
+        const exact50=leaves(node).filter(e=>n(e.textContent)==='50');
+        if(exact50.length>=2){card=node;break;}
+      }
+      if(card)break;
+    }
+    if(!card)return;
+    const exact50=leaves(card).filter(e=>n(e.textContent)==='50');
+    if(exact50.length>=2){
+      exact50[0].textContent='51';
+      exact50[1].textContent='49';
+    }
+    for(const el of leaves(card)){
+      const t=n(el.textContent);
+      if(/^Democrats?\s*:?\s*50$/i.test(t))el.textContent=t.replace(/50$/,'51');
+      if(/^Republicans?\s*:?\s*50$/i.test(t))el.textContent=t.replace(/50$/,'49');
+      if(/^50\s+seats$/i.test(t)){
+        const pt=n(el.parentElement?.textContent);
+        if(/Democrat/i.test(pt))el.textContent='51 seats';
+        else if(/Republican/i.test(pt))el.textContent='49 seats';
+      }
+    }
+    const bars=[...card.querySelectorAll('*')].filter(e=>{
+      const c=(e.className||'').toString();
+      return /bar|fill|segment/i.test(c);
+    });
+    for(const e of bars){
+      const c=(e.className||'').toString();
+      if(/dem/i.test(c))e.style.setProperty('width','51%','important');
+      if(/rep/i.test(c))e.style.setProperty('width','49%','important');
+    }
+  }
+  fix();
+  [50,150,400,900,1800,3200].forEach(ms=>setTimeout(fix,ms));
+  setInterval(fix,800);
+  new MutationObserver(fix).observe(document.body,{childList:true,subtree:true,characterData:true});
+})();
+'''
+          p.write_text(s)
+
+          idx = Path('index.html')
+          h = idx.read_text()
+          h, count = re.subn(r'site-ux-polish\.js\?v=[0-9A-Za-z._-]+', 'site-ux-polish.js?v=20260916-2058', h)
+          if count == 0:
+              raise SystemExit('site-ux-polish cache key not found in index.html')
+          idx.write_text(h)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-home-senate-50-50-v3.yml
+          git add site-ux-polish.js index.html
+          git commit -m 'Force homepage Senate to 51-49 without touching House' || exit 0
+          git push
