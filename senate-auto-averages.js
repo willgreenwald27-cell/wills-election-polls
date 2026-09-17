@@ -8,6 +8,10 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-15','ME','Maine','Quantus Insights','Troy Jackson',46,'Susan Collins',47,'Collins +1'],
+    ['2026-09-15','MN','Minnesota','KSTP/SurveyUSA*','Peggy Flanagan',42,'Michele Tafoya',42,'Tie'],
+    ['2026-09-15','OH','Ohio','Bowling Green/YouGov*','Sherrod Brown',48,'Jon Husted',45,'Brown +3'],
+    ['2026-09-15','IA','Iowa','co/efficient','Ashley Hinson',48,'Josh Turek',43,'Hinson +5'],
     ['2026-09-14','MN','Minnesota','co/efficient*','Peggy Flanagan',43,'Michele Tafoya',42,'Flanagan +1'],
     ['2026-09-14','TX','Texas','Telemundo/Mason-Dixon*','James Talarico',46,'Ken Paxton',43,'Talarico +3'],
     ['2026-09-14','IA','Iowa','Cygnal**','Ashley Hinson',43,'Josh Turek',43,'Tie'],

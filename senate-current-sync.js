@@ -4,18 +4,18 @@
     AK:{'peltola':'50.5','sullivan':'46.5'},
     AR:{'shoffner':'43.0','cotton':'46.0'},
     GA:{'ossoff':'50.0','collins':'43.0'},
-    IA:{'turek':'44.7','hinson':'45.0'},
+    IA:{'turek':'44.4','hinson':'44.4'},
     ID:{'achilles':'34.0','risch':'33.5'},
     KS:{'hamilton':'45.0','marshall':'46.0'},
     MA:{'markey':'50.0','deaton':'30.0'},
-    ME:{'jackson':'47.7','collins':'44.2'},
+    ME:{'jackson':'47.5','collins':'44.5'},
     MI:{'el-sayed':'45.4','rogers':'44.5'},
-    MN:{'flanagan':'45.0','tafoya':'41.5'},
+    MN:{'flanagan':'44.6','tafoya':'42.2'},
     MT:{'bodnar':'48.0','alme':'45.0'},
     NC:{'cooper':'50.4','whatley':'40.7'},
     NH:{'pappas':'42.3','sununu':'41.0'},
     NM:{'lujn':'53.0','marker':'38.0'},
-    OH:{'brown':'47.8','husted':'41.4'},
+    OH:{'brown':'47.7','husted':'42.0'},
     RI:{'reed':'51.0','mckay':'31.0'},
     SC:{'andrews':'37.7','graham':'42.0'},
     TN:{'bradshaw':'32.3','hagerty':'55.7'},
@@ -39,7 +39,7 @@
       const set=(s,k,v)=>{if(String(s[k]??'')!==String(v)){s[k]=v;changed=true;}};
       const me=stateData.ME;
       if(me){
-        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);set(me,'updated','2026-09-10');
+        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);set(me,'updated','2026-09-15');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
@@ -51,7 +51,7 @@
       }
       const oh=stateData.OH;
       if(oh){
-        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-14');
+        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-15');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in oh) set(oh,k,'Democratic');
         if('call' in oh) set(oh,'call','Tilt Democratic');
       }
