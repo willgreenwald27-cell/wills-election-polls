@@ -1,0 +1,77 @@
+name: Fix Homepage Senate Not House
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-homepage-senate-not-house.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Target only homepage Senate card
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('site-ux-polish.js')
+          s = p.read_text()
+
+          new_fn = r'''  function fixHomeSenateCount(){
+    const root=document.getElementById('page-home');if(!root)return;
+    const title=leafs(root).find(el=>/Senate/i.test(norm(el.textContent))&&!/House/i.test(norm(el.textContent)));
+    if(!title)return;
+    let card=title.parentElement;
+    for(let i=0;card&&card!==root&&i<10;i++,card=card.parentElement){
+      const t=norm(card.textContent);
+      const nums=card.querySelectorAll('.party-number,.final-party-number,strong');
+      if(/Senate/i.test(t)&&/Democrat/i.test(t)&&/Republican/i.test(t)&&nums.length>=2&&!/House Prediction/i.test(t))break;
+    }
+    if(!card||card===root)return;
+    const namedNums=[...card.querySelectorAll('.party-number,.final-party-number')];
+    if(namedNums[0])namedNums[0].textContent='51';
+    if(namedNums[1])namedNums[1].textContent='49';
+    for(const el of leafs(card)){
+      const t=norm(el.textContent);
+      if(/^Democrats?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+      if(/^Republicans?\s*:?\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^\d+\s+seats$/i.test(t)){
+        const pt=norm(el.parentElement?.textContent);
+        if(/Democrat/i.test(pt))el.textContent='51 seats';
+        if(/Republican/i.test(pt))el.textContent='49 seats';
+      }
+    }
+    const bar=card.querySelector('.senate-bar,.final-bar,.forecast-bar,.seat-bar');
+    if(bar){
+      const d=bar.querySelector('.dem,.democratic,[data-party="dem"]');
+      const r=bar.querySelector('.rep,.republican,[data-party="rep"]');
+      if(d)d.style.setProperty('width','51%','important');
+      if(r)r.style.setProperty('width','49%','important');
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');
+    }
+  }
+'''
+
+          s = re.sub(r'  function fixHomeSenateCount\(\)\{.*?\n  \}\n\n  function apply\(\)', new_fn + '\n  function apply()', s, flags=re.S)
+          p.write_text(s)
+
+          idx = Path('index.html')
+          h = idx.read_text()
+          h = re.sub(r'site-ux-polish\.js\?v=[A-Za-z0-9._-]+', 'site-ux-polish.js?v=20260916-2016', h)
+          idx.write_text(h)
+          PY
+      - name: Commit corrected homepage Senate count
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/fix-homepage-senate-not-house.yml
+          git add site-ux-polish.js index.html
+          git commit -m 'Target 51-49 to homepage Senate card only' || exit 0
+          git push
