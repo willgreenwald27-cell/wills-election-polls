@@ -1,0 +1,65 @@
+name: Apply Texas Ohio and New Polls fix
+
+on:
+  push:
+    paths:
+      - 'apply-texas-ohio-polls-fix.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch existing source files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('senate-current-sync.js')
+          s = p.read_text()
+          if s.count('/^WHY MY FORECAST DIFFERS$/i') != 2:
+              raise SystemExit('Expected two state-specific why headings')
+          s = s.replace('/^WHY MY FORECAST DIFFERS$/i', '/^WHY MY .*DIFFERS$/i')
+          s = s.replace('/^WHY MY FORECAST DIFFERS/i', '/^WHY MY .*DIFFERS/i')
+          p.write_text(s)
+
+          p = Path('sep9-polls-update.js')
+          s = p.read_text()
+          if 'Telemundo/Mason-Dixon*' not in s:
+              anchor = "      if(changed&&typeof renderPolls==='function') renderPolls();"
+              rows = [
+                  "      add({date:'2026-09-15',state:'TX',pollster:'Telemundo/Mason-Dixon*',sample:'',c1:'James Talarico',c1Pct:'46',c2:'Ken Paxton',c2Pct:'43',notes:'Talarico +3'});",
+                  "      add({date:'2026-09-15',state:'IA',pollster:'Cygnal**',sample:'',c1:'Ashley Hinson',c1Pct:'43',c2:'Josh Turek',c2Pct:'43',notes:'Tie'});",
+                  "      add({date:'2026-09-15',state:'SC',pollster:'Rasmussen Reports',sample:'',c1:'Graham Nordone',c1Pct:'48',c2:'Annie Andrews',c2Pct:'43',notes:'Graham Nordone +5'});",
+                  "      add({date:'2026-09-15',state:'GA',pollster:'Rasmussen Reports',sample:'',c1:'Jon Ossoff',c1Pct:'51',c2:'Mike Collins',c2Pct:'42',notes:'Ossoff +9'});",
+                  "      add({date:'2026-09-15',state:'NH',pollster:'co/efficient',sample:'',c1:'Chris Pappas',c1Pct:'46',c2:'Chris Sununu',c2Pct:'46',notes:'Tie'});",
+                  "      add({date:'2026-09-15',state:'AK',pollster:'Rasmussen Reports',sample:'',c1:'Dan Sullivan',c1Pct:'39',c2:'Mary Peltola',c2Pct:'39',notes:'RCV 1st Round · J. Sullivan 7 · Heikes 6'});",
+                  "      add({date:'2026-09-15',state:'MN',pollster:'co/efficient*',sample:'',c1:'Peggy Flanagan',c1Pct:'43',c2:'Michele Tafoya',c2Pct:'42',notes:'Flanagan +1'});"
+              ]
+              if anchor not in s:
+                  raise SystemExit('New Polls anchor not found')
+              s = s.replace(anchor, '\n'.join(rows) + '\n' + anchor, 1)
+          p.write_text(s)
+
+          p = Path('index.html')
+          s = p.read_text()
+          a = 'senate-current-sync.js?v=20260914-1826'
+          b = 'sep9-polls-update.js?v=20260913-2120'
+          if a not in s or b not in s:
+              raise SystemExit('Expected loader versions not found')
+          s = s.replace(a, 'senate-current-sync.js?v=20260916-2113', 1)
+          s = s.replace(b, 'sep9-polls-update.js?v=20260916-2113', 1)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add senate-current-sync.js sep9-polls-update.js index.html
+          git commit -m 'Remove Texas Ohio why blocks and show latest polls'
+          git push
