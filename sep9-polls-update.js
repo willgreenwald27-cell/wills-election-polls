@@ -91,6 +91,13 @@
       add({date:'2026-09-10',state:'IA',pollster:'Rasmussen Reports*',sample:'',c1:'Ashley Hinson',c1Pct:'40',c2:'Josh Turek',c2Pct:'45',notes:'RealClearPolling · Turek +5'});
       add({date:'2026-09-10',state:'MN',pollster:'Quantus Insights',sample:'',c1:'Peggy Flanagan',c1Pct:'48',c2:'Michele Tafoya',c2Pct:'44',notes:'RealClearPolling · Flanagan +4'});
       add({date:'2026-09-10',state:'FL',pollster:'Quantus Insights',sample:'',c1:'Ashley Moody',c1Pct:'50',c2:'Jasmine Nixon',c2Pct:'43',notes:'RealClearPolling · Moody +7'});
+      add({date:'2026-09-15',state:'TX',pollster:'Telemundo/Mason-Dixon*',sample:'',c1:'James Talarico',c1Pct:'46',c2:'Ken Paxton',c2Pct:'43',notes:'Talarico +3'});
+      add({date:'2026-09-15',state:'IA',pollster:'Cygnal**',sample:'',c1:'Ashley Hinson',c1Pct:'43',c2:'Josh Turek',c2Pct:'43',notes:'Tie'});
+      add({date:'2026-09-15',state:'SC',pollster:'Rasmussen Reports',sample:'',c1:'Graham Nordone',c1Pct:'48',c2:'Annie Andrews',c2Pct:'43',notes:'Graham Nordone +5'});
+      add({date:'2026-09-15',state:'GA',pollster:'Rasmussen Reports',sample:'',c1:'Jon Ossoff',c1Pct:'51',c2:'Mike Collins',c2Pct:'42',notes:'Ossoff +9'});
+      add({date:'2026-09-15',state:'NH',pollster:'co/efficient',sample:'',c1:'Chris Pappas',c1Pct:'46',c2:'Chris Sununu',c2Pct:'46',notes:'Tie'});
+      add({date:'2026-09-15',state:'AK',pollster:'Rasmussen Reports',sample:'',c1:'Dan Sullivan',c1Pct:'39',c2:'Mary Peltola',c2Pct:'39',notes:'RCV 1st Round · J. Sullivan 7 · Heikes 6'});
+      add({date:'2026-09-15',state:'MN',pollster:'co/efficient*',sample:'',c1:'Peggy Flanagan',c1Pct:'43',c2:'Michele Tafoya',c2Pct:'42',notes:'Flanagan +1'});
       if(changed&&typeof renderPolls==='function') renderPolls();
     }catch(e){}
   }

@@ -147,11 +147,11 @@
           const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
         }
       }
-      for(const heading of leafs(box).filter(el=>/^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)))){
+      for(const heading of leafs(box).filter(el=>/^WHY MY .*DIFFERS$/i.test(norm(el.textContent)))){
         let n=heading.parentElement;
         for(let i=0;n&&n!==box&&i<5;i++,n=n.parentElement){
           const t=norm(n.textContent);
-          if(/^WHY MY FORECAST DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
+          if(/^WHY MY .*DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
         }
       }
     }
@@ -201,11 +201,11 @@
           const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
         }
       }
-      for(const heading of leafs(box).filter(el=>/^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)))){
+      for(const heading of leafs(box).filter(el=>/^WHY MY .*DIFFERS$/i.test(norm(el.textContent)))){
         let n=heading.parentElement;
         for(let i=0;n&&n!==box&&i<5;i++,n=n.parentElement){
           const t=norm(n.textContent);
-          if(/^WHY MY FORECAST DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
+          if(/^WHY MY .*DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
         }
       }
     }
