@@ -47,10 +47,10 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text()
-          a = 'senate-current-sync.js?v=20260914-1826'
+          a = 'senate-current-sync.js?v=20260916-1948'
           b = 'sep9-polls-update.js?v=20260913-2120'
           if a not in s or b not in s:
-              raise SystemExit('Expected loader versions not found')
+              raise SystemExit('Expected current loader versions not found')
           s = s.replace(a, 'senate-current-sync.js?v=20260916-2113', 1)
           s = s.replace(b, 'sep9-polls-update.js?v=20260916-2113', 1)
           p.write_text(s)
