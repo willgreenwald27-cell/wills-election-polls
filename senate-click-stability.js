@@ -82,7 +82,6 @@
         if(/WILL[’']S CALL/i.test(t)&&t.length<220)break;
       }
       if(card&&card!==panel){
-        // Remove Texas-only inline palette so the normal Senate call-card CSS applies.
         card.style.removeProperty('background');
         card.style.removeProperty('background-image');
         card.style.removeProperty('border-color');
@@ -98,9 +97,30 @@
     }
   }
 
+  function forceTexasOdds(){
+    const panel=visiblePanel('Texas');
+    if(!panel)return;
+    const values=[...panel.querySelectorAll('*')].filter(el=>{
+      if(el.children.length)return false;
+      return /^(?:48|52)(?:\.0)?%?$/.test(norm(el.textContent));
+    });
+    for(const el of values){
+      let p=el.parentElement,who='';
+      for(let i=0;p&&p!==panel&&i<7;i++,p=p.parentElement){
+        const t=norm(p.textContent);
+        const hasT=/\b(?:James\s+)?Talarico\b/i.test(t);
+        const hasP=/\b(?:Ken\s+)?Paxton\b/i.test(t);
+        if(hasT!==hasP){who=hasT?'Talarico':'Paxton';break;}
+      }
+      if(who==='Talarico')el.textContent='52%';
+      else if(who==='Paxton')el.textContent='48%';
+    }
+  }
+
   function apply(){
     syncData();
     forceTexasBlue();
+    forceTexasOdds();
     removeWhyBlock('Texas');
     removeWhyBlock('Ohio');
   }
