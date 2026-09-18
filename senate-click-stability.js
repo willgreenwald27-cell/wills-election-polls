@@ -60,6 +60,49 @@
     }
   }
 
+  function removeTexasExplanation(){
+    const panel=visiblePanel('Texas');
+    if(!panel)return;
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='';
+    }catch(e){}
+
+    const headingRx=/^(?:WHY\b|WHY\s+MY\b|EXPLANATION\b|FORECAST\s+EXPLANATION\b)/i;
+    const phraseRx=/why\s+(?:my\s+)?(?:forecast|poll|prediction|call)?\s*(?:differs|is different)|forecast\s+differs|poll\s+differs/i;
+    const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
+
+    const targets=leaves.filter(el=>{
+      const t=norm(el.textContent);
+      return headingRx.test(t)||phraseRx.test(t);
+    });
+
+    for(const leaf of targets){
+      let cur=leaf,best=leaf;
+      for(let i=0;i<7;i++){
+        const p=cur.parentElement;
+        if(!p||p===panel)break;
+        const t=norm(p.textContent);
+        const r=p.getBoundingClientRect();
+        if(
+          (headingRx.test(t)||phraseRx.test(t)) &&
+          !/WILL[’']S CALL|AVG POLLS|POLL AVERAGE|WIN ODDS|MY PREDICTION/i.test(t) &&
+          r.height<360
+        ){
+          best=p;cur=p;
+        }else break;
+      }
+      best.remove();
+    }
+
+    panel.querySelectorAll(
+      '.why-note,.forecast-explanation,.prediction-explanation,.poll-explanation,'+
+      '[class*="why-diff"],[class*="forecast-diff"],[class*="poll-diff"],[data-explanation]'
+    ).forEach(el=>{
+      const t=norm(el.textContent);
+      if(!/Nebraska|Maine|Kansas/i.test(t))el.remove();
+    });
+  }
+
   function forceTexasBlue(){
     const root=document.getElementById('page-senate');
     if(!root)return;
@@ -278,7 +321,7 @@
     forceTexasBlue();
     fixSenateSeatBalanceBar();
     forceTexasOdds();
-    removeWhyBlock('Texas');
+    removeTexasExplanation();
     removeWhyBlock('Ohio');
     forceNebraskaOdds();
     ensureNebraskaExplanation();
