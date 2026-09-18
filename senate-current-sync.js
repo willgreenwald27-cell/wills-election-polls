@@ -6,14 +6,14 @@
     GA:{'ossoff':'50.0','collins':'43.0'},
     IA:{'turek':'44.4','hinson':'44.4'},
     ID:{'achilles':'34.0','risch':'33.5'},
-    KS:{'hamilton':'45.0','marshall':'46.0'},
+    KS:{'hamilton':'45.0','marshall':'44.5'},
     MA:{'markey':'50.0','deaton':'30.0'},
     ME:{'jackson':'47.5','collins':'44.5'},
-    MI:{'el-sayed':'45.7','rogers':'44.6'},
+    MI:{'el-sayed':'45.8','rogers':'44.6'},
     MN:{'flanagan':'44.6','tafoya':'42.2'},
     MT:{'bodnar':'48.0','alme':'45.0'},
-    NC:{'cooper':'50.4','whatley':'40.7'},
-    NH:{'pappas':'42.3','sununu':'41.0'},
+    NC:{'cooper':'49.9','whatley':'41.3'},
+    NH:{'pappas':'44.2','sununu':'41.8'},
     NM:{'lujn':'53.0','marker':'38.0'},
     OH:{'brown':'47.7','husted':'42.0'},
     RI:{'reed':'51.0','mckay':'31.0'},
@@ -45,7 +45,7 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'updated','2026-09-14');
+        set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'updated','2026-09-17');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
         if('call' in ks) set(ks,'call','Marshall +4.9%');
       }
