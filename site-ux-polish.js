@@ -93,7 +93,7 @@
       #page-home .reference-metrics{
         display:grid!important;
         grid-template-columns:1fr!important;
-        gap:14px!important;
+        gap:0!important;
         width:100%!important;
         max-width:100%!important;
         height:auto!important;
@@ -101,6 +101,7 @@
         overflow:visible!important;
         align-items:stretch!important;
         box-sizing:border-box!important;
+        margin:18px 0 24px!important;
       }
       #page-home #homeElectionCountdown{
         grid-column:1/-1!important;
@@ -109,9 +110,9 @@
         max-width:100%!important;
         min-width:0!important;
         height:auto!important;
-        min-height:190px!important;
+        min-height:148px!important;
         overflow:visible!important;
-        padding:28px 28px!important;
+        padding:22px 26px 20px!important;
         box-sizing:border-box!important;
         display:flex!important;
         flex-direction:column!important;
@@ -125,12 +126,12 @@
         font:900 12px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
         letter-spacing:1.8px!important;
         text-transform:uppercase!important;
-        margin-bottom:10px!important;
+        margin-bottom:6px!important;
       }
       #page-home #homeElectionCountdown .wg-election-days{
         display:block!important;
         color:#17263d!important;
-        font:900 clamp(64px,9vw,104px)/.9 Georgia,serif!important;
+        font:900 clamp(58px,7vw,82px)/.92 Georgia,serif!important;
         letter-spacing:-3px!important;
         max-width:100%!important;
         overflow:visible!important;
@@ -139,18 +140,18 @@
         display:block!important;
         color:#53647a!important;
         font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
-        margin-top:12px!important;
+        margin-top:8px!important;
         white-space:normal!important;
         overflow:visible!important;
       }
       @media(max-width:650px){
         #page-home #homeElectionCountdown{
-          min-height:160px!important;
-          padding:24px 18px!important;
+          min-height:132px!important;
+          padding:18px 16px!important;
           border-radius:16px!important;
         }
         #page-home #homeElectionCountdown .wg-election-days{
-          font-size:68px!important;
+          font-size:60px!important;
         }
         #page-home #homeElectionCountdown .wg-election-copy{
           font-size:13px!important;
