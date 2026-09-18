@@ -117,9 +117,83 @@
     }
   }
 
+  function fixSenateSeatBalanceBar(){
+    const root=document.getElementById('page-senate');
+    if(!root)return;
+    const anchor=root.querySelector('.balance-count-row');
+    if(!anchor)return;
+    const ar=anchor.getBoundingClientRect();
+    const parseRgb=v=>{const m=String(v||'').match(/rgba?\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);return m?[+m[1],+m[2],+m[3]]:null;};
+    const kind=el=>{
+      const c=parseRgb(getComputedStyle(el).backgroundColor);
+      if(!c)return '';
+      const [r,g,b]=c;
+      if(b>r+45&&b>g+35)return 'dem';
+      if(r>g+55&&r>b+45)return 'rep';
+      return '';
+    };
+    const candidates=[...root.querySelectorAll('div,section,span')].filter(el=>{
+      const r=el.getBoundingClientRect();
+      return r.width>=Math.max(260,ar.width*.62)&&r.height>=8&&r.height<=70&&
+        r.top>=ar.bottom-18&&r.top<=ar.bottom+180;
+    });
+    for(const bar of candidates){
+      const kids=[...bar.children].filter(el=>el.getClientRects().length);
+      const dem=kids.find(el=>kind(el)==='dem');
+      const rep=kids.find(el=>kind(el)==='rep');
+      if(!dem||!rep)continue;
+
+      bar.style.setProperty('position','relative','important');
+      bar.style.setProperty('display','block','important');
+      bar.style.setProperty('overflow','hidden','important');
+      bar.style.setProperty('background','transparent','important');
+
+      dem.style.setProperty('position','absolute','important');
+      dem.style.setProperty('left','0','important');
+      dem.style.setProperty('right','auto','important');
+      dem.style.setProperty('top','0','important');
+      dem.style.setProperty('bottom','0','important');
+      dem.style.setProperty('width','51%','important');
+      dem.style.setProperty('min-width','51%','important');
+      dem.style.setProperty('max-width','51%','important');
+      dem.style.setProperty('flex','0 0 51%','important');
+      dem.style.setProperty('transform','none','important');
+      dem.style.setProperty('clip-path','none','important');
+
+      rep.style.setProperty('position','absolute','important');
+      rep.style.setProperty('right','0','important');
+      rep.style.setProperty('left','auto','important');
+      rep.style.setProperty('top','0','important');
+      rep.style.setProperty('bottom','0','important');
+      rep.style.setProperty('width','49%','important');
+      rep.style.setProperty('min-width','49%','important');
+      rep.style.setProperty('max-width','49%','important');
+      rep.style.setProperty('flex','0 0 49%','important');
+      rep.style.setProperty('transform','none','important');
+      rep.style.setProperty('clip-path','none','important');
+
+      for(const el of kids){
+        if(el===dem||el===rep)continue;
+        el.style.setProperty('display','none','important');
+      }
+
+      let majority=bar.querySelector(':scope > .wg-seat-majority-marker');
+      if(!majority){
+        majority=document.createElement('span');
+        majority.className='wg-seat-majority-marker';
+        majority.setAttribute('aria-hidden','true');
+        bar.appendChild(majority);
+      }
+      majority.style.cssText='display:block!important;position:absolute!important;left:50%!important;top:0!important;bottom:0!important;width:4px!important;transform:translateX(-2px)!important;background:#17263d!important;z-index:20!important;pointer-events:none!important;';
+      bar.setAttribute('aria-label','Senate balance: 51 Democratic seats, 49 Republican seats; majority marker at 50 seats plus the vice president');
+      break;
+    }
+  }
+
   function apply(){
     syncData();
     forceTexasBlue();
+    fixSenateSeatBalanceBar();
     forceTexasOdds();
     removeWhyBlock('Texas');
     removeWhyBlock('Ohio');
