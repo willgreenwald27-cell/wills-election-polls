@@ -3,7 +3,7 @@
   const AVG={
     TX:{talarico:'47.8',paxton:'44.9'},
     ME:{jackson:'47.7',collins:'44.2'},
-    NC:{cooper:'50.4',whatley:'40.7'}
+    NC:{cooper:'49.9',whatley:'41.3'}
   };
   let wrapped=false;
 
@@ -14,7 +14,7 @@
         if(!norm(s['candidate'+slot]).toLowerCase().includes(last)) continue;
         s['candidate'+slot+'Poll']=String(value);
       }
-      s.updated='2026-09-10';
+      s.updated=ab==='NC'?'2026-09-17':ab==='TX'?'2026-09-16':ab==='ME'?'2026-09-15':s.updated;
     }catch(e){}
   }
 
