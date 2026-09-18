@@ -267,35 +267,34 @@
         }
       }
     }catch(e){}
+
     const panel=visiblePanel('Nebraska');
     if(!panel)return;
-    const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
-    for(const el of leaves){
+
+    // Only touch the explicit win-odds summary. Never rewrite generic
+    // percentages, because the AVG POLLS rows use the same visual markup.
+    for(const el of [...panel.querySelectorAll('*')].filter(x=>x.children.length===0)){
       const t=norm(el.textContent);
-      if(/Ricketts:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'63%');
-      else if(/^\d+(?:\.\d+)?%$/.test(t)){
-        let p=el.parentElement,isR=false,isOther=false;
-        for(let i=0;p&&p!==panel&&i<7;i++,p=p.parentElement){
-          const tx=norm(p.textContent);
-          if(/Ricketts/i.test(tx)){isR=true;break;}
-          if(/candidate-line/i.test(p.className||'')||/WIN ODDS|STATISTICAL ODDS/i.test(tx)){
-            if(!/Ricketts/i.test(tx))isOther=true;
-          }
-        }
-        if(isR)el.textContent='63%';
-        else if(isOther)el.textContent='37%';
+      if(/^Win odds:/i.test(t)){
+        el.textContent=t
+          .replace(/Dan\s+Osborn\s+\d+(?:\.\d+)?%/i,'Dan Osborn 37%')
+          .replace(/Pete\s+Ricketts\s+\d+(?:\.\d+)?%/i,'Pete Ricketts 63%');
       }
     }
-    const lines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+
     const bar=panel.querySelector('.oddsbar');
-    if(bar&&lines.length>=2){
-      const odds=lines.map(line=>{
-        const name=norm(line.querySelector('.candidate-name')?.textContent);
-        return /Ricketts/i.test(name)?63:(name?37:null);
-      });
-      const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
-      if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
-      if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');
+    if(bar){
+      const oddsSection=bar.closest('.odds-card,.odds-section,.win-odds')||bar.parentElement;
+      const lines=[...(oddsSection||panel).querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+      if(lines.length>=2){
+        const odds=lines.map(line=>{
+          const name=norm(line.querySelector('.candidate-name')?.textContent);
+          return /Ricketts/i.test(name)?63:/Osborn/i.test(name)?37:null;
+        });
+        const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
+        if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
+        if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');
+      }
     }
   }
 
