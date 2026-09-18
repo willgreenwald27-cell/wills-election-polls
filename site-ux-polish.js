@@ -77,13 +77,62 @@
     const metrics=home?.querySelector('.reference-metrics');
     if(!metrics)return;
 
+    let countdownStyle=document.getElementById('wgElectionCountdownStyle');
+    if(!countdownStyle){
+      countdownStyle=document.createElement('style');
+      countdownStyle.id='wgElectionCountdownStyle';
+      countdownStyle.textContent=`
+        #page-home .reference-metrics{
+          display:grid!important;
+          grid-template-columns:repeat(4,minmax(0,1fr))!important;
+          width:100%!important;
+          max-width:100%!important;
+          height:auto!important;
+          min-height:0!important;
+          overflow:visible!important;
+          align-items:stretch!important;
+          box-sizing:border-box!important;
+        }
+        #page-home #homeElectionCountdown{
+          width:100%!important;
+          max-width:100%!important;
+          min-width:0!important;
+          height:auto!important;
+          min-height:96px!important;
+          overflow:visible!important;
+          padding:14px 16px!important;
+          box-sizing:border-box!important;
+        }
+        #page-home #homeElectionCountdown .wg-election-label,
+        #page-home #homeElectionCountdown .wg-election-days,
+        #page-home #homeElectionCountdown .wg-election-copy{
+          max-width:100%!important;
+          overflow:visible!important;
+          text-overflow:clip!important;
+        }
+        #page-home #homeElectionCountdown .wg-election-copy{
+          white-space:normal!important;
+          overflow-wrap:anywhere!important;
+        }
+        @media(max-width:900px){
+          #page-home .reference-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+        }
+        @media(max-width:650px){
+          #page-home .reference-metrics{grid-template-columns:1fr!important;}
+          #page-home #homeElectionCountdown{min-height:88px!important;}
+          #page-home #homeElectionCountdown .wg-election-days{font-size:29px!important;}
+        }
+      `;
+      document.head.appendChild(countdownStyle);
+    }
+
     let card=metrics.querySelector('#homeElectionCountdown');
     if(!card){
       card=document.createElement('div');
       card.id='homeElectionCountdown';
       card.className='wg-election-countdown';
       card.innerHTML='<span class="wg-election-label">ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">days until Nov. 3, 2026</small>';
-      card.style.cssText='box-sizing:border-box;border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);display:flex;flex-direction:column;justify-content:center;min-height:86px;';
+      card.style.cssText='box-sizing:border-box;border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);display:flex;flex-direction:column;justify-content:center;width:100%;max-width:100%;min-width:0;height:auto;min-height:96px;overflow:visible;padding:14px 16px;';
       const label=card.querySelector('.wg-election-label');
       const number=card.querySelector('.wg-election-days');
       const copy=card.querySelector('.wg-election-copy');
