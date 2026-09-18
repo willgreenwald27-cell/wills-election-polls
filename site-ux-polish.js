@@ -77,70 +77,99 @@
     const metrics=home?.querySelector('.reference-metrics');
     if(!metrics)return;
 
+    for(const child of [...metrics.children]){
+      if(child.id==='homeElectionCountdown')continue;
+      const t=norm(child.textContent);
+      if(/rated\s+senate\s+races/i.test(t)||/polls?\s+entered/i.test(t))child.remove();
+    }
+
     let countdownStyle=document.getElementById('wgElectionCountdownStyle');
     if(!countdownStyle){
       countdownStyle=document.createElement('style');
       countdownStyle.id='wgElectionCountdownStyle';
-      countdownStyle.textContent=`
-        #page-home .reference-metrics{
-          display:grid!important;
-          grid-template-columns:repeat(4,minmax(0,1fr))!important;
-          width:100%!important;
-          max-width:100%!important;
-          height:auto!important;
-          min-height:0!important;
-          overflow:visible!important;
-          align-items:stretch!important;
-          box-sizing:border-box!important;
-        }
-        #page-home #homeElectionCountdown{
-          width:100%!important;
-          max-width:100%!important;
-          min-width:0!important;
-          height:auto!important;
-          min-height:96px!important;
-          overflow:visible!important;
-          padding:14px 16px!important;
-          box-sizing:border-box!important;
-        }
-        #page-home #homeElectionCountdown .wg-election-label,
-        #page-home #homeElectionCountdown .wg-election-days,
-        #page-home #homeElectionCountdown .wg-election-copy{
-          max-width:100%!important;
-          overflow:visible!important;
-          text-overflow:clip!important;
-        }
-        #page-home #homeElectionCountdown .wg-election-copy{
-          white-space:normal!important;
-          overflow-wrap:anywhere!important;
-        }
-        @media(max-width:900px){
-          #page-home .reference-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
-        }
-        @media(max-width:650px){
-          #page-home .reference-metrics{grid-template-columns:1fr!important;}
-          #page-home #homeElectionCountdown{min-height:88px!important;}
-          #page-home #homeElectionCountdown .wg-election-days{font-size:29px!important;}
-        }
-      `;
       document.head.appendChild(countdownStyle);
     }
+    countdownStyle.textContent=`
+      #page-home .reference-metrics{
+        display:grid!important;
+        grid-template-columns:1fr!important;
+        gap:14px!important;
+        width:100%!important;
+        max-width:100%!important;
+        height:auto!important;
+        min-height:0!important;
+        overflow:visible!important;
+        align-items:stretch!important;
+        box-sizing:border-box!important;
+      }
+      #page-home #homeElectionCountdown{
+        grid-column:1/-1!important;
+        order:-10!important;
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        height:auto!important;
+        min-height:190px!important;
+        overflow:visible!important;
+        padding:28px 28px!important;
+        box-sizing:border-box!important;
+        display:flex!important;
+        flex-direction:column!important;
+        align-items:center!important;
+        justify-content:center!important;
+        text-align:center!important;
+      }
+      #page-home #homeElectionCountdown .wg-election-label{
+        display:block!important;
+        color:#6d7c91!important;
+        font:900 12px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        letter-spacing:1.8px!important;
+        text-transform:uppercase!important;
+        margin-bottom:10px!important;
+      }
+      #page-home #homeElectionCountdown .wg-election-days{
+        display:block!important;
+        color:#17263d!important;
+        font:900 clamp(64px,9vw,104px)/.9 Georgia,serif!important;
+        letter-spacing:-3px!important;
+        max-width:100%!important;
+        overflow:visible!important;
+      }
+      #page-home #homeElectionCountdown .wg-election-copy{
+        display:block!important;
+        color:#53647a!important;
+        font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        margin-top:12px!important;
+        white-space:normal!important;
+        overflow:visible!important;
+      }
+      @media(max-width:650px){
+        #page-home #homeElectionCountdown{
+          min-height:160px!important;
+          padding:24px 18px!important;
+          border-radius:16px!important;
+        }
+        #page-home #homeElectionCountdown .wg-election-days{
+          font-size:68px!important;
+        }
+        #page-home #homeElectionCountdown .wg-election-copy{
+          font-size:13px!important;
+        }
+      }
+    `;
 
     let card=metrics.querySelector('#homeElectionCountdown');
     if(!card){
       card=document.createElement('div');
       card.id='homeElectionCountdown';
       card.className='wg-election-countdown';
-      card.innerHTML='<span class="wg-election-label">ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">days until Nov. 3, 2026</small>';
-      card.style.cssText='box-sizing:border-box;border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);display:flex;flex-direction:column;justify-content:center;width:100%;max-width:100%;min-width:0;height:auto;min-height:96px;overflow:visible;padding:14px 16px;';
-      const label=card.querySelector('.wg-election-label');
-      const number=card.querySelector('.wg-election-days');
-      const copy=card.querySelector('.wg-election-copy');
-      if(label)label.style.cssText='display:block;color:#6d7c91;font:900 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.35px;text-transform:uppercase;margin-bottom:3px;';
-      if(number)number.style.cssText='display:block;color:#17263d;font:900 31px/.95 Georgia,serif;';
-      if(copy)copy.style.cssText='display:block;color:#6d7c91;font:700 10px/1.25 Inter,ui-sans-serif,system-ui,sans-serif;margin-top:4px;';
-      metrics.appendChild(card);
+      card.style.cssText='border:1px solid #d9dee7;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,34,53,.08);';
+      metrics.prepend(card);
+    }else if(card!==metrics.firstElementChild){
+      metrics.prepend(card);
     }
+
+    card.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
     const number=card.querySelector('.wg-election-days');
     if(number)number.textContent=String(days);
     card.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
