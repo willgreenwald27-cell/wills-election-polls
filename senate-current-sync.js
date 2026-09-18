@@ -45,7 +45,7 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'updated','2026-09-17');
+        set(ks,'rating','lean-r');set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'notes',"Why my forecast differs: Kansas backed the Republican presidential ticket 57.2% to 41.0% in 2024, and Roger Marshall is the incumbent U.S. senator. I'm giving those fundamentals more weight than a polling average that is currently essentially tied.");set(ks,'updated','2026-09-17');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
         if('call' in ks) set(ks,'call','Marshall +4.9%');
       }
