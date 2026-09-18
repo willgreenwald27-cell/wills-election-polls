@@ -77,23 +77,27 @@
     const metrics=home?.querySelector('.reference-metrics');
     if(!metrics)return;
 
-    for(const child of [...metrics.children]){
-      if(child.id==='homeElectionCountdown'||child.id==='homeLastUpdated')continue;
-      const t=norm(child.textContent);
-      if(/rated\s+senate\s+races/i.test(t)||/polls?\s+entered/i.test(t))child.remove();
+    let tossups='6';
+    const tossHeading=leafs(metrics).find(el=>/senate\s+toss-?ups?/i.test(norm(el.textContent)));
+    if(tossHeading){
+      let node=tossHeading;
+      for(let i=0;node&&node!==metrics&&i<7;i++,node=node.parentElement){
+        const nums=leafs(node).map(x=>norm(x.textContent)).filter(x=>/^\d+$/.test(x));
+        if(nums.length){tossups=nums[0];break;}
+      }
     }
 
-    let countdownStyle=document.getElementById('wgElectionCountdownStyle');
-    if(!countdownStyle){
-      countdownStyle=document.createElement('style');
-      countdownStyle.id='wgElectionCountdownStyle';
-      document.head.appendChild(countdownStyle);
+    let style=document.getElementById('wgElectionCountdownStyle');
+    if(!style){
+      style=document.createElement('style');
+      style.id='wgElectionCountdownStyle';
+      document.head.appendChild(style);
     }
-    countdownStyle.textContent=`
+    style.textContent=`
       #page-home .reference-metrics{
         display:grid!important;
         grid-template-columns:repeat(2,minmax(0,1fr))!important;
-        gap:0!important;
+        gap:14px!important;
         width:100%!important;
         max-width:100%!important;
         height:auto!important;
@@ -105,13 +109,10 @@
       }
       #page-home #homeElectionCountdown{
         grid-column:1/-1!important;
-        order:-10!important;
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-        height:auto!important;
         min-height:148px!important;
-        overflow:visible!important;
         padding:22px 26px 20px!important;
         box-sizing:border-box!important;
         display:flex!important;
@@ -120,100 +121,87 @@
         justify-content:center!important;
         text-align:center!important;
       }
-      #page-home #homeElectionCountdown .wg-election-label{
-        display:block!important;
-        color:#6d7c91!important;
-        font:900 12px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
-        letter-spacing:1.8px!important;
-        text-transform:uppercase!important;
-        margin-bottom:6px!important;
-      }
-      #page-home #homeElectionCountdown .wg-election-days{
-        display:block!important;
-        color:#17263d!important;
-        font:900 clamp(58px,7vw,82px)/.92 Georgia,serif!important;
-        letter-spacing:-3px!important;
-        max-width:100%!important;
-        overflow:visible!important;
-      }
-      #page-home #homeElectionCountdown .wg-election-copy{
-        display:block!important;
-        color:#53647a!important;
-        font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
-        margin-top:8px!important;
-        white-space:normal!important;
-        overflow:visible!important;
-      }
+      #page-home #homeSenateTossups,
       #page-home #homeLastUpdated{
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
-        min-height:132px!important;
+        min-height:116px!important;
         padding:20px 24px!important;
         box-sizing:border-box!important;
         display:flex!important;
         flex-direction:column!important;
         justify-content:center!important;
       }
-      #page-home #homeLastUpdated .wg-updated-label{
+      #page-home .wg-election-label,
+      #page-home .wg-metric-label{
+        display:block!important;
         color:#6d7c91!important;
         font:900 11px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
         letter-spacing:1.45px!important;
         text-transform:uppercase!important;
         margin-bottom:8px!important;
       }
-      #page-home #homeLastUpdated .wg-updated-date{
+      #page-home #homeSenateTossups .wg-metric-label{color:#a53a49!important;}
+      #page-home .wg-election-days{
+        display:block!important;
         color:#17263d!important;
-        font:900 30px/1 Georgia,serif!important;
+        font:900 clamp(58px,7vw,82px)/.92 Georgia,serif!important;
+        letter-spacing:-3px!important;
       }
+      #page-home .wg-election-copy{
+        display:block!important;
+        color:#53647a!important;
+        font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        margin-top:8px!important;
+      }
+      #page-home .wg-metric-value{
+        color:#17263d!important;
+        font:900 34px/1 Georgia,serif!important;
+      }
+      #page-home #homeSenateTossups .wg-metric-value{color:#a53a49!important;}
       @media(max-width:650px){
         #page-home .reference-metrics{grid-template-columns:1fr!important;}
-        #page-home #homeElectionCountdown{
-          min-height:132px!important;
-          padding:18px 16px!important;
-          border-radius:16px!important;
-        }
-        #page-home #homeElectionCountdown .wg-election-days{
-          font-size:60px!important;
-        }
-        #page-home #homeElectionCountdown .wg-election-copy{
-          font-size:13px!important;
-        }
-        #page-home #homeLastUpdated{
-          min-height:110px!important;
-          padding:18px 20px!important;
-        }
-        #page-home #homeLastUpdated .wg-updated-date{
-          font-size:26px!important;
-        }
+        #page-home #homeElectionCountdown{min-height:132px!important;padding:18px 16px!important;}
+        #page-home .wg-election-days{font-size:60px!important;}
+        #page-home .wg-election-copy{font-size:13px!important;}
+        #page-home #homeSenateTossups,#page-home #homeLastUpdated{min-height:104px!important;padding:18px 20px!important;}
       }
     `;
 
-    let card=metrics.querySelector('#homeElectionCountdown');
-    if(!card){
-      card=document.createElement('div');
-      card.id='homeElectionCountdown';
-      card.className='wg-election-countdown';
-      card.style.cssText='border:1px solid #d9dee7;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,34,53,.08);';
-      metrics.prepend(card);
-    }else if(card!==metrics.firstElementChild){
-      metrics.prepend(card);
-    }
-
-    card.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
-    const number=card.querySelector('.wg-election-days');
-    if(number)number.textContent=String(days);
-    card.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
-
+    const legacyPresent=leafs(metrics).some(el=>/rated\s+senate\s+races|polls?\s+entered/i.test(norm(el.textContent)));
+    let countdown=metrics.querySelector('#homeElectionCountdown');
+    let toss=metrics.querySelector('#homeSenateTossups');
     let updated=metrics.querySelector('#homeLastUpdated');
-    if(!updated){
+
+    if(legacyPresent||!countdown||!toss||!updated||metrics.children.length!==3){
+      countdown=document.createElement('div');
+      countdown.id='homeElectionCountdown';
+      countdown.className='wg-election-countdown';
+      countdown.style.cssText='border:1px solid #d9dee7;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,34,53,.08);';
+
+      toss=document.createElement('div');
+      toss.id='homeSenateTossups';
+      toss.className='wg-home-metric';
+      toss.style.cssText='border:1px solid #ead9dc;border-radius:14px;background:#fff9fa;box-shadow:0 5px 16px rgba(20,34,53,.04);';
+
       updated=document.createElement('div');
       updated.id='homeLastUpdated';
-      updated.className='wg-home-last-updated';
+      updated.className='wg-home-metric';
       updated.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
-      metrics.appendChild(updated);
+
+      metrics.replaceChildren(countdown,toss,updated);
     }
-    updated.innerHTML='<span class="wg-updated-label">LAST UPDATED</span><strong class="wg-updated-date">Sept. 18, 2026</strong>';
+
+    countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
+    countdown.querySelector('.wg-election-days').textContent=String(days);
+    countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
+
+    toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
+    toss.querySelector('.wg-metric-value').textContent=tossups;
+    toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
+
+    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">Sept. 18, 2026</strong>';
     updated.setAttribute('aria-label','Last updated September 18, 2026');
   }
 
