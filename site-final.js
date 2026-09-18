@@ -200,7 +200,7 @@
   window.addEventListener('load',()=>{
     if(document.querySelector('script[data-sep10-polls]')) return;
     const s=document.createElement('script');
-    s.src='/sep10-polls-update.js?v=20260910-1922';
+    s.src='/sep10-polls-update.js?v=20260918-1247';
     s.dataset.sep10Polls='1';
     document.head.appendChild(s);
   });
