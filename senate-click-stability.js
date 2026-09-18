@@ -98,11 +98,22 @@
   }
 
   function forceTexasOdds(){
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.TX){
+        const tx=stateData.TX;
+        for(const slot of [1,2]){
+          const name=norm(tx['candidate'+slot]);
+          const key='candidate'+slot+'Odds';
+          if(/Talarico/i.test(name))tx[key]='54';
+          if(/Paxton/i.test(name))tx[key]='46';
+        }
+      }
+    }catch(e){}
     const panel=visiblePanel('Texas');
     if(!panel)return;
     const values=[...panel.querySelectorAll('*')].filter(el=>{
       if(el.children.length)return false;
-      return /^(?:48|52)(?:\.0)?%?$/.test(norm(el.textContent));
+      return /^(?:46|48|52|54)(?:\.0)?%?$/.test(norm(el.textContent));
     });
     for(const el of values){
       let p=el.parentElement,who='';
@@ -112,8 +123,19 @@
         const hasP=/\b(?:Ken\s+)?Paxton\b/i.test(t);
         if(hasT!==hasP){who=hasT?'Talarico':'Paxton';break;}
       }
-      if(who==='Talarico')el.textContent='52%';
-      else if(who==='Paxton')el.textContent='48%';
+      if(who==='Talarico')el.textContent='54%';
+      else if(who==='Paxton')el.textContent='46%';
+    }
+    const lines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
+    const bar=panel.querySelector('.oddsbar');
+    if(bar&&lines.length>=2){
+      const odds=lines.map(line=>{
+        const name=norm(line.querySelector('.candidate-name')?.textContent);
+        return /Talarico/i.test(name)?54:/Paxton/i.test(name)?46:null;
+      });
+      const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
+      if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
+      if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');
     }
   }
 
