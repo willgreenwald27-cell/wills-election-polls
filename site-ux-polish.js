@@ -78,7 +78,7 @@
     if(!metrics)return;
 
     for(const child of [...metrics.children]){
-      if(child.id==='homeElectionCountdown')continue;
+      if(child.id==='homeElectionCountdown'||child.id==='homeLastUpdated')continue;
       const t=norm(child.textContent);
       if(/rated\s+senate\s+races/i.test(t)||/polls?\s+entered/i.test(t))child.remove();
     }
@@ -92,7 +92,7 @@
     countdownStyle.textContent=`
       #page-home .reference-metrics{
         display:grid!important;
-        grid-template-columns:1fr!important;
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
         gap:0!important;
         width:100%!important;
         max-width:100%!important;
@@ -144,7 +144,30 @@
         white-space:normal!important;
         overflow:visible!important;
       }
+      #page-home #homeLastUpdated{
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        min-height:132px!important;
+        padding:20px 24px!important;
+        box-sizing:border-box!important;
+        display:flex!important;
+        flex-direction:column!important;
+        justify-content:center!important;
+      }
+      #page-home #homeLastUpdated .wg-updated-label{
+        color:#6d7c91!important;
+        font:900 11px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        letter-spacing:1.45px!important;
+        text-transform:uppercase!important;
+        margin-bottom:8px!important;
+      }
+      #page-home #homeLastUpdated .wg-updated-date{
+        color:#17263d!important;
+        font:900 30px/1 Georgia,serif!important;
+      }
       @media(max-width:650px){
+        #page-home .reference-metrics{grid-template-columns:1fr!important;}
         #page-home #homeElectionCountdown{
           min-height:132px!important;
           padding:18px 16px!important;
@@ -155,6 +178,13 @@
         }
         #page-home #homeElectionCountdown .wg-election-copy{
           font-size:13px!important;
+        }
+        #page-home #homeLastUpdated{
+          min-height:110px!important;
+          padding:18px 20px!important;
+        }
+        #page-home #homeLastUpdated .wg-updated-date{
+          font-size:26px!important;
         }
       }
     `;
@@ -174,6 +204,17 @@
     const number=card.querySelector('.wg-election-days');
     if(number)number.textContent=String(days);
     card.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
+
+    let updated=metrics.querySelector('#homeLastUpdated');
+    if(!updated){
+      updated=document.createElement('div');
+      updated.id='homeLastUpdated';
+      updated.className='wg-home-last-updated';
+      updated.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
+      metrics.appendChild(updated);
+    }
+    updated.innerHTML='<span class="wg-updated-label">LAST UPDATED</span><strong class="wg-updated-date">Sept. 18, 2026</strong>';
+    updated.setAttribute('aria-label','Last updated September 18, 2026');
   }
 
   function keepPartyLabels(){
