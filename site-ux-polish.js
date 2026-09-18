@@ -60,15 +60,41 @@
   }
 
   function electionCountdown(){
-    const root=document.getElementById('page-senate');if(!root)return;
     const now=new Date();
     const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     const election=new Date(2026,10,3);
     const days=Math.max(0,Math.ceil((election-today)/86400000));
-    for(const el of leafs(root)){
-      const t=norm(el.textContent);
-      if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
+
+    const senate=document.getElementById('page-senate');
+    if(senate){
+      for(const el of leafs(senate)){
+        const t=norm(el.textContent);
+        if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
+      }
     }
+
+    const home=document.getElementById('page-home');
+    const metrics=home?.querySelector('.reference-metrics');
+    if(!metrics)return;
+
+    let card=metrics.querySelector('#homeElectionCountdown');
+    if(!card){
+      card=document.createElement('div');
+      card.id='homeElectionCountdown';
+      card.className='wg-election-countdown';
+      card.innerHTML='<span class="wg-election-label">ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">days until Nov. 3, 2026</small>';
+      card.style.cssText='box-sizing:border-box;border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);display:flex;flex-direction:column;justify-content:center;min-height:86px;';
+      const label=card.querySelector('.wg-election-label');
+      const number=card.querySelector('.wg-election-days');
+      const copy=card.querySelector('.wg-election-copy');
+      if(label)label.style.cssText='display:block;color:#6d7c91;font:900 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif;letter-spacing:1.35px;text-transform:uppercase;margin-bottom:3px;';
+      if(number)number.style.cssText='display:block;color:#17263d;font:900 31px/.95 Georgia,serif;';
+      if(copy)copy.style.cssText='display:block;color:#6d7c91;font:700 10px/1.25 Inter,ui-sans-serif,system-ui,sans-serif;margin-top:4px;';
+      metrics.appendChild(card);
+    }
+    const number=card.querySelector('.wg-election-days');
+    if(number)number.textContent=String(days);
+    card.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
   }
 
   function keepPartyLabels(){
