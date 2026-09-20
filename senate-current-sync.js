@@ -11,7 +11,7 @@
     ME:{'jackson':'47.5','collins':'44.5'},
     MI:{'el-sayed':'45.8','rogers':'44.6'},
     MN:{'flanagan':'44.6','tafoya':'42.2'},
-    MT:{'bodnar':'48.0','alme':'45.0'},
+    MT:{'bodnar':'40.0','alme':'44.7'},
     NC:{'cooper':'49.9','whatley':'41.3'},
     NH:{'pappas':'44.2','sununu':'41.8'},
     NM:{'lujn':'53.0','marker':'38.0'},
