@@ -315,8 +315,62 @@
     const s=box.querySelector('span');if(s)s.style.cssText='display:block;color:#26384f;';
   }
 
+  function forceMontanaAverage(){
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.MT){
+        const mt=stateData.MT;
+        for(const slot of [1,2]){
+          const name=norm(mt['candidate'+slot]);
+          const key='candidate'+slot+'Poll';
+          if(/\bAlme\b/i.test(name))mt[key]='44.7';
+          if(/\bBodnar\b/i.test(name))mt[key]='40.0';
+        }
+        mt.updated='2026-09-17';
+      }
+    }catch(e){}
+
+    const panel=visiblePanel('Montana');
+    if(!panel)return;
+
+    const setCandidatePct=(rx,value)=>{
+      const names=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0&&rx.test(norm(el.textContent)));
+      for(const nameEl of names){
+        let row=nameEl.parentElement;
+        for(let i=0;row&&row!==panel&&i<7;i++,row=row.parentElement){
+          const t=norm(row.textContent);
+          const hasName=rx.test(t);
+          const hasPct=/\b\d+(?:\.\d+)?%\b/.test(t);
+          const both=/\bAlme\b/i.test(t)&&/\bBodnar\b/i.test(t);
+          if(hasName&&hasPct&&!both)break;
+        }
+        if(!row||row===panel)continue;
+        for(const el of [...row.querySelectorAll('*')].filter(x=>x.children.length===0)){
+          if(/^\d+(?:\.\d+)?%$/.test(norm(el.textContent)))el.textContent=value+'%';
+        }
+      }
+    };
+    setCandidatePct(/\bAlme\b/i,'44.7');
+    setCandidatePct(/\bBodnar\b/i,'40.0');
+
+    const avgHeading=[...panel.querySelectorAll('*')].find(el=>el.children.length===0&&/^(AVG POLLS|POLL AVERAGE)$/i.test(norm(el.textContent)));
+    if(avgHeading){
+      let box=avgHeading.parentElement;
+      for(let i=0;box&&box!==panel&&i<6;i++,box=box.parentElement){
+        const t=norm(box.textContent);
+        if(/Alme/i.test(t)&&/Bodnar/i.test(t))break;
+      }
+      if(box&&box!==panel){
+        for(const el of [...box.querySelectorAll('*')].filter(x=>x.children.length===0)){
+          const t=norm(el.textContent);
+          if(/^(?:Even|Alme\s*\+\s*\d+(?:\.\d+)?|Bodnar\s*\+\s*\d+(?:\.\d+)?)$/i.test(t))el.textContent='Alme +4.7';
+        }
+      }
+    }
+  }
+
   function apply(){
     syncData();
+    forceMontanaAverage();
     forceTexasBlue();
     fixSenateSeatBalanceBar();
     forceTexasOdds();
