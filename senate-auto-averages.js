@@ -8,6 +8,7 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-17','MT','Montana','Quantus Insights','Kurt Alme',44,'Seth Bodnar',24,'Alme +20 · Bankhead 23 · Austin —'],
     ['2026-09-17','KS','Kansas','Emerson*','Roger Marshall',43,'Adam Hamilton',45,'Hamilton +2'],
     ['2026-09-17','MI','Michigan','InsiderAdvantage*','Abdul El-Sayed',47,'Mike Rogers',45,'El-Sayed +2'],
     ['2026-09-17','NH','New Hampshire','InsiderAdvantage','Chris Pappas',48,'John Sununu',40,'Pappas +8'],
