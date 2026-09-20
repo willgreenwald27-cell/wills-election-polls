@@ -81,6 +81,15 @@
     const metrics=home?.querySelector('.reference-metrics');
     if(!metrics)return;
 
+    const mobileMetrics=window.matchMedia('(max-width:800px)').matches;
+    metrics.style.setProperty('display','grid','important');
+    metrics.style.setProperty('grid-template-columns',mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))','important');
+    metrics.style.setProperty('grid-auto-columns','unset','important');
+    metrics.style.setProperty('grid-auto-flow','row','important');
+    metrics.style.setProperty('gap','14px','important');
+    metrics.style.setProperty('width','100%','important');
+    metrics.style.setProperty('max-width','100%','important');
+
     let tossups='6';
     const tossHeading=leafs(metrics).find(el=>/senate\s+toss-?ups?/i.test(norm(el.textContent)));
     if(tossHeading){
@@ -218,6 +227,14 @@
       forecast.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
 
       metrics.replaceChildren(countdown,toss,updated,forecast);
+    }
+
+    countdown.style.setProperty('grid-column','1 / -1','important');
+    for(const el of [toss,updated,forecast]){
+      el.style.setProperty('grid-column','auto','important');
+      el.style.setProperty('width','100%','important');
+      el.style.setProperty('max-width','none','important');
+      el.style.setProperty('min-width','0','important');
     }
 
     countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
