@@ -1,6 +1,6 @@
 (()=>{
   'use strict';
-  const DATA_URL='/senate-error-history-data.json?v=20260910-0919';
+  const DATA_URL='/senate-error-history-data.json?v=20260919-2135';
   const STYLE_ID='ipeImmersiveHistoryStyle';
   const ROOT_CLASS='ipe-root';
   const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
