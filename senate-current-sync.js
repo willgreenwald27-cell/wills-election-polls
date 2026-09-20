@@ -55,9 +55,15 @@
       }
       const oh=stateData.OH;
       if(oh){
-        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Tilt Democratic');set(oh,'notes','');set(oh,'updated','2026-09-15');
+        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Brown +0.6%');set(oh,'notes','');set(oh,'updated','2026-09-20');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in oh) set(oh,k,'Democratic');
-        if('call' in oh) set(oh,'call','Tilt Democratic');
+        if('call' in oh) set(oh,'call','Brown +0.6%');
+        for(const slot of [1,2]){
+          const name=norm(oh['candidate'+slot]);
+          const key='candidate'+slot+'Odds';
+          if(/Brown/i.test(name))set(oh,key,'54');
+          if(/Husted/i.test(name))set(oh,key,'46');
+        }
       }
       const tx=stateData.TX;
       if(tx){
@@ -124,7 +130,7 @@
       let ls=leafs(box);
       for(const el of ls){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Brown +0.6%';
         if(/^(Republican|Democrat(?:ic)?|Tossup|TILT REPUBLICAN|LEAN REPUBLICAN|LIKELY REPUBLICAN|SOLID REPUBLICAN|TILT DEMOCRAT(?:IC)?)$/i.test(t)){
           const nearCall=norm(el.parentElement?.textContent||'');
           if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT DEMOCRATIC':'Democratic';
@@ -148,7 +154,15 @@
           if(party)party.textContent='Democratic';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
           if(rating)rating.textContent='TILT DEMOCRATIC';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Brown +0.6%';
+          const vals2=leafs(card);
+          for(const el of vals2){
+            const t=norm(el.textContent);
+            if(/^(Tilt Democratic|Brown\s*\+?\d+(?:\.\d+)?%?)$/i.test(t)&&!/WILL[’']S CALL|MY PREDICTION/i.test(t)){
+              const parent=norm(el.parentElement?.textContent||'');
+              if(/WILL[’']S CALL|MY PREDICTION/i.test(parent))el.textContent='Brown +0.6%';
+            }
+          }
         }
       }
       for(const heading of leafs(box).filter(el=>/^WHY MY .*DIFFERS$/i.test(norm(el.textContent)))){
