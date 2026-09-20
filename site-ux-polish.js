@@ -61,9 +61,13 @@
 
   function electionCountdown(){
     const now=new Date();
-    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    const election=new Date(2026,10,3);
-    const days=Math.max(0,Math.ceil((election-today)/86400000));
+    const parts=new Intl.DateTimeFormat('en-US',{
+      timeZone:'America/Los_Angeles',year:'numeric',month:'numeric',day:'numeric'
+    }).formatToParts(now);
+    const val=t=>Number(parts.find(p=>p.type===t)?.value||0);
+    const todayUtc=Date.UTC(val('year'),val('month')-1,val('day'));
+    const electionUtc=Date.UTC(2026,10,3);
+    const days=Math.max(0,Math.round((electionUtc-todayUtc)/86400000));
 
     const senate=document.getElementById('page-senate');
     if(senate){
@@ -96,7 +100,7 @@
     style.textContent=`
       #page-home .reference-metrics{
         display:grid!important;
-        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        grid-template-columns:repeat(3,minmax(0,1fr))!important;
         gap:14px!important;
         width:100%!important;
         max-width:100%!important;
@@ -122,7 +126,8 @@
         text-align:center!important;
       }
       #page-home #homeSenateTossups,
-      #page-home #homeLastUpdated{
+      #page-home #homeLastUpdated,
+      #page-home #homeSenateForecast{
         width:100%!important;
         max-width:100%!important;
         min-width:0!important;
@@ -160,12 +165,28 @@
         font:900 34px/1 Georgia,serif!important;
       }
       #page-home #homeSenateTossups .wg-metric-value{color:#a53a49!important;}
-      @media(max-width:650px){
+      #page-home #homeSenateForecast .wg-forecast-value{
+        display:flex!important;
+        align-items:baseline!important;
+        gap:14px!important;
+        flex-wrap:wrap!important;
+        font:900 31px/1 Georgia,serif!important;
+      }
+      #page-home #homeSenateForecast .wg-forecast-dem{color:#2763b8!important;}
+      #page-home #homeSenateForecast .wg-forecast-rep{color:#bd2937!important;}
+      #page-home #homeSenateForecast .wg-forecast-divider{
+        color:#a9b4c3!important;
+        font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+        font-size:20px!important;
+      }
+      @media(max-width:800px){
         #page-home .reference-metrics{grid-template-columns:1fr!important;}
         #page-home #homeElectionCountdown{min-height:132px!important;padding:18px 16px!important;}
         #page-home .wg-election-days{font-size:60px!important;}
         #page-home .wg-election-copy{font-size:13px!important;}
-        #page-home #homeSenateTossups,#page-home #homeLastUpdated{min-height:104px!important;padding:18px 20px!important;}
+        #page-home #homeSenateTossups,
+        #page-home #homeLastUpdated,
+        #page-home #homeSenateForecast{min-height:104px!important;padding:18px 20px!important;}
       }
     `;
 
@@ -173,8 +194,9 @@
     let countdown=metrics.querySelector('#homeElectionCountdown');
     let toss=metrics.querySelector('#homeSenateTossups');
     let updated=metrics.querySelector('#homeLastUpdated');
+    let forecast=metrics.querySelector('#homeSenateForecast');
 
-    if(legacyPresent||!countdown||!toss||!updated||metrics.children.length!==3){
+    if(legacyPresent||!countdown||!toss||!updated||!forecast||metrics.children.length!==4){
       countdown=document.createElement('div');
       countdown.id='homeElectionCountdown';
       countdown.className='wg-election-countdown';
@@ -190,7 +212,12 @@
       updated.className='wg-home-metric';
       updated.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
 
-      metrics.replaceChildren(countdown,toss,updated);
+      forecast=document.createElement('div');
+      forecast.id='homeSenateForecast';
+      forecast.className='wg-home-metric';
+      forecast.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
+
+      metrics.replaceChildren(countdown,toss,updated,forecast);
     }
 
     countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
@@ -203,6 +230,9 @@
 
     updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">Sept. 18, 2026</strong>';
     updated.setAttribute('aria-label','Last updated September 18, 2026');
+
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
   }
 
   function keepPartyLabels(){
