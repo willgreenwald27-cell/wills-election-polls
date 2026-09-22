@@ -38,12 +38,31 @@
   function visiblePanel(stateName){
     const root=document.getElementById('page-senate');
     if(!root)return null;
-    const hits=[...root.querySelectorAll('div,section,article,aside')].filter(el=>{
-      if(!el.getClientRects().length)return false;
-      const t=norm(el.textContent);
-      if(!new RegExp('\\b'+stateName+'\\b','i').test(t))return false;
-      return /WILL[’']S CALL|MY PREDICTION|AVG POLLS|POLL AVERAGE/i.test(t);
-    });
+
+    // Anchor to a visible leaf whose text is exactly the state name.
+    // This stops map labels from causing the whole Senate page to be treated
+    // as a state's popup.
+    const wanted=norm(stateName).toLowerCase();
+    const labels=[...root.querySelectorAll('*')].filter(el=>
+      el.children.length===0 &&
+      el.getClientRects().length &&
+      norm(el.textContent).toLowerCase()===wanted
+    );
+
+    const hits=[];
+    for(const label of labels){
+      let p=label.parentElement;
+      for(let i=0;p&&p!==root&&i<12;i++,p=p.parentElement){
+        if(!p.getClientRects().length)continue;
+        const t=norm(p.textContent);
+        if(/WILL[’']S CALL|MY PREDICTION|AVG POLLS|POLL AVERAGE/i.test(t)){
+          const r=p.getBoundingClientRect();
+          if(r.width<=900&&r.height<=1400)hits.push(p);
+          break;
+        }
+      }
+    }
+
     hits.sort((a,b)=>{
       const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();
       return (ar.width*ar.height)-(br.width*br.height);
@@ -130,6 +149,10 @@
 
     const panel=visiblePanel('Ohio');
     if(!panel)return;
+    const hasOhioTitle=[...panel.querySelectorAll('*')].some(el=>
+      el.children.length===0&&/^Ohio$/i.test(norm(el.textContent))
+    );
+    if(!hasOhioTitle)return;
     const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
 
     for(const el of leaves){
