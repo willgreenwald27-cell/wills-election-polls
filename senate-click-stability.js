@@ -19,7 +19,18 @@
       }
       const oh=stateData.OH;
       if(oh){
+        oh.rating='tilt-d';
+        oh.predictionParty='Democratic';
+        oh.prediction='Brown +0.6%';
         oh.notes='';
+        oh.updated='2026-09-20';
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in oh)oh[k]='Democratic';
+        if('call' in oh)oh.call='Brown +0.6%';
+        for(const slot of [1,2]){
+          const name=norm(oh['candidate'+slot]);
+          if(/Brown/i.test(name))oh['candidate'+slot+'Odds']='54';
+          if(/Husted/i.test(name))oh['candidate'+slot+'Odds']='46';
+        }
       }
     }catch(e){}
   }
@@ -101,6 +112,59 @@
       const t=norm(el.textContent);
       if(!/Nebraska|Maine|Kansas/i.test(t))el.remove();
     });
+  }
+
+  function forceOhioStable(){
+    const root=document.getElementById('page-senate');
+    if(!root)return;
+
+    root.querySelectorAll(
+      '[data-state="OH"],[data-state="OH"] path,[data-abbr="OH"],[data-abbr="OH"] path,'+
+      '[data-state-abbr="OH"],[data-state-abbr="OH"] path,#OH,#OH path,#state-OH,#state-OH path'
+    ).forEach(el=>{
+      el.style.setProperty('fill',BLUE,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')){
+        el.style.setProperty('background',BLUE,'important');
+      }
+    });
+
+    const panel=visiblePanel('Ohio');
+    if(!panel)return;
+    const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
+
+    for(const el of leaves){
+      const t=norm(el.textContent);
+      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Brown +0.6%';
+    }
+
+    const call=leaves.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
+    if(call){
+      let card=call.parentElement;
+      for(let i=0;card&&card!==panel&&i<5;i++,card=card.parentElement){
+        const t=norm(card.textContent);
+        if(/WILL[’']S CALL/i.test(t)&&t.length<240)break;
+      }
+      if(card&&card!==panel){
+        // Undo older whole-card color overrides; keep normal popup styling.
+        card.style.removeProperty('background');
+        card.style.removeProperty('background-image');
+        card.style.removeProperty('border-color');
+        card.style.removeProperty('color');
+        card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
+
+        const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
+        const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
+        if(party)party.textContent='Democratic';
+        const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
+        if(rating)rating.textContent='TILT DEMOCRATIC';
+        const copy=card.querySelector('.prediction-copy');
+        if(copy)copy.textContent='Brown +0.6%';
+        for(const el of vals){
+          const t=norm(el.textContent);
+          if(/^Brown\s*\+\s*\d+(?:\.\d+)?%?$/i.test(t))el.textContent='Brown +0.6%';
+        }
+      }
+    }
   }
 
   function forceTexasBlue(){
@@ -371,6 +435,7 @@
   function apply(){
     syncData();
     forceMontanaAverage();
+    forceOhioStable();
     forceTexasBlue();
     fixSenateSeatBalanceBar();
     forceTexasOdds();
