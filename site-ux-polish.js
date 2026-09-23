@@ -67,7 +67,7 @@
     const val=t=>Number(parts.find(p=>p.type===t)?.value||0);
     const todayUtc=Date.UTC(val('year'),val('month')-1,val('day'));
     const electionUtc=Date.UTC(2026,10,3);
-    const days=Math.max(0,Math.round((electionUtc-todayUtc)/86400000)+1);
+    const days=Math.max(0,Math.round((electionUtc-todayUtc)/86400000)-1);
 
     const senate=document.getElementById('page-senate');
     if(senate){
