@@ -52,7 +52,10 @@
       }
       const ne=stateData.NE;
       if(ne){
+        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');set(ne,'updated','2026-09-22');
         set(ne,'notes',"Why my forecast differs: Pete Ricketts is the incumbent and won a statewide Senate election in Nebraska in 2024. I'm giving that recent statewide result and incumbency more weight than the current polling margin.");
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ne) set(ne,k,'Republican');
+        if('call' in ne) set(ne,'call','Ricketts +3.2%');
       }
       const oh=stateData.OH;
       if(oh){
