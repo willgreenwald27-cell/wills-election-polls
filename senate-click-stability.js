@@ -166,6 +166,112 @@
       .forEach(paint);
   }
 
+  let maineStateHover=false;
+  let mainePanelHover=false;
+  let maineGraceUntil=0;
+  let maineKeepTimer=null;
+
+  function stabilizeMaineHover(){
+    if(!window.matchMedia?.('(hover:hover) and (pointer:fine)').matches)return;
+    const root=document.getElementById('page-senate');
+    if(!root)return;
+
+    const safeOpen=()=>{
+      try{
+        if(typeof window.openState==='function')window.openState('ME');
+        else if(typeof openState==='function')openState('ME');
+      }catch(e){}
+    };
+
+    const keepAlive=()=>{
+      if(maineKeepTimer)return;
+      maineKeepTimer=setInterval(()=>{
+        const keep=maineStateHover||mainePanelHover||Date.now()<maineGraceUntil;
+        if(!keep){
+          clearInterval(maineKeepTimer);
+          maineKeepTimer=null;
+          return;
+        }
+        if(!visiblePanel('Maine'))safeOpen();
+        keepMainePartyLabelsVisible();
+    stabilizeMaineHover();
+        bindPanel();
+      },70);
+    };
+
+    const enterState=()=>{
+      maineStateHover=true;
+      maineGraceUntil=Date.now()+700;
+      safeOpen();
+      setTimeout(()=>{keepMainePartyLabelsVisible();bindPanel();},0);
+      setTimeout(()=>{if(maineStateHover||Date.now()<maineGraceUntil)safeOpen();bindPanel();},80);
+      keepAlive();
+    };
+    const leaveState=()=>{
+      maineStateHover=false;
+      maineGraceUntil=Date.now()+700;
+      keepAlive();
+    };
+
+    const bindPanel=()=>{
+      const panel=visiblePanel('Maine');
+      if(!panel||panel.dataset.wgMaineHoverBound==='1')return;
+      panel.dataset.wgMaineHoverBound='1';
+      panel.addEventListener('pointerenter',()=>{
+        mainePanelHover=true;
+        maineGraceUntil=Date.now()+700;
+        keepAlive();
+      },true);
+      panel.addEventListener('pointerleave',()=>{
+        mainePanelHover=false;
+        maineGraceUntil=Date.now()+220;
+        keepAlive();
+      },true);
+      panel.addEventListener('mouseenter',()=>{
+        mainePanelHover=true;
+        maineGraceUntil=Date.now()+700;
+        keepAlive();
+      },true);
+      panel.addEventListener('mouseleave',()=>{
+        mainePanelHover=false;
+        maineGraceUntil=Date.now()+220;
+        keepAlive();
+      },true);
+    };
+
+    const selectors=[
+      '[data-state="ME"]','[data-abbr="ME"]','[data-state-abbr="ME"]',
+      '#ME','#state-ME','[id="ME"]','[id="state-ME"]'
+    ];
+    const targets=new Set();
+    for(const sel of selectors){
+      root.querySelectorAll(sel).forEach(el=>targets.add(el));
+    }
+    for(const el of [...targets]){
+      if(el.dataset?.wgMaineHoverBound==='1')continue;
+      if(el.dataset)el.dataset.wgMaineHoverBound='1';
+      el.addEventListener('pointerenter',enterState,true);
+      el.addEventListener('pointerleave',leaveState,true);
+      el.addEventListener('mouseenter',enterState,true);
+      el.addEventListener('mouseleave',leaveState,true);
+    }
+
+    // Some map builds attach ME to a parent group while only the text/path
+    // carries the visible label. Catch those without affecting other states.
+    const meLabels=[...root.querySelectorAll('text,tspan')].filter(el=>/^ME$/i.test(norm(el.textContent)));
+    for(const label of meLabels){
+      const el=label.closest('g')||label;
+      if(el.dataset?.wgMaineHoverBound==='1')continue;
+      if(el.dataset)el.dataset.wgMaineHoverBound='1';
+      el.addEventListener('pointerenter',enterState,true);
+      el.addEventListener('pointerleave',leaveState,true);
+      el.addEventListener('mouseenter',enterState,true);
+      el.addEventListener('mouseleave',leaveState,true);
+    }
+
+    bindPanel();
+  }
+
   function forceOhioStable(){
     const root=document.getElementById('page-senate');
     if(!root)return;
