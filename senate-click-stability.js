@@ -133,6 +133,39 @@
     });
   }
 
+  function keepMainePartyLabelsVisible(){
+    const panel=visiblePanel('Maine');
+    if(!panel)return;
+
+    const paint=el=>{
+      const t=norm(el.textContent);
+      const isRep=/^Republican$/i.test(t);
+      const isDem=/^Democrat(?:ic)?$/i.test(t);
+      if(!isRep&&!isDem)return;
+      el.style.setProperty('display','block','important');
+      el.style.setProperty('visibility','visible','important');
+      el.style.setProperty('opacity','1','important');
+      el.style.setProperty('max-height','none','important');
+      el.style.setProperty('overflow','visible','important');
+      el.style.setProperty('color',isRep?'#bd2937':'#2763b8','important');
+    };
+
+    panel.querySelectorAll('.candidate-party').forEach(el=>{
+      el.style.setProperty('display','block','important');
+      el.style.setProperty('visibility','visible','important');
+      el.style.setProperty('opacity','1','important');
+      el.style.setProperty('max-height','none','important');
+      el.style.setProperty('overflow','visible','important');
+      const t=norm(el.textContent);
+      if(/rep/i.test(t))el.style.setProperty('color','#bd2937','important');
+      if(/dem/i.test(t))el.style.setProperty('color','#2763b8','important');
+    });
+
+    [...panel.querySelectorAll('*')]
+      .filter(el=>el.children.length===0)
+      .forEach(paint);
+  }
+
   function forceOhioStable(){
     const root=document.getElementById('page-senate');
     if(!root)return;
@@ -458,6 +491,7 @@
   function apply(){
     syncData();
     forceMontanaAverage();
+    keepMainePartyLabelsVisible();
     forceOhioStable();
     forceTexasBlue();
     fixSenateSeatBalanceBar();
