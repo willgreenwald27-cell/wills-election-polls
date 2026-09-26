@@ -442,6 +442,75 @@
     }
   }
 
+  function keepTopSeatPartyLabels(){
+    const root=document.getElementById('page-senate');
+    if(!root)return;
+    const row=root.querySelector('.balance-count-row');
+    if(!row)return;
+
+    const dem=row.querySelector('.balance-party.dem');
+    const rep=row.querySelector('.balance-party.rep');
+
+    const ensure=(box,label,count,color,side)=>{
+      if(!box)return;
+
+      let number=box.querySelector('strong');
+      if(!number){
+        number=document.createElement('strong');
+        box.appendChild(number);
+      }
+      number.textContent=count;
+
+      let party=[...box.children].find(el=>el!==number&&/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
+      if(!party){
+        party=document.createElement('span');
+        if(side==='left')box.insertBefore(party,number);
+        else box.appendChild(party);
+      }
+      party.textContent=label;
+
+      box.style.setProperty('display','flex','important');
+      box.style.setProperty('align-items','baseline','important');
+      box.style.setProperty('gap','8px','important');
+      box.style.setProperty('overflow','visible','important');
+      box.style.setProperty('visibility','visible','important');
+      box.style.setProperty('opacity','1','important');
+      box.style.setProperty('justify-content',side==='left'?'flex-start':'flex-end','important');
+      box.style.setProperty('text-align',side==='left'?'left':'right','important');
+
+      party.style.setProperty('display','inline-block','important');
+      party.style.setProperty('visibility','visible','important');
+      party.style.setProperty('opacity','1','important');
+      party.style.setProperty('position','static','important');
+      party.style.setProperty('width','auto','important');
+      party.style.setProperty('height','auto','important');
+      party.style.setProperty('max-width','none','important');
+      party.style.setProperty('max-height','none','important');
+      party.style.setProperty('overflow','visible','important');
+      party.style.setProperty('white-space','nowrap','important');
+      party.style.setProperty('font-weight','900','important');
+      party.style.setProperty('letter-spacing','1.05px','important');
+      party.style.setProperty('text-transform','uppercase','important');
+      party.style.setProperty('color',color,'important');
+      party.style.setProperty('pointer-events','none','important');
+
+      number.style.setProperty('display','inline-block','important');
+      number.style.setProperty('visibility','visible','important');
+      number.style.setProperty('opacity','1','important');
+
+      if(side==='left'){
+        party.style.setProperty('order','1','important');
+        number.style.setProperty('order','2','important');
+      }else{
+        number.style.setProperty('order','1','important');
+        party.style.setProperty('order','2','important');
+      }
+    };
+
+    ensure(dem,'Democratic','51','#2763b8','left');
+    ensure(rep,'Republican','49','#bd2937','right');
+  }
+
   function fixSenateSeatBalanceBar(){
     const root=document.getElementById('page-senate');
     if(!root)return;
@@ -632,6 +701,7 @@
     syncData();
     forceMontanaAverage();
     keepMainePartyLabelsVisible();
+    keepTopSeatPartyLabels();
     forceOhioStable();
     forceTexasBlue();
     fixSenateSeatBalanceBar();
