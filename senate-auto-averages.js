@@ -8,6 +8,22 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-23','ME','Maine','NY Times/Siena','Troy Jackson',46,'Susan Collins',49,'Collins +3'],
+    ['2026-09-23','ME','Maine','UNH','Troy Jackson',51,'Susan Collins',47,'Jackson +4'],
+    ['2026-09-23','MI','Michigan','NY Times/Siena','Abdul El-Sayed',49,'Mike Rogers',44,'El-Sayed +5'],
+    ['2026-09-23','MI','Michigan','Rasmussen Reports*','Abdul El-Sayed',47,'Mike Rogers',44,'El-Sayed +3'],
+    ['2026-09-23','NH','New Hampshire','NY Times/Siena','Chris Pappas',50,'John Sununu',45,'Pappas +5'],
+    ['2026-09-23','NH','New Hampshire','UNH','Chris Pappas',50,'John Sununu',42,'Pappas +8'],
+    ['2026-09-23','OH','Ohio','Quantus Insights','Sherrod Brown',48,'Jon Husted',47,'Brown +1'],
+    ['2026-09-23','NC','North Carolina','High Point University','Roy Cooper',50,'Michael Whatley',42,'Cooper +8'],
+    ['2026-09-23','NC','North Carolina','Rasmussen Reports*','Roy Cooper',48,'Michael Whatley',41,'Cooper +7'],
+    ['2026-09-23','FL','Florida Special Election','Stetson University**','Ashley Moody',51,'Jasmine Nixon',40,'Moody +11'],
+    ['2026-09-23','GA','Georgia','Big Data Poll','Jon Ossoff',55,'Mike Collins',45,'Ossoff +10'],
+    ['2026-09-23','RI','Rhode Island','UNH*','Jack Reed',53,'Allen McKay',33,'Reed +20'],
+    ['2026-09-22','TX','Texas','Marist','James Talarico',50,'Ken Paxton',44,'Talarico +6'],
+    ['2026-09-22','NC','North Carolina','Quantus Insights','Roy Cooper',48,'Michael Whatley',43,'Cooper +5'],
+    ['2026-09-22','NC','North Carolina','YouGov','Roy Cooper',53,'Michael Whatley',41,'Cooper +12'],
+    ['2026-09-22','GA','Georgia','YouGov','Jon Ossoff',52,'Mike Collins',42,'Ossoff +10'],
     ['2026-09-20','FL','Florida Special Election','InsiderAdvantage','Ashley Moody',49,'Jasmine Nixon',42,'Moody +7'],
     ['2026-09-21','IA','Iowa','Marist','Ashley Hinson',42,'Josh Turek',50,'Turek +8'],
     ['2026-09-21','MI','Michigan','Suffolk University*','Abdul El-Sayed',47,'Mike Rogers',40,'El-Sayed +7'],
@@ -70,11 +86,12 @@
       }
     }catch(e){}
     try{
-      if(Array.isArray(window.polls)){
+      const nativePolls=(typeof polls!=='undefined'&&Array.isArray(polls))?polls:(Array.isArray(window.polls)?window.polls:null);
+      if(nativePolls){
         for(const row of NEW_POLLS){
           const obj={date:row[0],state:row[1],pollster:row[3],sample:'',c1:row[4],c1Pct:String(row[5]),c2:row[6],c2Pct:String(row[7]),notes:row[8]||'User-provided poll'};
-          const exists=window.polls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&norm(p.pollster)===norm(obj.pollster)&&same(p.c1,obj.c1)&&same(p.c2,obj.c2));
-          if(!exists){window.polls.push(obj);nativeChanged=true;}
+          const exists=nativePolls.some(p=>p&&p.state===obj.state&&p.date===obj.date&&norm(p.pollster)===norm(obj.pollster)&&same(p.c1,obj.c1)&&same(p.c2,obj.c2));
+          if(!exists){nativePolls.push(obj);nativeChanged=true;}
         }
       }
       if(nativeChanged&&typeof window.renderPolls==='function'){
