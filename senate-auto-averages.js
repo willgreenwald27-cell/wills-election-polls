@@ -8,6 +8,10 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-24','TX','Texas','TPOR**','James Talarico',49,'Ken Paxton',44,'Talarico +5'],
+    ['2026-09-24','GA','Georgia','InsiderAdvantage','Jon Ossoff',50,'Mike Collins',42,'Ossoff +8'],
+    ['2026-09-24','MI','Michigan','Big Data Poll','Abdul El-Sayed',47,'Mike Rogers',42,'El-Sayed +5'],
+    ['2026-09-24','AK','Alaska','Trafalgar Group','Dan Sullivan',47,'Mary Peltola',46,'RCV 1st round · Sullivan +1 · J. Sullivan 3 · Heikes 1'],
     ['2026-09-23','ME','Maine','NY Times/Siena','Troy Jackson',46,'Susan Collins',49,'Collins +3'],
     ['2026-09-23','ME','Maine','UNH','Troy Jackson',51,'Susan Collins',47,'Jackson +4'],
     ['2026-09-23','MI','Michigan','NY Times/Siena','Abdul El-Sayed',49,'Mike Rogers',44,'El-Sayed +5'],
