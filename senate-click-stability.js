@@ -137,6 +137,40 @@
     const panel=visiblePanel('Maine');
     if(!panel)return;
 
+    // Maine's hover panel is redrawn by several late UI patches. Some redraws
+    // remove the party node instead of merely hiding it, so reconstruct it
+    // from the candidate name before applying visibility/color fixes.
+    const ensureParty=(line,party,color)=>{
+      if(!line)return;
+      let el=line.querySelector('.candidate-party');
+      if(!el){
+        el=document.createElement('div');
+        el.className='candidate-party';
+        const name=line.querySelector('.candidate-name');
+        if(name){
+          const host=name.parentElement||line;
+          if(host===line)name.insertAdjacentElement('afterend',el);
+          else host.appendChild(el);
+        }else{
+          line.appendChild(el);
+        }
+      }
+      if(norm(el.textContent)!==party)el.textContent=party;
+      el.style.setProperty('display','block','important');
+      el.style.setProperty('visibility','visible','important');
+      el.style.setProperty('opacity','1','important');
+      el.style.setProperty('max-height','none','important');
+      el.style.setProperty('overflow','visible','important');
+      el.style.setProperty('color',color,'important');
+      el.style.setProperty('pointer-events','none','important');
+    };
+
+    for(const line of panel.querySelectorAll('.candidate-line')){
+      const name=norm(line.querySelector('.candidate-name')?.textContent);
+      if(/^Troy Jackson$/i.test(name))ensureParty(line,'Democrat','#2763b8');
+      if(/^Susan Collins$/i.test(name))ensureParty(line,'Republican','#bd2937');
+    }
+
     const paint=el=>{
       const t=norm(el.textContent);
       const isRep=/^Republican$/i.test(t);
