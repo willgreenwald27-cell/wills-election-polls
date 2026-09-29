@@ -71,9 +71,9 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Tilt Democratic');set(tx,'notes','');set(tx,'updated','2026-09-21');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
-        if('call' in tx) set(tx,'call','Tilt Democratic');
+        set(tx,'rating','tilt-r');set(tx,'predictionParty','Republican');set(tx,'prediction','Paxton 53% chance of winning');set(tx,'notes','Ken Paxton has a 53% chance of winning.');set(tx,'updated','2026-09-29');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Republican');
+        if('call' in tx) set(tx,'call','Paxton 53% chance of winning');
       }
       return changed;
     }catch(e){console.warn('Audited Senate data sync unavailable',e);return false;}
@@ -245,7 +245,7 @@
         if(!/REPUBLICAN/i.test(text)||!/DEMOCRAT/i.test(text))continue;
         const branch=label.parentElement;
         const n=leafs(branch).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'49':'51';
+        if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'50':'50';
         break;
       }
     }
@@ -256,8 +256,8 @@
     const bars=[...root.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
     for(const bar of bars){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','51%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(d)d.style.setProperty('width','50%','important');
+      if(r)r.style.setProperty('width','50%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
@@ -276,23 +276,23 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}
+    if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='50';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
       if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSSUP';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','51%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(d)d.style.setProperty('width','50%','important');
+      if(r)r.style.setProperty('width','50%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
-      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');
+      bar.setAttribute('aria-label','Senate prediction: 50 Democrats and 50 Republicans');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
