@@ -283,9 +283,9 @@
       '[data-state="OH"],[data-state="OH"] path,[data-abbr="OH"],[data-abbr="OH"] path,'+
       '[data-state-abbr="OH"],[data-state-abbr="OH"] path,#OH,#OH path,#state-OH,#state-OH path'
     ).forEach(el=>{
-      el.style.setProperty('fill',RED,'important');
+      el.style.setProperty('fill',BLUE,'important');
       if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')){
-        el.style.setProperty('background',RED,'important');
+        el.style.setProperty('background',BLUE,'important');
       }
     });
 
@@ -319,9 +319,9 @@
 
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-        if(party)party.textContent='Republican';
+        if(party)party.textContent='Democratic';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-        if(rating)rating.textContent='TILT REPUBLICAN';
+        if(rating)rating.textContent='TILT DEMOCRATIC';
         const copy=card.querySelector('.prediction-copy');
         if(copy)copy.textContent='Brown +0.6%';
         for(const el of vals){
