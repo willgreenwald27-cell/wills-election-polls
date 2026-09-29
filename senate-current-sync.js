@@ -236,31 +236,28 @@
   function forceSenateSummary(){
     const root=document.getElementById('page-senate'); if(!root)return;
     const ls=leafs(root);
-    for(const label of ls){
-      const t=norm(label.textContent);
-      if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t))continue;
-      let box=label.parentElement;
-      for(let d=0;box&&box!==root&&d<6;d++,box=box.parentElement){
-        const text=norm(box.textContent);
-        if(!/REPUBLICAN/i.test(text)||!/DEMOCRAT/i.test(text))continue;
-        const branch=label.parentElement;
-        const n=leafs(branch).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n)n.textContent=/^REPUBLICAN$/i.test(t)?'50':'50';
+    const majority=ls.find(el=>/50\s*\+\s*VP\s+FOR\s+MAJORITY/i.test(norm(el.textContent)));
+    let summary=majority?.parentElement||null;
+    for(let d=0;summary&&summary!==root&&d<7;d++,summary=summary.parentElement){
+      const text=norm(summary.textContent);
+      if(/DEMOCRAT/i.test(text)&&/REPUBLICAN/i.test(text)){
+        const nums=leafs(summary).filter(el=>/^(49|51)$/.test(norm(el.textContent)));
+        nums.forEach(el=>el.textContent='50');
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 50 Democrats and 50 Republicans'));
+        const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
+        for(const bar of bars){
+          const kids=[...bar.children].filter(el=>el.nodeType===1);
+          const dbar=bar.querySelector('.dem,.democratic,[data-party="dem"]')||kids[0];
+          const rbar=bar.querySelector('.rep,.republican,[data-party="rep"]')||kids[kids.length-1];
+          if(dbar)dbar.style.setProperty('width','50%','important');
+          if(rbar)rbar.style.setProperty('width','50%','important');
+        }
         break;
       }
     }
     for(const el of ls){
       const t=norm(el.textContent);
       if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='0 TOSSUP';
-    }
-    const bars=[...root.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
-    for(const bar of bars){
-      const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','50%','important');
-      if(r)r.style.setProperty('width','50%','important');
-      let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
-      if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
-      if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
     }
   }
 
