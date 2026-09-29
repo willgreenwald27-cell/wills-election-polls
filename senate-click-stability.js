@@ -93,44 +93,13 @@
   function removeTexasExplanation(){
     const panel=visiblePanel('Texas');
     if(!panel)return;
-    try{
-      if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='';
-    }catch(e){}
-
-    const headingRx=/^(?:WHY\b|WHY\s+MY\b|EXPLANATION\b|FORECAST\s+EXPLANATION\b)/i;
-    const phraseRx=/why\s+(?:my\s+)?(?:forecast|poll|prediction|call)?\s*(?:differs|is different)|forecast\s+differs|poll\s+differs/i;
-    const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
-
-    const targets=leaves.filter(el=>{
-      const t=norm(el.textContent);
-      return headingRx.test(t)||phraseRx.test(t);
-    });
-
-    for(const leaf of targets){
-      let cur=leaf,best=leaf;
-      for(let i=0;i<7;i++){
-        const p=cur.parentElement;
-        if(!p||p===panel)break;
-        const t=norm(p.textContent);
-        const r=p.getBoundingClientRect();
-        if(
-          (headingRx.test(t)||phraseRx.test(t)) &&
-          !/WILL[’']S CALL|AVG POLLS|POLL AVERAGE|WIN ODDS|MY PREDICTION/i.test(t) &&
-          r.height<360
-        ){
-          best=p;cur=p;
-        }else break;
-      }
-      best.remove();
-    }
-
-    panel.querySelectorAll(
-      '.why-note,.forecast-explanation,.prediction-explanation,.poll-explanation,'+
-      '[class*="why-diff"],[class*="forecast-diff"],[class*="poll-diff"],[data-explanation]'
-    ).forEach(el=>{
-      const t=norm(el.textContent);
-      if(!/Nebraska|Maine|Kansas/i.test(t))el.remove();
-    });
+    try{if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='Ken Paxton has a 53% chance of winning.';}catch(e){}
+    let box=panel.querySelector('.wg-tx-explanation');
+    if(!box){box=document.createElement('div');box.className='wg-tx-explanation';panel.appendChild(box);}
+    box.innerHTML='<b>WHY I HAVE TEXAS TILT REPUBLICAN</b><span>Ken Paxton has a 53% chance of winning.</span>';
+    box.style.cssText='margin-top:12px;padding:14px 15px;border-radius:10px;background:#fff6f6;border:1px solid #efc8cc;color:#26384f;font:500 12px/1.45 Inter,system-ui,sans-serif;box-sizing:border-box;';
+    const b=box.querySelector('b');if(b)b.style.cssText='display:block;margin-bottom:8px;color:#9b3340;font-size:10px;line-height:1.1;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;';
+    const s=box.querySelector('span');if(s)s.style.cssText='display:block;color:#26384f;';
   }
 
   function keepMainePartyLabelsVisible(){
@@ -314,9 +283,9 @@
       '[data-state="OH"],[data-state="OH"] path,[data-abbr="OH"],[data-abbr="OH"] path,'+
       '[data-state-abbr="OH"],[data-state-abbr="OH"] path,#OH,#OH path,#state-OH,#state-OH path'
     ).forEach(el=>{
-      el.style.setProperty('fill',BLUE,'important');
+      el.style.setProperty('fill',RED,'important');
       if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')){
-        el.style.setProperty('background',BLUE,'important');
+        el.style.setProperty('background',RED,'important');
       }
     });
 
@@ -350,9 +319,9 @@
 
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-        if(party)party.textContent='Democratic';
+        if(party)party.textContent='Republican';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-        if(rating)rating.textContent='TILT DEMOCRATIC';
+        if(rating)rating.textContent='TILT REPUBLICAN';
         const copy=card.querySelector('.prediction-copy');
         if(copy)copy.textContent='Brown +0.6%';
         for(const el of vals){
@@ -363,19 +332,19 @@
     }
   }
 
-  function forceTexasBlue(){
+  function forceTexasRed(){
     const root=document.getElementById('page-senate');
     if(!root)return;
     root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
-      el.style.setProperty('fill',BLUE,'important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',BLUE,'important');
+      el.style.setProperty('fill',RED,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',RED,'important');
     });
     const panel=visiblePanel('Texas');
     if(!panel)return;
     const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
     for(const el of leaves){
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
+      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
     }
     const call=leaves.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
     if(call){
@@ -392,10 +361,10 @@
         card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-        if(party)party.textContent='Democratic';
+        if(party)party.textContent='Republican';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-        if(rating)rating.textContent='TILT DEMOCRATIC';
-        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
+        if(rating)rating.textContent='TILT REPUBLICAN';
+        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Paxton 53% chance of winning';
       }
     }
   }
@@ -407,8 +376,8 @@
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Talarico/i.test(name))tx[key]='54';
-          if(/Paxton/i.test(name))tx[key]='46';
+          if(/Talarico/i.test(name))tx[key]='47';
+          if(/Paxton/i.test(name))tx[key]='53';
         }
       }
     }catch(e){}
@@ -416,7 +385,7 @@
     if(!panel)return;
     const values=[...panel.querySelectorAll('*')].filter(el=>{
       if(el.children.length)return false;
-      return /^(?:46|48|52|54)(?:\.0)?%?$/.test(norm(el.textContent));
+      return /^(?:46|47|48|52|53|54)(?:\.0)?%?$/.test(norm(el.textContent));
     });
     for(const el of values){
       let p=el.parentElement,who='';
@@ -426,15 +395,15 @@
         const hasP=/\b(?:Ken\s+)?Paxton\b/i.test(t);
         if(hasT!==hasP){who=hasT?'Talarico':'Paxton';break;}
       }
-      if(who==='Talarico')el.textContent='54%';
-      else if(who==='Paxton')el.textContent='46%';
+      if(who==='Talarico')el.textContent='47%';
+      else if(who==='Paxton')el.textContent='53%';
     }
     const lines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
     const bar=panel.querySelector('.oddsbar');
     if(bar&&lines.length>=2){
       const odds=lines.map(line=>{
         const name=norm(line.querySelector('.candidate-name')?.textContent);
-        return /Talarico/i.test(name)?54:/Paxton/i.test(name)?46:null;
+        return /Talarico/i.test(name)?47:/Paxton/i.test(name)?53:null;
       });
       const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
       if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
@@ -507,8 +476,8 @@
       }
     };
 
-    ensure(dem,'Democratic','51','#2763b8','left');
-    ensure(rep,'Republican','49','#bd2937','right');
+    ensure(dem,'Democratic','50','#2763b8','left');
+    ensure(rep,'Republican','50','#bd2937','right');
   }
 
   function fixSenateSeatBalanceBar(){
@@ -547,10 +516,10 @@
       dem.style.setProperty('right','auto','important');
       dem.style.setProperty('top','0','important');
       dem.style.setProperty('bottom','0','important');
-      dem.style.setProperty('width','51%','important');
-      dem.style.setProperty('min-width','51%','important');
-      dem.style.setProperty('max-width','51%','important');
-      dem.style.setProperty('flex','0 0 51%','important');
+      dem.style.setProperty('width','50%','important');
+      dem.style.setProperty('min-width','50%','important');
+      dem.style.setProperty('max-width','50%','important');
+      dem.style.setProperty('flex','0 0 50%','important');
       dem.style.setProperty('transform','none','important');
       dem.style.setProperty('clip-path','none','important');
 
@@ -559,10 +528,10 @@
       rep.style.setProperty('left','auto','important');
       rep.style.setProperty('top','0','important');
       rep.style.setProperty('bottom','0','important');
-      rep.style.setProperty('width','49%','important');
-      rep.style.setProperty('min-width','49%','important');
-      rep.style.setProperty('max-width','49%','important');
-      rep.style.setProperty('flex','0 0 49%','important');
+      rep.style.setProperty('width','50%','important');
+      rep.style.setProperty('min-width','50%','important');
+      rep.style.setProperty('max-width','50%','important');
+      rep.style.setProperty('flex','0 0 50%','important');
       rep.style.setProperty('transform','none','important');
       rep.style.setProperty('clip-path','none','important');
 
@@ -579,7 +548,7 @@
         bar.appendChild(majority);
       }
       majority.style.cssText='display:block!important;position:absolute!important;left:50%!important;top:0!important;bottom:0!important;width:4px!important;transform:translateX(-2px)!important;background:#17263d!important;z-index:20!important;pointer-events:none!important;';
-      bar.setAttribute('aria-label','Senate balance: 51 Democratic seats, 49 Republican seats; majority marker at 50 seats plus the vice president');
+      bar.setAttribute('aria-label','Senate balance: 50 Democratic seats, 50 Republican seats; majority marker at 50 seats plus the vice president');
       break;
     }
   }
@@ -703,7 +672,7 @@
     keepMainePartyLabelsVisible();
     keepTopSeatPartyLabels();
     forceOhioStable();
-    forceTexasBlue();
+    forceTexasRed();
     fixSenateSeatBalanceBar();
     forceTexasOdds();
     removeTexasExplanation();
