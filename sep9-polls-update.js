@@ -218,7 +218,7 @@
               <div class="party-block"><div class="party-label dem">Democrats</div><div class="party-number dem">49</div></div>
               <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">51</div></div>
             </div>
-            <div class="senate-bar" aria-label="Senate prediction: 49 Democrats and 51 Republicans"><div class="dem"></div><div class="rep"></div></div>
+            <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
             <div class="majority-note">51 seats needed for a majority</div>
             <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
           </div>
