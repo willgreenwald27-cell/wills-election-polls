@@ -248,8 +248,8 @@
     updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">Sept. 18, 2026</strong>';
     updated.setAttribute('aria-label','Last updated September 18, 2026');
 
-    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
-    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 50 Democratic seats, 50 Republican seats');
   }
 
   function keepPartyLabels(){
@@ -266,7 +266,7 @@
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
       const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='51';const rn=rep.querySelector('strong');if(rn)rn.textContent='49';
+      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='50';const rn=rep.querySelector('strong');if(rn)rn.textContent='50';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
@@ -328,8 +328,8 @@
     if(!card)return;
     const fifties=leafs(card).filter(el=>norm(el.textContent)==='50');
     if(fifties.length===2){
-      fifties[0].textContent='51';
-      fifties[1].textContent='49';
+      fifties[0].textContent='50';
+      fifties[1].textContent='50';
     }
   }
 
