@@ -9,13 +9,13 @@
       if(typeof stateData==='undefined'||!stateData)return;
       const tx=stateData.TX;
       if(tx){
-        tx.rating='tilt-d';
-        tx.predictionParty='Democratic';
-        tx.prediction='Tilt Democratic';
-        tx.notes='';
-        tx.updated='2026-09-16';
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
-        if('call' in tx)tx.call='Tilt Democratic';
+        tx.rating='tilt-r';
+        tx.predictionParty='Republican';
+        tx.prediction='Paxton 53% chance of winning';
+        tx.notes='Ken Paxton has a 53% chance of winning.';
+        tx.updated='2026-09-29';
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Republican';
+        if('call' in tx)tx.call='Paxton 53% chance of winning';
       }
       const oh=stateData.OH;
       if(oh){
