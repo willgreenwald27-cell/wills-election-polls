@@ -182,8 +182,8 @@
   function forceTexas(){
     const root=document.getElementById('page-senate'); if(!root)return;
     root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
-      el.style.setProperty('fill',TILT_BLUE,'important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',TILT_BLUE,'important');
+      el.style.setProperty('fill',RED_LIGHT,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',RED_LIGHT,'important');
     });
     const labels=leafs(root).filter(el=>norm(el.textContent)==='Texas'&&el.getClientRects().length);
     for(const label of labels){
@@ -196,10 +196,10 @@
       let ls=leafs(box);
       for(const el of ls){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
         if(/^(Republican|Democrat(?:ic)?|Tossup|TILT REPUBLICAN|LEAN REPUBLICAN|LIKELY REPUBLICAN|SOLID REPUBLICAN|TILT DEMOCRAT(?:IC)?)$/i.test(t)){
           const nearCall=norm(el.parentElement?.textContent||'');
-          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT DEMOCRATIC':'Democratic';
+          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT REPUBLICAN':'Republican';
         }
       }
       const callLeaf=ls.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
@@ -210,24 +210,17 @@
           if(/WILL[’']S CALL/i.test(t)&&t.length<180) break;
         }
         if(card&&card!==box){
-          card.style.setProperty('background',TILT_BLUE,'important');
+          card.style.setProperty('background',RED_LIGHT,'important');
           card.style.setProperty('background-image','none','important');
-          card.style.setProperty('border-color',TILT_BLUE_BORDER,'important');
-          card.style.setProperty('color',BLUE_DARK,'important');
-          card.querySelectorAll('*').forEach(el=>el.style.setProperty('color',BLUE_DARK,'important'));
+          card.style.setProperty('border-color','#ef9da5','important');
+          card.style.setProperty('color','#8e1320','important');
+          card.querySelectorAll('*').forEach(el=>el.style.setProperty('color','#8e1320','important'));
           const vals=leafs(card);
           const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-          if(party)party.textContent='Democratic';
+          if(party)party.textContent='Republican';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-          if(rating)rating.textContent='TILT DEMOCRATIC';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
-        }
-      }
-      for(const heading of leafs(box).filter(el=>/^WHY MY .*DIFFERS$/i.test(norm(el.textContent)))){
-        let n=heading.parentElement;
-        for(let i=0;n&&n!==box&&i<5;i++,n=n.parentElement){
-          const t=norm(n.textContent);
-          if(/^WHY MY .*DIFFERS/i.test(t)&&!/WILL[’']S CALL/i.test(t)){n.remove();break;}
+          if(rating)rating.textContent='TILT REPUBLICAN';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Paxton 53% chance of winning';
         }
       }
     }
