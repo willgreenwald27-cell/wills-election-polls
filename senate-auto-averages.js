@@ -8,6 +8,16 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-09-29','IA','Iowa','Quantus Insights','Ashley Hinson',47,'Josh Turek',46,'Hinson +1'],
+    ['2026-09-29','MI','Michigan','Marist','Abdul El-Sayed',51,'Mike Rogers',44,'El-Sayed +7'],
+    ['2026-09-29','OH','Ohio','USA Today/Suffolk*','Sherrod Brown',47,'Jon Husted',44,'Brown +3'],
+    ['2026-09-28','MN','Minnesota','InsiderAdvantage*','Peggy Flanagan',46,'Michele Tafoya',45,'Flanagan +1'],
+    ['2026-09-28','MI','Michigan','Cygnal/Beacon Research','Abdul El-Sayed',45,'Mike Rogers',40,'El-Sayed +5'],
+    ['2026-09-28','NC','North Carolina','Fabrizio/Anzalone','Roy Cooper',53,'Michael Whatley',42,'Cooper +11'],
+    ['2026-09-28','OH','Ohio','Big Data Poll','Sherrod Brown',46,'Jon Husted',43,'Brown +3'],
+    ['2026-09-28','OH','Ohio','Marist','Sherrod Brown',51,'Jon Husted',43,'Brown +8'],
+    ['2026-09-26','NH','New Hampshire','Trafalgar Group*','Chris Pappas',47,'John Sununu',41,'Pappas +6'],
+    ['2026-09-26','TX','Texas','Big Data Poll','James Talarico',47,'Ken Paxton',45,'Talarico +2'],
     ['2026-09-25','ME','Maine','InsiderAdvantage','Troy Jackson',46,'Susan Collins',46,'Tie'],
     ['2026-09-25','IA','Iowa','InsiderAdvantage*','Ashley Hinson',46,'Josh Turek',47,'Turek +1'],
     ['2026-09-25','SC','South Carolina','Trafalgar Group','Lindsey Graham',43,'Annie Andrews',42,'Graham +1'],
