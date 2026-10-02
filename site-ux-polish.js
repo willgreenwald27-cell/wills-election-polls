@@ -266,7 +266,7 @@
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
       const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='50';const rn=rep.querySelector('strong');if(rn)rn.textContent='50';
+      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='51';const rn=rep.querySelector('strong');if(rn)rn.textContent='49';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
@@ -315,22 +315,15 @@
 
   function fixHomeSenateCount(){
     const root=document.getElementById('page-home');if(!root)return;
-    const senateLabels=leafs(root).filter(el=>/senate/i.test(norm(el.textContent)));
-    let card=null;
-    for(const label of senateLabels){
-      let node=label.parentElement;
-      for(let i=0;node&&node!==root&&i<12;i++,node=node.parentElement){
-        const fifties=leafs(node).filter(el=>norm(el.textContent)==='50');
-        if(fifties.length===2){card=node;break;}
-      }
-      if(card)break;
-    }
+    const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
-    const fifties=leafs(card).filter(el=>norm(el.textContent)==='50');
-    if(fifties.length===2){
-      fifties[0].textContent='50';
-      fifties[1].textContent='50';
-    }
+    const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
+    if(nums[0])nums[0].textContent='51';
+    if(nums[1])nums[1].textContent='49';
+    const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
+    const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
+    if(dem)dem.style.setProperty('width','51%','important');
+    if(rep)rep.style.setProperty('width','49%','important');
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
