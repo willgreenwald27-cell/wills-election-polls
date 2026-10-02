@@ -291,7 +291,7 @@ function fixAboutPollCount(){
   }
 
   const FORECAST_DISAGREEMENT_NOTES={
-    TX:{candidates:['Ken Paxton','James Talarico'],text:"Why my forecast differs from the polling average: I’m giving more weight to Texas’s Republican-leaning fundamentals and turnout patterns, while accounting for the possibility that some surveys may underrepresent rural and blue-collar voters."},
+    TX:{candidates:['James Talarico','Ken Paxton'],text:"Your forecast gives James Talarico a 55% chance of winning Texas."},
     OH:{candidates:['Jon Husted','Sherrod Brown'],text:"Why my forecast differs from the polling average: Ohio polling has repeatedly been more Democratic than the final result in recent statewide elections, so I’m weighting the state’s recent election history and Republican-leaning results more heavily than the current polling average."}
   };
 
