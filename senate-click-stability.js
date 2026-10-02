@@ -476,8 +476,8 @@
       }
     };
 
-    ensure(dem,'Democratic','50','#2763b8','left');
-    ensure(rep,'Republican','50','#bd2937','right');
+    ensure(dem,'Democratic','51','#2763b8','left');
+    ensure(rep,'Republican','49','#bd2937','right');
   }
 
   function fixSenateSeatBalanceBar(){
