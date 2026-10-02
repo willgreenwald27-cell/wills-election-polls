@@ -182,8 +182,8 @@
   function forceTexas(){
     const root=document.getElementById('page-senate'); if(!root)return;
     root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
-      el.style.setProperty('fill',RED_LIGHT,'important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',RED_LIGHT,'important');
+      el.style.setProperty('fill',TILT_BLUE,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',TILT_BLUE,'important');
     });
     const labels=leafs(root).filter(el=>norm(el.textContent)==='Texas'&&el.getClientRects().length);
     for(const label of labels){
