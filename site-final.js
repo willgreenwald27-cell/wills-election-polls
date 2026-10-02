@@ -30,7 +30,7 @@
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
       if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Paxton 53% chance of winning';stateData.TX.notes='Ken Paxton has a 53% chance of winning.';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Republican';if('call' in stateData.TX)stateData.TX.call='Paxton 53% chance of winning';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Talarico 55% chance of winning';stateData.TX.notes='James Talarico has a 55% chance of winning.';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico 55% chance of winning';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
     }catch(e){}
   }
 
