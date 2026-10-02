@@ -8,6 +8,17 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-01','TX','Texas','FOX News','James Talarico',51,'Ken Paxton',49,'Talarico +2'],
+    ['2026-10-01','IA','Iowa','FOX News','Ashley Hinson',47,'Josh Turek',49,'Turek +2'],
+    ['2026-10-01','MI','Michigan','Trafalgar Group*','Abdul El-Sayed',47,'Mike Rogers',45,'El-Sayed +2'],
+    ['2026-10-01','SC','South Carolina','InsiderAdvantage*','Graham Nordone',46,'Annie Andrews',45,'Graham Nordone +1'],
+    ['2026-10-01','MN','Minnesota','Big Data Poll*','Peggy Flanagan',46,'Michele Tafoya',44,'Flanagan +2'],
+    ['2026-10-01','AK','Alaska','Quantus Insights','Mary Peltola',47,'Dan Sullivan',48,'Sullivan +1'],
+    ['2026-10-01','AK','Alaska','Quantus Insights (RCV 1st Round)','Dan Sullivan',46,'Mary Peltola',46,'RCV 1st round · Tie · J. Sullivan 2 · Heikes 1'],
+    ['2026-09-30','ME','Maine','Fabrizio/Anzalone','Troy Jackson',50,'Susan Collins',47,'Jackson +3'],
+    ['2026-09-30','OH','Ohio','InsiderAdvantage*','Sherrod Brown',44,'Jon Husted',43,'Brown +1'],
+    ['2026-09-30','TX','Texas','Rasmussen Reports*','James Talarico',46,'Ken Paxton',45,'Talarico +1'],
+    ['2026-09-29','MI','Michigan','FOX News','Abdul El-Sayed',50,'Mike Rogers',49,'El-Sayed +1'],
     ['2026-09-29','IA','Iowa','Quantus Insights','Ashley Hinson',47,'Josh Turek',46,'Hinson +1'],
     ['2026-09-29','MI','Michigan','Marist','Abdul El-Sayed',51,'Mike Rogers',44,'El-Sayed +7'],
     ['2026-09-29','OH','Ohio','USA Today/Suffolk*','Sherrod Brown',47,'Jon Husted',44,'Brown +3'],
@@ -20,7 +31,7 @@
     ['2026-09-26','TX','Texas','Big Data Poll','James Talarico',47,'Ken Paxton',45,'Talarico +2'],
     ['2026-09-25','ME','Maine','InsiderAdvantage','Troy Jackson',46,'Susan Collins',46,'Tie'],
     ['2026-09-25','IA','Iowa','InsiderAdvantage*','Ashley Hinson',46,'Josh Turek',47,'Turek +1'],
-    ['2026-09-25','SC','South Carolina','Trafalgar Group','Lindsey Graham',43,'Annie Andrews',42,'Graham +1'],
+    ['2026-09-25','SC','South Carolina','Trafalgar Group','Graham Nordone',43,'Annie Andrews',42,'Graham Nordone +1'],
     ['2026-09-24','TX','Texas','TPOR**','James Talarico',49,'Ken Paxton',44,'Talarico +5'],
     ['2026-09-24','GA','Georgia','InsiderAdvantage','Jon Ossoff',50,'Mike Collins',42,'Ossoff +8'],
     ['2026-09-24','MI','Michigan','Big Data Poll','Abdul El-Sayed',47,'Mike Rogers',42,'El-Sayed +5'],
@@ -80,6 +91,8 @@
     if(!a||!b) return [];
     return rows.filter(r=>{
       if(!Array.isArray(r)||r.length<8) return false;
+      const meta=norm((r[3]||'')+' '+(r[8]||''));
+      if(meta.includes('rcv 1st round')) return false;
       const p1=r[4],p2=r[6];
       return (same(p1,a)&&same(p2,b))||(same(p1,b)&&same(p2,a));
     });
