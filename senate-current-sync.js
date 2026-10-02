@@ -71,9 +71,15 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-r');set(tx,'predictionParty','Republican');set(tx,'prediction','Paxton 53% chance of winning');set(tx,'notes','Ken Paxton has a 53% chance of winning.');set(tx,'updated','2026-09-29');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Republican');
-        if('call' in tx) set(tx,'call','Paxton 53% chance of winning');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico 55% chance of winning');set(tx,'notes','James Talarico has a 55% chance of winning.');set(tx,'updated','2026-10-01');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
+        if('call' in tx) set(tx,'call','Talarico 55% chance of winning');
+        for(const slot of [1,2]){
+          const name=norm(tx['candidate'+slot]);
+          const key='candidate'+slot+'Odds';
+          if(/Talarico/i.test(name))set(tx,key,'55');
+          if(/Paxton/i.test(name))set(tx,key,'45');
+        }
       }
       return changed;
     }catch(e){console.warn('Audited Senate data sync unavailable',e);return false;}
@@ -96,7 +102,7 @@
       const ls=leafs(box);
       for(const el of ls){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
         if(t==='Jackson +0.4%'||t==='No prediction text entered yet.')el.textContent='Collins +1.3%';
       }
       const call=ls.findIndex(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
@@ -196,10 +202,10 @@
       let ls=leafs(box);
       for(const el of ls){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
         if(/^(Republican|Democrat(?:ic)?|Tossup|TILT REPUBLICAN|LEAN REPUBLICAN|LIKELY REPUBLICAN|SOLID REPUBLICAN|TILT DEMOCRAT(?:IC)?)$/i.test(t)){
           const nearCall=norm(el.parentElement?.textContent||'');
-          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT REPUBLICAN':'Republican';
+          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT DEMOCRATIC':'Democrat';
         }
       }
       const callLeaf=ls.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
@@ -217,10 +223,10 @@
           card.querySelectorAll('*').forEach(el=>el.style.setProperty('color','#8e1320','important'));
           const vals=leafs(card);
           const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-          if(party)party.textContent='Republican';
+          if(party)party.textContent='Democrat';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-          if(rating)rating.textContent='TILT REPUBLICAN';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Paxton 53% chance of winning';
+          if(rating)rating.textContent='TILT DEMOCRATIC';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico 55% chance of winning';
         }
       }
     }
