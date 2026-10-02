@@ -9,13 +9,13 @@
       if(typeof stateData==='undefined'||!stateData)return;
       const tx=stateData.TX;
       if(tx){
-        tx.rating='tilt-r';
-        tx.predictionParty='Republican';
-        tx.prediction='Paxton 53% chance of winning';
-        tx.notes='Ken Paxton has a 53% chance of winning.';
-        tx.updated='2026-09-29';
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Republican';
-        if('call' in tx)tx.call='Paxton 53% chance of winning';
+        tx.rating='tilt-d';
+        tx.predictionParty='Democratic';
+        tx.prediction='Talarico 55% chance of winning';
+        tx.notes='James Talarico has a 55% chance of winning.';
+        tx.updated='2026-10-01';
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
+        if('call' in tx)tx.call='Talarico 55% chance of winning';
       }
       const oh=stateData.OH;
       if(oh){
@@ -93,10 +93,10 @@
   function removeTexasExplanation(){
     const panel=visiblePanel('Texas');
     if(!panel)return;
-    try{if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='Ken Paxton has a 53% chance of winning.';}catch(e){}
+    try{if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='James Talarico has a 55% chance of winning.';}catch(e){}
     let box=panel.querySelector('.wg-tx-explanation');
     if(!box){box=document.createElement('div');box.className='wg-tx-explanation';panel.appendChild(box);}
-    box.innerHTML='<b>WHY I HAVE TEXAS TILT REPUBLICAN</b><span>Ken Paxton has a 53% chance of winning.</span>';
+    box.innerHTML='<b>WHY I HAVE TEXAS TILT DEMOCRATIC</b><span>James Talarico has a 55% chance of winning.</span>';
     box.style.cssText='margin-top:12px;padding:14px 15px;border-radius:10px;background:#fff6f6;border:1px solid #efc8cc;color:#26384f;font:500 12px/1.45 Inter,system-ui,sans-serif;box-sizing:border-box;';
     const b=box.querySelector('b');if(b)b.style.cssText='display:block;margin-bottom:8px;color:#9b3340;font-size:10px;line-height:1.1;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;';
     const s=box.querySelector('span');if(s)s.style.cssText='display:block;color:#26384f;';
@@ -344,7 +344,7 @@
     const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
     for(const el of leaves){
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
+      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
     }
     const call=leaves.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
     if(call){
@@ -361,10 +361,10 @@
         card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-        if(party)party.textContent='Republican';
+        if(party)party.textContent='Democrat';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-        if(rating)rating.textContent='TILT REPUBLICAN';
-        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Paxton 53% chance of winning';
+        if(rating)rating.textContent='TILT DEMOCRATIC';
+        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico 55% chance of winning';
       }
     }
   }
@@ -376,8 +376,8 @@
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Talarico/i.test(name))tx[key]='47';
-          if(/Paxton/i.test(name))tx[key]='53';
+          if(/Talarico/i.test(name))tx[key]='55';
+          if(/Paxton/i.test(name))tx[key]='45';
         }
       }
     }catch(e){}
@@ -385,7 +385,7 @@
     if(!panel)return;
     const values=[...panel.querySelectorAll('*')].filter(el=>{
       if(el.children.length)return false;
-      return /^(?:46|47|48|52|53|54)(?:\.0)?%?$/.test(norm(el.textContent));
+      return /^(?:45|46|47|48|52|53|54|55)(?:\.0)?%?$/.test(norm(el.textContent));
     });
     for(const el of values){
       let p=el.parentElement,who='';
@@ -395,15 +395,15 @@
         const hasP=/\b(?:Ken\s+)?Paxton\b/i.test(t);
         if(hasT!==hasP){who=hasT?'Talarico':'Paxton';break;}
       }
-      if(who==='Talarico')el.textContent='47%';
-      else if(who==='Paxton')el.textContent='53%';
+      if(who==='Talarico')el.textContent='55%';
+      else if(who==='Paxton')el.textContent='45%';
     }
     const lines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
     const bar=panel.querySelector('.oddsbar');
     if(bar&&lines.length>=2){
       const odds=lines.map(line=>{
         const name=norm(line.querySelector('.candidate-name')?.textContent);
-        return /Talarico/i.test(name)?47:/Paxton/i.test(name)?53:null;
+        return /Talarico/i.test(name)?55:/Paxton/i.test(name)?45:null;
       });
       const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
       if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
