@@ -77,8 +77,8 @@
     const senate=kind==='senate';
     const title=senate?'Will’s Senate Prediction':'Will’s House of Reps Prediction';
     const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
-    const dem=senate?'51':'228', rep=senate?'49':'207';
-    const demW=senate?'51%':'52.4138%', repW=senate?'49%':'47.5862%';
+    const dem=senate?'51':'231', rep=senate?'49':'204';
+    const demW=senate?'51%':'53.1034%', repW=senate?'49%':'46.8966%';
     const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
