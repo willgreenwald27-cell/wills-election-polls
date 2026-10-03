@@ -599,18 +599,22 @@
   function ensureNebraskaExplanation(){
     const panel=visiblePanel('Nebraska');
     if(!panel)return;
-    const existingHeading=[...panel.querySelectorAll('*')].find(el=>el.children.length===0&&/^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)));
-    if(existingHeading)return;
-    let box=panel.querySelector('.wg-ne-explanation');
-    if(!box){
-      box=document.createElement('div');
-      box.className='wg-ne-explanation';
-      panel.appendChild(box);
+    panel.querySelectorAll('.wg-ne-explanation').forEach(el=>el.remove());
+    const headings=[...panel.querySelectorAll('*')].filter(el=>
+      el.children.length===0&&/^WHY(?:\s+MY)?\b.*DIFFERS\b/i.test(norm(el.textContent))
+    );
+    for(const heading of headings){
+      let cur=heading,best=heading;
+      for(let i=0;i<6;i++){
+        const p=cur.parentElement;
+        if(!p||p===panel)break;
+        const t=norm(p.textContent);
+        if(/^WHY(?:\s+MY)?\b.*DIFFERS\b/i.test(t)&&!/WILL[’']S CALL|AVG POLLS|POLL AVERAGE|WIN ODDS/i.test(t)){
+          best=p;cur=p;
+        }else break;
+      }
+      best.remove();
     }
-    box.innerHTML='<b>WHY MY FORECAST DIFFERS</b><span>Pete Ricketts is the incumbent and won a statewide Senate election in Nebraska in 2024. I\'m giving that recent statewide result and incumbency more weight than the current polling margin.</span>';
-    box.style.cssText='margin-top:12px;padding:14px 15px;border-radius:10px;background:#f7f8fb;border:1px solid #d9dee7;color:#26384f;font:500 12px/1.45 Inter,system-ui,sans-serif;box-sizing:border-box;';
-    const b=box.querySelector('b');if(b)b.style.cssText='display:block;margin-bottom:8px;color:#61718a;font-size:10px;line-height:1.1;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;';
-    const s=box.querySelector('span');if(s)s.style.cssText='display:block;color:#26384f;';
   }
 
   function forceMontanaAverage(){
