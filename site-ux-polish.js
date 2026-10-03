@@ -245,11 +245,11 @@
     toss.querySelector('.wg-metric-value').textContent=tossups;
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
-    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">Sept. 18, 2026</strong>';
-    updated.setAttribute('aria-label','Last updated September 18, 2026');
+    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 2, 2026</strong>';
+    updated.setAttribute('aria-label','Last updated October 2, 2026');
 
-    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div>';
-    forecast.setAttribute('aria-label','Senate forecast: 50 Democratic seats, 50 Republican seats');
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
   }
 
   function keepPartyLabels(){
