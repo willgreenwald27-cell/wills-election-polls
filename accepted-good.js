@@ -291,12 +291,42 @@ function fixAboutPollCount(){
   }
 
   const FORECAST_DISAGREEMENT_NOTES={
-    TX:{candidates:['James Talarico','Ken Paxton'],text:"Your forecast gives James Talarico a 55% chance of winning Texas."},
-    OH:{candidates:['Jon Husted','Sherrod Brown'],text:"Why my forecast differs from the polling average: Ohio polling has repeatedly been more Democratic than the final result in recent statewide elections, so I’m weighting the state’s recent election history and Republican-leaning results more heavily than the current polling average."}
+    TX:{candidates:['James Talarico','Ken Paxton'],text:"Your forecast gives James Talarico a 55% chance of winning Texas."}
   };
 
   function ensureForecastDisagreementNotes(){
     const root=document.body; if(!root) return;
+
+    // Ohio should never show a "Why my forecast differs" block.
+    root.querySelectorAll('[data-forecast-disagreement="OH"]').forEach(el=>el.remove());
+    const senate=document.getElementById('page-senate');
+    if(senate){
+      const ohioSeeds=leafs(senate).filter(el=>/^(Ohio|Sherrod Brown|Jon Husted)$/i.test(norm(el.textContent)));
+      for(const seed of ohioSeeds){
+        let box=seed.parentElement;
+        for(let i=0;box&&box!==senate&&i<16;i++,box=box.parentElement){
+          const t=norm(box.textContent);
+          if(/Sherrod Brown/i.test(t)&&/Jon Husted/i.test(t)&&/AVG POLLS|POLL AVERAGE/i.test(t)) break;
+        }
+        if(!box||box===senate) continue;
+        for(const node of [...box.querySelectorAll('*')]){
+          const t=norm(node.textContent);
+          if(!/^WHY(?:\s+MY)?\b.*DIFFERS\b/i.test(t)) continue;
+          const hasChildMatch=[...node.children].some(ch=>/^WHY(?:\s+MY)?\b.*DIFFERS\b/i.test(norm(ch.textContent)));
+          if(hasChildMatch) continue;
+          let cur=node,best=node;
+          for(let d=0;d<6;d++){
+            const p=cur.parentElement;
+            if(!p||p===box)break;
+            const pt=norm(p.textContent);
+            if(/^WHY(?:\s+MY)?\b.*DIFFERS\b/i.test(pt)&&!/WILL['’]S CALL|AVG POLLS|POLL AVERAGE/i.test(pt)){best=p;cur=p;}
+            else break;
+          }
+          best.remove();
+        }
+      }
+    }
+
     const all=leafs(root);
     for(const [abbr,cfg] of Object.entries(FORECAST_DISAGREEMENT_NOTES)){
       const seed=all.find(el=>el.getClientRects().length&&cfg.candidates.includes(norm(el.textContent)));
