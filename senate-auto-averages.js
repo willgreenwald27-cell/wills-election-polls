@@ -8,6 +8,11 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-02','TX','Texas','NY Times/Siena','James Talarico',51,'Ken Paxton',45,'Talarico +6'],
+    ['2026-10-02','IA','Iowa','NY Times/Siena','Ashley Hinson',48,'Josh Turek',47,'Hinson +1'],
+    ['2026-10-02','AK','Alaska','NY Times/Siena','Mary Peltola',50,'Dan Sullivan',43,'Peltola +7'],
+    ['2026-10-02','OH','Ohio','NY Times/Siena','Sherrod Brown',49,'Jon Husted',46,'Brown +3'],
+    ['2026-10-02','KS','Kansas','NY Times/Siena','Roger Marshall',47,'Adam Hamilton',46,'Marshall +1'],
     ['2026-10-01','ME','Maine','CBS News','Troy Jackson',50,'Susan Collins',50,'Tie'],
     ['2026-10-01','ME','Maine','Trafalgar Group','Troy Jackson',46,'Susan Collins',46,'Tie'],
     ['2026-10-01','KS','Kansas','Trafalgar Group*','Roger Marshall',44,'Adam Hamilton',44,'Tie'],
