@@ -138,7 +138,6 @@
         if(/^Democrat$/i.test(norm(el.textContent))&&inWillsCall(el,root)) el.style.setProperty('color','#fff','important');
       }
     }
-    fixTexasAverage();
     fixMaineCandidateText();
     fixHomeForecast();
   }
