@@ -351,10 +351,10 @@ function fixAboutPollCount(){
   function fixSenate(){
     const root=document.getElementById('page-senate'); if(!root) return;
     enforceMaineData();
-    root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{
-      el.style.setProperty('fill','#d3e2f7','important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg') el.style.setProperty('background','#d3e2f7','important');
-    });
+
+    // Keep Texas and Maine on the same native popup structure as every other state.
+    root.querySelectorAll('[data-forecast-disagreement],.maine-why-note').forEach(el=>el.remove());
+
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)){
@@ -365,43 +365,7 @@ function fixAboutPollCount(){
         }
       }
     }
-    const maine=leafs(root).find(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length);
-    if(maine){
-      let box=maine.parentElement;
-      for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
-        const t=norm(box.textContent);
-        if(/WILL'S CALL|MY PREDICTION|WILL'S STATISTICAL ODDS/i.test(t)&&/Susan Collins|Troy Jackson/i.test(t)) break;
-      }
-      if(box&&box!==root){
-        for(const el of leafs(box)){
-          const t=norm(el.textContent);
-          if(/^Prediction:\s*/i.test(t)) el.textContent='Prediction: Tilt Democratic';
-          if(t==='Jackson +0.4%'||t==='No prediction text entered yet.') el.textContent='Jackson +0.4%';
-          if(/^Susan Collins:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Susan Collins: 48%';
-          if(/^Troy Jackson:\s*\d+(?:\.\d+)?%$/i.test(t)) el.textContent='Troy Jackson: 52%';
-        }
-        const copy=box.querySelector('.prediction-copy'); if(copy) copy.textContent='Jackson +0.4%';
-        const callLabel=leafs(box).findIndex(el=>/^WILL'S CALL$/i.test(norm(el.textContent)));
-        if(callLabel>=0){
-          const ls=leafs(box);
-          const p=ls.slice(callLabel+1,callLabel+12).find(el=>/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-          if(p){p.textContent='Democrat';p.style.setProperty('color',DEM,'important');}
-        }
-        const bar=box.querySelector('.oddsbar');
-        const lines=[...box.querySelectorAll('.candidate-line')];
-        if(bar&&lines.length>=2){
-          const parts=[bar.querySelector('.oddsbar-a'),bar.querySelector('.oddsbar-b')];
-          lines.slice(0,2).forEach((line,i)=>{
-            const n=norm(line.querySelector('.candidate-name')?.textContent);
-            const p=line.querySelector('.candidate-party');
-            const odds=n==='Susan Collins'?48:n==='Troy Jackson'?52:null;
-            if(parts[i]&&odds!=null){parts[i].style.setProperty('width',odds+'%','important');parts[i].style.setProperty('background',n==='Susan Collins'?REP:DEM,'important');}
-            if(p&&n==='Susan Collins') p.textContent='Republican';
-          });
-        }
-      }
-    }
-    ensureForecastDisagreementNotes();
+
     fixAllCandidateColors(root);
     fixMobileOddsFallback(root);
   }
