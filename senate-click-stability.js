@@ -673,12 +673,9 @@
   function apply(){
     syncData();
     forceMontanaAverage();
-    keepMainePartyLabelsVisible();
     keepTopSeatPartyLabels();
     forceOhioStable();
-    forceTexasRed();
     fixSenateSeatBalanceBar();
-    forceTexasOdds();
     removeTexasExplanation();
     removeWhyBlock('Ohio');
     forceNebraskaOdds();
