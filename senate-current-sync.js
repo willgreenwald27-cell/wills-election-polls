@@ -69,6 +69,11 @@
           if(/Husted/i.test(name))set(oh,key,'46');
         }
       }
+      const ms=stateData.MS;
+      if(ms){
+        set(ms,'rating','solid-r');set(ms,'predictionParty','Republican');set(ms,'updated','2026-10-05');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ms) set(ms,k,'Republican');
+      }
       const tx=stateData.TX;
       if(tx){
         set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico 55% chance of winning');set(tx,'notes','James Talarico has a 55% chance of winning.');set(tx,'updated','2026-10-01');
