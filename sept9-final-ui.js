@@ -143,7 +143,7 @@
   }
 
   function apply(){
-    ensureStyle();fixHome();fixAbout();fixKalshi();setTexasAverage();ensureTexasPoll();fixWillCallWhite();refreshGovernorFrame();
+    ensureStyle();fixHome();fixAbout();fixKalshi();ensureTexasPoll();fixWillCallWhite();refreshGovernorFrame();
   }
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
