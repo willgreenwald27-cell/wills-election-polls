@@ -305,7 +305,7 @@
   function apply(){
     const changed=syncData();
     if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}
-    forceMaine();forceOhio();forceTexas();forceSenateSummary();forceHome();
+    forceOhio();forceSenateSummary();forceHome();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();[80,250,700,1600,3200].forEach(ms=>setTimeout(apply,ms));
