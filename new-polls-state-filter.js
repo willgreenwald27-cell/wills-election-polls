@@ -30,7 +30,7 @@
         return r==='tossup'||r==='toss-up'||r.startsWith('tilt-')||r.startsWith('lean-');
       }catch(e){return false;}
     };
-    return polled.filter(isSwing)
+    return polled.filter(ab=>isSwing(ab)||ab==='GA'||ab==='NC')
       .sort((a,b)=>(STATE_NAMES[a]||a).localeCompare(STATE_NAMES[b]||b));
   }
 
