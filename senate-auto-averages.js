@@ -8,6 +8,16 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-05','MI','Michigan','YouGov','Abdul El-Sayed',49,'Mike Rogers',48,'El-Sayed +1'],
+    ['2026-10-05','ME','Maine','Marist','Troy Jackson',51,'Susan Collins',47,'Jackson +4'],
+    ['2026-10-05','TX','Texas','YouGov','James Talarico',50,'Ken Paxton',44,'Talarico +6'],
+    ['2026-10-05','OH','Ohio','YouGov','Sherrod Brown',49,'Jon Husted',45,'Brown +4'],
+    ['2026-10-05','KS','Kansas','YouGov','Adam Hamilton',48,'Roger Marshall',45,'Hamilton +3'],
+    ['2026-10-05','NH','New Hampshire','St. Anselm','Chris Pappas',51,'John Sununu',44,'Pappas +7'],
+    ['2026-10-05','NH','New Hampshire','YouGov','Chris Pappas',51,'John Sununu',43,'Pappas +8'],
+    ['2026-10-05','NE','Nebraska','YouGov','Dan Osborn',48,'Pete Ricketts',47,'Osborn +1'],
+    ['2026-10-05','FL','Florida Special Election','YouGov','Ashley Moody',49,'Jasmine Nixon',44,'Moody +5'],
+    ['2026-10-05','NM','New Mexico','KOB-TV/SurveyUSA','Ben Ray Lujan',54,'Nella Domenici Marker',36,'Lujan +18'],
     ['2026-10-04','ME','Maine','MPRC','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
     ['2026-10-04','NH','New Hampshire','Rasmussen Reports*','Chris Pappas',49,'John Sununu',44,'Pappas +5'],
     ['2026-10-04','MI','Michigan','Mitchell Research','Abdul El-Sayed',46,'Mike Rogers',41,'El-Sayed +5'],
