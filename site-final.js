@@ -184,7 +184,6 @@
     enforceData();
     wrapRenderer();
     setBalance();
-    fixMaine();
     fixPartyVisuals();
     fixHome();
     fixNavOrder();
