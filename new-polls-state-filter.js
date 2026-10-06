@@ -22,7 +22,15 @@
 
   function stateList(){
     const arr=pollArray()||[];
-    return [...new Set(arr.map(p=>String(p?.state||'').trim().toUpperCase()).filter(Boolean))]
+    const polled=[...new Set(arr.map(p=>String(p?.state||'').trim().toUpperCase()).filter(Boolean))];
+    const isSwing=ab=>{
+      try{
+        const s=(typeof stateData!=='undefined'&&stateData?.[ab])?stateData[ab]:window.stateData?.[ab];
+        const r=String(s?.rating||'').trim().toLowerCase();
+        return r==='tossup'||r==='toss-up'||r.startsWith('tilt-')||r.startsWith('lean-');
+      }catch(e){return false;}
+    };
+    return polled.filter(isSwing)
       .sort((a,b)=>(STATE_NAMES[a]||a).localeCompare(STATE_NAMES[b]||b));
   }
 
