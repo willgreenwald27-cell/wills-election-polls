@@ -11,8 +11,6 @@
 
   const FINAL_AVG={
     TX:{'James Talarico':'48.0','Ken Paxton':'45.1'},
-    IA:{'Ashley Hinson':'44.6','Josh Turek':'45.8'},
-    AK:{'Mary Peltola':'49.8','Dan Sullivan':'46.2'},
     OH:{'Sherrod Brown':'47.6','Jon Husted':'43.1'},
     KS:{'Roger Marshall':'44.6','Adam Hamilton':'45.0'}
   };
