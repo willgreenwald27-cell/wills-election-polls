@@ -49,6 +49,12 @@
         set(ks,'rating','tilt-r');set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');set(ks,'updated','2026-10-06');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
         if('call' in ks) set(ks,'call','Marshall +4.9%');
+        for(const slot of [1,2]){
+          const name=norm(ks['candidate'+slot]);
+          const key='candidate'+slot+'Odds';
+          if(/Marshall/i.test(name)) set(ks,key,'63');
+          if(/Hamilton/i.test(name)) set(ks,key,'37');
+        }
       }
       const ne=stateData.NE;
       if(ne){
