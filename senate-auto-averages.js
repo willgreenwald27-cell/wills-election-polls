@@ -8,6 +8,11 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-06','MI','Michigan','Quantus Insights','Abdul El-Sayed',48,'Mike Rogers',47,'El-Sayed +1'],
+    ['2026-10-06','IA','Iowa','Suffolk University*','Josh Turek',48,'Ashley Hinson',44,'Turek +4'],
+    ['2026-10-06','FL','Florida Special Election','NBC 6/Mason-Dixon','Ashley Moody',50,'Angie Nixon',40,'Moody +10'],
+    ['2026-10-06','AK','Alaska','Alaska Survey Research**','Mary Peltola',51,'Dan Sullivan',49,'Peltola +2'],
+    ['2026-10-06','AK','Alaska','Alaska Survey Research** (RCV 1st Round)','Mary Peltola',47,'Dan Sullivan',45,'RCV 1st round · Peltola +2 · J. Sullivan 5 · Heikes 3'],
     ['2026-10-05','MI','Michigan','YouGov','Abdul El-Sayed',49,'Mike Rogers',48,'El-Sayed +1'],
     ['2026-10-05','ME','Maine','Marist','Troy Jackson',51,'Susan Collins',47,'Jackson +4'],
     ['2026-10-05','TX','Texas','YouGov','James Talarico',50,'Ken Paxton',44,'Talarico +6'],
