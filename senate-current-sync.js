@@ -241,7 +241,7 @@
           if(party)party.textContent='Democrat';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
           if(rating)rating.textContent='TILT DEMOCRATIC';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico 55% chance of winning';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
         }
       }
     }
