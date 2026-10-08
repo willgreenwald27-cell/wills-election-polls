@@ -104,6 +104,49 @@
     }
   }
 
+  // Keep Iowa and Kansas forecast-difference explanations visible in their pop-ups.
+  // The underlying state notes are set in senate-current-sync.js.
+  function ensureIowaKansasExplanations(){
+    const explanations={
+      IA:{
+        state:'Iowa',
+        text:"Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage."
+      },
+      KS:{
+        state:'Kansas',
+        text:'It may be too big of an ask to flip a state that Trump won by 16 points in 2024.'
+      }
+    };
+    for(const [abbr,cfg] of Object.entries(explanations)){
+      const panel=visiblePanel(cfg.state);
+      if(!panel)continue;
+      let note=panel.querySelector('.wg-forecast-explanation[data-state-explanation="'+abbr+'"]');
+      // Respect an existing, native explanation instead of showing it twice.
+      if(!note){
+        const nativeHeading=[...panel.querySelectorAll('*')].some(el=>
+          el.children.length===0 &&
+          /^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)) &&
+          !el.closest('.wg-forecast-explanation')
+        );
+        if(nativeHeading)continue;
+        note=document.createElement('section');
+        note.className='wg-forecast-explanation';
+        note.setAttribute('data-state-explanation',abbr);
+        note.style.cssText='margin:14px 0 2px;padding:15px 16px;background:#f6f8fc;border:1px solid #dbe3ed;border-radius:12px;box-sizing:border-box;line-height:1.5;';
+        const head=document.createElement('strong');
+        head.textContent='WHY MY FORECAST DIFFERS';
+        head.style.cssText='display:block;margin-bottom:8px;font:800 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.6px;color:#334a65;';
+        const body=document.createElement('p');
+        body.className='wg-forecast-explanation-copy';
+        body.style.cssText='margin:0;font:500 15px/1.6 Inter,system-ui,sans-serif;color:#26384f;';
+        note.append(head,body);
+        panel.appendChild(note);
+      }
+      const body=note.querySelector('.wg-forecast-explanation-copy');
+      if(body&&norm(body.textContent)!==cfg.text)body.textContent=cfg.text;
+    }
+  }
+
   function keepMainePartyLabelsVisible(){
     const panel=visiblePanel('Maine');
     if(!panel)return;
@@ -680,6 +723,7 @@
     fixSenateSeatBalanceBar();
     removeTexasExplanation();
     removeWhyBlock('Ohio');
+    ensureIowaKansasExplanations();
     forceNebraskaOdds();
     ensureNebraskaExplanation();
   }
