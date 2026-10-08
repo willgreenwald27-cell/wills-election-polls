@@ -141,8 +141,8 @@
   function forceOhio(){
     const root=document.getElementById('page-senate'); if(!root)return;
     root.querySelectorAll('[data-state="OH"],[data-state="OH"] path,[data-abbr="OH"],[data-abbr="OH"] path,[data-state-abbr="OH"],[data-state-abbr="OH"] path,#OH,#OH path,#state-OH,#state-OH path').forEach(el=>{
-      el.style.setProperty('fill',TILT_BLUE,'important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',TILT_BLUE,'important');
+      el.style.setProperty('fill','#a9c5ed','important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background','#a9c5ed','important');
     });
     const labels=leafs(root).filter(el=>norm(el.textContent)==='Ohio'&&el.getClientRects().length);
     for(const label of labels){
