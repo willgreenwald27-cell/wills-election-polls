@@ -144,6 +144,27 @@
       }
       const body=note.querySelector('.wg-forecast-explanation-copy');
       if(body&&norm(body.textContent)!==cfg.text)body.textContent=cfg.text;
+      if(abbr==='IA'){
+        // Compact the Iowa-only explanation and make a tall popup scrollable.
+        // No forecast content or Kansas styling is altered.
+        note.style.setProperty('margin','7px 0 0','important');
+        note.style.setProperty('padding','8px 10px','important');
+        note.style.setProperty('border-radius','8px','important');
+        const heading=note.querySelector('strong');
+        if(heading){
+          heading.style.setProperty('font-size','10px','important');
+          heading.style.setProperty('line-height','1.25','important');
+          heading.style.setProperty('margin-bottom','4px','important');
+        }
+        if(body){
+          body.style.setProperty('font-size','12px','important');
+          body.style.setProperty('line-height','1.38','important');
+          body.style.setProperty('margin','0','important');
+        }
+        panel.style.setProperty('max-height','min(70dvh,600px)','important');
+        panel.style.setProperty('overflow-y','auto','important');
+        panel.style.setProperty('overscroll-behavior','contain','important');
+      }
     }
   }
 
