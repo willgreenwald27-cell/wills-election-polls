@@ -79,6 +79,12 @@
           if(/Husted/i.test(name))set(oh,key,'46');
         }
       }
+      const sc=stateData.SC;
+      if(sc){
+        set(sc,'rating','lean-r');
+        set(sc,'predictionParty','Republican');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in sc) set(sc,k,'Republican');
+      }
       const ms=stateData.MS;
       if(ms){
         set(ms,'rating','solid-r');set(ms,'predictionParty','Republican');set(ms,'updated','2026-10-05');
