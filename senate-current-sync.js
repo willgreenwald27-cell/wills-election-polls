@@ -44,6 +44,10 @@
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
+      const ia=stateData.IA;
+      if(ia){
+        set(ia,'notes',"Why my forecast differs: Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage.");
+      }
       const ks=stateData.KS;
       if(ks){
         set(ks,'rating','tilt-r');set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +4.9%');set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');set(ks,'updated','2026-10-06');
@@ -82,7 +86,7 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico 55% chance of winning');set(tx,'notes','James Talarico has a 55% chance of winning.');set(tx,'updated','2026-10-01');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico 55% chance of winning');set(tx,'notes','');set(tx,'updated','2026-10-01');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
         if('call' in tx) set(tx,'call','Talarico 55% chance of winning');
         for(const slot of [1,2]){
