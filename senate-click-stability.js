@@ -110,60 +110,69 @@
     const explanations={
       IA:{
         state:'Iowa',
-        text:"Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage."
+        text:"Iowa's recent Republican voting history weighs more heavily in my forecast than the narrow Democratic lead in polling."
       },
       KS:{
         state:'Kansas',
         text:'It may be too big of an ask to flip a state that Trump won by 16 points in 2024.'
       }
     };
+    // Iowa pop-ups can extend off-screen on laptops and phones. On a
+    // constrained viewport, use a separate viewport-fixed, compact note.
+    const iowaPanel=visiblePanel('Iowa');
+    const compact=window.innerWidth<=900 || window.innerHeight<=950;
+    let floating=document.getElementById('wg-iowa-visible-explanation');
+    if(iowaPanel&&compact){
+      if(!floating){
+        floating=document.createElement('aside');
+        floating.id='wg-iowa-visible-explanation';
+        floating.setAttribute('role','note');
+        floating.setAttribute('aria-label','Why my Iowa forecast differs from polls');
+        floating.style.cssText='position:fixed!important;bottom:max(12px,env(safe-area-inset-bottom))!important;left:50%!important;transform:translateX(-50%)!important;width:min(500px,calc(100vw - 24px))!important;max-height:40dvh!important;overflow-y:auto!important;z-index:2147483646!important;margin:0!important;padding:12px 16px!important;background:#fff!important;border:1px solid #bfcede!important;border-radius:12px!important;box-shadow:0 10px 36px rgba(25,43,67,.25)!important;box-sizing:border-box!important;pointer-events:none!important;color:#22364e!important;';
+        const header=document.createElement('strong');
+        header.textContent='IOWA — WHY MY FORECAST DIFFERS';
+        header.style.cssText='display:block;font:800 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.4px;margin:0 0 5px;';
+        const body=document.createElement('p');
+        body.style.cssText='margin:0;font:500 13px/1.45 Inter,system-ui,sans-serif;';
+        body.textContent=explanations.IA.text;
+        floating.append(header,body);
+        document.body.appendChild(floating);
+      }
+    }else if(floating){
+      floating.remove();
+    }
     for(const [abbr,cfg] of Object.entries(explanations)){
-      const panel=visiblePanel(cfg.state);
+      const panel=abbr==='IA'?iowaPanel:visiblePanel(cfg.state);
       if(!panel)continue;
       let note=panel.querySelector('.wg-forecast-explanation[data-state-explanation="'+abbr+'"]');
-      // Respect an existing, native explanation instead of showing it twice.
+      // Do not duplicate an explanation provided by the original popup.
       if(!note){
         const nativeHeading=[...panel.querySelectorAll('*')].some(el=>
           el.children.length===0 &&
           /^WHY MY FORECAST DIFFERS$/i.test(norm(el.textContent)) &&
           !el.closest('.wg-forecast-explanation')
         );
-        if(nativeHeading)continue;
+        if(nativeHeading|| (abbr==='IA'&&compact))continue;
         note=document.createElement('section');
         note.className='wg-forecast-explanation';
         note.setAttribute('data-state-explanation',abbr);
-        note.style.cssText='margin:14px 0 2px;padding:15px 16px;background:#f6f8fc;border:1px solid #dbe3ed;border-radius:12px;box-sizing:border-box;line-height:1.5;';
+        note.style.cssText='margin:8px 0 2px;padding:9px 11px;background:#f6f8fc;border:1px solid #dbe3ed;border-radius:9px;box-sizing:border-box;';
         const head=document.createElement('strong');
         head.textContent='WHY MY FORECAST DIFFERS';
-        head.style.cssText='display:block;margin-bottom:8px;font:800 12px/1.4 Inter,system-ui,sans-serif;letter-spacing:.6px;color:#334a65;';
+        head.style.cssText='display:block;margin-bottom:5px;font:800 11px/1.3 Inter,system-ui,sans-serif;letter-spacing:.4px;color:#334a65;';
         const body=document.createElement('p');
         body.className='wg-forecast-explanation-copy';
-        body.style.cssText='margin:0;font:500 15px/1.6 Inter,system-ui,sans-serif;color:#26384f;';
+        body.style.cssText='margin:0;font:500 13px/1.45 Inter,system-ui,sans-serif;color:#26384f;';
         note.append(head,body);
-        panel.appendChild(note);
+        if(abbr==='IA')panel.insertBefore(note,panel.children[1]||panel.firstElementChild);
+        else panel.appendChild(note);
       }
-      const body=note.querySelector('.wg-forecast-explanation-copy');
-      if(body&&norm(body.textContent)!==cfg.text)body.textContent=cfg.text;
-      if(abbr==='IA'){
-        // Compact the Iowa-only explanation and make a tall popup scrollable.
-        // No forecast content or Kansas styling is altered.
-        note.style.setProperty('margin','7px 0 0','important');
-        note.style.setProperty('padding','8px 10px','important');
-        note.style.setProperty('border-radius','8px','important');
-        const heading=note.querySelector('strong');
-        if(heading){
-          heading.style.setProperty('font-size','10px','important');
-          heading.style.setProperty('line-height','1.25','important');
-          heading.style.setProperty('margin-bottom','4px','important');
-        }
-        if(body){
-          body.style.setProperty('font-size','12px','important');
-          body.style.setProperty('line-height','1.38','important');
-          body.style.setProperty('margin','0','important');
-        }
-        panel.style.setProperty('max-height','min(70dvh,600px)','important');
-        panel.style.setProperty('overflow-y','auto','important');
-        panel.style.setProperty('overscroll-behavior','contain','important');
+      if(abbr==='IA'&&compact){
+        if(note.style.display!=='none')note.style.display='none';
+      }else{
+        if(note.style.display==='none')note.style.display='';
+        const body=note.querySelector('.wg-forecast-explanation-copy');
+        if(body&&norm(body.textContent)!==cfg.text)body.textContent=cfg.text;
       }
     }
   }
@@ -349,9 +358,9 @@
       '[data-state="OH"],[data-state="OH"] path,[data-abbr="OH"],[data-abbr="OH"] path,'+
       '[data-state-abbr="OH"],[data-state-abbr="OH"] path,#OH,#OH path,#state-OH,#state-OH path'
     ).forEach(el=>{
-      el.style.setProperty('fill',BLUE,'important');
+      el.style.setProperty('fill','#a9c5ed','important');
       if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')){
-        el.style.setProperty('background',BLUE,'important');
+        el.style.setProperty('background','#a9c5ed','important');
       }
     });
 
