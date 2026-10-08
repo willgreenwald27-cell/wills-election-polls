@@ -9,9 +9,9 @@
     {date:'2026-10-02',state:'KS',pollster:'NY Times/Siena',c1:'Roger Marshall',c1Pct:'47',c2:'Adam Hamilton',c2Pct:'46',notes:'Marshall +1'}
   ];
 
+  // The October 7 polls supersede the old pinned Texas and Ohio averages.
+  // Keep the Kansas-only legacy override until an updated Kansas poll is supplied.
   const FINAL_AVG={
-    TX:{'James Talarico':'48.0','Ken Paxton':'45.1'},
-    OH:{'Sherrod Brown':'47.6','Jon Husted':'43.1'},
     KS:{'Roger Marshall':'44.6','Adam Hamilton':'45.0'}
   };
 
