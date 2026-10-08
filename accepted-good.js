@@ -290,15 +290,13 @@ function fixAboutPollCount(){
     }
   }
 
-  const FORECAST_DISAGREEMENT_NOTES={
-    TX:{candidates:['James Talarico','Ken Paxton'],text:"Your forecast gives James Talarico a 55% chance of winning Texas."}
-  };
+  const FORECAST_DISAGREEMENT_NOTES={};
 
   function ensureForecastDisagreementNotes(){
     const root=document.body; if(!root) return;
 
     // Ohio should never show a "Why my forecast differs" block.
-    root.querySelectorAll('[data-forecast-disagreement="OH"]').forEach(el=>el.remove());
+    root.querySelectorAll('[data-forecast-disagreement="OH"],[data-forecast-disagreement="TX"]').forEach(el=>el.remove());
     const senate=document.getElementById('page-senate');
     if(senate){
       const ohioSeeds=leafs(senate).filter(el=>/^(Ohio|Sherrod Brown|Jon Husted)$/i.test(norm(el.textContent)));
