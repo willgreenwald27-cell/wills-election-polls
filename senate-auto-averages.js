@@ -8,6 +8,12 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-07','IA','Iowa','CNN','Ashley Hinson',45,'Josh Turek',43,'Hinson +2'],
+    ['2026-10-07','OH','Ohio Special Election','CNN','Sherrod Brown',49,'Jon Husted',43,'Brown +6'],
+    ['2026-10-07','OH','Ohio Special Election','co/efficient','Sherrod Brown',45,'Jon Husted',46,'Husted +1'],
+    ['2026-10-07','TX','Texas','UMass Lowell*','James Talarico',45,'Ken Paxton',45,'Tie'],
+    ['2026-10-07','FL','Florida Special Election','St. Pete Polls','Ashley Moody',47,'Angie Nixon',45,'Moody +2'],
+    ['2026-10-07','NC','North Carolina','East Carolina U.*','Roy Cooper',50,'Michael Whatley',43,'Cooper +7'],
     ['2026-10-06','MI','Michigan','Quantus Insights','Abdul El-Sayed',48,'Mike Rogers',47,'El-Sayed +1'],
     ['2026-10-06','IA','Iowa','Suffolk University*','Josh Turek',48,'Ashley Hinson',44,'Turek +4'],
     ['2026-10-06','FL','Florida Special Election','NBC 6/Mason-Dixon','Ashley Moody',50,'Angie Nixon',40,'Moody +10'],
