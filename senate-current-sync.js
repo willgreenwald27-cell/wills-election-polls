@@ -86,9 +86,9 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico 55% chance of winning');set(tx,'notes','');set(tx,'updated','2026-10-01');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico +0.7%');set(tx,'notes','');set(tx,'updated','2026-10-01');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
-        if('call' in tx) set(tx,'call','Talarico 55% chance of winning');
+        if('call' in tx) set(tx,'call','Talarico +0.7%');
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -241,7 +241,7 @@
           if(party)party.textContent='Democrat';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
           if(rating)rating.textContent='TILT DEMOCRATIC';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.7%';
         }
       }
     }
