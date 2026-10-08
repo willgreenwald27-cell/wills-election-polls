@@ -12,7 +12,7 @@
         tx.rating='tilt-d';
         tx.predictionParty='Democratic';
         tx.prediction='Talarico 55% chance of winning';
-        tx.notes='James Talarico has a 55% chance of winning.';
+        tx.notes='';
         tx.updated='2026-10-01';
         for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
         if('call' in tx)tx.call='Talarico 55% chance of winning';
@@ -91,15 +91,17 @@
   }
 
   function removeTexasExplanation(){
+    try{if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='';}catch(e){}
     const panel=visiblePanel('Texas');
     if(!panel)return;
-    try{if(typeof stateData!=='undefined'&&stateData?.TX)stateData.TX.notes='James Talarico has a 55% chance of winning.';}catch(e){}
-    let box=panel.querySelector('.wg-tx-explanation');
-    if(!box){box=document.createElement('div');box.className='wg-tx-explanation';panel.appendChild(box);}
-    box.innerHTML='<b>WHY I HAVE TEXAS TILT DEMOCRATIC</b><span>James Talarico has a 55% chance of winning.</span>';
-    box.style.cssText='margin-top:12px;padding:14px 15px;border-radius:10px;background:#fff6f6;border:1px solid #efc8cc;color:#26384f;font:500 12px/1.45 Inter,system-ui,sans-serif;box-sizing:border-box;';
-    const b=box.querySelector('b');if(b)b.style.cssText='display:block;margin-bottom:8px;color:#9b3340;font-size:10px;line-height:1.1;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;';
-    const s=box.querySelector('span');if(s)s.style.cssText='display:block;color:#26384f;';
+    panel.querySelectorAll('.wg-tx-explanation,[data-forecast-disagreement="TX"]').forEach(el=>el.remove());
+    removeWhyBlock('Texas');
+    const headings=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0&&/^WHY I HAVE TEXAS TILT DEMOCRATIC$/i.test(norm(el.textContent)));
+    for(const heading of headings){
+      const box=heading.parentElement;
+      if(box&&box!==panel&&!/WILL[’']S CALL|AVG POLLS|POLL AVERAGE/i.test(norm(box.textContent)))box.remove();
+      else heading.remove();
+    }
   }
 
   function keepMainePartyLabelsVisible(){
@@ -364,7 +366,7 @@
         if(party)party.textContent='Democrat';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
         if(rating)rating.textContent='TILT DEMOCRATIC';
-        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico 55% chance of winning';
+        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Democratic';
       }
     }
   }
