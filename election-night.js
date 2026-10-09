@@ -557,45 +557,48 @@ function showElectionMapFallback(){
  $('map-slot')?.prepend(notice);
  renderMap();
 }
+// The site's U.S. map geometry lives inside its compressed HTML data files.
+// Read that geometry DIRECTLY instead of loading the entire home page in a
+// hidden iframe. This avoids slow page scripts, races, and nav rebuilds.
+const PACKED_SITE_PARTS=[
+ 'd0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt',
+ 'd6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt'
+];
+async function loadSenateMapDirectly(signal){
+ const parts=await Promise.all(PACKED_SITE_PARTS.map(async name=>{
+   const response=await fetch('/'+name,{signal,cache:'force-cache'});
+   if(!response.ok)throw new Error('Map file '+name+' returned '+response.status);
+   return response.text();
+ }));
+ if(typeof DecompressionStream!=='function')throw new Error('Browser does not support map decompression');
+ const encoded=parts.join('').trim();
+ const decoded=atob(encoded);
+ const bytes=Uint8Array.from(decoded,c=>c.charCodeAt(0));
+ const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+ const html=await new Response(stream).text();
+ const doc=new DOMParser().parseFromString(html,'text/html');
+ const maps=[
+   ...doc.querySelectorAll('#page-senate .map-wrap svg'),
+   ...doc.querySelectorAll('svg')
+ ];
+ const original=maps.find(el=>el.querySelectorAll('.state-shape[data-state]').length>=30);
+ if(!original)throw new Error('Map shapes could not be found in the site data');
+ return document.importNode(original,true);
+}
 function setupMapFromExistingSenateSVG(){
- // Prefer a cached real SVG on repeat page visits. This eliminates the
- // temporary tile-grid flash and avoids the expensive hidden iframe.
+ // No extra site/iframe load; the map is already stored after the first visit.
  const cached=readCachedElectionMap();
  if(cached&&attachElectionMap(cached))return;
-
- // On first visit, keep a loading indicator visible until the full map
- // is ready; only show the selectable fallback if geometry never loads.
- const frame=document.createElement('iframe');
- frame.setAttribute('aria-hidden','true');
- frame.tabIndex=-1;
- frame.title='Hidden source for US state geometry';
- frame.src='/?election-night-map-source=1';
- frame.style.cssText='position:absolute;left:-10000px;top:0;width:1100px;height:750px;border:0;opacity:0;pointer-events:none';
- document.body.appendChild(frame);
-
- let tries=0,done=false;
- const finish=()=>{done=true;clearInterval(retry);frame.remove();};
- const retry=setInterval(()=>{
-   if(done)return;
-   tries++;
-   try{
-     const doc=frame.contentDocument;
-     const svg=[...(doc?.querySelectorAll('#page-senate .map-wrap svg')||[])]
-       .find(s=>s.querySelectorAll('.state-shape[data-state]').length>=30);
-     if(svg){
-       const copy=svg.cloneNode(true);
-       if(attachElectionMap(copy)){
-         cacheElectionMap(copy);
-         finish();
-         return;
-       }
-     }
-   }catch(_){}
-   if(tries>=48){
-     finish();
-     showElectionMapFallback();
-   }
- },350);
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),12500);
+ loadSenateMapDirectly(controller.signal).then(svg=>{
+   if(mapSvg)return;
+   if(!attachElectionMap(svg))throw new Error('State geometry was incomplete');
+   cacheElectionMap(svg);
+ }).catch(err=>{
+   console.warn('Election Night map load:',err);
+   showElectionMapFallback();
+ }).finally(()=>clearTimeout(timeout));
 }
 function init(){
  document.body.appendChild(hoverCard);
