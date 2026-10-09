@@ -333,7 +333,7 @@ function positionHover(x,y){
  hoverCard.style.top=Math.max(margin,Math.min(top,window.innerHeight-h-margin))+'px';
 }
 function showHover(ab,event){
- if(!STATE_NAMES[ab])return;
+ if(!ALL_STATE_NAMES[ab])return;
  hoveredState=ab;
  if(event&&Number.isFinite(event.clientX)&&Number.isFinite(event.clientY)){
    hoverPosition={x:event.clientX,y:event.clientY};
@@ -395,7 +395,7 @@ function renderDetails(){
  const pollDetails=$('poll-closing-details');
  if(pollDetails){
    pollDetails.textContent=status==='closed'
-    ?'Polls closed · '+SOURCES[source].short+' current results below'
+    ?'Polls closed · '+(row?.candidates?.length?SOURCES[source].short+' current results below':'awaiting '+SOURCES[source].short+' results')
     :close
       ?(status==='partial'?'Some polls closed · final scheduled close: ':'Scheduled poll closing: ')+close.et+' / '+close.pt+(close.note?' · '+close.note:'')
       :'Poll closing time unavailable';
