@@ -57,7 +57,7 @@ function statePollClose(ab){
  return {
   et:pollClockRange(times)+' ET',
   pt:pollClockRange(times,-180)+' PT',
-  note:POLL_CLOSE_NOTES[ab]||'',
+  note:POLL_CLOSE_NOTES[ab]||(times.some(x=>x>=1440)?'Eastern close occurs on Nov 4; local close is Nov 3.':''),
   easternNextDay:times.some(x=>x>=1440)
  };
 }
