@@ -1,0 +1,8 @@
+{
+  "election": "2026-11-03",
+  "source": "ap",
+  "status": "awaiting-license",
+  "updated_at": null,
+  "races": [],
+  "note": "No AP Elections API credentials or redistributable feed connected. Never interpret empty data as an official call."
+}
