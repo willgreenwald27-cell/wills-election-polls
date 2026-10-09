@@ -63,7 +63,7 @@ function updateStatus(){
  $('status-text').textContent=healthy?'Receiving '+config.short+' results':(isActive?'Feed stale — verify source':'Awaiting authorized '+config.short+' results');
  $('checked-at').textContent=last?'• '+suffix:'';
  $('map-title').textContent=config.name+' · Senate calls';
- $('map-subtitle').textContent=healthy?'Confirmed source calls only':'No unverified calls shown';
+ $('map-subtitle').textContent='Uncalled races shade by reported vote margin · darkest shades = calls';
  $('source-title').textContent=config.name.toUpperCase()+' COVERAGE';
  $('source-description').textContent=config.description;
  $('source-link').href=config.link;
