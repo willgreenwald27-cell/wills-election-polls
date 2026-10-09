@@ -5,7 +5,7 @@ The publicly accessible page is `/election-night.html`. It has two independent r
 
 ## Current state (October 8, 2026)
 
-The dashboard is installed and ready for live data but is **not yet connected** to either publisher's private election-results feed. The data files deliberately contain **no race calls**, and the map remains gray. The dashboard auto-checks the selected source's JSON file every 60 seconds, with a manual refresh button. Separate tabs never silently mix calls.
+The dashboard is installed and ready for live data but is **not yet connected** to either publisher's private election-results feed. The data files deliberately contain **no race calls**, and the map remains gray. The dashboard auto-checks the selected source's JSON file every 10 seconds, with a manual refresh button. Separate tabs never silently mix calls.
 
 ## Authorized data access
 
