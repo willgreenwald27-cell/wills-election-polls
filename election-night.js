@@ -62,6 +62,17 @@ function statePollClose(ab){
  };
 }
 
+
+const ELECTION_DAY_EST_MIDNIGHT=Date.parse('2026-11-03T00:00:00-05:00');
+function statePollStatus(ab,now=Date.now()){
+ const times=POLL_CLOSING_ET[ab];
+ if(!Array.isArray(times)||!times.length)return 'unknown';
+ const closings=times.map(min=>ELECTION_DAY_EST_MIDNIGHT+min*60000);
+ if(now<closings[0])return 'before';
+ if(now<closings[closings.length-1])return 'partial';
+ return 'closed';
+}
+
 const SOURCES={
  ap:{name:'Associated Press',short:'AP',file:'/election-night-ap.json',link:'https://apnews.com/',linkLabel:'Open AP reporting ↗',description:'AP election calls and vote totals require access to the AP Elections API. This view will populate only when an authorized results file is published to this site.'},
  nyt:{name:'The New York Times',short:'NYT',file:'/election-night-nyt.json',link:'https://www.nytimes.com/section/politics',linkLabel:'Open NYT coverage ↗',description:'New York Times election-night reporting is a separate source. This tab does not copy or scrape NYT results; an authorized data feed must be configured to display its calls here.'}
@@ -238,15 +249,22 @@ function drawHover(ab){
  const hasSenateRace=Object.prototype.hasOwnProperty.call(STATE_NAMES,ab);
  const row=activeRaces().get(ab);
  const sourceName=SOURCES[source].short;
+ const pollStatus=statePollStatus(ab);
+ const pollsClosed=pollStatus==='closed';
  hoverCard.replaceChildren();
  const head=makeHoverElement('div','hover-head');
  head.appendChild(makeHoverElement('strong','hover-title',ALL_STATE_NAMES[ab]));
  head.appendChild(makeHoverElement('span','hover-source',sourceName));
  hoverCard.appendChild(head);
+
+ // Before all jurisdictions have closed, keep the scheduled time prominent.
+ // The switch is based on real November 3 ET closing instants, not browser
+ // timezone, candidate percentages, or whether a data feed exists.
  const close=statePollClose(ab);
- if(close){
+ if(close&&!pollsClosed){
    const times=makeHoverElement('div','hover-pollclose');
-   times.appendChild(makeHoverElement('span','hover-pollclose-label','POLLS CLOSE · NOV 3'));
+   times.appendChild(makeHoverElement('span','hover-pollclose-label',
+     pollStatus==='partial'?'SOME POLLS CLOSED · FINAL CLOSING':'POLLS CLOSE · NOV 3'));
    times.appendChild(makeHoverElement('strong','hover-pollclose-et',close.et));
    times.appendChild(makeHoverElement('span','hover-pollclose-pt',close.pt));
    if(close.note)times.appendChild(makeHoverElement('small','hover-pollclose-note',close.note));
@@ -255,11 +273,25 @@ function drawHover(ab){
  let callText=hasSenateRace?'NOT CALLED':'NO 2026 SENATE RACE';
  if(row?.called)callText='CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'INDEPENDENT');
  hoverCard.appendChild(makeHoverElement('div','hover-call '+(row?.called?'is-called-'+row.party:''),callText));
+
+ if(!pollsClosed){
+   // Do not display fabricated or premature election-night vote figures.
+   hoverCard.appendChild(makeHoverElement('div','hover-pending',
+     pollStatus==='partial'?'Some areas have closed; election-night results appear here after the final scheduled closing time.':
+     'Current election-night results will replace the closing time when polls close.'));
+   return;
+ }
+ // Once the final local polls close, permanently replace the closing time
+ // with this source's actual reported vote totals and percentages.
+ const block=makeHoverElement('div','hover-results');
+ block.appendChild(makeHoverElement('div','hover-results-heading',
+   hasSenateRace?sourceName+' CURRENT RESULTS':'POLLS CLOSED'));
  const lead=reportedLeader(row);
  if(lead&&!row?.called){
-   hoverCard.appendChild(makeHoverElement('div','hover-lead','Currently leading: '+lead.name+' by '+lead.margin.toFixed(1)+' percentage points'));
+   block.appendChild(makeHoverElement('div','hover-lead',
+     'Currently leading: '+lead.name+' by '+lead.margin.toFixed(1)+' percentage points'));
  }
- const candidates=row?.candidates||[];
+ const candidates=hasSenateRace?(row?.candidates||[]):[];
  if(candidates.length){
    const validCounts=candidates.filter(x=>Number.isFinite(x.votes));
    const voteSum=validCounts.reduce((n,x)=>n+x.votes,0);
@@ -267,24 +299,28 @@ function drawHover(ab){
      const line=makeHoverElement('div','hover-candidate');
      line.appendChild(makeHoverElement('span','hover-candidate-name '+(cand.party?'party-'+cand.party:''),cand.name||'Candidate'));
      const stats=makeHoverElement('span','hover-candidate-stats');
-     const percent=cand.pct!==null?cand.pct:(Number.isFinite(cand.votes)&&validCounts.length===candidates.length&&voteSum>0?cand.votes/voteSum*100:null);
+     const percent=cand.pct!==null?cand.pct:
+       (Number.isFinite(cand.votes)&&validCounts.length===candidates.length&&voteSum>0?cand.votes/voteSum*100:null);
      stats.appendChild(makeHoverElement('b','',percent===null?'—':percent.toFixed(1)+'%'));
      stats.appendChild(makeHoverElement('small','',fmtVotes(cand.votes)+' votes'));
      line.appendChild(stats);
-     hoverCard.appendChild(line);
+     block.appendChild(line);
    }
    if(validCounts.length===candidates.length){
-     hoverCard.appendChild(makeHoverElement('div','hover-total','Votes shown: '+fmtVotes(voteSum)));
+     block.appendChild(makeHoverElement('div','hover-total','Votes shown: '+fmtVotes(voteSum)));
    }
  }else{
-   hoverCard.appendChild(makeHoverElement('div','hover-empty',!hasSenateRace?'No U.S. Senate race on the 2026 map.':row?'Vote counts and percentages not reported yet.':'No election-night vote totals have been received.'));
+   block.appendChild(makeHoverElement('div','hover-empty',
+     !hasSenateRace?'No 2026 U.S. Senate race in this state.':
+     'Polls are closed. Awaiting '+sourceName+' election-night results.'));
  }
  if(row?.pct_reporting!==null&&row?.pct_reporting!==undefined){
-   hoverCard.appendChild(makeHoverElement('div','hover-reported',row.pct_reporting.toFixed(1)+'% of precincts reporting'));
+   block.appendChild(makeHoverElement('div','hover-reported',row.pct_reporting.toFixed(1)+'% of precincts reporting'));
  }
  if(datasets[source]?.updated_at){
-   hoverCard.appendChild(makeHoverElement('div','hover-updated','Last feed update: '+timestamp(datasets[source].updated_at)));
+   block.appendChild(makeHoverElement('div','hover-updated','Last feed update: '+timestamp(datasets[source].updated_at)));
  }
+ hoverCard.appendChild(block);
 }
 function positionHover(x,y){
  if(!Number.isFinite(x)||!Number.isFinite(y))return;
@@ -355,17 +391,22 @@ function renderDetails(){
  $('state-name').textContent=STATE_NAMES[selected]||selected;
  $('race-select').value=selected;
  const close=statePollClose(selected);
+ const status=statePollStatus(selected);
  const pollDetails=$('poll-closing-details');
  if(pollDetails){
-   pollDetails.textContent=close
-    ?'Scheduled poll closing: '+close.et+' / '+close.pt+(close.note?' · '+close.note:'')
-    :'Poll closing time unavailable';
+   pollDetails.textContent=status==='closed'
+    ?'Polls closed · '+SOURCES[source].short+' current results below'
+    :close
+      ?(status==='partial'?'Some polls closed · final scheduled close: ':'Scheduled poll closing: ')+close.et+' / '+close.pt+(close.note?' · '+close.note:'')
+      :'Poll closing time unavailable';
  }
  $('call-label').textContent=row?.called?('CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'OTHER')):'NOT CALLED';
  $('call-label').style.borderColor=row?.party==='D'?'#5d9bf0':row?.party==='R'?'#fa7286':'#56728f';
  if(!row){
-  $('race-description').textContent='No certified or verified election-night vote report has been received from this source for '+STATE_NAMES[selected]+'.';
-  $('race-votes').textContent='Polls and forecasts are not election results.';
+  $('race-description').textContent=status==='closed'
+    ?'Polls are closed. Awaiting '+SOURCES[source].short+' election-night results for '+STATE_NAMES[selected]+'.'
+    :'No certified or verified election-night vote report has been received from this source for '+STATE_NAMES[selected]+'.';
+  $('race-votes').textContent=status==='closed'?'No candidate vote totals reported yet.':'Polls and forecasts are not election results.';
   return;
  }
  $('race-description').textContent=row.called
@@ -549,6 +590,8 @@ function init(){
  setupMapFromExistingSenateSVG();
  render();refresh();
  setInterval(()=>{if(!document.hidden)refresh();},10000);
+ // The clock-driven switch also updates if a feed request has not finished.
+ setInterval(()=>{if(!document.hidden){updateHover();renderDetails();}},1000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
