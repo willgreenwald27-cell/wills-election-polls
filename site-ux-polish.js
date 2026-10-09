@@ -32,6 +32,10 @@
   function reorderNav(){
     const nav=document.querySelector('.site-header .nav');
     if(!nav)return;
+    for(const item of [...nav.children]){
+      const key=item.dataset.acceptedPage||item.dataset.willPage||item.dataset.spaPage||item.dataset.pageLink;
+      if(key==='electionnight'||norm(item.textContent)==='Election Night')item.remove();
+    }
     const items=[...nav.children];
     const find=(key,label)=>nav.querySelector(
       '[data-accepted-page="'+key+'"],[data-will-page="'+key+'"],[data-spa-page="'+key+'"],[data-page-link="'+key+'"]'
