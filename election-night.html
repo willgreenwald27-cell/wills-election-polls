@@ -42,6 +42,14 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 .legend{display:flex;gap:13px;flex-wrap:wrap;padding:0 20px 13px;font-size:10px;color:#50657c;font-weight:800}
 .swatch{width:10px;height:10px;display:inline-block;vertical-align:middle;border-radius:3px;margin-right:5px}
 #map-slot{min-height:430px;padding:0 8px 12px;display:flex;justify-content:center;align-items:center}
+#map-slot.map-fallback-mode{flex-direction:column}
+#fallback-map[hidden]{display:none!important}
+.map-loading{width:100%;min-height:430px;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;color:#52667d;font-size:13px;font-weight:800;letter-spacing:.1px}
+.map-loading-spinner{width:38px;height:38px;border:4px solid #d8e3ef;border-top-color:#275992;border-radius:50%;animation:map-loading-spin 1s linear infinite}
+@keyframes map-loading-spin{to{transform:rotate(360deg)}}
+.map-fallback-notice{margin:8px 16px 0;font-size:12px;color:#54677e;text-align:center;line-height:1.5}
+@media(prefers-reduced-motion:reduce){.map-loading-spinner{animation:none;border-color:#8faecc}}
+
 #map-slot svg{width:100%!important;height:auto!important;max-height:650px!important;min-height:0!important;display:block!important}
 #map-slot svg .state-shape{fill:var(--night-fill,#cbd4df)!important;stroke:#fff!important;stroke-width:1.6!important;cursor:pointer!important;transition:fill .5s ease!important}
 #map-slot svg .state-shape:hover{stroke:#152f49!important;stroke-width:3!important;filter:brightness(.95)}
@@ -118,7 +126,7 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <section class="map-card" aria-label="U.S. Senate race call map">
 <div class="cardhead"><h2 id="map-title">Associated Press · Senate calls</h2><small id="map-subtitle">Darker shades show wider reported leads • solid dark shades mark calls</small></div>
 <div class="legend"><span><i class="swatch" style="background:#173f87"></i>Democratic call</span><span><i class="swatch" style="background:#8e1320"></i>Republican call</span><span><i class="swatch" style="background:#5b2999"></i>Independent / Other (purple)</span><span><i class="swatch" style="background:#cbd4df"></i>No results / tied</span></div>
-<div id="map-slot"><div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection"></div></div>
+<div id="map-slot"><div class="map-loading" id="map-loading" role="status" aria-live="polite"><span class="map-loading-spinner" aria-hidden="true"></span><span>Loading U.S. Senate map…</span></div><div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection" hidden></div></div>
 <div class="map-foot"><b>Hover over a state</b> for candidate percentages and vote counts, or click/tap for details. Before a call, the color shows the <b>current reported vote leader</b> (not a poll): closer races are lighter, wider leads are darker. A verified call uses the darkest blue, red, or purple. Tied races and states without reported votes stay gray. <a href="https://www.270towin.com/poll-closing-times/" target="_blank" rel="noopener noreferrer" style="color:#124985;text-decoration:underline">2026 poll-closing times</a> are scheduled hours, not guarantees of when results arrive.</div>
 </section>
 <aside class="side-card"><div class="panel-pad">
@@ -136,6 +144,6 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div id="feed-notice" role="status">Preparing election-night coverage. There are no November 3 general-election race calls as of October 8, 2026.</div>
 <footer class="foot">Data are checked automatically every 10 seconds when the page is open. If a licensed source feed is missing or out of date, the dashboard says so rather than inventing results. Copyright and ownership of external election reporting remain with their respective publishers.</footer>
 </div>
-<script defer src="/election-night.js?v=20261008-pollcloses-v2"></script>
+<script defer src="/election-night.js?v=20261008-no-map-flash-v1"></script>
 </body>
 </html>
