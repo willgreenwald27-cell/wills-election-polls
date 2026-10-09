@@ -2,11 +2,11 @@
   const PAGES=[
     ['home','Home'],
     ['senate','2026 Senate Prediction'],
-    ['electionnight','Election Night'],
     ['governor','2026 Governor Map'],
     ['polls','New Polls'],
     ['betting','Betting Odds'],
     ['errors','Past Polling Errors'],
+    ['electionnight','Election Night'],
     ['about','About Me']
   ];
   const KEYS=new Set(PAGES.map(x=>x[0]));
