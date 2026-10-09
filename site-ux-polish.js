@@ -34,9 +34,10 @@
     const items=[...nav.children];
     const home=nav.querySelector('[data-page-link="home"]')||items.find(el=>/^Home$/i.test(norm(el.textContent)));
     const senate=nav.querySelector('[data-page-link="senate"]')||items.find(el=>/^2026 Senate Prediction$/i.test(norm(el.textContent)));
+    const electionNight=nav.querySelector('[data-accepted-page="electionnight"],[data-will-page="electionnight"],[data-spa-page="electionnight"]')||items.find(el=>/^Election Night$/i.test(norm(el.textContent)));
     const errors=nav.querySelector('[data-page-link="errors"]')||items.find(el=>/^Past Polling Errors$/i.test(norm(el.textContent)));
     const polls=nav.querySelector('[data-page-link="polls"]')||items.find(el=>/^New Polls$/i.test(norm(el.textContent)));
-    const preferred=[home,senate,errors,polls].filter(Boolean);
+    const preferred=[home,senate,electionNight,errors,polls].filter(Boolean);
     preferred.forEach((el,i)=>{el.style.setProperty('order',String(i),'important');el.style.setProperty('pointer-events','auto','important');if(el.tagName==='BUTTON'&&!el.type)el.type='button';});
     items.filter(el=>!preferred.includes(el)).forEach((el,i)=>el.style.setProperty('order',String(10+i),'important'));
   }
