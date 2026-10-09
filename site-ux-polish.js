@@ -30,16 +30,31 @@
   }
 
   function reorderNav(){
-    const nav=document.querySelector('.site-header .nav');if(!nav)return;
+    const nav=document.querySelector('.site-header .nav');
+    if(!nav)return;
     const items=[...nav.children];
-    const home=nav.querySelector('[data-page-link="home"]')||items.find(el=>/^Home$/i.test(norm(el.textContent)));
-    const senate=nav.querySelector('[data-page-link="senate"]')||items.find(el=>/^2026 Senate Prediction$/i.test(norm(el.textContent)));
-    const electionNight=nav.querySelector('[data-accepted-page="electionnight"],[data-will-page="electionnight"],[data-spa-page="electionnight"]')||items.find(el=>/^Election Night$/i.test(norm(el.textContent)));
-    const errors=nav.querySelector('[data-page-link="errors"]')||items.find(el=>/^Past Polling Errors$/i.test(norm(el.textContent)));
-    const polls=nav.querySelector('[data-page-link="polls"]')||items.find(el=>/^New Polls$/i.test(norm(el.textContent)));
-    const preferred=[home,senate,electionNight,errors,polls].filter(Boolean);
-    preferred.forEach((el,i)=>{el.style.setProperty('order',String(i),'important');el.style.setProperty('pointer-events','auto','important');if(el.tagName==='BUTTON'&&!el.type)el.type='button';});
-    items.filter(el=>!preferred.includes(el)).forEach((el,i)=>el.style.setProperty('order',String(10+i),'important'));
+    const find=(key,label)=>nav.querySelector(
+      '[data-accepted-page="'+key+'"],[data-will-page="'+key+'"],[data-spa-page="'+key+'"],[data-page-link="'+key+'"]'
+    )||items.find(el=>norm(el.textContent)===label);
+    const fixed=[
+      find('home','Home'),
+      find('senate','2026 Senate Prediction'),
+      find('governor','2026 Governor Map'),
+      find('polls','New Polls'),
+      find('betting','Betting Odds'),
+      find('errors','Past Polling Errors')
+    ].filter(Boolean);
+    const electionNight=find('electionnight','Election Night');
+    const about=find('about','About Me');
+    const trailing=[electionNight,about].filter(Boolean);
+    // Keep any additional tabs before Election Night, never after About Me.
+    const extras=items.filter(el=>!fixed.includes(el)&&!trailing.includes(el));
+    const desired=[...fixed,...extras,...trailing];
+    desired.forEach((el,i)=>{
+      el.style.setProperty('order',String(i),'important');
+      el.style.setProperty('pointer-events','auto','important');
+      if(el.tagName==='BUTTON'&&!el.type)el.type='button';
+    });
   }
 
   function installNavClickRepair(){
