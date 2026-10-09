@@ -148,10 +148,26 @@ function updateStatus(){
 }
 function countCalls(){
  const data=activeRaces(),called=[...data.values()].filter(x=>x.called);
- $('count-d').textContent=called.filter(x=>x.party==='D').length;
- $('count-r').textContent=called.filter(x=>x.party==='R').length;
- $('count-i').textContent=called.filter(x=>x.party==='I').length;
- $('count-u').textContent=STATE_CODES.length-called.length;
+ const counts={
+   D:called.filter(x=>x.party==='D').length,
+   R:called.filter(x=>x.party==='R').length,
+   I:called.filter(x=>x.party==='I').length
+ };
+ const total=STATE_CODES.length,uncalled=Math.max(0,total-called.length);
+ $('count-d').textContent=counts.D;
+ $('count-r').textContent=counts.R;
+ $('count-i').textContent=counts.I;
+ $('count-u').textContent=uncalled;
+ // These are calls in the 35 contested Senate states, NOT chamber balance.
+ $('count-total').textContent=called.length+' / '+total;
+ for(const party of ['d','r','i']){
+   const id=party==='d'?'bar-call-d':party==='r'?'bar-call-r':'bar-call-i';
+   const value=counts[party.toUpperCase()];
+   $(id).style.width=(total?value/total*100:0).toFixed(3)+'%';
+ }
+ const meter=$('score-track');
+ meter.setAttribute('aria-valuenow',String(called.length));
+ meter.setAttribute('aria-valuetext',called.length+' of '+total+' Senate races called');
 }
 // Colors reflect the lead in reported election-night vote *percentages*
 // until a source calls the race. A call always receives the darkest shade.
