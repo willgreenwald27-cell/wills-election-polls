@@ -7,7 +7,7 @@ const SOURCES={
  nyt:{name:'The New York Times',short:'NYT',file:'/election-night-nyt.json',link:'https://www.nytimes.com/section/politics',linkLabel:'Open NYT coverage ↗',description:'New York Times election-night reporting is a separate source. This tab does not copy or scrape NYT results; an authorized data feed must be configured to display its calls here.'}
 };
 const $=id=>document.getElementById(id);
-let source='ap', selected='TX', lastFetchAt=null, busy=false, mapSvg=null;
+let source='ap', selected='TX', lastFetchAt=null, busy=false, mapSvg=null, hoveredState=null, hoverPosition=null, pendingRefresh=false;
 const datasets={ap:null,nyt:null};
 const races={ap:new Map(),nyt:new Map()};
 const preElection=()=>Date.now()<Date.parse('2026-11-03T00:00:00-04:00');
@@ -33,10 +33,10 @@ function parseFeed(feed,key){
    const candidates=Array.isArray(row.candidates)?row.candidates.slice(0,8).map(c=>({
      name:String(c?.name||'').slice(0,110),
      party:partyCode(c?.party),
-     votes:Number.isFinite(Number(c?.votes))&&Number(c.votes)>=0?Math.floor(Number(c.votes)):null,
-     pct:Number.isFinite(Number(c?.pct))?Math.max(0,Math.min(100,Number(c.pct))):null
+     votes:c?.votes!==null&&c?.votes!==undefined&&c?.votes!==''&&Number.isFinite(Number(c.votes))&&Number(c.votes)>=0?Math.floor(Number(c.votes)):null,
+     pct:c?.pct!==null&&c?.pct!==undefined&&c?.pct!==''&&Number.isFinite(Number(c.pct))?Math.max(0,Math.min(100,Number(c.pct))):null
    })):[];
-   const reported=Number(row.pct_reporting);
+   const reported=row.pct_reporting===null||row.pct_reporting===undefined||row.pct_reporting===''?NaN:Number(row.pct_reporting);
    out.set(state,{
      state,called,party:called?party:null,
      winner:called?String(row.winner||'').slice(0,100):'',
@@ -104,6 +104,121 @@ function renderMap(){
  }
 }
 function fmtVotes(n){return Number.isFinite(n)?Math.floor(n).toLocaleString():'—';}
+function makeHoverElement(tag,className,value){
+ const el=document.createElement(tag);
+ if(className)el.className=className;
+ if(value!==undefined)el.textContent=value;
+ return el;
+}
+const hoverCard=document.createElement('div');
+hoverCard.id='state-results-tooltip';
+hoverCard.setAttribute('role','tooltip');
+hoverCard.setAttribute('aria-hidden','true');
+hoverCard.hidden=true;
+
+function drawHover(ab){
+ if(!STATE_NAMES[ab])return;
+ const row=activeRaces().get(ab);
+ const sourceName=SOURCES[source].short;
+ hoverCard.replaceChildren();
+ const head=makeHoverElement('div','hover-head');
+ head.appendChild(makeHoverElement('strong','hover-title',STATE_NAMES[ab]));
+ head.appendChild(makeHoverElement('span','hover-source',sourceName));
+ hoverCard.appendChild(head);
+ let callText='NOT CALLED';
+ if(row?.called)callText='CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'INDEPENDENT');
+ hoverCard.appendChild(makeHoverElement('div','hover-call '+(row?.called?'is-called-'+row.party:''),callText));
+ const candidates=row?.candidates||[];
+ if(candidates.length){
+   const validCounts=candidates.filter(x=>Number.isFinite(x.votes));
+   const voteSum=validCounts.reduce((n,x)=>n+x.votes,0);
+   for(const cand of candidates){
+     const line=makeHoverElement('div','hover-candidate');
+     line.appendChild(makeHoverElement('span','hover-candidate-name '+(cand.party?'party-'+cand.party:''),cand.name||'Candidate'));
+     const stats=makeHoverElement('span','hover-candidate-stats');
+     const percent=cand.pct!==null?cand.pct:(Number.isFinite(cand.votes)&&validCounts.length===candidates.length&&voteSum>0?cand.votes/voteSum*100:null);
+     stats.appendChild(makeHoverElement('b','',percent===null?'—':percent.toFixed(1)+'%'));
+     stats.appendChild(makeHoverElement('small','',fmtVotes(cand.votes)+' votes'));
+     line.appendChild(stats);
+     hoverCard.appendChild(line);
+   }
+   if(validCounts.length===candidates.length){
+     hoverCard.appendChild(makeHoverElement('div','hover-total','Votes shown: '+fmtVotes(voteSum)));
+   }
+ }else{
+   hoverCard.appendChild(makeHoverElement('div','hover-empty',row?'Vote counts and percentages not reported yet.':'No election-night vote totals have been received.'));
+ }
+ if(row?.pct_reporting!==null&&row?.pct_reporting!==undefined){
+   hoverCard.appendChild(makeHoverElement('div','hover-reported',row.pct_reporting.toFixed(1)+'% of precincts reporting'));
+ }
+ if(datasets[source]?.updated_at){
+   hoverCard.appendChild(makeHoverElement('div','hover-updated','Last feed update: '+timestamp(datasets[source].updated_at)));
+ }
+}
+function positionHover(x,y){
+ if(!Number.isFinite(x)||!Number.isFinite(y))return;
+ const rect=hoverCard.getBoundingClientRect();
+ const w=rect.width||300,h=rect.height||175,margin=10;
+ let left=x+15,top=y+15;
+ if(left+w>window.innerWidth-margin)left=x-w-15;
+ if(top+h>window.innerHeight-margin)top=y-h-15;
+ hoverCard.style.left=Math.max(margin,Math.min(left,window.innerWidth-w-margin))+'px';
+ hoverCard.style.top=Math.max(margin,Math.min(top,window.innerHeight-h-margin))+'px';
+}
+function showHover(ab,event){
+ if(!STATE_NAMES[ab])return;
+ hoveredState=ab;
+ if(event&&Number.isFinite(event.clientX)&&Number.isFinite(event.clientY)){
+   hoverPosition={x:event.clientX,y:event.clientY};
+ }
+ drawHover(ab);
+ hoverCard.hidden=false;
+ hoverCard.setAttribute('aria-hidden','false');
+ if(hoverPosition)positionHover(hoverPosition.x,hoverPosition.y);
+}
+function hideHover(){
+ hoveredState=null;hoverPosition=null;
+ hoverCard.hidden=true;hoverCard.setAttribute('aria-hidden','true');
+}
+function updateHover(){
+ if(!hoveredState||hoverCard.hidden)return;
+ drawHover(hoveredState);
+ if(hoverPosition)positionHover(hoverPosition.x,hoverPosition.y);
+}
+function hoverFromEvent(event,selector){
+ const node=event.target?.closest?.(selector);
+ if(!node)return null;
+ const ab=node.dataset.state;
+ return STATE_NAMES[ab]?ab:null;
+}
+function bindHoverEvents(container,selector){
+ container.addEventListener('pointerover',e=>{
+   const ab=hoverFromEvent(e,selector);
+   if(ab)showHover(ab,e);
+ });
+ container.addEventListener('pointermove',e=>{
+   const ab=hoverFromEvent(e,selector);
+   if(!ab){hideHover();return;}
+   if(ab!==hoveredState)showHover(ab,e);
+   else{hoverPosition={x:e.clientX,y:e.clientY};positionHover(e.clientX,e.clientY);}
+ });
+ container.addEventListener('pointerout',e=>{
+   const old=hoverFromEvent(e,selector);
+   const next=e.relatedTarget?.closest?.(selector);
+   if(old&&(!next||next.dataset.state!==old))hideHover();
+ });
+ container.addEventListener('focusin',e=>{
+   const ab=hoverFromEvent(e,selector);
+   if(!ab)return;
+   const rect=e.target.getBoundingClientRect();
+   showHover(ab,{clientX:rect.left+rect.width/2,clientY:rect.top+rect.height/2});
+ });
+ container.addEventListener('focusout',hideHover);
+ container.addEventListener('click',e=>{
+   const ab=hoverFromEvent(e,selector);
+   if(ab)hideHover();
+ });
+}
 function renderDetails(){
  const row=activeRaces().get(selected);
  $('state-name').textContent=STATE_NAMES[selected]||selected;
@@ -124,11 +239,12 @@ function renderDetails(){
  $('race-votes').textContent=parts.join(' · ')||'No vote totals reported.';
 }
 function render(){
- updateStatus();countCalls();renderMap();renderDetails();
+ updateStatus();countCalls();renderMap();renderDetails();updateHover();
 }
 function chooseSource(key){
  if(!SOURCES[key])return;
  source=key;
+ hideHover();
  for(const btn of document.querySelectorAll('.tab[data-source]'))btn.setAttribute('aria-selected',btn.dataset.source===key?'true':'false');
  render();
  refresh();
@@ -142,9 +258,10 @@ function buildStates(){
  }
  dropdown.addEventListener('change',()=>{selected=dropdown.value;renderDetails();});
  grid.addEventListener('click',e=>{const b=e.target.closest('button[data-state]');if(!b)return;selected=b.dataset.state;renderDetails();});
+ bindHoverEvents(grid,'button[data-state]');
 }
 async function refresh(){
- if(busy)return;
+ if(busy){pendingRefresh=true;return;}
  busy=true;
  $('refresh').disabled=true;
  const config=SOURCES[source],which=source;
@@ -164,6 +281,7 @@ async function refresh(){
   $('refresh').disabled=false;
   busy=false;
   render();
+  if(pendingRefresh){pendingRefresh=false;queueMicrotask(refresh);}
  }
 }
 function setupMapFromExistingSenateSVG(){
@@ -197,6 +315,7 @@ function setupMapFromExistingSenateSVG(){
     const slot=$('map-slot');
     slot.replaceChildren(copy);
     mapSvg=copy;
+    bindHoverEvents(copy,'.state-shape[data-state]');
     copy.addEventListener('click',e=>{
       const path=e.target.closest('.state-shape[data-state]');
       if(!path||!STATE_NAMES[path.dataset.state])return;
@@ -214,6 +333,7 @@ function setupMapFromExistingSenateSVG(){
  },350);
 }
 function init(){
+ document.body.appendChild(hoverCard);
  buildStates();
  $('tab-ap').addEventListener('click',()=>chooseSource('ap'));
  $('tab-nyt').addEventListener('click',()=>chooseSource('nyt'));
