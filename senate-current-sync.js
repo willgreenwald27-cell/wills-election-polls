@@ -5,7 +5,7 @@
     AR:{'shoffner':'43.0','cotton':'46.0'},
     GA:{'ossoff':'50.0','collins':'43.0'},
     IA:{'turek':'44.9','hinson':'44.2'},
-    ID:{'achilles':'34.0','risch':'33.5'},
+    ID:{'achilles':'30.0','risch':'34.0'},
     KS:{'hamilton':'45.0','marshall':'44.5'},
     MA:{'markey':'50.0','deaton':'30.0'},
     ME:{'jackson':'47.5','collins':'44.5'},
