@@ -6,7 +6,6 @@
     ['polls','New Polls'],
     ['betting','Betting Odds'],
     ['errors','Past Polling Errors'],
-    ['electionnight','Election Night'],
     ['about','About Me']
   ];
   const PAGE_KEYS=new Set(PAGES.map(([k])=>k));
@@ -137,7 +136,6 @@
   }
 
   function navigate(key){
-    if(key==='electionnight'){window.location.assign('/election-night.html');return;}
     if(!PAGE_KEYS.has(key)) return;
     if(key===currentPage){
       updateActiveButton();
@@ -152,7 +150,6 @@
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
-    if(btn.getAttribute('data-spa-page')==='electionnight'){window.location.assign('/election-night.html');return;}
     navigate(btn.getAttribute('data-spa-page'));
   }
 
