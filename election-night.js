@@ -82,22 +82,79 @@ function countCalls(){
  $('count-i').textContent=called.filter(x=>x.party==='I').length;
  $('count-u').textContent=STATE_CODES.length-called.length;
 }
+// Colors reflect the lead in reported election-night vote *percentages*
+// until a source calls the race. A call always receives the darkest shade.
+// Unreported races and exact ties remain gray; never use polling forecasts here.
+const NIGHT_PALETTE={
+ D:{light:[205,225,250],dark:[23,63,135]},
+ R:{light:[249,214,218],dark:[142,19,32]},
+ I:{light:[231,217,250],dark:[91,41,153]}
+};
+const UNREPORTED_COLOR='#cbd4df';
+const SHADE_MARGIN_CAP=25;
+
+function reportedLeader(row){
+ if(!row||!Array.isArray(row.candidates)||row.candidates.length<2)return null;
+ const candidates=row.candidates;
+ // Prefer the source's percentages when available for every candidate.
+ // Otherwise use the vote count share, but only when all counts are present.
+ const allPcts=candidates.every(c=>c&&Number.isFinite(c.pct)&&c.pct>=0);
+ const allVotes=candidates.every(c=>c&&Number.isFinite(c.votes)&&c.votes>=0);
+ let values;
+ if(allPcts&&candidates.some(c=>c.pct>0)){
+   values=candidates.map(c=>({name:c.name,party:c.party,percent:c.pct}));
+ }else if(allVotes){
+   const total=candidates.reduce((sum,c)=>sum+c.votes,0);
+   if(total<=0)return null;
+   values=candidates.map(c=>({name:c.name,party:c.party,percent:c.votes/total*100}));
+ }else return null;
+ values.sort((a,b)=>b.percent-a.percent);
+ const first=values[0],second=values[1],margin=first.percent-second.percent;
+ if(!NIGHT_PALETTE[first.party]||!Number.isFinite(margin)||margin<=0.001)return null;
+ return {name:first.name,party:first.party,percent:first.percent,margin};
+}
+function statePaint(row){
+ const lead=reportedLeader(row);
+ if(row?.called&&NIGHT_PALETTE[row.party]){
+   return {color:rgbHex(NIGHT_PALETTE[row.party].dark),dark:true,called:true,lead};
+ }
+ if(!lead)return {color:UNREPORTED_COLOR,dark:false,called:false,lead:null};
+ const ramp=NIGHT_PALETTE[lead.party];
+ const progress=Math.min(1,Math.max(0,lead.margin/SHADE_MARGIN_CAP));
+ const channels=ramp.light.map((v,i)=>Math.round(v+(ramp.dark[i]-v)*progress));
+ const brightness=.2126*channels[0]+.7152*channels[1]+.0722*channels[2];
+ return {color:rgbHex(channels),dark:brightness<145,called:false,lead};
+}
+function rgbHex(channels){
+ return '#'+channels.map(x=>Math.round(x).toString(16).padStart(2,'0')).join('');
+}
+function colorDescription(ab,row,paint){
+ const base='Show '+(STATE_NAMES[ab]||ab)+' election results';
+ if(row?.called)return base+' — called '+(row.party==='D'?'Democratic':row.party==='R'?'Republican':'Independent');
+ if(paint.lead)return base+' — '+paint.lead.name+' leads by '+paint.lead.margin.toFixed(1)+' percentage points; not called';
+ return base+' — no reported vote lead';
+}
 function renderMap(){
  const data=activeRaces();
  if(mapSvg){
    for(const path of mapSvg.querySelectorAll('.state-shape[data-state]')){
      const ab=path.dataset.state?.toUpperCase();
-     const row=data.get(ab);
+     const row=data.get(ab),paint=statePaint(row);
+     path.style.setProperty('--night-fill',paint.color);
      if(row?.called)path.setAttribute('data-called',row.party);
      else path.removeAttribute('data-called');
+     path.setAttribute('aria-label',colorDescription(ab,row,paint));
    }
    for(const label of mapSvg.querySelectorAll('[data-label]')){
      const ab=label.getAttribute('data-label')?.toUpperCase();
-     label.classList.toggle('night-called',!!data.get(ab)?.called);
+     label.classList.toggle('night-called',statePaint(data.get(ab)).dark);
    }
  }else{
    for(const btn of $('fallback-map').querySelectorAll('button[data-state]')){
-     const row=data.get(btn.dataset.state);
+     const ab=btn.dataset.state,row=data.get(ab),paint=statePaint(row);
+     btn.style.setProperty('--night-fill',paint.color);
+     btn.style.setProperty('--night-text',paint.dark?'#fff':'#253a52');
+     btn.setAttribute('aria-label',colorDescription(ab,row,paint));
      if(row?.called)btn.dataset.called=row.party;
      else btn.removeAttribute('data-called');
    }
@@ -128,6 +185,10 @@ function drawHover(ab){
  let callText='NOT CALLED';
  if(row?.called)callText='CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'INDEPENDENT');
  hoverCard.appendChild(makeHoverElement('div','hover-call '+(row?.called?'is-called-'+row.party:''),callText));
+ const lead=reportedLeader(row);
+ if(lead&&!row?.called){
+   hoverCard.appendChild(makeHoverElement('div','hover-lead','Currently leading: '+lead.name+' by '+lead.margin.toFixed(1)+' percentage points'));
+ }
  const candidates=row?.candidates||[];
  if(candidates.length){
    const validCounts=candidates.filter(x=>Number.isFinite(x.votes));
@@ -232,7 +293,9 @@ function renderDetails(){
  }
  $('race-description').textContent=row.called
   ?(row.winner?row.winner+' was called by '+SOURCES[source].name+'.':SOURCES[source].name+' has called this race for the '+(row.party==='D'?'Democratic':row.party==='R'?'Republican':'Independent / Other')+' candidate.')
-  :'Votes may be reported, but this source has not called the race.';
+  :(reportedLeader(row)
+    ?reportedLeader(row).name+' currently leads by '+reportedLeader(row).margin.toFixed(1)+' percentage points in reported votes. The race has not been called.'
+    :'Votes may be reported, but this source has not called the race.');
  const parts=[];
  if(row.pct_reporting!==null)parts.push(row.pct_reporting.toFixed(1)+'% of precincts reporting');
  if(row.candidates.length)parts.push(row.candidates.map(c=>c.name+': '+fmtVotes(c.votes)+(c.pct!==null?' ('+c.pct.toFixed(1)+'%)':'')).join(' · '));
