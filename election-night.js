@@ -69,7 +69,7 @@ function updateStatus(){
  $('source-link').href=config.link;
  $('source-link').textContent=config.linkLabel;
  const called=[...races[source].values()].filter(x=>x.called).length;
- if(healthy)setMessage('Displaying '+called+' officially called races from the configured '+config.short+' feed. Counts refresh every 60 seconds while this page is open.');
+ if(healthy)setMessage('Displaying '+called+' officially called races from the configured '+config.short+' feed. Counts refresh every 10 seconds while this page is open.');
  else if(preElection())setMessage('The November 3, 2026 general election has not taken place. No election-night race calls are available yet. A licensed '+config.short+' data feed has not been connected.');
  else if(!feed||feed.status==='awaiting-license')setMessage('No authorized '+config.short+' results feed is connected. Visit the source coverage link for independently published results; this map will not manufacture calls.');
  else if(isActive&&!fresh)setMessage(config.short+' result data is outdated. The dashboard shows only the last recorded calls and labels the feed as stale.');
@@ -340,7 +340,7 @@ function init(){
  $('refresh').addEventListener('click',refresh);
  setupMapFromExistingSenateSVG();
  render();refresh();
- setInterval(()=>{if(!document.hidden)refresh();},60000);
+ setInterval(()=>{if(!document.hidden)refresh();},10000);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
