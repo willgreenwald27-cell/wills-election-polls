@@ -46,14 +46,14 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 #map-slot svg .state-shape{fill:#cbd4df!important;stroke:#fff!important;stroke-width:1.6!important;cursor:pointer!important}
 #map-slot svg .state-shape:hover{stroke:#152f49!important;stroke-width:3!important;filter:brightness(.95)}
 #map-slot svg .state-label{fill:#30445a!important;text-shadow:none!important;pointer-events:none}
-#map-slot svg .state-shape[data-called="D"]{fill:#3677d5!important}
-#map-slot svg .state-shape[data-called="R"]{fill:#d74952!important}
+#map-slot svg .state-shape[data-called="D"]{fill:#173f87!important}
+#map-slot svg .state-shape[data-called="R"]{fill:#8e1320!important}
 #map-slot svg .state-shape[data-called="I"]{fill:#e1ae34!important}
 #map-slot svg .state-shape[data-called="D"] + text,#map-slot svg .state-shape[data-called="R"] + text{fill:white!important}
 #map-slot svg .state-label.night-called{fill:#fff!important;text-shadow:0 1px 2px #25364e!important}
 .grid-fallback{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:18px 12px;width:100%}
 .grid-state{border:1px solid #ccd5e2;background:#dce3eb;color:#2b435c;min-height:47px;border-radius:7px;cursor:pointer;font-weight:900;font-size:12px}
-.grid-state[data-called="D"]{background:#3677d5;color:white}.grid-state[data-called="R"]{background:#d74952;color:white}.grid-state[data-called="I"]{background:#e1ae34;color:#132338}
+.grid-state[data-called="D"]{background:#173f87;color:white}.grid-state[data-called="R"]{background:#8e1320;color:white}.grid-state[data-called="I"]{background:#e1ae34;color:#132338}
 .map-foot{border-top:1px solid #d9e0e9;padding:12px 20px;color:#5d6b7b;font-size:11px;line-height:1.6}
 .panel-pad{padding:18px 20px}.side-card{background:#102943;color:#eef3ff}
 .side-card h2{margin:0 0 8px;font-size:19px;font-weight:900;letter-spacing:-.5px}
@@ -67,6 +67,21 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 .source-link{display:inline-flex;align-items:center;gap:6px;background:#f3f6ff;color:#153051;padding:12px 15px;border-radius:9px;font-weight:850;font-size:12px;margin-top:12px}
 .note{margin-top:17px;background:#183652;border:1px solid #365575;border-radius:11px;padding:14px;font-size:11px;line-height:1.65;color:#a9bed7}
 #feed-notice{font-size:12px;line-height:1.6;padding:14px 17px;border-radius:10px;background:#17334f;border:1px solid #355576;color:#c5d7e8;margin:18px 0 0}
+#state-results-tooltip{position:fixed;left:0;top:0;z-index:99999;pointer-events:none;width:min(322px,calc(100vw - 24px));padding:15px 16px 13px;border-radius:13px;background:#0b223c;color:#f1f6fd;box-shadow:0 14px 38px rgba(3,15,35,.35);border:1px solid #527391;font-family:Inter,Arial,sans-serif;font-size:12px;line-height:1.4}
+#state-results-tooltip[hidden]{display:none!important}
+.hover-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.hover-title{font-weight:900;font-size:17px;letter-spacing:-.5px}
+.hover-source{padding:4px 7px;border:1px solid #547794;border-radius:7px;font-size:10px;letter-spacing:.8px;font-weight:900}
+.hover-call{font-size:10px;font-weight:900;letter-spacing:.7px;color:#b7c6d9;padding:0 0 10px;margin-bottom:5px;border-bottom:1px solid #304b66}
+.hover-call.is-called-D{color:#84b3ff}.hover-call.is-called-R{color:#ff9ba5}.hover-call.is-called-I{color:#ffde75}
+.hover-candidate{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid rgba(214,232,255,.1)}
+.hover-candidate-name{font-size:12px;font-weight:750;min-width:0;overflow-wrap:anywhere;border-left:3px solid #7d93ac;padding-left:8px}
+.hover-candidate-name.party-D{border-color:#6ca9fc}.hover-candidate-name.party-R{border-color:#ef687c}.hover-candidate-name.party-I{border-color:#e9bf55}
+.hover-candidate-stats{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0}
+.hover-candidate-stats b{font-size:18px;font-weight:900;line-height:1.2}.hover-candidate-stats small{font-size:10px;color:#b9c9dc}
+.hover-total,.hover-reported,.hover-updated{color:#b3c6de;font-size:10px;margin-top:9px}
+.hover-empty{padding:10px 0;color:#c3d2e3;font-size:12px}
+#map-slot svg .state-shape:focus-visible,.grid-state:focus-visible{outline:3px solid #f6cb60!important;outline-offset:2px}
 .hidden{display:none!important}.foot{margin-top:24px;font-size:11px;color:#8ba3bf;line-height:1.7}
 @media(max-width:960px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}#map-slot{min-height:330px}.intro{align-items:start;flex-direction:column}.event{max-width:none}}
 @media(max-width:600px){.shell{padding:0 11px 34px}.top{min-height:68px}.brand{font-size:12px}.brand-mark{width:29px;height:29px}.back{font-size:10px;padding:9px}.intro{padding:25px 8px 22px}h1{letter-spacing:-1.6px}.metric{padding:14px}.metric strong{font-size:27px}.sourcebar{align-items:stretch}.tabs{width:100%}.tab{flex:1;font-size:11px;padding:11px 7px}.grid-fallback{grid-template-columns:repeat(5,1fr)}#map-slot{min-height:230px;padding:2px 0 10px}.cardhead{padding:16px 14px 9px}.legend{padding:0 14px 11px}.map-foot{padding:11px 14px}}
@@ -99,9 +114,9 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div class="layout">
 <section class="map-card" aria-label="U.S. Senate race call map">
 <div class="cardhead"><h2 id="map-title">Associated Press · Senate calls</h2><small id="map-subtitle">States remain gray until officially called</small></div>
-<div class="legend"><span><i class="swatch" style="background:#3677d5"></i>Democratic call</span><span><i class="swatch" style="background:#d74952"></i>Republican call</span><span><i class="swatch" style="background:#e1ae34"></i>Independent / Other</span><span><i class="swatch" style="background:#cbd4df"></i>Uncalled / not on ballot</span></div>
+<div class="legend"><span><i class="swatch" style="background:#173f87"></i>Democratic call</span><span><i class="swatch" style="background:#8e1320"></i>Republican call</span><span><i class="swatch" style="background:#e1ae34"></i>Independent / Other</span><span><i class="swatch" style="background:#cbd4df"></i>Uncalled / not on ballot</span></div>
 <div id="map-slot"><div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection"></div></div>
-<div class="map-foot">Select a state for details. Colors represent verified election-night <b>race calls</b>, not polling leads or Will's predictions.</div>
+<div class="map-foot"><b>Hover over a state</b> for candidate percentages and vote counts, or click/tap for details. States turn dark blue or dark red only after a verified race call, not a polling lead or forecast.</div>
 </section>
 <aside class="side-card"><div class="panel-pad">
 <h2>Race Center</h2><label for="race-select" style="font-size:12px;color:#aec2da">Select a Senate state</label>
@@ -117,6 +132,6 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div id="feed-notice" role="status">Preparing election-night coverage. There are no November 3 general-election race calls as of October 8, 2026.</div>
 <footer class="foot">Data are checked automatically every 60 seconds when the page is open. If a licensed source feed is missing or out of date, the dashboard says so rather than inventing results. Copyright and ownership of external election reporting remain with their respective publishers.</footer>
 </div>
-<script defer src="/election-night.js?v=20261008-1"></script>
+<script defer src="/election-night.js?v=20261008-livehover2"></script>
 </body>
 </html>
