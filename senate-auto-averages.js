@@ -115,7 +115,8 @@
     ['2026-09-12','GA','Georgia','Trafalgar Group*','Jon Ossoff',49,'Mike Collins',43,'Ossoff +6'],
     ['2026-09-10','IA','Iowa','YouGov','Ashley Hinson',43,'Josh Turek',45,'Turek +2'],
     ['2026-09-10','MN','Minnesota','Quantus Insights','Peggy Flanagan',48,'Michele Tafoya',44,'Flanagan +4'],
-    ['2026-09-10','FL','Florida Special Election','Quantus Insights','Ashley Moody',50,'Jasmine Nixon',43,'Moody +7']
+    ['2026-09-10','FL','Florida Special Election','Quantus Insights','Ashley Moody',50,'Jasmine Nixon',43,'Moody +7'],
+    ['2026-08-07','ID','Idaho','The Bullfinch Group','Jim Risch',34,'Todd Achilles',30,'Risch +4 · 608 likely voters · Aug 4–7']
   ];
   let rendering=false;
 
@@ -170,6 +171,9 @@
       if(!Array.isArray(rows)||typeof stateData==='undefined'||!stateData) return;
       let changed=false;
       for(const [ab,s] of Object.entries(stateData)){
+        // Idaho currently uses the explicitly sourced Aug 4–7 Bullfinch survey.
+        // Do not re-average older archive entries over that displayed snapshot.
+        if(ab==='ID')continue;
         if(!s||!s.active||!s.candidate1||!s.candidate2) continue;
         const matches=pairRows(s,rows);
         if(!matches.length) continue;
