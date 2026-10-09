@@ -65,6 +65,12 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 #feed-notice{font-size:12px;line-height:1.6;padding:14px 17px;border-radius:10px;background:#17334f;border:1px solid #355576;color:#c5d7e8;margin:18px 0 0}
 #state-results-tooltip{position:fixed;left:0;top:0;z-index:99999;pointer-events:none;width:min(322px,calc(100vw - 24px));padding:15px 16px 13px;border-radius:13px;background:#0b223c;color:#f1f6fd;box-shadow:0 14px 38px rgba(3,15,35,.35);border:1px solid #527391;font-family:Inter,Arial,sans-serif;font-size:12px;line-height:1.4}
 #state-results-tooltip[hidden]{display:none!important}
+.hover-pollclose{display:flex;flex-direction:column;gap:3px;padding:10px 12px;margin-bottom:12px;border:1px solid #3c607e;border-radius:9px;background:#153655}
+.hover-pollclose-label{color:#b0c8e0;font-weight:900;letter-spacing:1px;font-size:10px}
+.hover-pollclose-et{font-size:16px;letter-spacing:-.25px;color:#fff;font-weight:900;line-height:1.3}
+.hover-pollclose-pt{font-size:13px;color:#aad1ff;font-weight:800}
+.hover-pollclose-note{font-size:10px;color:#b3c4d6;line-height:1.4;padding-top:3px}
+#poll-closing-details{color:#c7dffb;font-size:11px;line-height:1.55;font-weight:750;padding:10px 0 4px}
 .hover-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .hover-title{font-weight:900;font-size:17px;letter-spacing:-.5px}
 .hover-source{padding:4px 7px;border:1px solid #547794;border-radius:7px;font-size:10px;letter-spacing:.8px;font-weight:900}
@@ -113,12 +119,13 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div class="cardhead"><h2 id="map-title">Associated Press · Senate calls</h2><small id="map-subtitle">Darker shades show wider reported leads • solid dark shades mark calls</small></div>
 <div class="legend"><span><i class="swatch" style="background:#173f87"></i>Democratic call</span><span><i class="swatch" style="background:#8e1320"></i>Republican call</span><span><i class="swatch" style="background:#5b2999"></i>Independent / Other (purple)</span><span><i class="swatch" style="background:#cbd4df"></i>No results / tied</span></div>
 <div id="map-slot"><div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection"></div></div>
-<div class="map-foot"><b>Hover over a state</b> for candidate percentages and vote counts, or click/tap for details. Before a call, the color shows the <b>current reported vote leader</b> (not a poll): closer races are lighter, wider leads are darker. A verified call uses the darkest blue, red, or purple. Tied races and states without reported votes stay gray.</div>
+<div class="map-foot"><b>Hover over a state</b> for candidate percentages and vote counts, or click/tap for details. Before a call, the color shows the <b>current reported vote leader</b> (not a poll): closer races are lighter, wider leads are darker. A verified call uses the darkest blue, red, or purple. Tied races and states without reported votes stay gray. <a href="https://www.270towin.com/poll-closing-times/" target="_blank" rel="noopener noreferrer" style="color:#124985;text-decoration:underline">2026 poll-closing times</a> are scheduled hours, not guarantees of when results arrive.</div>
 </section>
 <aside class="side-card"><div class="panel-pad">
 <h2>Race Center</h2><label for="race-select" style="font-size:12px;color:#aec2da">Select a Senate state</label>
 <select id="race-select"></select>
 <div class="state-head"><strong id="state-name">Texas</strong><span id="call-label">NOT CALLED</span></div>
+<div id="poll-closing-details">Scheduled poll closing time loading…</div>
 <div id="race-description">No verified result is available for this race.</div>
 <div id="race-votes"></div>
 <div class="breakdown"><h3 id="source-title">ASSOCIATED PRESS COVERAGE</h3><p id="source-description" style="font-size:12px;line-height:1.65;color:#b8cbe0;margin:0"></p>
@@ -129,6 +136,6 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div id="feed-notice" role="status">Preparing election-night coverage. There are no November 3 general-election race calls as of October 8, 2026.</div>
 <footer class="foot">Data are checked automatically every 10 seconds when the page is open. If a licensed source feed is missing or out of date, the dashboard says so rather than inventing results. Copyright and ownership of external election reporting remain with their respective publishers.</footer>
 </div>
-<script defer src="/election-night.js?v=20261008-voteshading-v2"></script>
+<script defer src="/election-night.js?v=20261008-pollcloses-v1"></script>
 </body>
 </html>
