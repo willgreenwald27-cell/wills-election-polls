@@ -2,6 +2,7 @@
   const PAGES=[
     ['home','Home'],
     ['senate','2026 Senate Prediction'],
+    ['electionnight','Election Night'],
     ['governor','2026 Governor Map'],
     ['polls','New Polls'],
     ['betting','Betting Odds'],
@@ -136,6 +137,7 @@
   }
 
   function navigate(key){
+    if(key==='electionnight'){window.location.assign('/election-night.html');return;}
     if(!PAGE_KEYS.has(key)) return;
     if(key===currentPage){
       updateActiveButton();
@@ -150,6 +152,7 @@
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
+    if(btn.getAttribute('data-spa-page')==='electionnight'){window.location.assign('/election-night.html');return;}
     navigate(btn.getAttribute('data-spa-page'));
   }
 
