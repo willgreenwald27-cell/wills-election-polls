@@ -74,6 +74,10 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 #state-results-tooltip{position:fixed;left:0;top:0;z-index:99999;pointer-events:none;width:min(322px,calc(100vw - 24px));padding:15px 16px 13px;border-radius:13px;background:#0b223c;color:#f1f6fd;box-shadow:0 14px 38px rgba(3,15,35,.35);border:1px solid #527391;font-family:Inter,Arial,sans-serif;font-size:12px;line-height:1.4}
 #state-results-tooltip[hidden]{display:none!important}
 .hover-pollclose{display:flex;flex-direction:column;gap:3px;padding:10px 12px;margin-bottom:12px;border:1px solid #3c607e;border-radius:9px;background:#153655}
+.hover-results{border:1px solid #3c607e;border-radius:9px;background:#153655;padding:9px 12px 11px;margin:3px 0 12px}
+.hover-results-heading{font-size:10px;font-weight:900;letter-spacing:1.2px;color:#9fcef8;border-bottom:1px solid rgba(214,232,255,.16);padding:1px 0 8px;margin-bottom:3px}
+.hover-pending{font-size:11px;line-height:1.6;color:#bdd3e8;margin:-1px 0 11px}
+
 .hover-pollclose-label{color:#b0c8e0;font-weight:900;letter-spacing:1px;font-size:10px}
 .hover-pollclose-et{font-size:16px;letter-spacing:-.25px;color:#fff;font-weight:900;line-height:1.3}
 .hover-pollclose-pt{font-size:13px;color:#aad1ff;font-weight:800}
@@ -144,6 +148,6 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <div id="feed-notice" role="status">Preparing election-night coverage. There are no November 3 general-election race calls as of October 8, 2026.</div>
 <footer class="foot">Data are checked automatically every 10 seconds when the page is open. If a licensed source feed is missing or out of date, the dashboard says so rather than inventing results. Copyright and ownership of external election reporting remain with their respective publishers.</footer>
 </div>
-<script defer src="/election-night.js?v=20261008-no-map-flash-v1"></script>
+<script defer src="/election-night.js?v=20261008-close-to-results-v1"></script>
 </body>
 </html>
