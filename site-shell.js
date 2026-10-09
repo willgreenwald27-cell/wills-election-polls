@@ -2,6 +2,7 @@
   const PAGES=[
     ['home','Home'],
     ['senate','2026 Senate Prediction'],
+    ['electionnight','Election Night'],
     ['governor','2026 Governor Map'],
     ['polls','New Polls'],
     ['betting','Betting Odds'],
@@ -44,9 +45,9 @@
 
   function buildNav(){const nav=document.querySelector('.site-header .nav');if(!nav)return false;const valid=nav.dataset.willShell==='1'&&nav.querySelectorAll(':scope > [data-will-page]').length===PAGES.length;if(valid)return true;nav.textContent='';nav.dataset.willShell='1';for(const [k,label] of PAGES){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.willPage=k;b.setAttribute('aria-label',label);nav.appendChild(b);}active();return true;}
 
-  function show(key,scroll=true){if(!KEYS.has(key)||busy)return;busy=true;try{for(const [k] of PAGES){const el=pageEl(k);if(!el)continue;const on=k===key;el.hidden=!on;el.classList.toggle('will-shell-hidden',!on);el.classList.toggle('active',on);if(on){el.style.removeProperty('display');if(getComputedStyle(el).display==='none')el.style.setProperty('display','block','important');}else el.style.removeProperty('display');}current=key;document.body.dataset.currentPage=key;active();if(scroll)window.scrollTo({top:0,left:0,behavior:'auto'});if(key==='governor'||key==='pastmaps'){const frame=pageEl(key)?.querySelector('iframe');if(frame)try{frame.contentWindow.dispatchEvent(new Event('resize'));}catch(e){}}}finally{busy=false;}}
+  function show(key,scroll=true){if(key==='electionnight'){window.location.assign('/election-night.html');return;}if(!KEYS.has(key)||busy)return;busy=true;try{for(const [k] of PAGES){const el=pageEl(k);if(!el)continue;const on=k===key;el.hidden=!on;el.classList.toggle('will-shell-hidden',!on);el.classList.toggle('active',on);if(on){el.style.removeProperty('display');if(getComputedStyle(el).display==='none')el.style.setProperty('display','block','important');}else el.style.removeProperty('display');}current=key;document.body.dataset.currentPage=key;active();if(scroll)window.scrollTo({top:0,left:0,behavior:'auto'});if(key==='governor'||key==='pastmaps'){const frame=pageEl(key)?.querySelector('iframe');if(frame)try{frame.contentWindow.dispatchEvent(new Event('resize'));}catch(e){}}}finally{busy=false;}}
 
-  function click(e){const b=e.target.closest&&e.target.closest('.site-header .nav[data-will-shell="1"] [data-will-page]');if(!b)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();show(b.dataset.willPage,true);}
+  function click(e){const b=e.target.closest&&e.target.closest('.site-header .nav[data-will-shell="1"] [data-will-page]');if(!b)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();if(b.dataset.willPage==='electionnight'){window.location.assign('/election-night.html');return;}show(b.dataset.willPage,true);}
 
   function protect(){const nav=document.querySelector('.site-header .nav');if(!nav)return;const valid=nav.dataset.willShell==='1'&&nav.querySelectorAll(':scope > [data-will-page]').length===PAGES.length;if(!valid)buildNav();active();}
 
