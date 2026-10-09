@@ -47,6 +47,17 @@ The example shows an **uncalled race**, not an actual or predicted result. The `
 - `candidates`: optional array of `{ "name": "...", "party": "D", "votes": 0, "pct": 0 }`, populated only with real figures.
 - `updated_at`: actual publication time in ISO 8601 UTC. A live feed older than 10 minutes shows **stale**.
 
+
+## Map vote-color rules
+
+The map updates from the selected provider's normalized vote data on each 10-second refresh:
+
+- **Before a race call**, the leading candidate's party supplies the hue: **blue** for a Democrat, **red** for a Republican, and **purple** for an independent/other candidate. The state's shading starts light for a tiny lead, then becomes progressively darker as the lead in reported vote percentage points grows; a 25-point lead reaches the darkest shade. Vote counts are converted into shares if reliable percentages are not included for all candidates.
+- **Once the selected source calls a race**, the state uses the darkest shade for the called winner's party, even when the reported vote margin is close.
+- **No results, incomplete numbers or a tie** means gray.
+- Switching AP / NYT uses that source's **own** reported votes and calls. The unconnected placeholder files still display gray for every state.
+- The hover panel contains candidate vote counts, percentages, call status, and (when available before the call) the reported lead. Neither forecasts nor polling averages are used.
+
 Do not store AP/NYT API credentials, cookies, paid content or tokens in this public repository or the generated JSON files.
 
 ## Testing
