@@ -100,6 +100,126 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 .hidden{display:none!important}.foot{margin-top:24px;font-size:11px;color:#8ba3bf;line-height:1.7}
 @media(max-width:960px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}#map-slot{min-height:330px}.intro{align-items:start;flex-direction:column}.event{max-width:none}}
 @media(max-width:600px){.shell{padding:0 11px 34px}.top{min-height:68px}.brand{font-size:12px}.brand-mark{width:29px;height:29px}.back{font-size:10px;padding:9px}.intro{padding:25px 8px 22px}h1{letter-spacing:-1.6px}.metric{padding:14px}.metric strong{font-size:27px}.sourcebar{align-items:stretch}.tabs{width:100%}.tab{flex:1;font-size:11px;padding:11px 7px}.grid-fallback{grid-template-columns:repeat(5,1fr)}#map-slot{min-height:230px;padding:2px 0 10px}.cardhead{padding:16px 14px 9px}.legend{padding:0 14px 11px}.map-foot{padding:11px 14px}}
+
+/* 2026 Election Night — map-first editorial redesign */
+:root{color:#eef5ff;background:#071427}
+body{background:radial-gradient(ellipse at 50% -18%,#173656 0,rgba(17,43,72,0) 57%),#071427}
+.shell{max-width:1700px;padding:0 clamp(14px,3.2vw,48px) 44px}
+.top{min-height:69px;border-color:#25415d}
+.brand{font-size:13px;letter-spacing:.1px}
+.brand-mark{width:31px;height:31px;border-radius:8px}
+.back{font-size:11px;padding:9px 12px;background:#122d48;border-color:#36516d}
+.intro{padding:25px 2px 17px;gap:20px;align-items:center}
+.kicker{font-weight:900;font-size:10px;letter-spacing:1.7px;color:#87b8f1;display:flex;align-items:center;gap:8px}
+.tiny-live-dot{width:7px;height:7px;border-radius:50%;background:#e64557;display:inline-block}
+h1{font-size:clamp(30px,3.7vw,52px);letter-spacing:-2.1px;line-height:1.05;margin:9px 0}
+h1 span{color:#f16873}
+.sub{font-size:12px;line-height:1.55;max-width:750px;color:#9fb4cc}
+.event{padding:10px 14px;background:transparent;border:0;border-left:1px solid #34516e;border-radius:0;min-width:240px}
+.event strong{font-size:12px;font-weight:850}.event small{display:block;color:#98adc6;font-size:11px;margin-top:5px}
+.sourcebar{background:transparent;border:0;border-top:1px solid rgba(172,202,235,.12);border-radius:0;padding:12px 0 14px;margin:0}
+.tab{padding:10px 15px;font-size:11px;border-radius:7px;border-color:#314c68}
+.tab[aria-selected="true"]{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.status{font-size:10px}.refresh{padding:9px 12px}
+.scoreboard{border:1px solid #355473;background:linear-gradient(120deg,#112b47,#0b223b 65%,#102942);box-shadow:0 12px 32px rgba(0,0,0,.13);border-radius:15px;padding:17px clamp(16px,2vw,31px) 18px;margin:0 0 16px}
+.scoreboard-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:13px;border-bottom:1px solid #35516d}
+.score-kicker{display:block;font-size:9px;font-weight:900;letter-spacing:1.5px;color:#93bbeb}
+.scoreboard-heading h2{font-size:18px;letter-spacing:-.6px;font-weight:900;margin:4px 0 0}
+.score-total{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.score-total strong{font-size:24px;letter-spacing:-1px;font-weight:900;font-variant-numeric:tabular-nums}
+.score-total span{font-size:9px;font-weight:850;color:#9db8d4;letter-spacing:1px}
+.score-display{display:grid;grid-template-columns:minmax(135px,.75fr) minmax(270px,1.7fr) minmax(135px,.75fr);gap:28px;align-items:center;padding-top:14px}
+.score-party{display:flex;flex-direction:column;gap:2px;min-width:0}
+.score-party.dem{text-align:left}.score-party.rep{text-align:right}
+.score-party-label{font-size:10px;font-weight:900;letter-spacing:1.05px;color:#9bb2ce}
+.score-party strong{font-size:clamp(35px,5vw,64px);line-height:1.05;font-weight:900;letter-spacing:-2.4px;font-variant-numeric:tabular-nums}
+.score-party.dem strong{color:#82b8ff}.score-party.rep strong{color:#ff8896}
+.score-track{height:14px;display:flex;overflow:hidden;background:#34475e;border:1px solid rgba(255,255,255,.1);border-radius:999px}
+.score-track span{height:100%;width:0;transition:width .4s ease}
+.score-track-dem{background:#3677d5}.score-track-rep{background:#da4252}.score-track-other{background:#9256d5}
+.score-subtotals{display:flex;justify-content:space-between;gap:10px;margin-top:9px;color:#bed0e3;font-size:11px;font-weight:650}
+.score-subtotals b{font-size:12px;font-weight:900;color:white}
+.score-center p{margin:6px 0 0;font-size:10px;color:#8199b7;text-align:center}
+.layout{display:flex;flex-direction:column;gap:17px;width:100%;margin:0}
+.map-card{width:100%;max-width:none;border-radius:15px;border:1px solid #aebdd1;background:#f5f8fc;box-shadow:0 12px 28px rgba(0,0,0,.15)}
+.cardhead{padding:17px clamp(14px,2vw,29px) 11px;align-items:end}
+.cardhead h2{font-size:20px;margin:4px 0 0;letter-spacing:-.6px}
+.cardhead small{max-width:350px;text-align:right;line-height:1.4}
+.map-eyebrow{font-size:9px;letter-spacing:1.35px;font-weight:900;color:#7892ab}
+.legend{padding:2px clamp(14px,2vw,29px) 12px;gap:18px;font-size:10px}
+.swatch{width:11px;height:11px;vertical-align:-1px}
+#map-slot{min-height:570px;padding:0 clamp(8px,2vw,30px) 8px}
+#map-slot svg{width:100%!important;max-height:860px!important;height:auto!important;min-height:0!important}
+.map-loading{min-height:570px}
+.grid-fallback{grid-template-columns:repeat(10,1fr)}
+.map-foot{border-top:1px solid #dae2ec;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:12px clamp(14px,2vw,29px);font-size:10px;line-height:1.55;color:#66778c}
+.map-foot a{color:#28609a;font-weight:800;text-decoration:none;white-space:nowrap}
+.map-foot a:hover{text-decoration:underline}
+.side-card{width:100%;background:#102840;border:1px solid #2c4968;border-radius:14px}
+.panel-pad{padding:20px clamp(18px,2vw,30px)}
+.details-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:17px;border-bottom:1px solid #36516c}
+.details-heading h2{font-size:19px;letter-spacing:-.5px;margin:4px 0 0}
+.details-heading label{display:flex;align-items:center;gap:12px;color:#a9c0d7;font-size:11px;font-weight:750}
+#race-select{min-width:200px;width:230px;margin:0;padding:10px 13px;border-radius:8px;font-size:12px}
+.details-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:clamp(20px,5vw,90px);padding-top:18px}
+.details-race{min-width:0}
+.state-head{justify-content:flex-start;gap:20px;padding:0 0 10px}
+.state-head strong{font-size:24px}
+#poll-closing-details{padding:10px 0 0}
+#race-description{min-height:0;padding:8px 0 4px}
+#race-votes{min-height:0}
+.details-source{border-left:1px solid #33516e;padding-left:clamp(18px,3vw,44px)}
+.details-source h3{font-size:11px;font-weight:900;letter-spacing:1px;color:#bad5ef;margin:0 0 8px}
+.details-source p{font-size:12px;color:#b4c9df;line-height:1.6;margin:0}
+.source-link{margin-top:12px}
+.note{margin-top:18px;background:transparent;border:0;border-top:1px solid #304f6e;border-radius:0;padding:13px 0 0;font-size:10px;color:#809bb9}
+#feed-notice{margin:14px 0 0;border-color:#274764;background:#0d2540;padding:12px 15px;font-size:11px}
+.foot{margin-top:14px;text-align:center;font-size:10px;color:#748da9}
+@media(max-width:960px){
+ .score-display{grid-template-columns:1fr 1.5fr 1fr;gap:13px}
+ #map-slot,.map-loading{min-height:430px}
+ #map-slot svg{max-height:680px!important}
+ .details-columns{gap:20px}
+}
+@media(max-width:650px){
+ .shell{padding:0 10px 28px}
+ .top{min-height:59px}
+ .intro{padding:21px 3px 14px;display:block}
+ .intro .event{display:none}
+ h1{font-size:36px;letter-spacing:-1.4px}
+ .sub{font-size:11px}
+ .sourcebar{padding:10px 0;gap:7px}
+ .scoreboard{padding:14px 12px 13px;margin-bottom:10px}
+ .scoreboard-heading{padding-bottom:10px}
+ .scoreboard-heading h2{font-size:16px}
+ .score-kicker{font-size:8px}
+ .score-total{flex-direction:column;align-items:end;gap:0}
+ .score-total strong{font-size:19px}
+ .score-total span{font-size:8px}
+ .score-display{grid-template-columns:1fr 1.3fr 1fr;gap:9px;padding-top:13px}
+ .score-party-label{font-size:8px;line-height:1.35;letter-spacing:.3px}
+ .score-party strong{font-size:37px;letter-spacing:-1.3px}
+ .score-track{height:10px}
+ .score-subtotals{font-size:9px;gap:5px;flex-direction:column;text-align:center;margin-top:6px}
+ .score-subtotals b{font-size:10px}
+ .score-center p{font-size:8px}
+ .cardhead{padding:13px 12px 7px}
+ .cardhead h2{font-size:15px}
+ .cardhead small{font-size:9px}
+ .legend{padding:4px 12px 9px;gap:10px;font-size:9px}
+ #map-slot{min-height:260px;padding:0 3px 5px}
+ #map-slot svg{max-height:540px!important}
+ .map-loading{min-height:270px}
+ .grid-fallback{grid-template-columns:repeat(5,1fr)}
+ .map-foot{padding:10px 12px;display:block;font-size:9px}
+ .map-foot a{display:inline-block;margin-top:7px}
+ .panel-pad{padding:16px 13px}
+ .details-heading{align-items:flex-start;flex-direction:column;gap:12px}
+ .details-heading label{width:100%;justify-content:space-between}
+ #race-select{width:min(240px,65vw);min-width:0}
+ .details-columns{display:block;padding-top:13px}
+ .details-source{padding:15px 0 0;margin-top:16px;border-left:0;border-top:1px solid #36516d}
+}
 </style>
 </head>
 <body>
@@ -109,45 +229,113 @@ h1{font-size:clamp(32px,4.3vw,58px);line-height:1.06;letter-spacing:-2.7px;margi
 <a class="back" href="/">← Back to Predictions</a>
 </header>
 <div class="intro">
-<div><div class="kicker">2026 MIDTERM ELECTIONS · RESULTS DESK</div><h1>Election Night <span style="color:#ff4f5d">2026</span></h1>
-<p class="sub">Live-results-ready U.S. Senate map. View AP race calls or New York Times coverage in separate source tabs. A state only changes color when its selected source confirms a call.</p></div>
-<div class="event"><strong>Tuesday, November 3, 2026</strong><small>Election Night • U.S. Senate<br>Pre-election: no November 3 results are available yet</small></div>
+  <div class="intro-text">
+    <div class="kicker"><span class="tiny-live-dot"></span> NOVEMBER 3, 2026 · U.S. SENATE</div>
+    <h1>Election Night <span>2026</span></h1>
+    <p class="sub">Your election-night map, race by race. Hover for vote totals, reporting percentages, and poll-closing details.</p>
+  </div>
+  <div class="event"><strong>Senate Results Center</strong><small>2026 midterm elections · 35 Senate races</small></div>
 </div>
-<div class="stats" aria-label="Race call totals">
-<div class="metric dem"><span class="label">DEMOCRATIC CALLS</span><strong id="count-d">0</strong></div>
-<div class="metric rep"><span class="label">REPUBLICAN CALLS</span><strong id="count-r">0</strong></div>
-<div class="metric"><span class="label">OTHER CALLS</span><strong id="count-i">0</strong></div>
-<div class="metric un"><span class="label">NOT CALLED</span><strong id="count-u">35</strong></div>
-</div>
+
 <div class="sourcebar">
-<div class="tabs" role="tablist" aria-label="Election reporting source">
-<button class="tab" id="tab-ap" role="tab" aria-selected="true" data-source="ap">AP Race Calls</button>
-<button class="tab" id="tab-nyt" role="tab" aria-selected="false" data-source="nyt">New York Times</button>
+  <div class="tabs" role="tablist" aria-label="Election reporting source">
+    <button class="tab" id="tab-ap" role="tab" aria-selected="true" data-source="ap">AP Race Calls</button>
+    <button class="tab" id="tab-nyt" role="tab" aria-selected="false" data-source="nyt">New York Times</button>
+  </div>
+  <div class="status" aria-live="polite">
+    <span class="dot" id="feed-dot"></span>
+    <span id="status-text">Awaiting authorized election results</span>
+    <span id="checked-at"></span>
+    <button class="refresh" id="refresh" type="button" aria-label="Refresh election results">↻ Refresh</button>
+  </div>
 </div>
-<div class="status" aria-live="polite"><span class="dot" id="feed-dot"></span><span id="status-text">Awaiting election results</span><span id="checked-at"></span><button class="refresh" id="refresh">↻ Refresh</button></div>
-</div>
-<div class="layout">
-<section class="map-card" aria-label="U.S. Senate race call map">
-<div class="cardhead"><h2 id="map-title">Associated Press · Senate calls</h2><small id="map-subtitle">Darker shades show wider reported leads • solid dark shades mark calls</small></div>
-<div class="legend"><span><i class="swatch" style="background:#173f87"></i>Democratic call</span><span><i class="swatch" style="background:#8e1320"></i>Republican call</span><span><i class="swatch" style="background:#5b2999"></i>Independent / Other (purple)</span><span><i class="swatch" style="background:#cbd4df"></i>No results / tied</span></div>
-<div id="map-slot"><div class="map-loading" id="map-loading" role="status" aria-live="polite"><span class="map-loading-spinner" aria-hidden="true"></span><span>Loading U.S. Senate map…</span></div><div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection" hidden></div></div>
-<div class="map-foot"><b>Hover over a state</b> for candidate percentages and vote counts, or click/tap for details. Before a call, the color shows the <b>current reported vote leader</b> (not a poll): closer races are lighter, wider leads are darker. A verified call uses the darkest blue, red, or purple. Tied races and states without reported votes stay gray. <a href="https://www.270towin.com/poll-closing-times/" target="_blank" rel="noopener noreferrer" style="color:#124985;text-decoration:underline">2026 poll-closing times</a> are scheduled hours, not guarantees of when results arrive.</div>
+
+<section class="scoreboard" aria-labelledby="score-title">
+  <div class="scoreboard-heading">
+    <div>
+      <span class="score-kicker">2026 U.S. SENATE · RACE CALLS</span>
+      <h2 id="score-title">Election Night Count</h2>
+    </div>
+    <div class="score-total" aria-live="polite">
+      <strong id="count-total">0 / 35</strong>
+      <span>RACES CALLED</span>
+    </div>
+  </div>
+  <div class="score-display">
+    <div class="score-party dem">
+      <span class="score-party-label">DEMOCRATIC CALLS</span>
+      <strong id="count-d">0</strong>
+    </div>
+    <div class="score-center">
+      <div class="score-track" id="score-track" role="progressbar" aria-label="U.S. Senate races called" aria-valuemin="0" aria-valuemax="35" aria-valuenow="0">
+        <span id="bar-call-d" class="score-track-dem"></span>
+        <span id="bar-call-i" class="score-track-other"></span>
+        <span id="bar-call-r" class="score-track-rep"></span>
+      </div>
+      <div class="score-subtotals">
+        <span><b id="count-i">0</b> independent / other</span>
+        <span><b id="count-u">35</b> uncalled</span>
+      </div>
+      <p>Official source calls only · not Senate control or polling forecasts</p>
+    </div>
+    <div class="score-party rep">
+      <span class="score-party-label">REPUBLICAN CALLS</span>
+      <strong id="count-r">0</strong>
+    </div>
+  </div>
 </section>
-<aside class="side-card"><div class="panel-pad">
-<h2>Race Center</h2><label for="race-select" style="font-size:12px;color:#aec2da">Select a Senate state</label>
-<select id="race-select"></select>
-<div class="state-head"><strong id="state-name">Texas</strong><span id="call-label">NOT CALLED</span></div>
-<div id="poll-closing-details">Scheduled poll closing time loading…</div>
-<div id="race-description">No verified result is available for this race.</div>
-<div id="race-votes"></div>
-<div class="breakdown"><h3 id="source-title">ASSOCIATED PRESS COVERAGE</h3><p id="source-description" style="font-size:12px;line-height:1.65;color:#b8cbe0;margin:0"></p>
-<a class="source-link" id="source-link" href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Open AP reporting ↗</a></div>
-<div class="note">This is an independent election dashboard. It is <b>not affiliated with AP or The New York Times</b>. Their election data requires an authorized feed. A news link does not mean the site's map is automatically receiving that publisher's calls.</div>
-</div></aside>
-</div>
+
+<main class="layout">
+  <section class="map-card" aria-label="Interactive U.S. Senate election results map">
+    <div class="cardhead">
+      <div><span class="map-eyebrow">INTERACTIVE RESULTS MAP</span><h2 id="map-title">Associated Press · Senate calls</h2></div>
+      <small id="map-subtitle">Lighter = closer race · darkest = called</small>
+    </div>
+    <div class="legend" aria-label="Map color legend">
+      <span><i class="swatch" style="background:#173f87"></i>Democratic</span>
+      <span><i class="swatch" style="background:#8e1320"></i>Republican</span>
+      <span><i class="swatch" style="background:#5b2999"></i>Independent</span>
+      <span><i class="swatch" style="background:#cbd4df"></i>Unreported / tied</span>
+    </div>
+    <div id="map-slot">
+      <div class="map-loading" id="map-loading" role="status" aria-live="polite">
+        <span class="map-loading-spinner" aria-hidden="true"></span>
+        <span>Loading U.S. Senate map…</span>
+      </div>
+      <div class="grid-fallback" id="fallback-map" aria-label="Interactive state selection" hidden></div>
+    </div>
+    <div class="map-foot">
+      <span><b>Hover or tap a state</b> to explore results. Uncalled states shade by reported vote margin; officially called races use the darkest party color.</span>
+      <a href="https://www.270towin.com/poll-closing-times/" target="_blank" rel="noopener noreferrer">2026 poll-closing times ↗</a>
+    </div>
+  </section>
+
+  <section class="side-card" id="race-center" aria-labelledby="details-title">
+    <div class="panel-pad">
+      <div class="details-heading">
+        <div><span class="map-eyebrow">STATE-BY-STATE COVERAGE</span><h2 id="details-title">Race Details</h2></div>
+        <label for="race-select"><span>Select a state</span><select id="race-select"></select></label>
+      </div>
+      <div class="details-columns">
+        <div class="details-race">
+          <div class="state-head"><strong id="state-name">Texas</strong><span id="call-label">NOT CALLED</span></div>
+          <div id="poll-closing-details">Scheduled poll closing time loading…</div>
+          <div id="race-description">No verified result is available for this race.</div>
+          <div id="race-votes"></div>
+        </div>
+        <div class="details-source">
+          <h3 id="source-title">ASSOCIATED PRESS COVERAGE</h3>
+          <p id="source-description"></p>
+          <a class="source-link" id="source-link" href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Open AP reporting ↗</a>
+        </div>
+      </div>
+      <div class="note">Independent election dashboard. Not affiliated with AP or The New York Times. Licensed election feeds are not yet connected; the map never substitutes polling averages or simulated vote totals for official results.</div>
+    </div>
+  </section>
+</main>
 <div id="feed-notice" role="status">Preparing election-night coverage. There are no November 3 general-election race calls as of October 8, 2026.</div>
 <footer class="foot">Data are checked automatically every 10 seconds when the page is open. If a licensed source feed is missing or out of date, the dashboard says so rather than inventing results. Copyright and ownership of external election reporting remain with their respective publishers.</footer>
 </div>
-<script defer src="/election-night.js?v=20261008-close-to-results-v1"></script>
+<script defer src="/election-night.js?v=20261008-mapfirst-v1"></script>
 </body>
 </html>
