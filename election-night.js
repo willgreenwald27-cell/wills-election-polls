@@ -424,52 +424,120 @@ async function refresh(){
   if(pendingRefresh){pendingRefresh=false;queueMicrotask(refresh);}
  }
 }
+const MAP_CACHE_KEY='will-election-night-us-senate-svg-v1';
+const MAP_CACHE_MAX_AGE=24*60*60*1000;
+
+function attachElectionMap(svg){
+ if(!svg||svg.tagName?.toLowerCase()!=='svg'||svg.querySelectorAll('.state-shape[data-state]').length<30)return false;
+ // Clone the map geometry but not the homepage's predictions or its event handlers.
+ svg.removeAttribute('style');
+ svg.setAttribute('aria-label','2026 Senate states by reported results');
+ svg.removeAttribute('width');svg.removeAttribute('height');
+ svg.querySelectorAll('script,foreignObject').forEach(x=>x.remove());
+ for(const shape of svg.querySelectorAll('.state-shape')){
+   shape.style.removeProperty('fill');
+   shape.removeAttribute('fill');
+   shape.removeAttribute('data-called');
+ }
+ for(const label of svg.querySelectorAll('[data-label]')){
+   label.removeAttribute('style');
+   label.classList.remove('active-label','light-text','night-called');
+ }
+ const slot=$('map-slot');
+ slot.replaceChildren(svg);
+ mapSvg=svg;
+ bindHoverEvents(svg,'.state-shape[data-state]');
+ svg.addEventListener('click',e=>{
+   const shape=e.target.closest('.state-shape[data-state]');
+   if(!shape||!STATE_NAMES[shape.dataset.state])return;
+   selected=shape.dataset.state;
+   renderDetails();
+ });
+ svg.querySelectorAll('.state-shape[data-state]').forEach(el=>{
+   el.setAttribute('tabindex','0');
+   el.setAttribute('role','button');
+   el.setAttribute('aria-label','Show '+(ALL_STATE_NAMES[el.dataset.state]||el.dataset.state)+' election results');
+   el.addEventListener('keydown',e=>{
+     if(e.key==='Enter'||e.key===' '){
+       e.preventDefault();
+       selected=el.dataset.state;
+       renderDetails();
+     }
+   });
+ });
+ renderMap();
+ return true;
+}
+
+function readCachedElectionMap(){
+ try{
+   const saved=JSON.parse(sessionStorage.getItem(MAP_CACHE_KEY)||'null');
+   if(!saved||Date.now()-saved.savedAt>MAP_CACHE_MAX_AGE||typeof saved.svg!=='string')return null;
+   const doc=new DOMParser().parseFromString(saved.svg,'image/svg+xml');
+   const svg=doc.documentElement;
+   if(svg?.localName!=='svg'||svg.querySelectorAll('.state-shape[data-state]').length<30)return null;
+   return svg;
+ }catch(_){return null;}
+}
+function cacheElectionMap(svg){
+ try{
+   // Store a geometry snapshot to avoid reloading the whole original site
+   // through a hidden iframe after an ordinary page refresh.
+   sessionStorage.setItem(MAP_CACHE_KEY,JSON.stringify({savedAt:Date.now(),svg:svg.outerHTML}));
+ }catch(_){ /* Storage can be unavailable; the map still loads normally. */ }
+}
+function showElectionMapFallback(){
+ if(mapSvg)return;
+ $('map-loading')?.remove();
+ const fallback=$('fallback-map');
+ if(fallback){
+   fallback.hidden=false;
+   fallback.classList.add('is-ready');
+ }
+ const notice=document.createElement('p');
+ notice.className='map-fallback-notice';
+ notice.textContent='Map outline is unavailable right now. Select a state below for election-night details.';
+ $('map-slot')?.prepend(notice);
+ renderMap();
+}
 function setupMapFromExistingSenateSVG(){
- // Reuse the actual US map from the existing website; no third-party map tiles.
- // The source runs inside a separate same-origin frame, which is removed
- // after its SVG is cloned. If unavailable, a labeled state tile map remains.
+ // Prefer a cached real SVG on repeat page visits. This eliminates the
+ // temporary tile-grid flash and avoids the expensive hidden iframe.
+ const cached=readCachedElectionMap();
+ if(cached&&attachElectionMap(cached))return;
+
+ // On first visit, keep a loading indicator visible until the full map
+ // is ready; only show the selectable fallback if geometry never loads.
  const frame=document.createElement('iframe');
- frame.setAttribute('aria-hidden','true');frame.tabIndex=-1;
+ frame.setAttribute('aria-hidden','true');
+ frame.tabIndex=-1;
  frame.title='Hidden source for US state geometry';
  frame.src='/?election-night-map-source=1';
  frame.style.cssText='position:absolute;left:-10000px;top:0;width:1100px;height:750px;border:0;opacity:0;pointer-events:none';
  document.body.appendChild(frame);
+
  let tries=0,done=false;
+ const finish=()=>{done=true;clearInterval(retry);frame.remove();};
  const retry=setInterval(()=>{
-  if(done)return;
-  tries++;
-  try{
-   const doc=frame.contentDocument;
-   const svg=[...(doc?.querySelectorAll('#page-senate .map-wrap svg')||[])].find(s=>s.querySelectorAll('.state-shape[data-state]').length>=30);
-   if(svg){
-    const copy=svg.cloneNode(true);
-    copy.removeAttribute('style');copy.setAttribute('aria-label','2026 Senate states by official calls');
-    copy.removeAttribute('width');copy.removeAttribute('height');
-    for(const shape of copy.querySelectorAll('.state-shape')){
-      shape.style.removeProperty('fill');shape.removeAttribute('fill');
-      shape.removeAttribute('data-called');
-    }
-    for(const label of copy.querySelectorAll('[data-label]')){
-      label.removeAttribute('style');label.classList.remove('active-label','light-text','night-called');
-    }
-    const slot=$('map-slot');
-    slot.replaceChildren(copy);
-    mapSvg=copy;
-    bindHoverEvents(copy,'.state-shape[data-state]');
-    copy.addEventListener('click',e=>{
-      const path=e.target.closest('.state-shape[data-state]');
-      if(!path||!STATE_NAMES[path.dataset.state])return;
-      selected=path.dataset.state;renderDetails();
-    });
-    copy.querySelectorAll('.state-shape[data-state]').forEach(el=>{
-      el.setAttribute('tabindex','0');el.setAttribute('role','button');
-      el.setAttribute('aria-label','Show '+(ALL_STATE_NAMES[el.dataset.state]||el.dataset.state)+' election results');
-      el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selected=el.dataset.state;renderDetails();}});
-    });
-    done=true;clearInterval(retry);frame.remove();renderMap();
+   if(done)return;
+   tries++;
+   try{
+     const doc=frame.contentDocument;
+     const svg=[...(doc?.querySelectorAll('#page-senate .map-wrap svg')||[])]
+       .find(s=>s.querySelectorAll('.state-shape[data-state]').length>=30);
+     if(svg){
+       const copy=svg.cloneNode(true);
+       if(attachElectionMap(copy)){
+         cacheElectionMap(copy);
+         finish();
+         return;
+       }
+     }
+   }catch(_){}
+   if(tries>=48){
+     finish();
+     showElectionMapFallback();
    }
-  }catch(e){}
-  if(tries>=48){done=true;clearInterval(retry);frame.remove();}
  },350);
 }
 function init(){
