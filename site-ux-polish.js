@@ -44,10 +44,9 @@
       find('betting','Betting Odds'),
       find('errors','Past Polling Errors')
     ].filter(Boolean);
-    const electionNight=find('electionnight','Election Night');
     const about=find('about','About Me');
-    const trailing=[electionNight,about].filter(Boolean);
-    // Keep any additional tabs before Election Night, never after About Me.
+    const trailing=[about].filter(Boolean);
+    // Keep the About Me tab last.
     const extras=items.filter(el=>!fixed.includes(el)&&!trailing.includes(el));
     const desired=[...fixed,...extras,...trailing];
     desired.forEach((el,i)=>{
