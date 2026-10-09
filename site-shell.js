@@ -6,7 +6,6 @@
     ['polls','New Polls'],
     ['betting','Betting Odds'],
     ['errors','Past Polling Errors'],
-    ['pastmaps','Past Senate Maps'],
     ['about','About Me']
   ];
   const KEYS=new Set(PAGES.map(x=>x[0]));
@@ -51,6 +50,6 @@
 
   function protect(){const nav=document.querySelector('.site-header .nav');if(!nav)return;const valid=nav.dataset.willShell==='1'&&nav.querySelectorAll(':scope > [data-will-page]').length===PAGES.length;if(!valid)buildNav();active();}
 
-  function init(){style();current=detect();pageEl('governor');pageEl('pastmaps');buildNav();show(current,false);document.addEventListener('click',click,true);observer=new MutationObserver(()=>requestAnimationFrame(protect));observer.observe(document.body,{childList:true,subtree:true});window.addEventListener('pageshow',()=>show(current,false));window.__willNavigate=key=>show(key,true);window.__willSiteShell={navigate:window.__willNavigate,current:()=>current};}
+  function init(){style();current=detect();pageEl('governor');buildNav();show(current,false);document.addEventListener('click',click,true);observer=new MutationObserver(()=>requestAnimationFrame(protect));observer.observe(document.body,{childList:true,subtree:true});window.addEventListener('pageshow',()=>show(current,false));window.__willNavigate=key=>show(key,true);window.__willSiteShell={navigate:window.__willNavigate,current:()=>current};}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
