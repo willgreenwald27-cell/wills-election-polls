@@ -1,6 +1,6 @@
 (()=>{
   const REP='#bd2937', DEM='#2763b8', IND='#8051d2';
-  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['errors','Past Polling Errors'],['about','About Me']];
+  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['electionnight','Election Night'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['errors','Past Polling Errors'],['about','About Me']];
   let current='home',busy=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=r=>r?[...r.querySelectorAll('*')].filter(el=>el.children.length===0):[];
@@ -44,6 +44,7 @@
       .site-header .nav[data-accepted-nav="1"]{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:5px!important;flex-wrap:nowrap!important}
       .site-header .nav[data-accepted-nav="1"]>button{height:42px!important;padding:0 13px!important;border:0!important;background:transparent!important;color:#17263d!important;border-radius:999px!important;font:800 12px/1 Inter,ui-sans-serif,system-ui,sans-serif!important;white-space:nowrap!important;cursor:pointer!important}
       .site-header .nav[data-accepted-nav="1"]>button.active{background:#17263d!important;color:#fff!important}
+      .site-header .nav[data-accepted-nav="1"]>button[data-accepted-page="electionnight"]{background:#bb2437!important;color:#fff!important;font-weight:900!important;border-radius:10px!important;padding:0 12px!important}
       @media(max-width:760px){.site-header .nav[data-accepted-nav="1"]{overflow-x:auto!important;justify-content:flex-start!important;padding-bottom:7px!important}.site-header .nav[data-accepted-nav="1"]>button{flex:0 0 auto!important;height:38px!important;padding:0 10px!important;font-size:11px!important}}
     `;
     document.head.appendChild(s);
@@ -106,6 +107,7 @@
   }
 
   function show(k,scroll=true){
+    if(k==='electionnight'){window.location.assign('/election-night.html');return;}
     if(busy||!PAGES.some(x=>x[0]===k)) return;
     busy=true;
     try{
@@ -376,7 +378,9 @@ function fixAboutPollCount(){
   document.addEventListener('click',e=>{
     const b=e.target.closest?.('.site-header .nav[data-accepted-nav="1"] [data-accepted-page]');
     if(!b) return;
-    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); show(b.dataset.acceptedPage,true);
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    if(b.dataset.acceptedPage==='electionnight'){window.location.assign('/election-night.html');return;}
+    show(b.dataset.acceptedPage,true);
   },true);
 
   current='home';
