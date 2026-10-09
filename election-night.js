@@ -481,7 +481,7 @@ async function refresh(){
   if(pendingRefresh){pendingRefresh=false;queueMicrotask(refresh);}
  }
 }
-const MAP_CACHE_KEY='will-election-night-us-senate-svg-v1';
+const MAP_CACHE_KEY='will-election-night-standalone-svg-v2';
 const MAP_CACHE_MAX_AGE=24*60*60*1000;
 
 function attachElectionMap(svg){
@@ -557,46 +557,31 @@ function showElectionMapFallback(){
  $('map-slot')?.prepend(notice);
  renderMap();
 }
-// The site's U.S. map geometry lives inside its compressed HTML data files.
-// Read that geometry DIRECTLY instead of loading the entire home page in a
-// hidden iframe. This avoids slow page scripts, races, and nav rebuilds.
-const PACKED_SITE_PARTS=[
- 'd0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt',
- 'd6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt'
-];
+// Use a committed standalone vector map. No iframe, compressed fragments,
+// homepage JavaScript or third-party network calls are needed.
 async function loadSenateMapDirectly(signal){
- const parts=await Promise.all(PACKED_SITE_PARTS.map(async name=>{
-   const response=await fetch('/'+name,{signal,cache:'force-cache'});
-   if(!response.ok)throw new Error('Map file '+name+' returned '+response.status);
-   return response.text();
- }));
- if(typeof DecompressionStream!=='function')throw new Error('Browser does not support map decompression');
- const encoded=parts.join('').trim();
- const decoded=atob(encoded);
- const bytes=Uint8Array.from(decoded,c=>c.charCodeAt(0));
- const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
- const html=await new Response(stream).text();
- const doc=new DOMParser().parseFromString(html,'text/html');
- const maps=[
-   ...doc.querySelectorAll('#page-senate .map-wrap svg'),
-   ...doc.querySelectorAll('svg')
- ];
- const original=maps.find(el=>el.querySelectorAll('.state-shape[data-state]').length>=30);
- if(!original)throw new Error('Map shapes could not be found in the site data');
- return document.importNode(original,true);
+ const response=await fetch('/election-night-map.svg?v=20261008-static2',{signal,cache:'no-store'});
+ if(!response.ok)throw new Error('Election map SVG could not load (HTTP '+response.status+')');
+ const markup=await response.text();
+ const parsed=new DOMParser().parseFromString(markup,'image/svg+xml');
+ if(parsed.querySelector('parsererror'))throw new Error('Invalid Election Night SVG');
+ const svg=parsed.documentElement;
+ if(svg?.localName!=='svg'||svg.querySelectorAll('.state-shape[data-state]').length<50){
+   throw new Error('Election map SVG does not contain all state outlines');
+ }
+ return document.importNode(svg,true);
 }
 function setupMapFromExistingSenateSVG(){
- // No extra site/iframe load; the map is already stored after the first visit.
  const cached=readCachedElectionMap();
  if(cached&&attachElectionMap(cached))return;
  const controller=new AbortController();
- const timeout=setTimeout(()=>controller.abort(),12500);
+ const timeout=setTimeout(()=>controller.abort(),12000);
  loadSenateMapDirectly(controller.signal).then(svg=>{
    if(mapSvg)return;
-   if(!attachElectionMap(svg))throw new Error('State geometry was incomplete');
+   if(!attachElectionMap(svg))throw new Error('Could not attach state map');
    cacheElectionMap(svg);
- }).catch(err=>{
-   console.warn('Election Night map load:',err);
+ }).catch(error=>{
+   console.warn('Election Night map load:',error);
    showElectionMapFallback();
  }).finally(()=>clearTimeout(timeout));
 }
