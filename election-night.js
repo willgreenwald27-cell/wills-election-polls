@@ -2,6 +2,66 @@
 'use strict';
 const STATE_NAMES={AL:'Alabama',AK:'Alaska',AR:'Arkansas',CO:'Colorado',DE:'Delaware',FL:'Florida',GA:'Georgia',ID:'Idaho',IL:'Illinois',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MT:'Montana',NE:'Nebraska',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NC:'North Carolina',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',VA:'Virginia',WV:'West Virginia',WY:'Wyoming'};
 const STATE_CODES=Object.keys(STATE_NAMES);
+// Every state's scheduled November 3, 2026 closing times, in Eastern
+// Standard Time minutes from 12:00 AM November 3.
+// Ranges reflect different local time zones or municipal close times.
+// Sourced from 270toWin's 2026 poll closing times and Green Papers 2026
+// general-election polling hours. These are informational, not voting advice.
+const EXTRA_STATE_NAMES={
+ AZ:'Arizona',CA:'California',CT:'Connecticut',HI:'Hawaii',IN:'Indiana',
+ MD:'Maryland',MO:'Missouri',ND:'North Dakota',NV:'Nevada',NY:'New York',
+ PA:'Pennsylvania',UT:'Utah',VT:'Vermont',WA:'Washington',WI:'Wisconsin',
+ DC:'District of Columbia'
+};
+const ALL_STATE_NAMES={...STATE_NAMES,...EXTRA_STATE_NAMES};
+const POLL_CLOSING_ET={
+ AL:[1200],AK:[1440,1500],AZ:[1260],AR:[1230],CA:[1380],
+ CO:[1260],CT:[1200],DE:[1200],FL:[1140,1200],GA:[1140],
+ HI:[1440],ID:[1320,1380],IL:[1200],IN:[1080,1140],IA:[1260],
+ KS:[1200,1260],KY:[1080,1140],LA:[1260],ME:[1200],MD:[1200],
+ MA:[1200],MI:[1200,1260],MN:[1260],MS:[1200],MO:[1200],
+ MT:[1320],NE:[1260],NV:[1320],NH:[1140,1200],NJ:[1200],
+ NM:[1260],NY:[1260],NC:[1170],ND:[1200,1260],OH:[1170],
+ OK:[1200],OR:[1320,1380],PA:[1200],RI:[1200],SC:[1140],
+ SD:[1200,1260],TN:[1200],TX:[1200,1260],UT:[1320],VT:[1140],
+ VA:[1140],WA:[1380],WV:[1170],WI:[1260],WY:[1260],DC:[1200]
+};
+const POLL_CLOSE_NOTES={
+ AK:'Most of Alaska and the western Aleutians close at different times; the Eastern times fall on Nov 4.',
+ FL:'Eastern and Central Time zones.',
+ ID:'Mountain and Pacific Time zones.',
+ IN:'Eastern and Central Time zones.',
+ KS:'Central and Mountain Time zones.',
+ KY:'Eastern and Central Time zones.',
+ MI:'Eastern and Central Time zones.',
+ NH:'Many towns close at 7 PM ET; others close at 8 PM ET.',
+ ND:'Central and Mountain Time zones.',
+ OR:'Pacific and Mountain Time zones.',
+ SD:'Central and Mountain Time zones.',
+ TX:'Central and Mountain Time zones.'
+};
+function pollClock(totalMinutes){
+ const minutes=((totalMinutes%1440)+1440)%1440;
+ const hour24=Math.floor(minutes/60);
+ const hour12=hour24%12||12;
+ return hour12+':'+String(minutes%60).padStart(2,'0')+(hour24<12?' AM':' PM');
+}
+function pollClockRange(times,delta=0){
+ if(!times||!times.length)return 'Not available';
+ const first=pollClock(times[0]+delta),last=pollClock(times[times.length-1]+delta);
+ return first===last?first:first+' – '+last;
+}
+function statePollClose(ab){
+ const times=POLL_CLOSING_ET[ab];
+ if(!times)return null;
+ return {
+  et:pollClockRange(times)+' ET',
+  pt:pollClockRange(times,-180)+' PT',
+  note:POLL_CLOSE_NOTES[ab]||'',
+  easternNextDay:times.some(x=>x>=1440)
+ };
+}
+
 const SOURCES={
  ap:{name:'Associated Press',short:'AP',file:'/election-night-ap.json',link:'https://apnews.com/',linkLabel:'Open AP reporting ↗',description:'AP election calls and vote totals require access to the AP Elections API. This view will populate only when an authorized results file is published to this site.'},
  nyt:{name:'The New York Times',short:'NYT',file:'/election-night-nyt.json',link:'https://www.nytimes.com/section/politics',linkLabel:'Open NYT coverage ↗',description:'New York Times election-night reporting is a separate source. This tab does not copy or scrape NYT results; an authorized data feed must be configured to display its calls here.'}
@@ -129,7 +189,7 @@ function rgbHex(channels){
  return '#'+channels.map(x=>Math.round(x).toString(16).padStart(2,'0')).join('');
 }
 function colorDescription(ab,row,paint){
- const base='Show '+(STATE_NAMES[ab]||ab)+' election results';
+ const base='Show '+(ALL_STATE_NAMES[ab]||ab)+' election results';
  if(row?.called)return base+' — called '+(row.party==='D'?'Democratic':row.party==='R'?'Republican':'Independent');
  if(paint.lead)return base+' — '+paint.lead.name+' leads by '+paint.lead.margin.toFixed(1)+' percentage points; not called';
  return base+' — no reported vote lead';
@@ -174,15 +234,25 @@ hoverCard.setAttribute('aria-hidden','true');
 hoverCard.hidden=true;
 
 function drawHover(ab){
- if(!STATE_NAMES[ab])return;
+ if(!ALL_STATE_NAMES[ab])return;
+ const hasSenateRace=Object.prototype.hasOwnProperty.call(STATE_NAMES,ab);
  const row=activeRaces().get(ab);
  const sourceName=SOURCES[source].short;
  hoverCard.replaceChildren();
  const head=makeHoverElement('div','hover-head');
- head.appendChild(makeHoverElement('strong','hover-title',STATE_NAMES[ab]));
+ head.appendChild(makeHoverElement('strong','hover-title',ALL_STATE_NAMES[ab]));
  head.appendChild(makeHoverElement('span','hover-source',sourceName));
  hoverCard.appendChild(head);
- let callText='NOT CALLED';
+ const close=statePollClose(ab);
+ if(close){
+   const times=makeHoverElement('div','hover-pollclose');
+   times.appendChild(makeHoverElement('span','hover-pollclose-label','POLLS CLOSE · NOV 3'));
+   times.appendChild(makeHoverElement('strong','hover-pollclose-et',close.et));
+   times.appendChild(makeHoverElement('span','hover-pollclose-pt',close.pt));
+   if(close.note)times.appendChild(makeHoverElement('small','hover-pollclose-note',close.note));
+   hoverCard.appendChild(times);
+ }
+ let callText=hasSenateRace?'NOT CALLED':'NO 2026 SENATE RACE';
  if(row?.called)callText='CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'INDEPENDENT');
  hoverCard.appendChild(makeHoverElement('div','hover-call '+(row?.called?'is-called-'+row.party:''),callText));
  const lead=reportedLeader(row);
@@ -207,7 +277,7 @@ function drawHover(ab){
      hoverCard.appendChild(makeHoverElement('div','hover-total','Votes shown: '+fmtVotes(voteSum)));
    }
  }else{
-   hoverCard.appendChild(makeHoverElement('div','hover-empty',row?'Vote counts and percentages not reported yet.':'No election-night vote totals have been received.'));
+   hoverCard.appendChild(makeHoverElement('div','hover-empty',!hasSenateRace?'No U.S. Senate race on the 2026 map.':row?'Vote counts and percentages not reported yet.':'No election-night vote totals have been received.'));
  }
  if(row?.pct_reporting!==null&&row?.pct_reporting!==undefined){
    hoverCard.appendChild(makeHoverElement('div','hover-reported',row.pct_reporting.toFixed(1)+'% of precincts reporting'));
@@ -250,7 +320,7 @@ function hoverFromEvent(event,selector){
  const node=event.target?.closest?.(selector);
  if(!node)return null;
  const ab=node.dataset.state;
- return STATE_NAMES[ab]?ab:null;
+ return ALL_STATE_NAMES[ab]?ab:null;
 }
 function bindHoverEvents(container,selector){
  container.addEventListener('pointerover',e=>{
@@ -284,6 +354,13 @@ function renderDetails(){
  const row=activeRaces().get(selected);
  $('state-name').textContent=STATE_NAMES[selected]||selected;
  $('race-select').value=selected;
+ const close=statePollClose(selected);
+ const pollDetails=$('poll-closing-details');
+ if(pollDetails){
+   pollDetails.textContent=close
+    ?'Scheduled poll closing: '+close.et+' / '+close.pt+(close.note?' · '+close.note:'')
+    :'Poll closing time unavailable';
+ }
  $('call-label').textContent=row?.called?('CALLED '+(row.party==='D'?'DEMOCRATIC':row.party==='R'?'REPUBLICAN':'OTHER')):'NOT CALLED';
  $('call-label').style.borderColor=row?.party==='D'?'#5d9bf0':row?.party==='R'?'#fa7286':'#56728f';
  if(!row){
@@ -386,7 +463,7 @@ function setupMapFromExistingSenateSVG(){
     });
     copy.querySelectorAll('.state-shape[data-state]').forEach(el=>{
       el.setAttribute('tabindex','0');el.setAttribute('role','button');
-      el.setAttribute('aria-label','Show '+(STATE_NAMES[el.dataset.state]||el.dataset.state)+' election results');
+      el.setAttribute('aria-label','Show '+(ALL_STATE_NAMES[el.dataset.state]||el.dataset.state)+' election results');
       el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selected=el.dataset.state;renderDetails();}});
     });
     done=true;clearInterval(retry);frame.remove();renderMap();
