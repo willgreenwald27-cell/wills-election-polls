@@ -44,6 +44,17 @@
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
+      // Idaho: the documented Bullfinch Group Aug 4-7, 2026 LV survey
+      // reported Jim Risch 34%, Todd Achilles 30%. Keep Will's Call untouched.
+      const id=stateData.ID;
+      if(id){
+        for(const slot of [1,2]){
+          const name=norm(id['candidate'+slot]);
+          const key='candidate'+slot+'Poll';
+          if(/Risch/i.test(name))set(id,key,'34.0');
+          if(/Achilles/i.test(name))set(id,key,'30.0');
+        }
+      }
       const ia=stateData.IA;
       if(ia){
         set(ia,'notes',"Why my forecast differs: Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage.");
