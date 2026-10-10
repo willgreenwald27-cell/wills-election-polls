@@ -1,5 +1,7 @@
 (()=>{
  'use strict';
+  /* mobile-classic-20261010: keep the original Senate map on phones. */
+  if (window.matchMedia('(max-width:767px)').matches) return;
  // The existing Senate SVG, forecast counts, popup handlers, race board and
  // stateData are authoritative. This file only adds a read-only side panel
  // and applies a CSS class. No polling numbers or ratings are overwritten.
