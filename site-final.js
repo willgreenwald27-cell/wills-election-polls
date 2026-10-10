@@ -63,10 +63,11 @@
 
   function findMainePanel(){
     const root=document.getElementById('page-senate'); if(!root) return null;
-    const candidates=leafs(root).filter(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length);
+    const candidates=leafs(root).filter(el=>norm(el.textContent)==='Maine'&&el.getClientRects().length&&!el.closest('.sidebar,.rating-table-card,.wg-studio-radar,.senate-night-panel,.page-head'));
     for(const m of candidates){
       let box=m.parentElement;
       for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
+        if(box.matches('.forecast-layout,.content,.map-card,.map-wrap,.sidebar'))break;
         const t=norm(box.textContent);
         if(/WILL'S (CALL|STATISTICAL ODDS)/i.test(t)&&/(AVG POLLS|POLL AVERAGE|WIN ODDS|MY PROJECTED WINNER)/i.test(t)) return box;
       }
