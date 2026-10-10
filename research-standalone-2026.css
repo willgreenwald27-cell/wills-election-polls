@@ -113,3 +113,67 @@ body.wr-night .sourcebar{
  body.wr-archive .wrap{padding:24px 12px 56px}
  body.wr-archive .title-row{margin-bottom:17px}
 }
+
+/* SIGNAL 26 — standalone companion treatment */
+body.wr-governor,body.wr-archive{
+ background:linear-gradient(180deg,#e5edf8 0%,#f6f9fd 45%,#edf3f9 100%);
+}
+body.wr-governor .site-header{
+ position:sticky;background:#081827!important;
+ border-bottom:2px solid #347ef0!important;
+ box-shadow:0 9px 26px rgba(9,35,70,.16)!important;
+}
+body.wr-governor .page-head{
+ position:relative;overflow:hidden;
+ max-width:none;padding:45px clamp(21px,5vw,76px) 39px;
+ background:linear-gradient(106deg,#091d33,#144374 77%,#293450);
+ border-bottom:3px solid #3c7fe2;
+}
+body.wr-governor .page-head .eyebrow{color:#a2c9ff!important}
+body.wr-governor .page-head h1{
+ color:#fff!important;font-family:Inter,"Helvetica Neue",Arial,sans-serif!important;
+ font-size:clamp(40px,5.1vw,77px)!important;
+ font-weight:780!important;letter-spacing:-.065em!important;line-height:1.02!important;
+}
+body.wr-governor .page-head p{color:#b7cce5!important}
+body.wr-governor :is(.balance,.map-card,.poll-card){
+ border-color:#c7d7eb!important;
+ box-shadow:0 12px 29px rgba(19,51,91,.085)!important;
+}
+body.wr-governor .balance{
+ border-top:4px solid #4185ea!important;
+}
+body.wr-governor .map-card{border-radius:7px!important}
+body.wr-governor .seat b{
+ font-family:Inter,"Helvetica Neue",Arial,sans-serif!important;font-size:30px!important;
+ font-weight:750!important;
+}
+body.wr-archive .title-row{
+ padding:35px clamp(15px,3vw,42px);
+ margin:-24px 0 22px;
+ border:0;border-bottom:3px solid #4485e3;
+ background:linear-gradient(113deg,#0a213b,#15477b 77%,#292f4a);
+ border-radius:8px 8px 0 0;
+}
+body.wr-archive .title-row .eyebrow{color:#abd0ff!important}
+body.wr-archive .title-row h1{
+ color:#fff!important;font:780 clamp(40px,5vw,67px)/1.03 Inter,"Helvetica Neue",Arial,sans-serif!important;
+ letter-spacing:-.06em!important;
+}
+body.wr-archive .title-row p{color:#b8d0e8!important}
+body.wr-archive :is(.card,.summary .chip){
+ border-color:#c8d9eb!important;box-shadow:0 10px 27px rgba(22,55,99,.06)!important;
+}
+body.wr-night .intro h1{
+ font-family:Inter,"Helvetica Neue",Arial,sans-serif!important;
+ font-weight:790!important;letter-spacing:-.065em!important;
+}
+body.wr-night :is(.score-party strong,.score-total){
+ font-family:Inter,"Helvetica Neue",Arial,sans-serif!important;
+ font-weight:760!important;
+}
+@media(max-width:720px){
+ body.wr-governor .page-head{padding:27px 16px!important}
+ body.wr-archive .title-row{padding:28px 17px;margin:-20px 0 16px}
+ body.wr-archive .title-row h1{font-size:clamp(34px,8vw,47px)!important}
+}
