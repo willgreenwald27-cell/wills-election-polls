@@ -45,7 +45,7 @@
   const el=mk("footer","wr-site-footer",
    '<div class="wr-foot-left"><strong>WILL’S ELECTION POLLS</strong><span>Independent election analysis</span></div>'+
    '<p>Polling, prediction, and historical context. Estimates are not results.</p>'+
-   '<div class="wr-foot-links"><button type="button" data-wr-go="senate">Forecasts</button><button type="button" data-wr-go="polls">Polls</button><button type="button" data-wr-go="errors">History</button><button type="button" data-wr-go="about">About</button></div>');
+   '<div class="wr-foot-links"><button type="button" data-wr-go="senate">Forecasts</button><button type="button" data-wr-go="polls">Polls</button><button type="button" data-wr-go="errors">History</button><button type="button" data-wr-go="about">About</button><a href="/2026-senate-election-forecast.html" style="color:#bcd9ff;text-decoration:underline;text-underline-offset:3px">2026 Forecast Guide</a><a href="/past-polling-errors-research.html" style="color:#bcd9ff;text-decoration:underline;text-underline-offset:3px">Polling Research</a></div>');
   document.body.appendChild(el);
  }
  function skip(){
