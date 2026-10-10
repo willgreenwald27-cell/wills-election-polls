@@ -1,19 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 250" role="img" aria-labelledby="title desc">
-<title id="title">Will's Election Polls</title>
-<desc id="desc">Modern blue and red W monogram with a professional election polling wordmark.</desc>
-<g transform="translate(18 21) scale(.404)">
-<rect width="512" height="512" rx="106" fill="#0b223c"/>
-<rect x="10" y="10" width="492" height="492" rx="98" fill="none" stroke="#42617e" stroke-width="6" opacity=".65"/>
-<path d="M103 153 L151 336 L208 211 L256 334" fill="none" stroke="#5198e8" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M256 334 L304 211 L361 336 L409 153" fill="none" stroke="#f06775" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="110" y="411" width="132" height="13" rx="6.5" fill="#5198e8"/>
-<rect x="270" y="411" width="132" height="13" rx="6.5" fill="#f06775"/>
-<circle cx="256" cy="417.5" r="6.5" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" role="img" aria-labelledby="logo-title logo-desc">
+<title id="logo-title">Will's Election Polls</title>
+<desc id="logo-desc">Capitol dome and bipartisan polling bars beside an editorial election polling masthead.</desc>
+<rect width="1200" height="400" fill="#fff"/>
+<g transform="translate(16 10)">
+<g opacity=".98"><rect x="20" y="190" width="18" height="119" rx="1.5" fill="#a1bfe9"/><rect x="42" y="169" width="18" height="140" rx="1.5" fill="#7ba7dc"/><rect x="64" y="147" width="18" height="162" rx="1.5" fill="#3577bd"/><rect x="86" y="125" width="18" height="184" rx="1.5" fill="#124786"/><rect x="248" y="138" width="18" height="171" rx="1.5" fill="#bd1a2c"/><rect x="270" y="163" width="18" height="146" rx="1.5" fill="#d53f4c"/><rect x="292" y="186" width="18" height="123" rx="1.5" fill="#e7939b"/></g>
+<g fill="#0b1c39" stroke="#fff" stroke-width="3" stroke-linejoin="round">
+<path d="M180 27 l-6 14 5 6 -3 17 -12 7 h32 l-12-7 -3-17 5-6z" stroke="none"/><rect x="165" y="67" width="30" height="10" rx="2" stroke="none"/>
+<path d="M148 98 C151 77 208 77 212 98 L212 108 H148Z" stroke="none"/>
+<path d="M110 185 C115 144 134 112 180 103 C226 112 245 144 250 185 Z" stroke="none"/>
+<path d="M128 184 C133 139 150 119 180 111" fill="none" stroke="#fff" stroke-width="4"/><path d="M231 184 C227 139 209 119 180 111" fill="none" stroke="#fff" stroke-width="4"/><path d="M180 111 V184" stroke="#fff" stroke-width="4"/>
+<path d="M108 184 H252 L265 199 H95Z" stroke="none"/><path d="M100 206 H260 V219 H100Z" stroke="none"/><path d="M109 222 H251 V283 H109Z" stroke="none"/>
+<g stroke="none"><rect x="120" y="227" width="12" height="52" rx="2" fill="#fff"/><rect x="141" y="227" width="12" height="52" rx="2" fill="#fff"/><rect x="162" y="227" width="12" height="52" rx="2" fill="#fff"/><rect x="185" y="227" width="12" height="52" rx="2" fill="#fff"/><rect x="207" y="227" width="12" height="52" rx="2" fill="#fff"/><rect x="228" y="227" width="12" height="52" rx="2" fill="#fff"/></g>
+<path d="M97 282 H263 L276 302 H84Z" stroke="none"/>
 </g>
-<g font-family="Inter,Arial,Helvetica,sans-serif" font-weight="900" fill="#10263e">
-<text x="256" y="117" font-size="87" letter-spacing="-2">WILL’S</text>
-<text x="258" y="180" font-size="53" letter-spacing="1.3">ELECTION POLLS</text>
+<path d="M18 314 C115 292 195 285 332 298 C215 310 130 329 18 340Z" fill="#0c438a"/><path d="M113 339 C194 320 256 311 330 321 C237 328 177 344 113 353Z" fill="#cc1b31"/>
 </g>
-<rect x="258" y="199" width="194" height="6" rx="3" fill="#5198e8"/>
-<rect x="466" y="199" width="194" height="6" rx="3" fill="#f06775"/>
+<line x1="380" y1="78" x2="380" y2="337" stroke="#b4bfcd" stroke-width="2"/>
+<g font-family="Georgia,Times New Roman,serif" font-weight="700" letter-spacing="-2.8">
+<text x="411" y="151" font-size="114" fill="#0b1832">WILL’S</text>
+<text x="411" y="249" font-size="82" fill="#c91e30">ELECTION</text>
+<text x="855" y="249" font-size="80" fill="#0d478f">POLLS</text>
+</g>
+<line x1="414" y1="281" x2="732" y2="281" stroke="#9cabbc" stroke-width="2"/><path d="M778 261 L784 276 L801 276 L787 286 L793 302 L778 292 L763 302 L769 286 L755 276 L772 276 Z" fill="#0b1c39"/><line x1="819" y1="281" x2="1154" y2="281" stroke="#9cabbc" stroke-width="2"/>
+<text x="782" y="338" fill="#152846" text-anchor="middle" font-family="Georgia,Times New Roman,serif" font-size="23" letter-spacing="4.3">POLLING  •  ANALYSIS  •  PREDICTIONS</text>
 </svg>
