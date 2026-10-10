@@ -25,7 +25,7 @@
   }
   function margin(s){
     const a=Number(s?.candidate1Poll),b=Number(s?.candidate2Poll);
-    if(!s||s.candidate1Poll==null||s.candidate2Poll==null||!Number.isFinite(a)||!Number.isFinite(b))return shortRating(s?.rating);
+    if(!s||s.candidate1Poll==null||s.candidate2Poll==null||String(s.candidate1Poll).trim()===''||String(s.candidate2Poll).trim()===''||!Number.isFinite(a)||!Number.isFinite(b))return shortRating(s?.rating);
     const winning=a>=b?(s.candidate1||'Leader'):(s.candidate2||'Leader');
     const lastname=String(winning).trim().split(/\s+/).pop();
     return lastname+' +'+Math.abs(a-b).toFixed(1);
@@ -82,7 +82,6 @@
         const shape=page.querySelector('.map-wrap .state-shape[data-state="'+ab+'"]');
         if(shape)shape.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,view:window}));
         else if(typeof openState==='function')openState(ab);
-        document.getElementById('senate-night-selected')?.scrollIntoView({behavior:'smooth',block:'nearest'});
       });
       const highlight=()=>page.querySelector('.map-wrap .state-shape[data-state="'+ab+'"]')?.classList.add('senate-spotlight');
       const unhighlight=()=>page.querySelector('.map-wrap .state-shape[data-state="'+ab+'"]')?.classList.remove('senate-spotlight');
