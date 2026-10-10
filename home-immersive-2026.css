@@ -1,0 +1,546 @@
+/* IMMERSIVE HOME 2026
+   Presentation-only: preserves existing links, poll feeds, countdown,
+   Senate/House forecasts, map preview, text, and navigation. */
+#page-home.reference-home{
+ --wg-bg:#080e1c; --wg-deep:#0d172b; --wg-panel:#13243c;
+ --wg-edge:rgba(153,187,245,.24); --wg-muted:#a6bad6;
+ --wg-blue:#77aaff; --wg-red:#ff708a;
+ background:
+   radial-gradient(ellipse 65% 26% at 5% 2%,rgba(42,106,225,.24),transparent 72%),
+   radial-gradient(ellipse 58% 30% at 96% 34%,rgba(219,48,88,.12),transparent 73%),
+   linear-gradient(180deg,#0a1226 0%,#090f20 62%,#060d19 100%)!important;
+ color:#f6f9ff!important;
+ min-height:100vh!important;
+ position:relative!important;
+ isolation:isolate;
+ width:100%!important;
+ overflow:clip;
+}
+/* Background telemetry grid – subtle enough to keep articles readable. */
+#page-home.reference-home:before{
+ content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:
+   linear-gradient(rgba(137,168,232,.04) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(137,168,232,.04) 1px,transparent 1px);
+ background-size:60px 60px;
+ -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.85),transparent 90%);
+ mask-image:linear-gradient(180deg,rgba(0,0,0,.85),transparent 90%);
+}
+#page-home.reference-home > *{position:relative;z-index:1}
+body:has(#page-home.reference-home.active) .site-header{
+ background:rgba(7,15,30,.97)!important;
+ border-bottom:1px solid rgba(135,166,220,.27)!important;
+ box-shadow:0 6px 29px rgba(2,6,20,.3)!important;
+ backdrop-filter:blur(18px)!important;
+ -webkit-backdrop-filter:blur(18px)!important;
+}
+body:has(#page-home.reference-home.active) .site-header .reference-brand-name,
+body:has(#page-home.reference-home.active) .site-header .reference-brand-name *{
+ color:#f5f8ff!important;
+}
+body:has(#page-home.reference-home.active) .site-header .nav button:not(#editToggle):not(#settingsBtn){
+ color:#bfd0eb!important;
+}
+body:has(#page-home.reference-home.active) .site-header .nav button.active:not(#editToggle):not(#settingsBtn),
+body:has(#page-home.reference-home.active) .site-header .nav button[data-accepted-page="home"]{
+ background:rgba(62,113,230,.25)!important;
+ border:1px solid rgba(122,173,255,.6)!important;
+ color:#fff!important;
+}
+#page-home.reference-home .reference-home-shell{
+ width:min(1640px,calc(100% - 76px))!important;
+ max-width:1640px!important;
+ margin:0 auto!important;
+ padding:clamp(24px,2.6vw,43px) 0 85px!important;
+ display:grid!important;
+ grid-template-columns:repeat(12,minmax(0,1fr))!important;
+ gap:clamp(14px,1.35vw,22px)!important;
+ align-items:stretch!important;
+ box-sizing:border-box!important;
+}
+/* The existing hero is promoted to an edge-lit editorial main stage. */
+#page-home.reference-home .reference-hero{
+ grid-column:1 / span 8!important;
+ grid-row:auto!important;
+ display:grid!important;
+ grid-template-columns:minmax(0,1.25fr) minmax(160px,.70fr)!important;
+ gap:clamp(12px,2vw,28px)!important;
+ min-width:0!important;min-height:490px!important;
+ align-items:center!important;
+ margin:0!important;padding:clamp(28px,3.15vw,56px)!important;
+ position:relative!important;isolation:isolate!important;
+ overflow:hidden!important;
+ border:1px solid rgba(129,174,247,.37)!important;
+ border-radius:14px!important;
+ background:
+   radial-gradient(ellipse at 87% 26%,rgba(82,124,252,.27),transparent 57%),
+   radial-gradient(ellipse at 18% 100%,rgba(30,93,221,.17),transparent 59%),
+   linear-gradient(131deg,#172e58 0%,#101f3b 48%,#0b172d 100%)!important;
+ box-shadow:0 28px 70px rgba(0,0,0,.29),inset 0 1px rgba(255,255,255,.08)!important;
+}
+#page-home.reference-home .reference-hero:before{
+ content:""!important;
+ position:absolute!important;top:0!important;left:0!important;
+ right:0!important;width:100%!important;height:5px!important;
+ background:linear-gradient(90deg,#3a80ff 0 44%,#e4efff 44% 54%,#f65776 54% 100%)!important;
+ z-index:2!important;pointer-events:none;
+}
+#page-home.reference-home .reference-hero:after{
+ content:"26"!important;
+ position:absolute!important;bottom:-.26em!important;right:-.06em!important;
+ width:auto!important;height:auto!important;left:auto!important;top:auto!important;
+ font:900 clamp(200px,22vw,430px)/1 Inter,Arial,sans-serif!important;
+ color:rgba(201,223,255,.055)!important;background:none!important;
+ letter-spacing:-.13em!important;pointer-events:none!important;z-index:0;
+}
+#page-home.reference-home .reference-hero-copy{
+ position:relative!important;z-index:1!important;min-width:0!important;
+}
+#page-home.reference-home .reference-eyebrow{
+ display:inline-flex!important;align-items:center!important;gap:9px!important;
+ width:max-content!important;max-width:100%!important;
+ padding:8px 13px!important;margin:0 0 21px!important;
+ border:1px solid rgba(140,188,255,.46)!important;
+ border-radius:3px!important;
+ background:rgba(46,97,178,.27)!important;
+ color:#d6e5ff!important;
+ font:900 10px/1.3 Inter,Arial,sans-serif!important;
+ letter-spacing:.17em!important;text-transform:uppercase!important;
+}
+#page-home.reference-home .reference-eyebrow:before{
+ content:"";width:7px;height:7px;flex:none;background:#76a6ff;
+ border-radius:50%;box-shadow:0 0 0 3px rgba(118,166,255,.22),0 0 14px #76a6ff;
+}
+#page-home.reference-home .reference-hero h1{
+ font:900 clamp(42px,4.5vw,76px)/.98 Inter,"Helvetica Neue",Arial,sans-serif!important;
+ color:#fff!important;letter-spacing:-.07em!important;
+ text-wrap:balance!important;max-width:780px!important;
+ margin:0 0 22px!important;text-shadow:0 9px 28px rgba(0,0,0,.22);
+}
+#page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+ font:500 clamp(14px,1.12vw,17px)/1.6 Inter,Arial,sans-serif!important;
+ color:#c1d3ed!important;max-width:580px!important;
+ margin:0 0 8px!important;letter-spacing:0!important;
+}
+#page-home.reference-home .reference-hero-actions{
+ display:flex!important;flex-wrap:wrap!important;
+ gap:10px!important;margin:29px 0 0!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a){
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:48px!important;padding:12px 19px!important;
+ border-radius:5px!important;font:850 12px/1.2 Inter,Arial,sans-serif!important;
+ letter-spacing:.02em!important;
+ transition:transform .18s ease,box-shadow .18s ease,background .18s ease!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-primary{
+ color:#fff!important;background:linear-gradient(110deg,#396cf1,#2676dc)!important;
+ border:1px solid #71a6ff!important;
+ box-shadow:0 7px 25px rgba(24,86,233,.3)!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-secondary{
+ color:#edf5ff!important;background:rgba(255,255,255,.065)!important;
+ border:1px solid rgba(196,216,247,.46)!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a):hover{
+ transform:translateY(-2px)!important;
+ box-shadow:0 12px 28px rgba(0,0,0,.24)!important;
+}
+#page-home.reference-home .reference-hero-mark{
+ z-index:1!important;position:relative!important;
+ padding:24px 13px!important;
+ background:linear-gradient(155deg,rgba(247,251,255,.98),rgba(216,231,255,.94))!important;
+ border:1px solid rgba(255,255,255,.82)!important;
+ border-radius:10px!important;
+ box-shadow:0 16px 55px rgba(0,0,0,.24),0 0 42px rgba(71,130,247,.11)!important;
+ min-width:0!important;
+}
+#page-home.reference-home .reference-hero-mark img.brand-arc-hero,
+#page-home.reference-home .reference-hero-mark svg{
+ max-width:100%!important;height:auto!important;object-fit:contain!important;
+ filter:drop-shadow(0 9px 14px rgba(34,71,114,.12));
+}
+#page-home.reference-home .reference-mark-caption{
+ color:#526985!important;
+ font:800 9px/1.4 Inter,Arial,sans-serif!important;
+ letter-spacing:.11em!important;text-transform:uppercase!important;
+}
+#page-home.reference-home #homeModelNote{
+ color:#c2d6f4!important;
+ background:rgba(52,101,183,.15)!important;
+ border-left:3px solid #78a7ff!important;
+ border-radius:0 6px 6px 0!important;
+ padding:11px 14px!important;
+ font:600 12px/1.5 Inter,Arial,sans-serif!important;
+}
+/* Live-looking dashboard cards, but actual values still come from site scripts. */
+#page-home.reference-home .reference-metrics{
+ grid-column:9 / -1!important;grid-row:auto!important;
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ grid-template-rows:minmax(198px,1.35fr) minmax(115px,.8fr) minmax(140px,.92fr)!important;
+ gap:10px!important;
+ margin:0!important;padding:12px!important;
+ min-width:0!important;min-height:490px!important;height:auto!important;
+ align-self:stretch!important;
+ border:1px solid var(--wg-edge)!important;border-radius:14px!important;
+ background:linear-gradient(145deg,rgba(29,51,85,.98),rgba(11,24,47,.99))!important;
+ box-shadow:0 25px 60px rgba(0,0,0,.22)!important;
+}
+#page-home.reference-home .reference-metrics>*{
+ display:flex!important;flex-direction:column!important;
+ align-items:flex-start!important;justify-content:center!important;text-align:left!important;
+ margin:0!important;width:100%!important;
+ min-width:0!important;height:auto!important;min-height:0!important;max-width:100%!important;
+ padding:clamp(13px,1.35vw,21px)!important;
+ border-radius:6px!important;
+ border:1px solid rgba(162,191,239,.24)!important;
+ background:rgba(255,255,255,.055)!important;
+ color:#fff!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.045)!important;
+ overflow:hidden!important;
+}
+#page-home.reference-home #homeElectionCountdown{
+ grid-column:1/-1!important;grid-row:1!important;
+ border:1px solid rgba(124,166,247,.46)!important;
+ border-top:3px solid #66a0ff!important;
+ background:
+   radial-gradient(circle at 95% 20%,rgba(66,111,240,.22),transparent 57%),
+   linear-gradient(135deg,#1d3d75,#152948)!important;
+ align-items:flex-start!important;text-align:left!important;
+}
+#page-home.reference-home #homeSenateTossups{
+ grid-column:1!important;grid-row:2!important;
+ background:rgba(197,56,87,.12)!important;
+ border-color:rgba(255,125,151,.34)!important;
+}
+#page-home.reference-home #homeLastUpdated{
+ grid-column:2!important;grid-row:2!important;
+}
+#page-home.reference-home #homeSenateForecast{
+ grid-column:1/-1!important;grid-row:3!important;
+ background:linear-gradient(110deg,rgba(52,106,213,.19),rgba(200,53,80,.13))!important;
+}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label,.metric-label){
+ color:#b7c9e4!important;
+ font:900 10px/1.35 Inter,Arial,sans-serif!important;
+ letter-spacing:.115em!important;text-transform:uppercase!important;
+ margin:0 0 10px!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-days{
+ color:#fff!important;
+ font:900 clamp(65px,7vw,108px)/.92 Inter,Arial,sans-serif!important;
+ letter-spacing:-.08em!important;
+ font-variant-numeric:tabular-nums;
+ text-shadow:0 6px 23px rgba(3,10,25,.3);
+}
+#page-home.reference-home .reference-metrics .wg-election-copy{
+ color:#bfd2ed!important;font:700 12px/1.35 Inter,Arial,sans-serif!important;
+ margin-top:7px!important;
+}
+#page-home.reference-home .reference-metrics .wg-metric-value{
+ color:#f6f9ff!important;
+ font:900 clamp(22px,2.9vw,36px)/1 Inter,Arial,sans-serif!important;
+ letter-spacing:-.05em!important;
+}
+#page-home.reference-home #homeSenateTossups .wg-metric-value{color:#ff8096!important}
+#page-home.reference-home #homeLastUpdated .wg-metric-value{
+ font:850 clamp(13px,1.15vw,17px)/1.25 Inter,Arial,sans-serif!important;letter-spacing:-.02em!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-value{
+ display:flex!important;align-items:baseline!important;flex-wrap:wrap!important;
+ gap:clamp(9px,1.2vw,16px)!important;
+ font:900 clamp(26px,3vw,42px)/1 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-dem{color:#85b3ff!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-rep{color:#ff8198!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-divider{color:#8c9fbd!important}
+/* Keep section ordering, and promote election projections to large editorial cards. */
+#page-home.reference-home .reference-divider{
+ grid-column:1 / -1!important;
+ width:100%!important;height:1px!important;
+ margin:13px 0 5px!important;
+ border:0!important;
+ background:linear-gradient(90deg,transparent,rgba(137,178,236,.48),transparent)!important;
+}
+#page-home.reference-home #housePrediction2026{
+ grid-column:1/-1!important;
+ display:block!important;min-width:0!important;
+ width:100%!important;max-width:100%!important;
+ margin:4px 0 5px!important;
+}
+#page-home.reference-home #homeForecastSplit{
+ display:grid!important;
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ width:100%!important;gap:clamp(14px,1.4vw,23px)!important;
+ align-items:stretch!important;
+ margin:0!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card{
+ position:relative!important;
+ isolation:isolate!important;overflow:hidden!important;
+ aspect-ratio:auto!important;min-height:330px!important;height:auto!important;
+ padding:clamp(23px,2.4vw,35px)!important;
+ border-radius:10px!important;
+ border:1px solid rgba(146,185,246,.38)!important;
+ background:
+   radial-gradient(ellipse at 11% 0%,rgba(54,100,224,.2),transparent 55%),
+   linear-gradient(145deg,#192f53,#101e36 68%,#0b172a)!important;
+ box-shadow:0 22px 57px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.075)!important;
+ grid-template-rows:auto minmax(55px,auto) 1fr 22px auto!important;
+ transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:hover{
+ transform:translateY(-3px)!important;
+ border-color:rgba(157,194,255,.68)!important;
+ box-shadow:0 29px 67px rgba(0,0,0,.3)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:before{
+ content:"";position:absolute;inset:0 0 auto;height:4px;z-index:2;
+ background:linear-gradient(90deg,#377bf3 0 47%,#eaf2ff 47% 52%,#ef526b 52%);
+ pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:after{
+ content:"2026";position:absolute;right:9px;bottom:-.22em;z-index:-1;
+ font:900 clamp(120px,14vw,255px)/1 Inter,Arial,sans-serif;
+ color:rgba(231,240,255,.045);letter-spacing:-.08em;pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-kicker{
+ color:#a8c1e9!important;
+ font:900 11px/1.4 Inter,Arial,sans-serif!important;letter-spacing:.17em!important;
+}
+#page-home.reference-home #homeForecastSplit .final-title{
+ color:#f5f8ff!important;
+ font:900 clamp(23px,2.45vw,35px)/1.06 Inter,Arial,sans-serif!important;
+ letter-spacing:-.05em!important;
+ min-height:55px!important;max-width:100%!important;
+}
+#page-home.reference-home #homeForecastSplit .final-numbers{
+ gap:clamp(9px,1vw,18px)!important;
+ align-self:end!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-label{
+ color:#b5c8e1!important;
+ font:900 10px/1.4 Inter,Arial,sans-serif!important;
+ letter-spacing:.13em!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number{
+ font:900 clamp(61px,6vw,98px)/.9 Inter,Arial,sans-serif!important;
+ letter-spacing:-.08em!important;font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number.dem{color:#82b3ff!important}
+#page-home.reference-home #homeForecastSplit .final-party-number.rep{color:#ff7991!important}
+#page-home.reference-home #homeForecastSplit .final-bar{
+ height:21px!important;border-radius:3px!important;
+ background:#243550!important;
+ border:1px solid rgba(220,235,255,.25)!important;
+ box-shadow:0 0 22px rgba(45,113,224,.15)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar>span.dem{
+ background:linear-gradient(90deg,#1f5ace,#74afff)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar>span.rep{
+ background:linear-gradient(90deg,#ff8599,#d92e4b)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-majority-marker{
+ background:#f1f6ff!important;height:28px!important;z-index:2!important;
+}
+#page-home.reference-home #homeForecastSplit .final-majority-note{
+ color:#a3b5d2!important;
+ font:900 10px/1.3 Inter,Arial,sans-serif!important;
+ letter-spacing:.10em!important;
+}
+/* A pair of spacious light data windows on the dark dashboard. */
+#page-home.reference-home .reference-bottom{
+ grid-column:1/-1!important;min-width:0!important;
+ display:grid!important;
+ grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;
+ gap:clamp(14px,1.5vw,24px)!important;
+ align-items:stretch!important;margin:11px 0 0!important;
+}
+#page-home.reference-home .reference-latest,
+#page-home.reference-home .reference-featured{
+ display:flex!important;flex-direction:column!important;
+ min-width:0!important;
+ border:1px solid rgba(138,174,218,.36)!important;
+ border-radius:11px!important;
+ background:linear-gradient(158deg,#f9fbff,#e7eef8)!important;
+ box-shadow:0 20px 48px rgba(0,0,0,.18)!important;
+ padding:clamp(20px,2.35vw,31px)!important;
+ color:#142b48!important;
+}
+#page-home.reference-home .reference-section-head{
+ border-bottom:1px solid #d3dfed!important;
+ margin-bottom:14px!important;padding-bottom:15px!important;
+ display:flex!important;align-items:center!important;gap:12px!important;
+ flex-wrap:wrap!important;
+}
+#page-home.reference-home .reference-section-head h2{
+ color:#112844!important;
+ font:900 clamp(24px,2.3vw,32px)/1.1 Inter,Arial,sans-serif!important;
+ letter-spacing:-.05em!important;
+}
+#page-home.reference-home .reference-section-head button{
+ background:#163a6a!important;
+ color:#f2f7ff!important;
+ border:1px solid #315c95!important;
+ border-radius:4px!important;
+ padding:10px 14px!important;
+ font:850 11px/1.3 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-section-head button:hover{background:#21569c!important}
+#page-home.reference-home #homeLatestPolls{
+ width:100%!important;min-width:0!important;flex:1 1 auto;
+ color:#132b48!important;
+}
+#page-home.reference-home #homeLatestPolls>*{
+ border-bottom-color:#dce5f1!important;
+ padding-block:13px!important;
+}
+#page-home.reference-home .reference-map-card{
+ flex:1 1 auto!important;min-width:0!important;
+ border-radius:7px!important;
+ border:1px solid #b5cce4!important;
+ background:linear-gradient(145deg,#f1f7ff,#d7e6f8)!important;
+ box-shadow:inset 0 0 0 1px #fff!important;
+ overflow:hidden!important;
+ transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#page-home.reference-home .reference-map-card:hover{
+ transform:translateY(-2px);
+ box-shadow:0 10px 30px rgba(30,73,132,.15)!important;
+}
+#page-home.reference-home .reference-map-preview{
+ min-height:205px!important;
+ background-color:#d9e7f5!important;
+}
+#page-home.reference-home .reference-map-copy,
+#page-home.reference-home .reference-map-copy strong{
+ color:#132e50!important;
+}
+#page-home.reference-home #homePastPollingMisses{
+ grid-column:1/-1!important;width:100%!important;min-width:0!important;
+ border-radius:10px!important;
+ border:1px solid rgba(110,166,246,.45)!important;
+ background:
+   radial-gradient(ellipse at 90% 50%,rgba(65,105,213,.35),transparent 62%),
+   linear-gradient(115deg,#193662,#0b1b35)!important;
+ color:#fff!important;
+ box-shadow:0 17px 43px rgba(0,0,0,.23)!important;
+ transition:transform .18s ease!important;
+}
+#page-home.reference-home #homePastPollingMisses:hover{transform:translateY(-2px)!important}
+#page-home.reference-home :is(button,a):focus-visible{
+ outline:3px solid #86b5ff!important;outline-offset:3px!important;
+}
+@media(max-width:1250px){
+ #page-home.reference-home .reference-home-shell{
+  width:calc(100% - 34px)!important;
+  grid-template-columns:repeat(12,minmax(0,1fr))!important;
+ }
+ #page-home.reference-home .reference-hero{grid-column:1 / span 7!important;padding:30px!important}
+ #page-home.reference-home .reference-metrics{grid-column:8 / -1!important}
+ #page-home.reference-home .reference-hero h1{font-size:clamp(38px,4.4vw,61px)!important}
+}
+@media(max-width:1040px){
+ #page-home.reference-home .reference-home-shell{
+  width:calc(100% - 30px)!important;
+  grid-template-columns:minmax(0,1fr)!important;gap:14px!important;
+  padding-top:18px!important;
+ }
+ #page-home.reference-home .reference-hero,
+ #page-home.reference-home .reference-metrics,
+ #page-home.reference-home #housePrediction2026,
+ #page-home.reference-home .reference-divider,
+ #page-home.reference-home .reference-bottom,
+ #page-home.reference-home #homePastPollingMisses{
+  grid-column:1/-1!important;
+  grid-row:auto!important;
+ }
+ #page-home.reference-home .reference-hero{min-height:380px!important;padding:34px!important}
+ #page-home.reference-home .reference-hero h1{font-size:clamp(42px,6.2vw,65px)!important}
+ #page-home.reference-home .reference-metrics{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:minmax(135px,auto)!important;
+  min-height:0!important;
+ }
+ #page-home.reference-home .reference-metrics>*{
+  grid-row:auto!important;grid-column:auto!important;
+ }
+ #page-home.reference-home #homeElectionCountdown{
+  grid-column:1 / span 2!important;
+ }
+ #page-home.reference-home #homeSenateForecast{
+  grid-column:3 / span 2!important;
+ }
+ #page-home.reference-home #homeLastUpdated,
+ #page-home.reference-home #homeSenateTossups{grid-column:span 2!important}
+}
+@media(max-width:730px){
+ #page-home.reference-home .reference-home-shell{
+  width:calc(100% - 20px)!important;gap:12px!important;padding:11px 0 40px!important;
+ }
+ #page-home.reference-home .reference-hero{
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  gap:20px!important;min-height:0!important;padding:30px 23px!important;
+  border-radius:10px!important;
+ }
+ #page-home.reference-home .reference-hero h1{
+  font-size:clamp(42px,9.4vw,59px)!important;
+  letter-spacing:-.06em!important;line-height:1!important;
+ }
+ #page-home.reference-home .reference-hero-mark{
+  width:100%!important;min-height:100px!important;padding:14px 12px!important;
+ }
+ #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  max-height:112px!important;max-width:100%!important;
+ }
+ #page-home.reference-home .reference-hero-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #page-home.reference-home .reference-hero-actions>*{
+  width:100%!important;min-width:0!important;padding:12px 8px!important;font-size:11px!important;
+ }
+ #page-home.reference-home .reference-metrics{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:minmax(150px,auto) minmax(112px,auto) minmax(116px,auto)!important;
+  gap:8px!important;padding:9px!important;
+ }
+ #page-home.reference-home #homeElectionCountdown{grid-column:1/-1!important;grid-row:1!important}
+ #page-home.reference-home #homeSenateTossups{grid-column:1!important;grid-row:2!important}
+ #page-home.reference-home #homeLastUpdated{grid-column:2!important;grid-row:2!important}
+ #page-home.reference-home #homeSenateForecast{grid-column:1/-1!important;grid-row:3!important}
+ #page-home.reference-home .reference-metrics>*{padding:15px!important}
+ #page-home.reference-home .reference-metrics .wg-election-days{font-size:clamp(60px,19vw,88px)!important}
+ #page-home.reference-home .reference-metrics .wg-metric-value{font-size:30px!important}
+ #page-home.reference-home #homeSenateForecast .wg-forecast-value{font-size:clamp(24px,7.4vw,37px)!important}
+ #page-home.reference-home #homeLastUpdated .wg-metric-value{font-size:13px!important}
+ #page-home.reference-home #homeForecastSplit{grid-template-columns:1fr!important;gap:12px!important}
+ #page-home.reference-home #homeForecastSplit .final-forecast-card{
+  min-height:280px!important;padding:22px 18px!important;
+  aspect-ratio:auto!important;grid-template-rows:auto minmax(45px,auto) 1fr 20px auto!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-title{
+  min-height:45px!important;font-size:clamp(24px,7.5vw,33px)!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-party-number{
+  font-size:clamp(54px,17vw,78px)!important;
+ }
+ #page-home.reference-home .reference-bottom{grid-template-columns:1fr!important;gap:12px!important}
+ #page-home.reference-home .reference-latest,
+ #page-home.reference-home .reference-featured{
+  padding:21px!important;
+ }
+ #page-home.reference-home .reference-map-preview{min-height:165px!important}
+}
+@media(max-width:380px){
+ #page-home.reference-home .reference-hero-actions{grid-template-columns:1fr!important}
+ #page-home.reference-home .reference-hero h1{font-size:38px!important}
+ #page-home.reference-home #homeForecastSplit .final-party-number{font-size:49px!important}
+ #page-home.reference-home #homeSenateForecast .wg-forecast-value{font-size:23px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #page-home.reference-home *,
+ #page-home.reference-home *:before,
+ #page-home.reference-home *:after{
+  transition:none!important;
+  animation:none!important;
+ }
+}
