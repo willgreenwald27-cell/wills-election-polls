@@ -74,6 +74,21 @@
   const r=root(),rows=data(),aside=r?.querySelector('.forecast-layout .sidebar');
   const map=r?.querySelector('.map-wrap svg');
   if(!r||!rows||!aside||!map||map.querySelectorAll('.state-shape[data-state]').length<30)return false;
+  const header=r.querySelector('.page-head-inner');
+  if(header&&!header.querySelector('#senate-night-head-stats')){
+   const summaries=node('div','senate-night-head-stats');
+   summaries.id='senate-night-head-stats';
+   const until=node('div','senate-night-head-chip');
+   until.appendChild(node('span','senate-night-head-number','—')).id='senate-night-days';
+   const untilLabel=node('div','senate-night-head-caption','DAYS UNTIL ELECTION DAY');
+   until.appendChild(untilLabel);
+   summaries.appendChild(until);
+   const update=node('div','senate-night-head-chip senate-night-last');
+   update.appendChild(node('span','senate-night-head-caption','LATEST RACE ENTRY'));
+   update.appendChild(node('strong','senate-night-date','—')).id='senate-night-updated';
+   summaries.appendChild(update);
+   header.insertBefore(summaries,header.querySelector('.page-actions')||null);
+  }
   if(!aside.querySelector('#senate-night-key-races')){
    const key=node('section','senate-night-panel');key.id='senate-night-key-races';
    key.setAttribute('aria-label','Featured 2026 Senate races');
@@ -131,6 +146,23 @@
   const list=$('senate-night-list'),body=$('senate-night-selected-body');
   if(!rows||!r||!list||!body)return;
   if(!rows[selected])selected=HIGHLIGHTS.find(ab=>rows[ab]?.active)||Object.keys(rows)[0];
+  const daysBox=$('senate-night-days');
+  if(daysBox){
+   const now=new Date(),parts=new Intl.DateTimeFormat('en-US',{
+     timeZone:'America/Los_Angeles',year:'numeric',month:'numeric',day:'numeric'
+   }).formatToParts(now);
+   const get=kind=>Number(parts.find(x=>x.type===kind)?.value||0);
+   const days=Math.max(0,Math.round((Date.UTC(2026,10,3)-Date.UTC(get('year'),get('month')-1,get('day')))/86400000));
+   daysBox.textContent=String(days);
+  }
+  const updatedBox=$('senate-night-updated');
+  if(updatedBox){
+   const dates=Object.values(rows).filter(x=>x?.active&&/^\\d{4}-\\d{2}-\\d{2}$/.test(String(x.updated||''))).map(x=>x.updated);
+   const latest=dates.sort().at(-1);
+   updatedBox.textContent=latest?new Intl.DateTimeFormat('en-US',{
+     month:'short',day:'numeric',year:'numeric',timeZone:'UTC'
+   }).format(new Date(latest+'T12:00:00Z')):'—';
+  }
   const sig=currentSig(rows);
   if(sig===signature)return;
   signature=sig;
