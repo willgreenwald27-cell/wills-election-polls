@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Will's Election Polls — Research Updates</title>
+<link>https://willelectionpolls.com/</link>
+<description>Independent U.S. election forecast explainers, battleground analysis, and historical polling research. For the latest state calls, consult the interactive forecast.</description>
+<language>en-us</language>
+<atom:link href="https://willelectionpolls.com/feed.xml" rel="self" type="application/rss+xml"/>
+<lastBuildDate>Sat, 10 Oct 2026 08:00:00 GMT</lastBuildDate>
+<item><title>How to Read 2026 Senate Polls and Forecasts</title>
+<link>https://willelectionpolls.com/how-to-read-election-forecasts.html</link>
+<guid isPermaLink="true">https://willelectionpolls.com/how-to-read-election-forecasts.html</guid>
+<pubDate>Sat, 10 Oct 2026 08:00:00 GMT</pubDate>
+<description>What election polling averages, race ratings, and win chances mean—and why uncertainty matters.</description></item>
+<item><title>2026 Senate Battlegrounds: Eight Races to Watch</title>
+<link>https://willelectionpolls.com/2026-senate-battlegrounds.html</link>
+<guid isPermaLink="true">https://willelectionpolls.com/2026-senate-battlegrounds.html</guid>
+<pubDate>Sat, 10 Oct 2026 08:00:00 GMT</pubDate>
+<description>Independent guide to Maine, Texas, Ohio, Alaska, Iowa, North Carolina, Georgia, and Michigan, with sourced context.</description></item>
+<item><title>2026 Senate Election Forecast and Polling Map</title>
+<link>https://willelectionpolls.com/2026-senate-election-forecast.html</link>
+<guid isPermaLink="true">https://willelectionpolls.com/2026-senate-election-forecast.html</guid>
+<pubDate>Sat, 10 Oct 2026 08:00:00 GMT</pubDate>
+<description>Introduction to the interactive Senate map and original race-by-race forecasts.</description></item>
+<item><title>Past Polling Errors (2000–2024)</title>
+<link>https://willelectionpolls.com/past-polling-errors-research.html</link>
+<guid isPermaLink="true">https://willelectionpolls.com/past-polling-errors-research.html</guid>
+<pubDate>Sat, 10 Oct 2026 08:00:00 GMT</pubDate>
+<description>Historical context on differences between polling averages and election results.</description></item>
+</channel>
+</rss>
