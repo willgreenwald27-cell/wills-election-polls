@@ -480,3 +480,55 @@ body:has(#page-senate.wg-studio.active) .site-header .nav > :is(button,a):not(#e
   font-size:13px!important;
  }
 }
+
+
+/* HIGH CONTRAST HEADER VISIBILITY — fix dark text on the midnight masthead.
+   The normal navigation labels must remain clearly legible even when the
+   menu is not active. Do not change header dimensions or tab order. */
+body .site-header .nav > :is(button,a):not(#editToggle):not(#settingsBtn){
+ color:#e8f2ff!important;
+ -webkit-text-fill-color:#e8f2ff!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+body .site-header .nav > :is(button,a):not(#editToggle):not(#settingsBtn):hover{
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ background:rgba(100,154,231,.18)!important;
+ border-color:rgba(165,199,245,.45)!important;
+}
+/* The current page stays cobalt, while historical research stays rose. */
+body .site-header .nav > :is(button,a).active:not(#editToggle):not(#settingsBtn),
+body .site-header .nav > :is(button,a)[aria-current="page"]:not(#editToggle):not(#settingsBtn){
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ background:#2563c2!important;
+ border-color:#5a9aee!important;
+}
+body .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):not(#editToggle):not(#settingsBtn){
+ color:#fff0f5!important;
+ -webkit-text-fill-color:#fff0f5!important;
+ background:linear-gradient(120deg,rgba(134,47,83,.40),rgba(92,31,68,.42))!important;
+ border-color:#c96790!important;
+}
+body .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):is(.active,[aria-current="page"]):not(#editToggle):not(#settingsBtn){
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+ background:linear-gradient(120deg,#c14c77,#90365f)!important;
+ border-color:#ffb2c8!important;
+}
+body .site-header :is(.brand,.brand-name,.reference-brand-name){
+ color:#f5f9ff!important;
+ -webkit-text-fill-color:#f5f9ff!important;
+ opacity:1!important;
+}
+body .wr-editorial-strip,
+body .wr-editorial-strip :is(span,p,strong,.wr-dim){
+ color:#bcd2ef!important;
+ -webkit-text-fill-color:#bcd2ef!important;
+ opacity:1!important;
+}
+body .wr-editorial-strip .wr-issue{
+ color:#fff!important;
+ -webkit-text-fill-color:#fff!important;
+}
