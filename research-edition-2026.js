@@ -21,7 +21,7 @@
   const copy=document.querySelector("#page-home.reference-home .reference-hero-copy > p:not(#homeModelNote)");
   if(!copy||copy.dataset.wrHistoricalIntro==="1")return;
   copy.classList.add("wr-history-intro");
-  copy.innerHTML='Explore my 2026 Senate forecasts alongside a deeper look at how polling has performed in past elections. In <strong>Past Polling Errors</strong>, I compare final pre-election polls with actual Senate results, race by race, to reveal where surveys missed—and why those mistakes matter when evaluating new predictions.';
+  copy.innerHTML='Explore my 2026 Senate forecasts alongside <strong>Past Polling Errors</strong>, where I compare historical Senate polls with actual election results—revealing where surveys missed and what those errors mean for today’s predictions.';
   copy.dataset.wrHistoricalIntro="1";
  }
  function guide(){
