@@ -1,0 +1,482 @@
+/* WILLS ELECTION POLLS — MAP FIRST / V1
+   New art direction, not another hero + metric card dashboard:
+   feature the site's EXISTING map preview beside the original headline.
+   display:contents promotes existing .reference-featured as a grid item,
+   without moving, duplicating, or re-binding any DOM node or event handler. */
+#page-home.reference-home{
+  --mf-ink:#0c1830;--mf-blue:#2667e3;--mf-red:#e64a5e;--mf-slate:#7b889e;
+  display:block!important;width:100%!important;max-width:none!important;min-height:100vh!important;
+  background:#f6f8fc!important;color:#0b1c36!important;
+  padding:0 0 85px!important;
+}
+#page-home.reference-home .reference-home-shell{
+  box-sizing:border-box!important;
+  width:min(1530px,calc(100% - 64px))!important;max-width:1530px!important;
+  margin:auto!important;padding:25px 0 70px!important;
+  display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;grid-auto-rows:auto!important;align-items:stretch!important;
+  column-gap:clamp(15px,1.6vw,26px)!important;row-gap:clamp(16px,1.6vw,25px)!important;
+}
+#page-home.reference-home .reference-home-shell>*{min-width:0!important}
+#page-home.reference-home .reference-bottom{display:contents!important}
+/* Left: saturated TV-studio-style title panel */
+#page-home.reference-home .reference-hero{
+  grid-column:1 / span 5!important;grid-row:1!important;align-self:stretch!important;
+  box-sizing:border-box!important;
+  position:relative!important;isolation:isolate!important;
+  display:flex!important;flex-direction:column!important;
+  justify-content:space-between!important;align-items:stretch!important;
+  gap:22px!important;
+  width:100%!important;min-width:0!important;min-height:545px!important;
+  padding:clamp(30px,3.7vw,53px)!important;margin:0!important;overflow:hidden!important;
+  background:
+    radial-gradient(circle at 110% 50%,rgba(38,104,237,.42) 0,transparent 51%),
+    linear-gradient(151deg,#0c1b36 0%,#152e5b 70%,#183f79 100%)!important;
+  color:#fff!important;
+  border:1px solid #162c50!important;border-radius:9px!important;
+  box-shadow:0 15px 35px rgba(16,35,70,.17)!important;
+}
+#page-home.reference-home .reference-hero:before{
+  content:""!important;display:block!important;
+  position:absolute!important;z-index:1!important;
+  top:0!important;left:0!important;right:0!important;bottom:auto!important;
+  width:100%!important;height:5px!important;
+  background:linear-gradient(90deg,#4987ff 0 48%,#fff 48% 52%,#ff5c6d 52% 100%)!important;
+  pointer-events:none!important;
+}
+#page-home.reference-home .reference-hero:after{
+  content:"26"!important;
+  position:absolute!important;z-index:0!important;
+  left:auto!important;top:auto!important;
+  right:-.08em!important;bottom:-.20em!important;width:auto!important;height:auto!important;
+  background:none!important;border:0!important;
+  font:900 clamp(150px,20vw,345px)/1 Inter,"Helvetica Neue",Arial,sans-serif!important;
+  letter-spacing:-.13em!important;color:rgba(191,219,255,.09)!important;
+  pointer-events:none!important;
+}
+#page-home.reference-home .reference-hero-copy{
+  position:relative!important;z-index:2!important;max-width:100%!important;
+}
+#page-home.reference-home .reference-eyebrow{
+  display:inline-flex!important;align-items:center!important;
+  padding:8px 11px!important;margin:0 0 25px!important;
+  width:fit-content!important;max-width:100%!important;
+  border:1px solid rgba(137,181,255,.52)!important;
+  border-radius:3px!important;
+  background:rgba(42,90,164,.32)!important;
+  color:#cfe2ff!important;
+  font:900 10px/1.3 Inter,Arial,sans-serif!important;
+  text-transform:uppercase!important;letter-spacing:.14em!important;
+}
+#page-home.reference-home .reference-hero h1{
+  color:#fff!important;
+  font:900 clamp(46px,4.55vw,71px)/1.015 Inter,"Helvetica Neue",Arial,sans-serif!important;
+  letter-spacing:-.073em!important;text-wrap:balance!important;
+  margin:0 0 22px!important;max-width:100%!important;text-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+  color:#c5d7f2!important;
+  font:500 clamp(14px,1.12vw,17px)/1.62 Inter,Arial,sans-serif!important;
+  margin:0 0 10px!important;max-width:495px!important;letter-spacing:0!important;
+}
+#page-home.reference-home .reference-hero-actions{
+  display:flex!important;flex-wrap:wrap!important;gap:10px!important;
+  margin:28px 0 0!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a){
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:46px!important;max-width:100%!important;padding:12px 17px!important;
+  border-radius:5px!important;
+  font:800 11px/1.35 Inter,Arial,sans-serif!important;
+  transition:background .18s ease,transform .18s ease!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-primary{
+  background:#fff!important;color:#0d2b58!important;
+  border:1px solid white!important;
+  box-shadow:0 7px 17px rgba(0,0,0,.14)!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-secondary{
+  background:rgba(255,255,255,.07)!important;color:#fff!important;
+  border:1px solid rgba(216,231,255,.52)!important;
+  box-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a):hover{
+  transform:translateY(-2px)!important;
+}
+#page-home.reference-home .reference-hero-mark{
+  position:relative!important;z-index:2!important;
+  display:flex!important;flex-direction:row!important;
+  align-items:center!important;justify-content:center!important;
+  width:100%!important;min-width:0!important;min-height:0!important;
+  padding:12px 16px!important;
+  border-radius:7px!important;
+  background:rgba(255,255,255,.96)!important;
+  border:1px solid rgba(255,255,255,.9)!important;
+  box-shadow:0 9px 24px rgba(2,11,28,.18)!important;
+}
+#page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  display:block!important;height:auto!important;max-height:89px!important;
+  width:100%!important;max-width:235px!important;object-fit:contain!important;
+}
+#page-home.reference-home .reference-mark-caption{
+  color:#56708e!important;
+  font:750 9px/1.35 Inter,Arial,sans-serif!important;letter-spacing:.11em!important;
+}
+#page-home.reference-home #homeModelNote{
+  max-width:100%!important;color:#e0ebff!important;
+  background:rgba(102,141,212,.16)!important;border-left:3px solid #80adff!important;
+  border-radius:0 6px 6px 0!important;
+  font:600 12px/1.46 Inter,Arial,sans-serif!important;padding:11px 12px!important;
+}
+/* Right: original Featured Map elevated into main stage via display:contents.
+   Do not replace or clone the map button, image, data, or event listeners. */
+#page-home.reference-home .reference-featured{
+  grid-column:6/-1!important;grid-row:1!important;
+  display:flex!important;flex-direction:column!important;min-width:0!important;min-height:545px!important;
+  padding:clamp(20px,2vw,31px)!important;margin:0!important;
+  border:1px solid #dce6f4!important;border-radius:9px!important;
+  background:#fff!important;
+  box-shadow:0 12px 35px rgba(19,60,123,.075)!important;
+}
+#page-home.reference-home .reference-featured .reference-section-head{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:14px!important;flex-wrap:wrap!important;
+  margin:0 0 17px!important;padding:0 0 17px!important;
+  border:0!important;border-bottom:1px solid #dfe7f3!important;
+}
+#page-home.reference-home .reference-featured .reference-section-head h2{
+  color:#10294c!important;
+  font:900 clamp(24px,2.5vw,35px)/1.1 Inter,Arial,sans-serif!important;
+  letter-spacing:-.05em!important;
+}
+#page-home.reference-home .reference-featured .reference-section-head button{
+  border-radius:5px!important;border:1px solid #d9e5f8!important;
+  padding:9px 13px!important;background:#f1f6ff!important;color:#2a5dba!important;
+  font:800 11px/1.3 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-featured .reference-map-card{
+  display:flex!important;flex-direction:column!important;
+  flex:1 1 auto!important;min-width:0!important;min-height:0!important;
+  width:100%!important;max-width:100%!important;
+  border:1px solid #d9e6f7!important;border-radius:6px!important;
+  background:linear-gradient(160deg,#eef4fe,#dde9fc)!important;overflow:hidden!important;
+  box-shadow:none!important;
+  transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#page-home.reference-home .reference-featured .reference-map-card:hover{
+  transform:translateY(-2px)!important;box-shadow:0 9px 23px rgba(29,69,122,.13)!important;
+}
+#page-home.reference-home .reference-featured .reference-map-preview{
+  display:block!important;flex:1 1 auto!important;
+  min-height:320px!important;min-width:0!important;
+  background-color:#dfebfc!important;
+  background-size:contain!important;background-position:center!important;background-repeat:no-repeat!important;
+}
+#page-home.reference-home .reference-featured .reference-map-preview :is(svg,img){
+  max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+}
+#page-home.reference-home .reference-featured .reference-map-copy{
+  flex:none!important;padding:14px 18px!important;
+  background:rgba(255,255,255,.93)!important;
+  color:#1e3b66!important;
+}
+#page-home.reference-home .reference-featured .reference-map-copy strong{color:#152b4d!important}
+/* Second row: concise election statistics. Live values remain untouched. */
+#page-home.reference-home .reference-metrics{
+  grid-column:1/-1!important;grid-row:2!important;
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  gap:clamp(12px,1.35vw,21px)!important;margin:0!important;padding:0!important;
+  height:auto!important;min-height:0!important;
+  align-items:stretch!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)){
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+#page-home.reference-home .reference-metrics>*{
+  position:relative!important;grid-column:auto!important;grid-row:auto!important;
+  box-sizing:border-box!important;
+  width:100%!important;min-width:0!important;max-width:none!important;
+  min-height:152px!important;height:auto!important;margin:0!important;padding:22px 23px!important;
+  display:flex!important;flex-direction:column!important;
+  justify-content:space-between!important;align-items:flex-start!important;text-align:left!important;
+  border-radius:8px!important;border:1px solid #dce6f3!important;
+  background:#fff!important;color:#183657!important;
+  box-shadow:0 7px 19px rgba(17,44,83,.043)!important;
+  overflow:hidden!important;
+}
+#page-home.reference-home .reference-metrics>*:before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;pointer-events:none;
+  background:#4e88f1;
+}
+#page-home.reference-home #homeElectionCountdown{
+  background:linear-gradient(115deg,#1d66cf,#3b7cec)!important;border-color:#2571df!important;
+}
+#page-home.reference-home #homeElectionCountdown:before{background:#d9eaff!important}
+#page-home.reference-home #homeSenateTossups:before{background:#e94e65!important}
+#page-home.reference-home #homeSenateForecast:before{
+  background:linear-gradient(90deg,#3272ea 0 50%,#e04e68 50%)!important;
+}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label,.metric-label){
+  color:#70829d!important;
+  font:800 10px/1.4 Inter,Arial,sans-serif!important;
+  letter-spacing:.11em!important;text-transform:uppercase!important;margin:0 0 9px!important;
+}
+#page-home.reference-home #homeElectionCountdown .wg-election-label{color:#e6efff!important}
+#page-home.reference-home .reference-metrics .wg-election-days{
+  color:#fff!important;
+  font:900 clamp(55px,6.1vw,87px)/.92 Inter,Arial,sans-serif!important;
+  letter-spacing:-.08em!important;font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-copy{
+  color:#edf5ff!important;font:700 12px/1.38 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-metrics .wg-metric-value{
+  color:#153459!important;
+  font:900 clamp(26px,3.3vw,47px)/1 Inter,Arial,sans-serif!important;
+  letter-spacing:-.065em!important;
+}
+#page-home.reference-home #homeSenateTossups .wg-metric-value{color:#d54760!important}
+#page-home.reference-home #homeLastUpdated .wg-metric-value{font-size:clamp(14px,1.55vw,19px)!important;line-height:1.27!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-value{
+  display:flex!important;align-items:baseline!important;flex-wrap:wrap!important;gap:10px!important;
+  color:#142b4a!important;font:900 clamp(26px,3vw,42px)/1 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-dem{color:#2d72ec!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-rep{color:#e1536c!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-divider{color:#9cacc0!important}
+#page-home.reference-home .reference-divider{
+  grid-column:1/-1!important;grid-row:3!important;
+  height:1px!important;border:0!important;
+  background:linear-gradient(90deg,transparent,#cad6e5,transparent)!important;
+  margin:8px 0 0!important;
+}
+/* Third row: old model's Senate/House seat-count data, modern scoreboard style. */
+#page-home.reference-home #housePrediction2026{
+  grid-column:1/-1!important;grid-row:4!important;
+  display:block!important;min-width:0!important;width:100%!important;max-width:100%!important;
+  margin:0!important;padding:0!important;
+}
+#page-home.reference-home #homeForecastSplit{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch!important;gap:clamp(16px,1.7vw,27px)!important;
+  width:100%!important;min-width:0!important;margin:0!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card{
+  isolation:isolate!important;position:relative!important;overflow:hidden!important;
+  display:grid!important;grid-template-rows:auto minmax(51px,auto) 1fr 18px auto!important;
+  width:100%!important;min-width:0!important;height:auto!important;
+  aspect-ratio:auto!important;min-height:330px!important;
+  padding:clamp(24px,2.5vw,34px)!important;
+  border:1px solid #dce6f4!important;border-radius:8px!important;
+  background:#fff!important;
+  box-shadow:0 9px 29px rgba(17,52,102,.063)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:before{
+  content:"";position:absolute;top:0;left:0;bottom:auto;right:auto;
+  width:5px;height:100%;
+  background:#306fe5;pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-house-card:before{background:#e24b62}
+#page-home.reference-home #homeForecastSplit .final-kicker{
+  color:#6e819c!important;letter-spacing:.12em!important;
+  font:900 10px/1.3 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeForecastSplit .final-title{
+  color:#112b4e!important;
+  font:900 clamp(25px,2.65vw,37px)/1.11 Inter,Arial,sans-serif!important;
+  letter-spacing:-.055em!important;
+  min-height:51px!important;max-width:100%!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number{
+  color:#203959!important;
+  font:900 clamp(60px,6.6vw,100px)/.9 Inter,Arial,sans-serif!important;
+  letter-spacing:-.09em!important;font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number.dem{color:#2a6deb!important}
+#page-home.reference-home #homeForecastSplit .final-party-number.rep{color:#e24a61!important}
+#page-home.reference-home #homeForecastSplit .final-party-label{
+  color:#70819a!important;font:900 10px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.11em!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar{
+  height:18px!important;border-radius:3px!important;
+  background:#e9eef7!important;border:0!important;
+  box-shadow:inset 0 0 0 1px rgba(39,62,91,.09)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar>span.dem{background:#2f73ef!important}
+#page-home.reference-home #homeForecastSplit .final-bar>span.rep{background:#e65166!important}
+#page-home.reference-home #homeForecastSplit .final-majority-marker{background:#172a49!important}
+#page-home.reference-home #homeForecastSplit .final-majority-note{
+  color:#74859c!important;font:800 10px/1.2 Inter,Arial,sans-serif!important;
+  letter-spacing:.07em!important;
+}
+/* Fourth row: existing latest polls as wide, comfortable data table. */
+#page-home.reference-home .reference-latest{
+  grid-column:1/-1!important;grid-row:5!important;
+  display:flex!important;flex-direction:column!important;
+  box-sizing:border-box!important;
+  min-width:0!important;padding:clamp(24px,2.6vw,39px)!important;
+  margin:0!important;border:1px solid #dce6f4!important;
+  border-radius:8px!important;background:#fff!important;
+  box-shadow:0 8px 26px rgba(24,64,113,.057)!important;
+}
+#page-home.reference-home .reference-latest .reference-section-head{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:14px!important;flex-wrap:wrap!important;
+  padding:0 0 17px!important;margin:0 0 12px!important;
+  border:0!important;border-bottom:1px solid #dce6f3!important;
+}
+#page-home.reference-home .reference-latest .reference-section-head h2{
+  font:900 clamp(25px,2.6vw,35px)/1.1 Inter,Arial,sans-serif!important;
+  letter-spacing:-.055em!important;color:#15345b!important;
+}
+#page-home.reference-home .reference-latest .reference-section-head button{
+  background:#eaf2ff!important;color:#2465c8!important;
+  border:1px solid #d3e4ff!important;border-radius:5px!important;
+  font:800 11px/1.3 Inter,Arial,sans-serif!important;padding:10px 16px!important;
+}
+#page-home.reference-home #homeLatestPolls{min-width:0!important;width:100%!important;flex:1 1 auto!important}
+#page-home.reference-home #homeLatestPolls>*{
+  padding:16px 4px!important;border-bottom:1px solid #e8edf5!important;
+}
+#page-home.reference-home #homePastPollingMisses{
+  grid-column:1/-1!important;grid-row:6!important;
+  min-width:0!important;width:100%!important;margin:0!important;
+  border:1px solid #193866!important;border-radius:8px!important;
+  color:#fff!important;background:linear-gradient(120deg,#162e58,#244c86)!important;
+  box-shadow:0 13px 32px rgba(15,42,79,.13)!important;
+}
+/* Any additional content added by the app takes full width rather than
+   squeezing into one of the 12 columns. */
+#page-home.reference-home .reference-home-shell > :not(.reference-hero):not(.reference-metrics):not(.reference-divider):not(.reference-bottom):not(#housePrediction2026):not(#homePastPollingMisses){
+  grid-column:1/-1!important;
+}
+#page-home.reference-home .reference-bottom>:not(.reference-featured):not(.reference-latest){
+  grid-column:1/-1!important;
+}
+#page-home.reference-home :is(button,a):focus-visible{
+  outline:3px solid #5c91ed!important;outline-offset:3px!important;
+}
+@media(max-width:1120px){
+  #page-home.reference-home .reference-home-shell{
+    width:calc(100% - 36px)!important;gap:15px!important;
+  }
+  #page-home.reference-home .reference-hero{
+    grid-column:1/span 6!important;padding:32px!important;min-height:525px!important;
+  }
+  #page-home.reference-home .reference-featured{
+    grid-column:7/-1!important;min-height:525px!important;padding:18px!important;
+  }
+  #page-home.reference-home .reference-hero h1{
+    font-size:clamp(42px,5.1vw,58px)!important;
+  }
+  #page-home.reference-home .reference-featured .reference-map-preview{
+    min-height:305px!important;
+  }
+  #page-home.reference-home .reference-metrics>*{padding:19px!important}
+}
+@media(max-width:860px){
+  #page-home.reference-home .reference-home-shell{
+    width:calc(100% - 24px)!important;
+    grid-template-columns:minmax(0,1fr)!important;gap:13px!important;
+    padding-top:13px!important;padding-bottom:48px!important;
+  }
+  #page-home.reference-home .reference-hero,
+  #page-home.reference-home .reference-featured,
+  #page-home.reference-home .reference-metrics,
+  #page-home.reference-home .reference-divider,
+  #page-home.reference-home #housePrediction2026,
+  #page-home.reference-home .reference-latest,
+  #page-home.reference-home #homePastPollingMisses{
+    grid-column:1/-1!important;grid-row:auto!important;
+  }
+  #page-home.reference-home .reference-hero{
+    min-height:0!important;padding:31px 24px!important;
+  }
+  #page-home.reference-home .reference-hero h1{
+    font-size:clamp(45px,8.5vw,68px)!important;
+  }
+  #page-home.reference-home .reference-hero-mark{
+    max-width:100%!important;
+  }
+  #page-home.reference-home .reference-featured{
+    min-height:0!important;padding:19px!important;
+  }
+  #page-home.reference-home .reference-featured .reference-map-preview{
+    min-height:clamp(260px,52vw,390px)!important;
+  }
+  #page-home.reference-home .reference-metrics,
+  #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  #page-home.reference-home .reference-metrics>*{
+    grid-column:auto!important;grid-row:auto!important;
+    min-height:130px!important;padding:18px!important;
+  }
+  #page-home.reference-home #homeElectionCountdown{
+    grid-column:1/-1!important;
+    min-height:158px!important;
+  }
+  #page-home.reference-home #homeSenateForecast{
+    grid-column:1/-1!important;
+  }
+  #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateTossups{
+    grid-column:1/-1!important;
+  }
+  #page-home.reference-home #homeForecastSplit{
+    grid-template-columns:1fr!important;gap:13px!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-forecast-card{
+    min-height:300px!important;
+  }
+}
+@media(max-width:450px){
+  #page-home.reference-home .reference-home-shell{
+    width:calc(100% - 18px)!important;gap:11px!important;
+  }
+  #page-home.reference-home .reference-hero{
+    padding:29px 20px!important;
+  }
+  #page-home.reference-home .reference-hero h1{
+    font-size:clamp(39px,11.3vw,57px)!important;line-height:1.04!important;
+  }
+  #page-home.reference-home .reference-hero-actions{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #page-home.reference-home .reference-hero-actions>*{
+    width:100%!important;min-width:0!important;padding:10px 9px!important;
+    font-size:10px!important;
+  }
+  #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+    max-height:68px!important;
+  }
+  #page-home.reference-home .reference-featured .reference-map-preview{
+    min-height:235px!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-election-days{
+    font-size:76px!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-metric-value{
+    font-size:29px!important;
+  }
+  #page-home.reference-home #homeLastUpdated .wg-metric-value{
+    font-size:13px!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-party-number{
+    font-size:clamp(57px,17vw,77px)!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-forecast-card{
+    padding:23px!important;
+  }
+  #page-home.reference-home .reference-latest{
+    padding:23px 18px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #page-home.reference-home *,
+  #page-home.reference-home *:before,
+  #page-home.reference-home *:after{transition:none!important}
+}
