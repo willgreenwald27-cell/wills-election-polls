@@ -161,10 +161,11 @@
       el.style.setProperty('fill','#a9c5ed','important');
       if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background','#a9c5ed','important');
     });
-    const labels=leafs(root).filter(el=>norm(el.textContent)==='Ohio'&&el.getClientRects().length);
+    const labels=leafs(root).filter(el=>norm(el.textContent)==='Ohio'&&el.getClientRects().length&&!el.closest('.sidebar,.rating-table-card,.wg-studio-radar,.senate-night-panel,.page-head'));
     for(const label of labels){
       let box=label.parentElement;
       for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
+        if(box.matches('.forecast-layout,.content,.map-card,.map-wrap,.sidebar')){box=null;break;}
         const t=norm(box.textContent);
         if(/WILL[’']S CALL/i.test(t)&&(/AVG POLLS/i.test(t)||/MY PREDICTION/i.test(t))) break;
       }
