@@ -363,3 +363,15 @@ body:has(#page-senate.wg-studio.active) .site-header .nav button.active:not(#edi
     transition:none!important;
   }
 }
+/* Interaction repair: decorative inset shapes must not block Alaska or other states. */
+#page-senate.senate-immersive.wg-studio .map-wrap svg .inset-frame,
+#page-senate.senate-immersive.wg-studio .map-wrap svg .inset-label,
+#page-senate.senate-immersive.wg-studio .map-wrap svg .state-label,
+#page-senate.senate-immersive.wg-studio .map-wrap svg [data-label]{
+  pointer-events:none!important;
+}
+#page-senate.senate-immersive.wg-studio .map-wrap svg .state-shape[data-state]{
+  pointer-events:visiblePainted!important;
+  cursor:pointer!important;
+  touch-action:manipulation;
+}
