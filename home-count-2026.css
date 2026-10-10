@@ -1,0 +1,382 @@
+/* THE COUNT — Will's 2026 election forecast homepage
+   New hierarchy: Senate/House numbers first, slim briefing banner second,
+   live metrics and news below. Presentation only, no copied predictions. */
+#page-home.reference-home{
+ --count-ink:#111c30;--count-blue:#3b83ef;--count-red:#f36973;
+ --count-paper:#f5f4f0;
+ display:block!important;width:100%!important;min-height:100vh!important;
+ padding:0 0 78px!important;margin:0!important;
+ background:linear-gradient(180deg,#f4f4f1,#fff 47%,#f5f6f8)!important;
+ color:#19253a!important;
+}
+#page-home.reference-home .reference-home-shell{
+ box-sizing:border-box!important;width:min(1530px,calc(100% - 66px))!important;
+ max-width:1530px!important;margin:0 auto!important;padding:24px 0 60px!important;
+ display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;
+ align-items:stretch!important;gap:clamp(13px,1.45vw,22px)!important;
+}
+#page-home.reference-home .reference-home-shell>*{min-width:0!important}
+/* FIRST: the forecasting scoreboards replace the usual hero. */
+#page-home.reference-home #housePrediction2026{
+ grid-column:1/-1!important;grid-row:1!important;
+ width:100%!important;min-width:0!important;max-width:100%!important;
+ display:block!important;margin:0!important;padding:0!important;
+}
+#page-home.reference-home #homeForecastSplit{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ gap:0!important;width:100%!important;min-width:0!important;
+ align-items:stretch!important;margin:0!important;
+ background:#0d172b!important;border:1px solid #1e324f!important;
+ border-radius:13px!important;overflow:hidden!important;
+ box-shadow:0 16px 42px rgba(14,33,62,.2)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card{
+ position:relative!important;isolation:isolate!important;
+ display:grid!important;grid-template-rows:auto auto 1fr 21px auto!important;
+ width:100%!important;min-width:0!important;height:auto!important;
+ aspect-ratio:auto!important;min-height:365px!important;
+ box-sizing:border-box!important;overflow:hidden!important;
+ margin:0!important;padding:clamp(26px,3vw,47px)!important;
+ border:0!important;border-radius:0!important;
+ background:
+   radial-gradient(circle at 85% 15%,rgba(82,153,255,.12),transparent 37%),
+   linear-gradient(125deg,#14263f,#0b162a)!important;
+ box-shadow:none!important;
+}
+#page-home.reference-home #homeForecastSplit .final-house-card{
+ background:
+   radial-gradient(circle at 80% 14%,rgba(255,113,132,.11),transparent 42%),
+   linear-gradient(130deg,#151c30,#0e1729)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card+.final-forecast-card{
+ border-left:1px solid rgba(212,228,255,.20)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:before{
+ content:"";position:absolute;inset:0 0 auto 0;height:5px;
+ background:#5c9dff;z-index:1;pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-house-card:before{background:#ff7180!important}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:after{
+ content:"26";position:absolute;bottom:-.35em;right:-.06em;top:auto;left:auto;
+ width:auto;height:auto;z-index:-1;
+ font:900 clamp(190px,22vw,360px)/1 Inter,Arial,sans-serif!important;
+ letter-spacing:-.13em!important;background:none!important;
+ color:rgba(241,247,255,.045)!important;pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-kicker{
+ color:#9aafcf!important;font:900 11px/1.3 Inter,Arial,sans-serif!important;
+ text-transform:uppercase!important;letter-spacing:.19em!important;
+ margin:0 0 16px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-title{
+ color:#f3f6ff!important;font:850 clamp(26px,2.55vw,36px)/1.07 Inter,Arial,sans-serif!important;
+ letter-spacing:-.045em!important;min-height:55px!important;max-width:100%!important;
+ margin:0 0 23px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-numbers{
+ display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ align-items:center!important;gap:10px!important;align-self:stretch!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-label{
+ color:#c3cfe1!important;font:800 11px/1.4 Inter,Arial,sans-serif!important;
+ letter-spacing:.08em!important;text-transform:uppercase!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number{
+ font:900 clamp(75px,7.3vw,123px)/.91 Inter,Arial,sans-serif!important;
+ letter-spacing:-.10em!important;font-variant-numeric:tabular-nums!important;
+ margin:9px 0 0!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number.dem{color:#6ca9ff!important}
+#page-home.reference-home #homeForecastSplit .final-party-number.rep{color:#ff828e!important}
+#page-home.reference-home #homeForecastSplit .final-bar{
+ height:21px!important;border-radius:2px!important;overflow:hidden!important;
+ border:1px solid rgba(255,255,255,.12)!important;
+ background:#243146!important;
+ box-shadow:none!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar>span.dem{
+ background:linear-gradient(90deg,#2c6fde,#78b3ff)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar>span.rep{
+ background:linear-gradient(90deg,#ff8e9d,#dc465f)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-majority-marker{
+ background:#fafcff!important;height:29px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-majority-note{
+ color:#a3b7d1!important;font:850 10px/1.35 Inter,Arial,sans-serif!important;
+ letter-spacing:.105em!important;text-transform:uppercase!important;
+}
+#page-home.reference-home #homeForecastSplit .final-tiebreak{
+ color:#fca5af!important;
+}
+/* SECOND: the existing headline becomes a short editorial identity banner. */
+#page-home.reference-home .reference-hero{
+ grid-column:1/-1!important;grid-row:2!important;min-width:0!important;
+ display:grid!important;grid-template-columns:minmax(0,1.55fr) minmax(180px,.45fr)!important;
+ align-items:center!important;gap:clamp(16px,3vw,42px)!important;
+ min-height:210px!important;margin:0!important;
+ padding:clamp(23px,3.1vw,43px)!important;
+ position:relative!important;isolation:isolate!important;overflow:hidden!important;
+ background:#fff!important;border:1px solid #dfe3e9!important;border-radius:11px!important;
+ box-shadow:0 8px 25px rgba(22,45,79,.048)!important;
+}
+#page-home.reference-home .reference-hero:before{
+ content:"";position:absolute;left:0!important;top:0!important;right:auto!important;
+ bottom:0!important;width:7px!important;height:100%!important;border:0!important;
+ background:linear-gradient(180deg,#2e79ec 0 47%,#eef2fa 47% 53%,#f15c70 53% 100%)!important;
+ pointer-events:none;
+}
+#page-home.reference-home .reference-hero:after{
+ content:"FORECAST • 2026"!important;position:absolute;z-index:0;
+ left:auto!important;top:auto!important;bottom:12px!important;right:24px!important;
+ height:auto!important;width:auto!important;border:0!important;background:none!important;
+ color:rgba(30,79,151,.075)!important;font:900 clamp(33px,4vw,57px)/1 Inter,Arial,sans-serif!important;
+ letter-spacing:-.06em!important;white-space:nowrap;pointer-events:none;
+}
+#page-home.reference-home .reference-hero-copy{position:relative!important;z-index:1;min-width:0!important}
+#page-home.reference-home .reference-eyebrow{
+ display:inline-block!important;width:auto!important;max-width:100%!important;
+ border:0!important;border-radius:0!important;background:none!important;
+ color:#4169a4!important;padding:0!important;margin:0 0 11px!important;
+ font:900 10px/1.3 Inter,Arial,sans-serif!important;letter-spacing:.14em!important;
+ text-transform:uppercase!important;
+}
+#page-home.reference-home .reference-hero h1{
+ max-width:850px!important;margin:0 0 11px!important;
+ color:#172a48!important;font:850 clamp(29px,3vw,46px)/1.08 Inter,Arial,sans-serif!important;
+ letter-spacing:-.06em!important;text-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+ max-width:780px!important;margin:0!important;
+ color:#58697f!important;font:500 clamp(13px,1.08vw,15px)/1.55 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-hero-actions{
+ display:flex!important;gap:10px!important;flex-wrap:wrap!important;margin:16px 0 0!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a){
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ min-height:38px!important;padding:8px 14px!important;border-radius:6px!important;
+ font:800 11px/1.25 Inter,Arial,sans-serif!important;
+ box-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-primary{
+ color:#fff!important;background:#236bdb!important;border:1px solid #236bdb!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-secondary{
+ color:#2b5b9e!important;background:#eef4ff!important;border:1px solid #d1def0!important;
+}
+#page-home.reference-home .reference-hero-mark{
+ position:relative!important;z-index:1!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ min-height:100px!important;min-width:0!important;padding:12px!important;
+ background:#f8faff!important;border:1px solid #e0e9f7!important;border-radius:7px!important;
+ box-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+ height:auto!important;max-width:100%!important;max-height:110px!important;object-fit:contain!important;
+}
+#page-home.reference-home .reference-mark-caption{
+ color:#637c9c!important;font:700 9px/1.4 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeModelNote{
+ margin:9px 0 0!important;padding:8px 11px!important;max-width:100%!important;
+ color:#466484!important;background:#eaf2fc!important;
+ border-left:3px solid #508cf1!important;border-radius:0 5px 5px 0!important;
+ font:600 12px/1.5 Inter,Arial,sans-serif!important;
+}
+/* THIRD: compact live information strip. */
+#page-home.reference-home .reference-metrics{
+ grid-column:1/-1!important;grid-row:3!important;
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ width:100%!important;min-width:0!important;margin:0!important;
+ gap:1px!important;padding:1px!important;background:#d4dce8!important;
+ border:1px solid #d4dce8!important;border-radius:9px!important;
+ box-shadow:none!important;
+ align-items:stretch!important;min-height:0!important;height:auto!important;overflow:hidden!important;
+}
+#page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)){
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+#page-home.reference-home .reference-metrics>*{
+ position:relative!important;display:flex!important;flex-direction:column!important;
+ align-items:flex-start!important;justify-content:center!important;text-align:left!important;
+ grid-column:auto!important;grid-row:auto!important;
+ min-width:0!important;max-width:100%!important;width:100%!important;
+ min-height:120px!important;height:auto!important;margin:0!important;padding:19px 23px!important;
+ border:0!important;border-radius:0!important;background:#fff!important;color:#1b2d49!important;
+ box-shadow:none!important;box-sizing:border-box!important;
+}
+#page-home.reference-home #homeElectionCountdown{
+ background:#eef5ff!important;
+}
+#page-home.reference-home #homeSenateTossups{background:#fff7f8!important}
+#page-home.reference-home #homeSenateForecast{background:#f4f7ff!important}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label,.metric-label){
+ color:#627690!important;
+ font:900 9px/1.4 Inter,Arial,sans-serif!important;
+ letter-spacing:.12em!important;text-transform:uppercase!important;
+ margin:0 0 8px!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-days{
+ color:#185dd0!important;
+ font:900 clamp(53px,5.2vw,72px)/.88 Inter,Arial,sans-serif!important;
+ letter-spacing:-.09em!important;font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-copy{
+ color:#556a87!important;font:700 11px/1.25 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-metrics .wg-metric-value{
+ color:#192c4b!important;
+ font:900 clamp(28px,3vw,40px)/1 Inter,Arial,sans-serif!important;
+ letter-spacing:-.065em!important;
+}
+#page-home.reference-home #homeSenateTossups .wg-metric-value{color:#d44d64!important}
+#page-home.reference-home #homeLastUpdated .wg-metric-value{
+ font:800 clamp(13px,1.35vw,17px)/1.25 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-value{
+ display:flex!important;align-items:baseline!important;flex-wrap:wrap!important;gap:12px!important;
+ font:900 clamp(23px,2.5vw,33px)/1 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-dem{color:#236fe4!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-rep{color:#dc4a60!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-divider{color:#a5b1c2!important}
+#page-home.reference-home .reference-divider{
+ grid-column:1/-1!important;grid-row:4!important;width:100%!important;
+ margin:2px 0!important;border:0!important;height:2px!important;
+ background:linear-gradient(90deg,#2e77ed 0 49%,#fff 49% 51%,#e8576d 51%)!important;
+}
+/* FOURTH: editorial content; existing buttons and poll data left untouched. */
+#page-home.reference-home .reference-bottom{
+ grid-column:1/-1!important;grid-row:5!important;
+ display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr)!important;
+ gap:clamp(13px,1.4vw,21px)!important;align-items:stretch!important;
+ margin:0!important;min-width:0!important;
+}
+#page-home.reference-home .reference-latest,
+#page-home.reference-home .reference-featured{
+ min-width:0!important;display:flex!important;flex-direction:column!important;
+ padding:clamp(22px,2.7vw,34px)!important;
+ background:#fff!important;border:1px solid #dfe4ec!important;border-radius:10px!important;
+ box-shadow:0 8px 24px rgba(22,45,79,.045)!important;
+}
+#page-home.reference-home .reference-section-head{
+ display:flex!important;align-items:center!important;justify-content:space-between!important;
+ gap:14px!important;flex-wrap:wrap!important;
+ margin:0 0 15px!important;padding:0 0 15px!important;
+ border-bottom:1px solid #dce3ec!important;
+}
+#page-home.reference-home .reference-section-head h2{
+ color:#182943!important;
+ font:850 clamp(24px,2.5vw,33px)/1.15 Inter,Arial,sans-serif!important;
+ letter-spacing:-.05em!important;
+}
+#page-home.reference-home .reference-section-head button{
+ color:#2459a9!important;background:#f0f5fe!important;border:1px solid #dbe6f8!important;
+ border-radius:6px!important;padding:9px 13px!important;
+ font:800 11px/1.3 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeLatestPolls{
+ width:100%!important;min-width:0!important;flex:1 1 auto!important;
+}
+#page-home.reference-home #homeLatestPolls>*{
+ padding-block:14px!important;border-bottom:1px solid #e5eaf1!important;
+}
+#page-home.reference-home .reference-map-card{
+ flex:1 1 auto!important;min-width:0!important;
+ border:1px solid #dbe5f3!important;border-radius:7px!important;
+ background:#f3f7fd!important;box-shadow:none!important;overflow:hidden!important;
+}
+#page-home.reference-home .reference-map-preview{
+ min-height:190px!important;background-color:#eaf2ff!important;
+}
+#page-home.reference-home .reference-map-copy,
+#page-home.reference-home .reference-map-copy strong{color:#213d67!important}
+#page-home.reference-home #homePastPollingMisses{
+ grid-column:1/-1!important;grid-row:6!important;
+ min-width:0!important;width:100%!important;margin:0!important;
+ color:#fff!important;border:1px solid #253e62!important;border-radius:9px!important;
+ background:linear-gradient(120deg,#132a48,#254e84)!important;
+ box-shadow:0 10px 25px rgba(19,44,77,.10)!important;
+}
+#page-home.reference-home .reference-home-shell> :not(.reference-hero):not(.reference-metrics):not(.reference-bottom):not(.reference-divider):not(#housePrediction2026):not(#homePastPollingMisses){
+ grid-column:1/-1!important;min-width:0!important;
+}
+#page-home.reference-home :is(button,a):focus-visible{outline:3px solid #6095f5!important;outline-offset:3px!important}
+@media(max-width:1080px){
+ #page-home.reference-home .reference-home-shell{
+  width:calc(100% - 30px)!important;gap:15px!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-party-number{font-size:clamp(65px,8vw,94px)!important}
+}
+@media(max-width:820px){
+ #page-home.reference-home .reference-home-shell{
+  width:calc(100% - 22px)!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:13px!important;padding:12px 0 48px!important;
+ }
+ #page-home.reference-home #housePrediction2026,
+ #page-home.reference-home .reference-hero,
+ #page-home.reference-home .reference-metrics,
+ #page-home.reference-home .reference-divider,
+ #page-home.reference-home .reference-bottom,
+ #page-home.reference-home #homePastPollingMisses{
+  grid-column:1/-1!important;grid-row:auto!important;
+ }
+ #page-home.reference-home #homeForecastSplit{
+  grid-template-columns:1fr!important;border-radius:10px!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-forecast-card{
+  min-height:300px!important;padding:28px!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-forecast-card+.final-forecast-card{
+  border-left:0!important;border-top:1px solid rgba(218,233,255,.22)!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-party-number{font-size:clamp(71px,16vw,105px)!important}
+ #page-home.reference-home .reference-hero{
+  grid-template-columns:minmax(0,1fr)!important;
+  min-height:0!important;gap:14px!important;padding:24px!important;
+ }
+ #page-home.reference-home .reference-hero-mark{
+  display:none!important;
+ }
+ #page-home.reference-home .reference-metrics,
+ #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)){
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ #page-home.reference-home .reference-metrics>*{
+  grid-column:auto!important;grid-row:auto!important;
+  padding:17px!important;min-height:114px!important;
+ }
+ #page-home.reference-home #homeElectionCountdown{
+  grid-column:1/-1!important;
+ }
+ #page-home.reference-home #homeSenateForecast{grid-column:1/-1!important}
+ #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateTossups{
+  grid-column:1/-1!important;
+ }
+ #page-home.reference-home .reference-bottom{grid-template-columns:1fr!important;gap:12px!important}
+}
+@media(max-width:460px){
+ #page-home.reference-home .reference-home-shell{width:calc(100% - 16px)!important}
+ #page-home.reference-home #homeForecastSplit .final-forecast-card{
+  min-height:260px!important;padding:23px!important;
+ }
+ #page-home.reference-home #homeForecastSplit .final-title{font-size:27px!important;min-height:48px!important}
+ #page-home.reference-home #homeForecastSplit .final-party-number{font-size:clamp(60px,18vw,86px)!important}
+ #page-home.reference-home .reference-hero{padding:19px!important}
+ #page-home.reference-home .reference-hero h1{font-size:clamp(30px,7.5vw,39px)!important}
+ #page-home.reference-home .reference-hero-actions{gap:7px!important}
+ #page-home.reference-home .reference-hero-actions :is(button,a){
+  min-height:36px!important;font-size:10px!important;padding:7px 10px!important;
+ }
+ #page-home.reference-home .reference-metrics .wg-election-days{font-size:65px!important}
+ #page-home.reference-home .reference-metrics .wg-metric-value{font-size:28px!important}
+ #page-home.reference-home .reference-latest,
+ #page-home.reference-home .reference-featured{padding:20px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #page-home.reference-home *,
+ #page-home.reference-home *:before,
+ #page-home.reference-home *:after{transition:none!important;animation:none!important}
+}
