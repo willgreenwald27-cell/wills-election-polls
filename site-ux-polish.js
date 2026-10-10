@@ -105,7 +105,7 @@
     // three other stats side by side underneath on desktop.
     const splitScreenHome=!!document.querySelector('link[href*="home-splitscreen-2026.css"]');
     metrics.style.setProperty('display','grid','important');
-    metrics.style.setProperty('grid-template-columns',splitScreenHome?(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'):(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'),'important');
+    metrics.style.setProperty('grid-template-columns',splitScreenHome?(mobileMetrics?'repeat(2,minmax(0,1fr))':'repeat(3,minmax(0,1fr))'):(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'),'important');
     metrics.style.setProperty('grid-auto-columns','unset','important');
     metrics.style.setProperty('grid-auto-flow','row','important');
     metrics.style.setProperty('gap',splitScreenHome?'0':'14px','important');
@@ -245,7 +245,7 @@
 
     countdown.style.setProperty('grid-column','1 / -1','important');
     for(const el of [toss,updated,forecast]){
-      el.style.setProperty('grid-column','auto','important');
+      el.style.setProperty('grid-column',el===forecast&&splitScreenHome&&mobileMetrics?'1 / -1':'auto','important');
       el.style.setProperty('width','100%','important');
       el.style.setProperty('max-width','none','important');
       el.style.setProperty('min-width','0','important');
