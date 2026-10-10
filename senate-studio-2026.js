@@ -1,6 +1,8 @@
 /* Studio presentation for Will's interactive Senate forecast. State data and original handlers stay authoritative. */
 (()=>{
   'use strict';
+  /* mobile-classic-20261010: keep the original Senate map on phones. */
+  if (window.matchMedia('(max-width:767px)').matches) return;
   const ID='page-senate';
   const FEATURED=['TX','ME','OH','IA','KS'];
   let ready=false, lastSig='', observer=null;
