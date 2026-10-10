@@ -1,0 +1,348 @@
+(()=>{
+  'use strict';
+  const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
+  const leafs=root=>root?[...root.querySelectorAll('*')].filter(el=>el.children.length===0):[];
+  let raf=0;
+
+  function ensureStyle(){
+    let st=document.getElementById('wgSeatPartyPseudoStyle');
+    if(!st){st=document.createElement('style');st.id='wgSeatPartyPseudoStyle';document.head.appendChild(st);}
+    st.textContent=`
+      .site-header .nav{position:relative!important;z-index:1001!important}
+      .site-header .nav>[data-page-link],.site-header .nav>button{pointer-events:auto!important;position:relative!important;z-index:1002!important}
+      #page-senate .balance-count-row{display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:end!important}
+      #page-senate .balance-party{display:flex!important;align-items:baseline!important;gap:8px!important;overflow:visible!important;min-width:0!important}
+      #page-senate .balance-party.dem{justify-content:flex-start!important;text-align:left!important}
+      #page-senate .balance-party.rep{justify-content:flex-end!important;text-align:right!important}
+      #page-senate .balance-party.dem span,#page-senate .balance-party.rep span{display:inline!important;position:static!important;opacity:1!important;visibility:visible!important;white-space:nowrap!important;font-weight:900!important;letter-spacing:1.05px!important;text-transform:uppercase!important}
+      #page-senate .balance-party.dem span{order:1!important;color:#2763b8!important}
+      #page-senate .balance-party.dem strong{order:2!important}
+      #page-senate .balance-party.rep strong{order:1!important}
+      #page-senate .balance-party.rep span{order:2!important;color:#bd2937!important}
+      #page-senate .compact-forecast-key .key-side.democratic{justify-content:start!important}
+      #page-senate .compact-forecast-key .key-side.republican{justify-content:end!important}
+      @media(max-width:650px){
+        #page-senate .balance-party{gap:4px!important}
+        #page-senate .balance-party span{font-size:7px!important;letter-spacing:.55px!important}
+        #page-senate .compact-forecast-key .key-side.democratic,#page-senate .compact-forecast-key .key-side.republican{justify-content:start!important}
+      }
+    `;
+  }
+
+  function reorderNav(){
+    const nav=document.querySelector('.site-header .nav');
+    if(!nav)return;
+    for(const item of [...nav.children]){
+      const key=item.dataset.acceptedPage||item.dataset.willPage||item.dataset.spaPage||item.dataset.pageLink;
+      if(key==='electionnight'||norm(item.textContent)==='Election Night')item.remove();
+    }
+    const items=[...nav.children];
+    const find=(key,label)=>nav.querySelector(
+      '[data-accepted-page="'+key+'"],[data-will-page="'+key+'"],[data-spa-page="'+key+'"],[data-page-link="'+key+'"]'
+    )||items.find(el=>norm(el.textContent)===label);
+    const fixed=[
+      find('home','Home'),
+      find('senate','2026 Senate Prediction'),
+      find('governor','2026 Governor Map'),
+      find('polls','New Polls'),
+      find('betting','Betting Odds'),
+      find('errors','Past Polling Errors')
+    ].filter(Boolean);
+    const about=find('about','About Me');
+    const trailing=[about].filter(Boolean);
+    // Keep the About Me tab last.
+    const extras=items.filter(el=>!fixed.includes(el)&&!trailing.includes(el));
+    const desired=[...fixed,...extras,...trailing];
+    desired.forEach((el,i)=>{
+      el.style.setProperty('order',String(i),'important');
+      el.style.setProperty('pointer-events','auto','important');
+      if(el.tagName==='BUTTON'&&!el.type)el.type='button';
+    });
+  }
+
+  function installNavClickRepair(){
+    if(window.__wgNavClickRepair)return;
+    window.__wgNavClickRepair=true;
+    document.addEventListener('click',e=>{
+      const btn=e.target?.closest?.('.site-header .nav [data-page-link]');
+      if(!btn)return;
+      const page=btn.getAttribute('data-page-link');
+      if(!page)return;
+      try{
+        if(typeof showPage==='function'){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          showPage(page);
+        }
+      }catch(_){}
+    },true);
+  }
+
+  function electionCountdown(){
+    const now=new Date();
+    const parts=new Intl.DateTimeFormat('en-US',{
+      timeZone:'America/Los_Angeles',year:'numeric',month:'numeric',day:'numeric'
+    }).formatToParts(now);
+    const val=t=>Number(parts.find(p=>p.type===t)?.value||0);
+    const todayUtc=Date.UTC(val('year'),val('month')-1,val('day'));
+    const electionUtc=Date.UTC(2026,10,3);
+    const days=Math.max(0,Math.round((electionUtc-todayUtc)/86400000));
+
+    const senate=document.getElementById('page-senate');
+    if(senate){
+      for(const el of leafs(senate)){
+        const t=norm(el.textContent);
+        if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
+      }
+    }
+
+    const home=document.getElementById('page-home');
+    const metrics=home?.querySelector('.reference-metrics');
+    if(!metrics)return;
+
+    const mobileMetrics=window.matchMedia('(max-width:800px)').matches;
+    metrics.style.setProperty('display','grid','important');
+    metrics.style.setProperty('grid-template-columns',mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))','important');
+    metrics.style.setProperty('grid-auto-columns','unset','important');
+    metrics.style.setProperty('grid-auto-flow','row','important');
+    metrics.style.setProperty('gap','14px','important');
+    metrics.style.setProperty('width','100%','important');
+    metrics.style.setProperty('max-width','100%','important');
+
+    const tossups='7';
+
+    let style=document.getElementById('wgElectionCountdownStyle');
+    if(!style){
+      style=document.createElement('style');
+      style.id='wgElectionCountdownStyle';
+      document.head.appendChild(style);
+    }
+    style.textContent=`
+      #page-home .reference-metrics{
+        display:grid!important;
+        grid-template-columns:repeat(3,minmax(0,1fr))!important;
+        gap:14px!important;
+        width:100%!important;
+        max-width:100%!important;
+        height:auto!important;
+        min-height:0!important;
+        overflow:visible!important;
+        align-items:stretch!important;
+        box-sizing:border-box!important;
+        margin:18px 0 24px!important;
+      }
+      #page-home #homeElectionCountdown{
+        grid-column:1/-1!important;
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        min-height:148px!important;
+        padding:22px 26px 20px!important;
+        box-sizing:border-box!important;
+        display:flex!important;
+        flex-direction:column!important;
+        align-items:center!important;
+        justify-content:center!important;
+        text-align:center!important;
+      }
+      #page-home #homeSenateTossups,
+      #page-home #homeLastUpdated,
+      #page-home #homeSenateForecast{
+        width:100%!important;
+        max-width:100%!important;
+        min-width:0!important;
+        min-height:116px!important;
+        padding:20px 24px!important;
+        box-sizing:border-box!important;
+        display:flex!important;
+        flex-direction:column!important;
+        justify-content:center!important;
+      }
+      #page-home .wg-election-label,
+      #page-home .wg-metric-label{
+        display:block!important;
+        color:#6d7c91!important;
+        font:900 11px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        letter-spacing:1.45px!important;
+        text-transform:uppercase!important;
+        margin-bottom:8px!important;
+      }
+      #page-home #homeSenateTossups .wg-metric-label{color:#a53a49!important;}
+      #page-home .wg-election-days{
+        display:block!important;
+        color:#17263d!important;
+        font:900 clamp(58px,7vw,82px)/.92 Georgia,serif!important;
+        letter-spacing:-3px!important;
+      }
+      #page-home .wg-election-copy{
+        display:block!important;
+        color:#53647a!important;
+        font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
+        margin-top:8px!important;
+      }
+      #page-home .wg-metric-value{
+        color:#17263d!important;
+        font:900 34px/1 Georgia,serif!important;
+      }
+      #page-home #homeSenateTossups .wg-metric-value{color:#a53a49!important;}
+      #page-home #homeSenateForecast .wg-forecast-value{
+        display:flex!important;
+        align-items:baseline!important;
+        gap:14px!important;
+        flex-wrap:wrap!important;
+        font:900 31px/1 Georgia,serif!important;
+      }
+      #page-home #homeSenateForecast .wg-forecast-dem{color:#2763b8!important;}
+      #page-home #homeSenateForecast .wg-forecast-rep{color:#bd2937!important;}
+      #page-home #homeSenateForecast .wg-forecast-divider{
+        color:#a9b4c3!important;
+        font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+        font-size:20px!important;
+      }
+      @media(max-width:800px){
+        #page-home .reference-metrics{grid-template-columns:1fr!important;}
+        #page-home #homeElectionCountdown{min-height:132px!important;padding:18px 16px!important;}
+        #page-home .wg-election-days{font-size:60px!important;}
+        #page-home .wg-election-copy{font-size:13px!important;}
+        #page-home #homeSenateTossups,
+        #page-home #homeLastUpdated,
+        #page-home #homeSenateForecast{min-height:104px!important;padding:18px 20px!important;}
+      }
+    `;
+
+    const legacyPresent=leafs(metrics).some(el=>/rated\s+senate\s+races|polls?\s+entered/i.test(norm(el.textContent)));
+    let countdown=metrics.querySelector('#homeElectionCountdown');
+    let toss=metrics.querySelector('#homeSenateTossups');
+    let updated=metrics.querySelector('#homeLastUpdated');
+    let forecast=metrics.querySelector('#homeSenateForecast');
+
+    if(legacyPresent||!countdown||!toss||!updated||!forecast||metrics.children.length!==4){
+      countdown=document.createElement('div');
+      countdown.id='homeElectionCountdown';
+      countdown.className='wg-election-countdown';
+      countdown.style.cssText='border:1px solid #d9dee7;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,34,53,.08);';
+
+      toss=document.createElement('div');
+      toss.id='homeSenateTossups';
+      toss.className='wg-home-metric';
+      toss.style.cssText='border:1px solid #ead9dc;border-radius:14px;background:#fff9fa;box-shadow:0 5px 16px rgba(20,34,53,.04);';
+
+      updated=document.createElement('div');
+      updated.id='homeLastUpdated';
+      updated.className='wg-home-metric';
+      updated.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
+
+      forecast=document.createElement('div');
+      forecast.id='homeSenateForecast';
+      forecast.className='wg-home-metric';
+      forecast.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
+
+      metrics.replaceChildren(countdown,toss,updated,forecast);
+    }
+
+    countdown.style.setProperty('grid-column','1 / -1','important');
+    for(const el of [toss,updated,forecast]){
+      el.style.setProperty('grid-column','auto','important');
+      el.style.setProperty('width','100%','important');
+      el.style.setProperty('max-width','none','important');
+      el.style.setProperty('min-width','0','important');
+    }
+
+    countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
+    countdown.querySelector('.wg-election-days').textContent=String(days);
+    countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
+
+    toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
+    toss.querySelector('.wg-metric-value').textContent=tossups;
+    toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
+
+    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
+    updated.setAttribute('aria-label','Last updated October 8, 2026');
+
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
+  }
+
+  function keepPartyLabels(){
+    ensureStyle();
+    const root=document.getElementById('page-senate');if(!root)return;
+    root.querySelectorAll('.wg-sticky-party-label').forEach(el=>el.remove());
+    root.querySelectorAll('.wg-seat-party-block').forEach(el=>el.classList.remove('wg-seat-party-block','wg-seat-dem','wg-seat-rep'));
+    const row=root.querySelector('.balance-count-row');
+    const dem=row?.querySelector('.balance-party.dem');
+    const majority=row?.querySelector('.balance-majority');
+    const rep=row?.querySelector('.balance-party.rep');
+    if(row&&dem&&rep){
+      if(dem!==row.firstElementChild)row.insertBefore(dem,row.firstElementChild);
+      if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
+      if(rep!==row.lastElementChild)row.appendChild(rep);
+      const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
+      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='51';const rn=rep.querySelector('strong');if(rn)rn.textContent='49';
+    }
+    const key=root.querySelector('.compact-forecast-key');
+    const kd=key?.querySelector('.key-side.democratic');
+    const kn=key?.querySelector('.key-neutral');
+    const kr=key?.querySelector('.key-side.republican');
+    if(key&&kd&&kr){key.appendChild(kd);if(kn)key.appendChild(kn);key.appendChild(kr);}
+  }
+
+  function fixGrahamText(){
+    const root=document.getElementById('page-polls');if(!root)return;
+    for(const el of leafs(root).filter(x=>x.getClientRects().length&&/^Graham Nordone$/i.test(norm(x.textContent)))){
+      el.style.setProperty('color','#17263d','important');
+      let card=el.parentElement;
+      for(let i=0;card&&card!==root&&i<7;i++,card=card.parentElement){
+        if(/Graham Nordone/i.test(norm(card.textContent))&&/Annie Andrews/i.test(norm(card.textContent))){
+          const bars=[...card.querySelectorAll('div')].filter(x=>{const r=x.getBoundingClientRect();return r.width>120&&r.height>=4&&r.height<=14;}).sort((a,b)=>a.getBoundingClientRect().top-b.getBoundingClientRect().top);
+          const colored=bars.filter(x=>{const bg=getComputedStyle(x).backgroundColor||'';return bg&&!/rgba?\(\s*(?:23[0-9]|24[0-9]|25[0-5])\s*,\s*(?:23[0-9]|24[0-9]|25[0-5])\s*,\s*(?:23[0-9]|24[0-9]|25[0-5])/.test(bg);});
+          if(colored[0])colored[0].style.setProperty('background','#bd2937','important');
+          if(colored[1])colored[1].style.setProperty('background','#2763b8','important');
+          for(const n of leafs(card)){const t=norm(n.textContent);if(t==='45.0%')n.style.setProperty('color','#bd2937','important');if(t==='43.0%')n.style.setProperty('color','#2763b8','important');}
+          break;
+        }
+      }
+    }
+  }
+
+  function fixKansasOdds(){
+    try{
+      if(typeof stateData!=='undefined'&&stateData?.KS){
+        const ks=stateData.KS;
+        const setOdds=(nameKey,oddsKey)=>{const name=norm(ks[nameKey]);if(/Marshall/i.test(name))ks[oddsKey]='63';if(/Hamilton/i.test(name))ks[oddsKey]='37';};
+        setOdds('candidate1','candidate1Odds');setOdds('candidate2','candidate2Odds');
+      }
+    }catch(_){}
+    const root=document.getElementById('page-senate');if(!root)return;
+    const labels=leafs(root).filter(el=>/^Kansas$/i.test(norm(el.textContent))&&el.getClientRects().length);
+    for(const label of labels){
+      let box=label.parentElement;
+      for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){const t=norm(box.textContent);if(/Marshall/i.test(t)&&/Hamilton/i.test(t)&&/(WIN ODDS|STATISTICAL ODDS|WILL[’']S CALL)/i.test(t))break;}
+      if(!box||box===root)continue;
+      for(const el of leafs(box)){const t=norm(el.textContent);if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'63%');if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'37%');}
+      const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length),bar=box.querySelector('.oddsbar');
+      if(bar&&lines.length>=2){const odds=lines.map(line=>{const name=norm(line.querySelector('.candidate-name')?.textContent);return /Marshall/i.test(name)?63:/Hamilton/i.test(name)?37:null;});const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');}
+    }
+  }
+
+  function fixHomeSenateCount(){
+    const root=document.getElementById('page-home');if(!root)return;
+    const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
+    if(!card)return;
+    const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
+    if(nums[0])nums[0].textContent='51';
+    if(nums[1])nums[1].textContent='49';
+    const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
+    const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
+    if(dem)dem.style.setProperty('width','51%','important');
+    if(rep)rep.style.setProperty('width','49%','important');
+  }
+
+  function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
+  function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
+
+  installNavClickRepair();apply();
+  [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
+  setInterval(apply,750);
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
+})();
