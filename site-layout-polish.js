@@ -27,7 +27,7 @@
       #page-senate .wg-maine-panel .candidate-party{margin-top:2px!important;font-size:10px!important;letter-spacing:.65px!important}
       #page-senate .wg-maine-panel .candidate-metrics b,#page-senate .wg-maine-panel .candidate-metrics strong{font-size:20px!important}
       #page-senate .wg-call-card{margin-top:9px!important;padding:12px 14px!important;border-radius:10px!important;background:linear-gradient(135deg,#9d2f43,#bd2937)!important;border:2px solid #e65c66!important;box-shadow:0 8px 24px rgba(189,41,55,.20)!important;box-sizing:border-box!important}
-      #page-senate .wg-call-card .wg-call-winner{font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:21px!important;line-height:1.08!important;font-weight:800!important;color:#fff!important}
+      #page-senate .wg-call-card .wg-call-winner{font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:clamp(24px,2.35vw,30px)!important;line-height:1.1!important;font-weight:850!important;letter-spacing:-.035em!important;color:#fff!important}
       #page-senate .wg-call-card .prediction-copy{display:block!important;margin-top:6px!important;font-family:Georgia,'Times New Roman',serif!important;font-size:15px!important;line-height:1.2!important;font-weight:800!important;color:#fff!important}
       #page-senate .wg-maine-panel .maine-why-note{margin:12px 0 0!important;padding:15px 16px!important;border:0!important;border-radius:10px!important;background:#f7f8fb!important;color:#26384f!important;font:500 12px/1.45 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:0!important;box-shadow:none!important}
       #page-senate .wg-maine-panel .maine-why-note b{display:block!important;margin-bottom:8px!important;color:#61718a!important;font-size:10px!important;line-height:1.1!important;font-weight:900!important;letter-spacing:1.2px!important;text-transform:uppercase!important}
@@ -73,6 +73,32 @@
     return null;
   }
 
+  // Maine's custom red call card can receive a serif font from older
+  // inline popup markup. Normalize the rendered winner label directly,
+  // matching the sans-serif winner shown for Kansas and other states.
+  function alignMaineCallTypography(box){
+    const callCards=box.querySelectorAll('.wg-call-card');
+    const styles=[
+      ['font-family','Inter, "Helvetica Neue", Arial, ui-sans-serif, system-ui, sans-serif'],
+      ['font-style','normal'],
+      ['font-weight','850'],
+      ['font-size','clamp(24px, 2.35vw, 30px)'],
+      ['line-height','1.1'],
+      ['letter-spacing','-.035em']
+    ];
+    for(const card of callCards){
+      for(const el of card.querySelectorAll('*')){
+        if(el.children.length||norm(el.textContent)!=='Republican')continue;
+        for(const [prop,value] of styles){
+          if(el.style.getPropertyValue(prop)!==value||el.style.getPropertyPriority(prop)!=='important'){
+            el.style.setProperty(prop,value,'important');
+          }
+        }
+        el.classList.add('wg-call-winner');
+      }
+    }
+  }
+
   function polishMaine(){
     const box=findMainePanel();
     if(!box)return;
@@ -107,6 +133,8 @@
       });
       if(candidate){candidate.textContent='Republican';candidate.classList.add('wg-call-winner');candidate.parentElement?.classList.add('wg-call-card');}
     }
+
+    alignMaineCallTypography(box);
 
     let why=box.querySelector('.maine-why-note');
     if(!why){why=document.createElement('div');why.className='maine-why-note';box.appendChild(why);}
