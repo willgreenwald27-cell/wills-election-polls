@@ -157,7 +157,7 @@
   }
   const updatedBox=$('senate-night-updated');
   if(updatedBox){
-   const dates=Object.values(rows).filter(x=>x?.active&&/^\\d{4}-\\d{2}-\\d{2}$/.test(String(x.updated||''))).map(x=>x.updated);
+   const dates=Object.values(rows).filter(x=>x?.active&&/^\d{4}-\d{2}-\d{2}$/.test(String(x.updated||''))).map(x=>x.updated);
    const latest=dates.sort().at(-1);
    updatedBox.textContent=latest?new Intl.DateTimeFormat('en-US',{
      month:'short',day:'numeric',year:'numeric',timeZone:'UTC'
