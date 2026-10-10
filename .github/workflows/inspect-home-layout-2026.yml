@@ -1,0 +1,63 @@
+name: Inspect home layout 2026
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-home-layout-2026.yml'
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect homepage structure
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import base64,gzip,re
+          parts=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(f).read_text().strip() for f in parts))).decode('utf-8','replace')
+          class Node:
+              def __init__(self,tag,attrs,parent=None):
+                  self.tag=tag;self.attrs=dict(attrs);self.parent=parent;self.children=[];self.text=[]
+          class Parser(HTMLParser):
+              def __init__(self):super().__init__();self.root=Node('root',[]);self.stack=[self.root]
+              def handle_starttag(self,tag,attrs):
+                  x=Node(tag,attrs,self.stack[-1]);self.stack[-1].children.append(x)
+                  if tag not in {'img','input','br','hr','meta','link','source','area','path','circle','rect','polygon','polyline','line','ellipse','stop','wbr'}:self.stack.append(x)
+              def handle_endtag(self,tag):
+                  for i in range(len(self.stack)-1,0,-1):
+                      if self.stack[i].tag==tag:
+                          self.stack=self.stack[:i];break
+              def handle_data(self,data):
+                  d=' '.join(data.split())
+                  if d and self.stack[-1].tag not in ('script','style'):self.stack[-1].text.append(d[:140])
+          parser=Parser();parser.feed(html)
+          def find(node,id):
+              if node.attrs.get('id')==id:return node
+              for ch in node.children:
+                  x=find(ch,id)
+                  if x:return x
+          root=find(parser.root,'page-home')
+          if not root:raise SystemExit('page-home not found')
+          out=['Homepage element tree from original compressed markup (before runtime injections):']
+          def brief(x):return f"<{x.tag} id={x.attrs.get('id','')} class={x.attrs.get('class','')}>"
+          def walk(x,depth=0):
+              if depth>7:return
+              if x.tag in ('script','style','svg'):return
+              tx=' '.join(x.text)[:155]
+              out.append('  '*depth+brief(x)+' '+tx)
+              for ch in x.children[:28]:walk(ch,depth+1)
+              if len(x.children)>28:out.append('  '*(depth+1)+f'... {len(x.children)-28} more children')
+          walk(root)
+          Path('home-layout-inspection-2026.txt').write_text('\n'.join(out))
+          PY
+      - name: Commit inspection
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add home-layout-inspection-2026.txt
+          git commit -m 'Inspect original homepage DOM structure'
+          git pull --rebase
+          git push
