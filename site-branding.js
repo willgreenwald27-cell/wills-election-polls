@@ -1,11 +1,11 @@
 (()=>{
 'use strict';
-const ICON='/site-icon.svg?v=20261009-mark1';
-const WORDMARK='/site-wordmark.svg?v=20261009-mark1';
+const ICON='/site-icon.svg?v=20261009-capitol1';
+const WORDMARK='/site-wordmark.svg?v=20261009-capitol1';
 function brandedImage(url,alt,kind){
  const img=document.createElement('img');
  img.src=url;img.alt=alt;img.loading='eager';img.decoding='async';
- img.dataset.willBrand='20261009';
+ img.dataset.willBrand='20261009-capitol';
  img.className=kind;
  return img;
 }
@@ -15,7 +15,7 @@ function convert(el,url,kind,alt){
  if(el.tagName.toLowerCase()==='img'){
    if(el.getAttribute('src')!==url)el.setAttribute('src',url);
    el.alt=alt;
-   el.dataset.willBrand='20261009';
+   el.dataset.willBrand='20261009-capitol';
    return;
  }
  if(el.tagName.toLowerCase()==='svg'){
@@ -24,7 +24,7 @@ function convert(el,url,kind,alt){
    el.replaceWith(img);
    return;
  }
- const child=[...el.children].find(x=>x.tagName.toLowerCase()==='img'&&x.dataset.willBrand==='20261009');
+ const child=[...el.children].find(x=>x.tagName.toLowerCase()==='img'&&x.dataset.willBrand==='20261009-capitol');
  if(child)return;
  const img=brandedImage(url,alt,kind);
  el.replaceChildren(img);
@@ -33,24 +33,24 @@ function setFavicons(){
  const candidates=[...document.head.querySelectorAll('link[rel~="icon"]')];
  for(const el of candidates){
    if(el.getAttribute('rel')==='apple-touch-icon')continue;
-   if(el.getAttribute('data-will-brand')==='20261009')continue;
+   if(el.getAttribute('data-will-brand')==='20261009-capitol')continue;
    el.remove();
  }
- if(document.head.querySelector('link[data-will-brand="20261009"]'))return;
+ if(document.head.querySelector('link[data-will-brand="20261009-capitol"]'))return;
  const link=document.createElement('link');
- link.rel='icon';link.type='image/svg+xml';link.sizes='any';link.href=ICON;link.dataset.willBrand='20261009';
+ link.rel='icon';link.type='image/svg+xml';link.sizes='any';link.href=ICON;link.dataset.willBrand='20261009-capitol';
  document.head.appendChild(link);
 }
 function ensureStyles(){
- if(document.getElementById('will-logo-style-20261009'))return;
- const s=document.createElement('style');s.id='will-logo-style-20261009';
+ if(document.getElementById('will-logo-style-20261009-capitol-capitol'))return;
+ const s=document.createElement('style');s.id='will-logo-style-20261009-capitol-capitol';
  s.textContent=`
- .reference-brand-icon img[data-will-brand="20261009"]{display:block;width:100%;height:100%;object-fit:contain}
- img.reference-brand-icon[data-will-brand="20261009"]{object-fit:contain!important}
- .reference-hero-mark img.brand-arc-hero[data-will-brand="20261009"]{display:block;object-fit:contain;max-height:320px!important;width:min(285px,26vw)!important}
- #page-about .about-logo-stage img[data-will-brand="20261009"]{width:min(100%,460px)!important;max-width:460px!important;height:auto!important;object-fit:contain!important}
- .site-header .brand-mark img[data-will-brand="20261009"]{display:block;width:100%;height:100%;object-fit:contain}
- @media(max-width:640px){.reference-hero-mark img.brand-arc-hero[data-will-brand="20261009"]{width:min(225px,67vw)!important}}
+ .reference-brand-icon img[data-will-brand="20261009-capitol"]{display:block;width:100%;height:100%;object-fit:contain}
+ img.reference-brand-icon[data-will-brand="20261009-capitol"]{object-fit:contain!important}
+ .reference-hero-mark img.brand-arc-hero[data-will-brand="20261009-capitol"]{display:block;object-fit:contain;max-height:330px!important;width:min(560px,45vw)!important;max-width:100%!important}
+ #page-about .about-logo-stage img[data-will-brand="20261009-capitol"]{width:min(100%,650px)!important;max-width:650px!important;height:auto!important;object-fit:contain!important}
+ .site-header .brand-mark img[data-will-brand="20261009-capitol"]{display:block;width:100%;height:100%;object-fit:contain}
+ @media(max-width:640px){.reference-hero-mark img.brand-arc-hero[data-will-brand="20261009-capitol"]{width:min(420px,90vw)!important}}
  `;
  document.head.appendChild(s);
 }
@@ -64,7 +64,7 @@ function apply(){
    convert(node,ICON,'reference-brand-icon','Will’s Election Polls logo');
  }
  for(const node of document.querySelectorAll('.brand-arc-hero')){
-   convert(node,ICON,'brand-arc-hero','Will’s Election Polls logo');
+   convert(node,WORDMARK,'brand-arc-hero','Will’s Election Polls logo');
  }
  for(const node of document.querySelectorAll('.site-header .brand-mark')){
    convert(node,ICON,'brand-mark','Will’s Election Polls logo');
