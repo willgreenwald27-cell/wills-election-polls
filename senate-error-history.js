@@ -321,6 +321,8 @@
       @media(max-width:700px){
         #page-errors .ipe-shell,#page-errors .ipe-hero-inner{width:calc(100% - 24px)}#page-errors .ipe-hero{min-height:auto}.ipe-hero-inner{padding:42px 0 70px!important}.ipe-hero h1{font-size:48px!important;letter-spacing:-1.8px!important}.ipe-demo-stage{grid-template-columns:1fr!important}.ipe-demo-arrow{transform:rotate(90deg)}.ipe-demo-verdicts{grid-template-columns:1fr!important}.ipe-main{margin-top:-35px!important}.ipe-metrics{grid-template-columns:1fr!important}.ipe-method{padding:20px!important}.ipe-method h2,.ipe-section-head h2{font-size:31px!important}.ipe-section-head{align-items:flex-start!important;flex-direction:column!important;gap:10px!important}.ipe-shocks{display:flex!important;overflow:auto!important;scroll-snap-type:x mandatory;padding-bottom:5px}.ipe-shock{min-width:245px;scroll-snap-align:start}.ipe-controls{grid-template-columns:1fr!important}.ipe-state-grid{grid-template-columns:1fr!important}.ipe-state-head{align-items:flex-start!important;flex-direction:column!important;gap:5px!important}.ipe-state-head span{text-align:left!important}.ipe-modal-title{align-items:flex-start!important;flex-direction:column!important}.ipe-modal-shift{text-align:left!important}.ipe-modal-title h2{font-size:58px!important}.ipe-modal-hero{padding:70px 16px 30px!important}.ipe-modal-body{padding-left:12px!important;padding-right:12px!important}.ipe-modal-nav{grid-template-columns:1fr 1fr!important;padding:10px 12px!important}.ipe-modal-nav span{grid-column:1/-1;grid-row:1}.ipe-candidate-stats{grid-template-columns:1fr 1fr 1fr!important}.ipe-context{grid-template-columns:1fr!important}
 
+      }
+
       /* Mobile editorial upgrade: large readable type and full-width race storytelling. */
       #page-errors .ipe-mobile-jumps{display:none}
       @media(max-width:700px){
@@ -490,7 +492,6 @@
       }
       @media(prefers-reduced-motion:reduce){
         #page-errors .ipe-race,#page-errors .ipe-shock{transition:none!important;scroll-behavior:auto!important}
-      }
       }
     `;
     document.head.appendChild(st);
