@@ -336,8 +336,8 @@
         #page-errors .ipe-btn{min-height:49px;font-size:12px!important;line-height:1.25!important;padding:10px 12px!important;border-radius:12px}
         #page-errors .ipe-demo{padding:16px!important;border-radius:18px;box-shadow:0 16px 40px rgba(2,14,38,.25)}
         #page-errors .ipe-demo-label{font-size:11px!important;line-height:1.45;letter-spacing:.9px!important}
-        #page-errors .ipe-demo-stage{grid-template-columns:1fr 1fr!important;gap:7px!important}
-        #page-errors .ipe-demo-arrow{grid-column:1/-1;transform:none!important;min-height:17px;font-size:20px}
+        #page-errors .ipe-demo-stage{grid-template-columns:1fr!important;gap:8px!important}
+        #page-errors .ipe-demo-arrow{grid-column:auto!important;transform:rotate(90deg)!important;min-height:18px;font-size:20px}
         #page-errors .ipe-demo-card{padding:15px 12px!important;min-height:132px;border-radius:12px}
         #page-errors .ipe-demo-card span{font-size:10px!important;line-height:1.35}
         #page-errors .ipe-demo-card b{font-size:clamp(19px,5.2vw,24px)!important;line-height:1.14!important;overflow-wrap:anywhere}
@@ -432,12 +432,12 @@
         #page-errors .ipe-modal-shift{text-align:left!important}
         #page-errors .ipe-modal-shift span{font-size:11px!important}
         #page-errors .ipe-modal-shift b{font-size:39px!important}
-        #page-errors .ipe-modal-journey{grid-template-columns:1fr 1fr!important;gap:8px!important;margin:22px 0 18px!important}
+        #page-errors .ipe-modal-journey{grid-template-columns:1fr!important;gap:8px!important;margin:22px 0 18px!important}
         #page-errors .ipe-modal-stage{padding:15px 12px!important;border-radius:12px}
         #page-errors .ipe-modal-stage span{font-size:10px!important;line-height:1.3!important}
         #page-errors .ipe-modal-stage b{font-size:clamp(19px,5.1vw,25px)!important;line-height:1.15!important;overflow-wrap:anywhere}
         #page-errors .ipe-modal-stage small{font-size:10px!important;line-height:1.4!important}
-        #page-errors .ipe-modal-arrow{grid-column:1/-1;grid-row:2}
+        #page-errors .ipe-modal-arrow{grid-column:auto!important;grid-row:auto!important}
         #page-errors .ipe-modal-arrow b{font-size:24px!important}
         #page-errors .ipe-modal-arrow span{font-size:11px!important}
         #page-errors .ipe-candidates{gap:9px!important}
