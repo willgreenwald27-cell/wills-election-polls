@@ -482,65 +482,91 @@
 }
 
 
-/* 2026 FORECAST TYPOGRAPHY REFINEMENT
-   Newsroom typography only, scoped to the Senate and House forecast graphics.
-   All projected seats, labels, bars, geometry and click handlers are unchanged. */
+/* ELEGANT FORECAST TYPOGRAPHY — contemporary editorial edition.
+   Only styles the home Senate/House forecast cards, not data or interactions. */
+#page-home.reference-home #homeForecastSplit .final-forecast-card,
+#page-home.reference-home #homeForecastSplit :is(.senate-card,.house-card,.forecast-card){
+  background:#fefefd!important;
+  border-color:#dbe0e6!important;
+  box-shadow:0 7px 23px rgba(21,42,70,.055)!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:after{
+  content:none!important;
+  display:none!important;
+}
 #page-home.reference-home #homeForecastSplit :is(.final-title,.senate-title,.house-title){
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
-  font-size:clamp(26px,2.35vw,34px)!important;
-  font-weight:700!important;
-  line-height:1.17!important;
-  letter-spacing:-.027em!important;
+  font-family:"Iowan Old Style","Baskerville","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif!important;
+  font-size:clamp(31px,2.9vw,43px)!important;
+  font-weight:500!important;
+  line-height:1.12!important;
+  letter-spacing:-.024em!important;
   font-style:normal!important;
-  text-transform:none!important;
   font-variant:normal!important;
+  text-transform:none!important;
+  color:#1d3049!important;
+  text-shadow:none!important;
 }
 #page-home.reference-home #homeForecastSplit :is(.final-kicker,.senate-kicker,.house-kicker){
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
-  font-size:11px!important;
-  font-weight:700!important;
-  line-height:1.35!important;
-  letter-spacing:.11em!important;
-  font-style:normal!important;
-}
-#page-home.reference-home #homeForecastSplit :is(.final-party-number,.party-number){
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
-  font-size:clamp(62px,6.05vw,88px)!important;
-  font-weight:700!important;
-  line-height:1!important;
-  letter-spacing:-.055em!important;
-  font-stretch:normal!important;
-  font-variant-numeric:tabular-nums lining-nums!important;
-  text-shadow:none!important;
-}
-#page-home.reference-home #homeForecastSplit :is(.final-party-label,.party-label){
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
-  font-size:11px!important;
+  font-family:"Helvetica Neue",Arial,sans-serif!important;
+  font-size:10px!important;
   font-weight:650!important;
   line-height:1.4!important;
-  letter-spacing:.075em!important;
+  letter-spacing:.155em!important;
+  text-transform:uppercase!important;
+  color:#738197!important;
+}
+#page-home.reference-home #homeForecastSplit :is(.final-party-number,.party-number){
+  font-family:"Iowan Old Style","Baskerville","Palatino Linotype",Palatino,Georgia,serif!important;
+  font-size:clamp(67px,6.15vw,92px)!important;
+  font-weight:500!important;
+  line-height:.98!important;
+  letter-spacing:-.058em!important;
+  font-style:normal!important;
+  font-variant-numeric:tabular-nums lining-nums!important;
+  font-feature-settings:"tnum" 1,"lnum" 1!important;
   text-shadow:none!important;
 }
-#page-home.reference-home #homeForecastSplit :is(.final-majority-note,.majority-note){
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif!important;
-  font-size:11px!important;
+#page-home.reference-home #homeForecastSplit :is(.final-party-number.dem,.party-number.dem,.dem .party-number){color:#2a5c96!important}
+#page-home.reference-home #homeForecastSplit :is(.final-party-number.rep,.party-number.rep,.rep .party-number){color:#a43e56!important}
+#page-home.reference-home #homeForecastSplit :is(.final-party-label,.party-label){
+  font-family:"Helvetica Neue",Arial,sans-serif!important;
+  font-size:10px!important;
   font-weight:600!important;
-  line-height:1.35!important;
-  letter-spacing:.045em!important;
+  line-height:1.45!important;
+  letter-spacing:.115em!important;
+  text-transform:uppercase!important;
+  color:#6d7c90!important;
 }
+#page-home.reference-home #homeForecastSplit :is(.final-majority-note,.majority-note){
+  font-family:"Helvetica Neue",Arial,sans-serif!important;
+  font-size:11px!important;
+  font-weight:500!important;
+  line-height:1.4!important;
+  letter-spacing:.035em!important;
+  color:#738095!important;
+}
+#page-home.reference-home #homeForecastSplit :is(.final-bar,.senate-bar){
+  height:15px!important;
+  border-radius:2px!important;
+  box-shadow:none!important;
+  border-color:#dde3e9!important;
+}
+#page-home.reference-home #homeForecastSplit :is(.final-bar,.senate-bar) :is(.dem,.democratic){background:#386fac!important}
+#page-home.reference-home #homeForecastSplit :is(.final-bar,.senate-bar) :is(.rep,.republican){background:#ae4a62!important}
+#page-home.reference-home #homeForecastSplit :is(.final-forecast-card,.senate-card,.house-card,.forecast-card) :is(.final-majority-note,.majority-note){opacity:.9!important}
 @media(max-width:800px){
   #page-home.reference-home #homeForecastSplit :is(.final-title,.senate-title,.house-title){
-    font-size:clamp(25px,5vw,31px)!important;
+    font-size:clamp(28px,5.6vw,37px)!important;
   }
   #page-home.reference-home #homeForecastSplit :is(.final-party-number,.party-number){
-    font-size:clamp(62px,12vw,84px)!important;
+    font-size:clamp(63px,12vw,87px)!important;
   }
 }
 @media(max-width:450px){
   #page-home.reference-home #homeForecastSplit :is(.final-title,.senate-title,.house-title){
-    font-size:clamp(23px,6vw,28px)!important;
+    font-size:clamp(27px,7vw,33px)!important;
   }
   #page-home.reference-home #homeForecastSplit :is(.final-party-number,.party-number){
-    font-size:clamp(58px,14vw,75px)!important;
+    font-size:clamp(59px,15vw,78px)!important;
   }
 }
