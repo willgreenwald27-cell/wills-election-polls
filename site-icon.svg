@@ -1,16 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Will's Election Polls & Predictions">
-  <rect width="512" height="512" rx="88" fill="#ffffff"/>
-  <g>
-    <circle cx="153" cy="129" r="12" fill="#2763b8"/><circle cx="179" cy="106" r="12" fill="#2763b8"/><circle cx="212" cy="92" r="12" fill="#2763b8"/><circle cx="246" cy="86" r="12" fill="#9aabc0"/><circle cx="281" cy="92" r="12" fill="#bd2937"/><circle cx="314" cy="106" r="12" fill="#bd2937"/><circle cx="340" cy="129" r="12" fill="#bd2937"/>
-    <circle cx="137" cy="162" r="11" fill="#2763b8"/><circle cx="169" cy="144" r="11" fill="#7aa6d9"/><circle cx="204" cy="133" r="11" fill="#2763b8"/><circle cx="246" cy="130" r="11" fill="#9aabc0"/><circle cx="288" cy="133" r="11" fill="#e07982"/><circle cx="323" cy="144" r="11" fill="#bd2937"/><circle cx="355" cy="162" r="11" fill="#bd2937"/>
-    <circle cx="132" cy="198" r="11" fill="#2763b8"/><circle cx="164" cy="190" r="11" fill="#7aa6d9"/><circle cx="199" cy="181" r="11" fill="#2763b8"/><circle cx="246" cy="179" r="11" fill="#9aabc0"/><circle cx="293" cy="181" r="11" fill="#e07982"/><circle cx="328" cy="190" r="11" fill="#bd2937"/><circle cx="360" cy="198" r="11" fill="#bd2937"/>
-    <circle cx="142" cy="234" r="11" fill="#2763b8"/><circle cx="176" cy="237" r="11" fill="#7aa6d9"/><circle cx="209" cy="229" r="11" fill="#2763b8"/><circle cx="246" cy="226" r="11" fill="#9aabc0"/><circle cx="283" cy="229" r="11" fill="#e07982"/><circle cx="316" cy="237" r="11" fill="#bd2937"/><circle cx="350" cy="234" r="11" fill="#bd2937"/>
-  </g>
-  <g fill="#0c223d" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800">
-    <text x="256" y="330" font-size="54">WILL'S</text>
-    <text x="256" y="386" font-size="45">ELECTION</text>
-    <text x="256" y="445" font-size="54">POLLS</text>
-  </g>
-  <rect x="160" y="468" width="92" height="10" rx="5" fill="#2763b8"/>
-  <rect x="260" y="468" width="92" height="10" rx="5" fill="#bd2937"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">Will's Election Polls</title>
+<desc id="desc">Modern W monogram in Democratic blue and Republican red, on deep navy.</desc>
+<rect width="512" height="512" rx="106" fill="#0b223c"/>
+<rect x="10" y="10" width="492" height="492" rx="98" fill="none" stroke="#42617e" stroke-width="6" opacity=".65"/>
+<path d="M103 153 L151 336 L208 211 L256 334" fill="none" stroke="#5198e8" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M256 334 L304 211 L361 336 L409 153" fill="none" stroke="#f06775" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="110" y="411" width="132" height="13" rx="6.5" fill="#5198e8"/>
+<rect x="270" y="411" width="132" height="13" rx="6.5" fill="#f06775"/>
+<circle cx="256" cy="417.5" r="6.5" fill="#ffffff"/>
 </svg>
