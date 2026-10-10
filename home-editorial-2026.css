@@ -1,0 +1,259 @@
+/* HOME EDITORIAL REDESIGN | presentation only, no data changes */
+#page-home.reference-home{
+  --home-ink:#0e253e;--home-muted:#66798e;--home-blue:#236bb7;--home-red:#cb3244;
+  display:block!important;width:100%!important;max-width:none!important;
+  min-height:100vh;padding:0 0 90px!important;margin:0!important;
+  background:
+    radial-gradient(ellipse at 80% 0,rgba(145,182,222,.20),transparent 48%),
+    linear-gradient(180deg,#f6f9fc 0%,#edf3f8 65%,#f5f8fb 100%)!important;
+  color:var(--home-ink)!important;
+}
+#page-home .reference-home-shell{
+  width:min(1390px,calc(100% - 72px))!important;max-width:1390px!important;
+  margin:0 auto!important;padding:32px 0 70px!important;
+  display:grid!important;grid-template-columns:minmax(0,1.75fr) minmax(355px,.85fr)!important;
+  align-items:stretch!important;column-gap:20px!important;row-gap:22px!important;
+}
+#page-home .reference-home-shell:before,
+#page-home .reference-home-shell:after{display:none!important;content:none!important}
+#page-home .reference-hero{
+  grid-column:1!important;grid-row:1!important;min-width:0!important;min-height:515px!important;
+  display:grid!important;grid-template-columns:minmax(0,1.25fr) minmax(190px,.8fr)!important;
+  gap:clamp(12px,2.5vw,34px)!important;align-items:center!important;
+  position:relative!important;overflow:hidden!important;isolation:isolate!important;
+  padding:clamp(30px,3.7vw,57px)!important;margin:0!important;
+  background:linear-gradient(135deg,#fff 0%,#f8fbff 51%,#e4effa 100%)!important;
+  border:1px solid #d3e0ec!important;border-radius:22px!important;
+  box-shadow:0 14px 46px rgba(23,57,86,.08)!important;
+}
+#page-home .reference-hero:before{
+  content:"";display:block;position:absolute;z-index:-1;pointer-events:none;
+  width:350px;height:350px;right:-140px;top:-200px;border-radius:50%;
+  border:62px solid rgba(69,123,181,.08);
+}
+#page-home .reference-hero:after{
+  content:"";position:absolute;left:clamp(30px,3.7vw,57px);bottom:30px;
+  height:4px;width:92px;border-radius:12px;
+  background:linear-gradient(90deg,#1f67b7 0 50%,#d43f52 50% 100%);
+}
+#page-home .reference-hero-copy{position:relative;z-index:1;max-width:100%!important;min-width:0!important}
+#page-home .reference-eyebrow{
+  display:inline-flex!important;align-items:center!important;
+  width:fit-content!important;max-width:100%!important;
+  color:#2a658f!important;background:#e9f2fa!important;border:1px solid #d4e3f0!important;
+  padding:8px 11px!important;border-radius:6px!important;
+  font:850 10px/1.35 Inter,Arial,sans-serif!important;letter-spacing:1.6px!important;
+  text-transform:uppercase!important;margin-bottom:18px!important;
+}
+#page-home .reference-hero h1{
+  font-family:Georgia,"Times New Roman",serif!important;
+  color:#0b243f!important;font-weight:800!important;
+  font-size:clamp(39px,4.3vw,71px)!important;
+  letter-spacing:-2.9px!important;line-height:1.01!important;
+  text-wrap:balance!important;margin:0 0 20px!important;
+}
+#page-home .reference-hero-copy>p:not(#homeModelNote){
+  font:500 clamp(14px,1.15vw,17px)/1.65 Inter,Arial,sans-serif!important;
+  color:#51667d!important;margin:0 0 21px!important;
+  max-width:540px!important;letter-spacing:0!important;
+}
+#page-home #homeModelNote{
+  max-width:530px!important;margin:22px 0 0!important;
+  padding:13px 15px!important;border-left:3px solid #3574b9!important;
+  background:rgba(226,239,249,.68)!important;border-radius:0 9px 9px 0!important;
+  color:#34546f!important;font:650 12px/1.6 Inter,Arial,sans-serif!important;
+}
+#page-home .reference-hero-actions{
+  display:flex!important;flex-wrap:wrap!important;gap:11px!important;
+  margin:24px 0 0!important;
+}
+#page-home .reference-hero-actions button,
+#page-home .reference-hero-actions a{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:44px!important;max-width:100%!important;
+  padding:11px 16px!important;border-radius:9px!important;
+  font:800 12px/1.25 Inter,Arial,sans-serif!important;
+  text-decoration:none!important;transition:transform .16s ease,box-shadow .16s ease!important;
+}
+#page-home .reference-hero-actions .reference-primary{
+  background:#153c68!important;color:#fff!important;border:1px solid #153c68!important;
+  box-shadow:0 6px 14px rgba(18,58,105,.15)!important;
+}
+#page-home .reference-hero-actions .reference-secondary{
+  background:#fff!important;color:#174878!important;border:1px solid #b8cadc!important;
+}
+#page-home .reference-hero-actions button:hover,
+#page-home .reference-hero-actions a:hover{transform:translateY(-2px)}
+#page-home .reference-hero-mark{
+  display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:center!important;
+  min-width:0!important;min-height:0!important;
+  padding:18px 8px!important;border-radius:18px!important;
+  background:rgba(255,255,255,.9)!important;border:1px solid #e2eaf2!important;
+}
+#page-home .reference-hero-mark img.brand-arc-hero{
+  width:100%!important;height:auto!important;max-height:230px!important;
+  object-fit:contain!important;display:block!important;
+}
+#page-home .reference-mark-caption{
+  margin:12px 0 0!important;text-align:center!important;
+  font:750 10px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:1.1px!important;color:#758ba0!important;
+}
+#page-home .reference-caption-rule{background:#d3e1ee!important}
+#page-home .reference-metrics{
+  grid-column:2!important;grid-row:1!important;align-self:stretch!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-rows:minmax(205px,1.3fr) minmax(112px,.7fr) minmax(130px,.9fr)!important;
+  gap:10px!important;align-content:stretch!important;margin:0!important;padding:14px!important;
+  height:auto!important;min-height:515px!important;min-width:0!important;
+  background:linear-gradient(150deg,#112f50 0%,#081d34 75%,#142e4b 100%)!important;
+  border:1px solid #294866!important;border-radius:22px!important;
+  box-shadow:0 14px 46px rgba(11,31,53,.13)!important;
+}
+#page-home .reference-metrics>*{
+  min-height:0!important;height:auto!important;
+  display:flex!important;flex-direction:column!important;
+  justify-content:center!important;align-items:flex-start!important;text-align:left!important;
+  background:rgba(255,255,255,.065)!important;color:#fff!important;
+  border:1px solid rgba(203,224,249,.14)!important;border-radius:12px!important;
+  box-shadow:none!important;padding:17px 19px!important;min-width:0!important;
+}
+#page-home #homeElectionCountdown{
+  grid-column:1/-1!important;grid-row:1!important;
+  background:linear-gradient(125deg,rgba(43,93,146,.52),rgba(30,60,96,.31))!important;
+}
+#page-home #homeSenateTossups{grid-column:1!important;grid-row:2!important}
+#page-home #homeLastUpdated{grid-column:2!important;grid-row:2!important}
+#page-home #homeSenateForecast{grid-column:1/-1!important;grid-row:3!important}
+#page-home .reference-metrics .wg-election-label,
+#page-home .reference-metrics .wg-metric-label,
+#page-home .reference-metrics .metric-label{
+  color:#a8c3db!important;
+  font:850 10px/1.4 Inter,Arial,sans-serif!important;
+  letter-spacing:1.25px!important;text-transform:uppercase!important;margin:0 0 7px!important;
+}
+#page-home .reference-metrics .wg-election-days{
+  font:800 clamp(66px,7vw,100px)/.95 Georgia,serif!important;
+  color:#fff!important;letter-spacing:-4px!important;
+}
+#page-home .reference-metrics .wg-election-copy{
+  color:#c3d5e7!important;font:650 13px/1.4 Inter,Arial,sans-serif!important;margin-top:9px!important;
+}
+#page-home .reference-metrics .wg-metric-value{
+  color:#fff!important;font:800 clamp(21px,2.15vw,32px)/1.14 Georgia,serif!important;
+  letter-spacing:-.5px!important;
+}
+#page-home #homeSenateTossups .wg-metric-value{color:#ff9da8!important;font-size:39px!important}
+#page-home #homeLastUpdated .wg-metric-value{font:800 17px/1.25 Inter,Arial,sans-serif!important}
+#page-home #homeSenateForecast .wg-forecast-value{font:800 clamp(28px,2.8vw,43px)/1.15 Georgia,serif!important;gap:14px!important}
+#page-home #homeSenateForecast .wg-forecast-dem{color:#90c5ff!important}
+#page-home #homeSenateForecast .wg-forecast-rep{color:#ff9cab!important}
+#page-home #homeSenateForecast .wg-forecast-divider{color:#7793b0!important}
+#page-home .reference-divider{display:none!important}
+#page-home #homeForecastSplit{
+  grid-column:1/-1!important;width:100%!important;min-width:0!important;
+  margin:4px 0 0!important;
+}
+#page-home #homeForecastSplit .forecast-card{
+  border-radius:17px!important;box-shadow:0 8px 25px rgba(14,36,59,.11)!important;
+  border:1px solid #d9e2eb!important;overflow:hidden!important;
+}
+#page-home .reference-bottom{
+  grid-column:1/-1!important;display:grid!important;
+  grid-template-columns:minmax(0,1.38fr) minmax(0,1fr)!important;
+  gap:22px!important;align-items:stretch!important;
+  margin:4px 0 0!important;min-width:0!important;
+}
+#page-home .reference-bottom>:is(.reference-latest,.reference-featured){
+  background:#fff!important;border:1px solid #dce5ed!important;border-radius:18px!important;
+  padding:clamp(19px,2.1vw,28px)!important;box-shadow:0 9px 26px rgba(18,51,79,.065)!important;
+  min-width:0!important;display:flex!important;flex-direction:column!important;
+}
+#page-home .reference-section-head{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:14px!important;flex-wrap:wrap!important;margin:0 0 22px!important;padding:0 0 16px!important;
+  border-bottom:1px solid #e1e8f0!important;
+}
+#page-home .reference-section-head h2{
+  font:750 clamp(23px,2.4vw,32px)/1.15 Georgia,serif!important;
+  color:#102842!important;letter-spacing:-.8px!important;margin:0!important;
+}
+#page-home .reference-section-head button{
+  border:1px solid #cbdcec!important;border-radius:8px!important;
+  background:#f5f9fc!important;color:#21558b!important;
+  padding:9px 13px!important;min-height:37px!important;
+  font:800 11px/1.3 Inter,Arial,sans-serif!important;white-space:nowrap!important;
+}
+#page-home .reference-poll-list{display:flex!important;flex-direction:column!important;gap:0!important;min-height:0!important;flex:1 1 auto!important}
+#page-home .reference-poll-list>*{border-bottom:1px solid #eaf0f5!important;padding:14px 2px!important}
+#page-home .reference-poll-list>*:last-child{border-bottom:0!important}
+#page-home .reference-map-card{
+  border:1px solid #d7e3ee!important;border-radius:13px!important;
+  background:linear-gradient(150deg,#f7fafd,#edf4fa)!important;
+  box-shadow:none!important;overflow:hidden!important;flex:1 1 auto!important;
+}
+#page-home .reference-map-preview{background-color:#eaf2f9!important}
+#page-home .reference-map-copy{padding:15px 16px!important;color:#193a59!important}
+#page-home #homePastPollingMisses{
+  grid-column:1/-1!important;
+  display:block!important;width:100%!important;
+  margin:3px 0 0!important;padding:25px 29px!important;
+  border:1px solid #314f6c!important;border-radius:16px!important;
+  background:linear-gradient(110deg,#102c49 0%,#08192c 100%)!important;
+  box-shadow:0 8px 27px rgba(10,31,50,.14)!important;
+}
+#page-home #homePastPollingMisses:hover{box-shadow:0 14px 34px rgba(10,31,50,.22)!important}
+#page-home .reference-home-shell>*:not(.reference-hero):not(.reference-metrics):not(.reference-bottom):not(.reference-divider){
+  min-width:0;
+}
+#page-home #homeModelNote{grid-column:1/-1!important}
+@media(min-width:1400px){
+ #page-home .reference-home-shell{width:min(1390px,calc(100% - 110px))!important}
+}
+@media(max-width:1050px){
+ #page-home .reference-home-shell{
+   width:calc(100% - 34px)!important;grid-template-columns:minmax(0,1fr)!important;
+   row-gap:15px!important;padding-top:18px!important;
+ }
+ #page-home .reference-hero{grid-column:1!important;grid-row:auto!important;min-height:390px!important;padding:34px!important}
+ #page-home .reference-metrics{grid-column:1!important;grid-row:auto!important;min-height:0!important;grid-template-rows:150px 110px 120px!important}
+ #page-home .reference-bottom{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important}
+ #page-home .reference-hero h1{font-size:clamp(39px,6vw,65px)!important}
+}
+@media(max-width:650px){
+ #page-home.reference-home{padding-bottom:36px!important}
+ #page-home .reference-home-shell{width:calc(100% - 20px)!important;gap:13px!important;padding:10px 0 30px!important}
+ #page-home .reference-hero{
+   display:flex!important;flex-direction:column!important;align-items:stretch!important;
+   min-height:0!important;padding:25px 22px 29px!important;border-radius:15px!important;gap:14px!important;
+ }
+ #page-home .reference-hero h1{font-size:clamp(36px,10vw,50px)!important;letter-spacing:-1.8px!important;margin-bottom:14px!important}
+ #page-home .reference-hero-copy>p:not(#homeModelNote){font-size:14px!important;line-height:1.6!important}
+ #page-home .reference-hero-mark{order:-1!important;padding:9px 13px!important;min-height:85px!important;border-radius:11px!important}
+ #page-home .reference-hero-mark img.brand-arc-hero{max-height:100px!important;max-width:100%!important}
+ #page-home .reference-mark-caption{display:none!important}
+ #page-home .reference-hero-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}
+ #page-home .reference-hero-actions>*{width:100%!important;font-size:11px!important;padding:10px 7px!important}
+ #page-home .reference-hero:after{left:22px;bottom:14px}
+ #page-home .reference-metrics{
+   padding:9px!important;gap:8px!important;min-height:0!important;border-radius:15px!important;
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   grid-template-rows:130px 100px 112px!important;
+ }
+ #page-home .reference-metrics>*{padding:14px 13px!important;border-radius:9px!important}
+ #page-home .reference-metrics .wg-election-days{font-size:64px!important}
+ #page-home .reference-metrics .wg-metric-label,#page-home .reference-metrics .wg-election-label{font-size:9px!important}
+ #page-home #homeLastUpdated .wg-metric-value{font-size:13px!important}
+ #page-home #homeSenateTossups .wg-metric-value{font-size:32px!important}
+ #page-home #homeSenateForecast .wg-forecast-value{font-size:32px!important}
+ #page-home .reference-bottom{grid-template-columns:1fr!important;gap:12px!important}
+ #page-home .reference-bottom>:is(.reference-latest,.reference-featured){padding:18px!important;border-radius:14px!important}
+ #page-home .reference-section-head h2{font-size:23px!important}
+ #page-home .reference-section-head{margin-bottom:10px!important;padding-bottom:12px!important}
+ #page-home #homePastPollingMisses{padding:21px 19px!important;border-radius:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #page-home .reference-hero-actions button,
+ #page-home #homePastPollingMisses{transition:none!important}
+}
