@@ -1,0 +1,55 @@
+Homepage element tree from original compressed markup (before runtime injections):
+<section id=page-home class=page active reference-home> 
+  <div id= class=reference-home-shell> 
+    <section id= class=reference-hero> 
+      <div id= class=reference-hero-copy> 
+        <div id= class=reference-eyebrow> SAME DATA. A CLEARER PICTURE.
+        <h1 id= class=> Will's Election Polls & Predictions
+          <br id= class=> 
+        <p id= class=> Polling, forecasting, and race-by-race predictions for a clearer understanding of what’s next.
+        <div id= class=reference-hero-actions> 
+          <button id= class=reference-primary> View Latest Polls
+            <span id= class=> →
+          <button id= class=reference-secondary> See Forecasts
+      <div id= class=reference-hero-mark> 
+        <div id= class=reference-mark-caption> Data. Context. Perspective.
+        <span id= class=reference-caption-rule> 
+    <section id= class=reference-metrics> 
+      <article id= class=reference-metric blue-card> 
+        <div id= class=metric-label> Rated Senate Races
+          <br id= class=> 
+        <div id= class=metric-bottom> 
+          <strong id=homeRatedRaces class=> 0
+      <article id= class=reference-metric red-card> 
+        <div id= class=metric-label> Senate Toss-Ups
+          <br id= class=> 
+        <div id= class=metric-bottom> 
+          <strong id=homeTossups class=> 0
+      <article id= class=reference-metric gray-card> 
+        <div id= class=metric-label> Polls Entered
+          <br id= class=> 
+        <div id= class=metric-bottom> 
+          <strong id=homePollCount class=> 0
+      <article id= class=reference-metric purple-card> 
+        <div id= class=metric-label> Latest Update
+        <div id= class=metric-bottom date-bottom> 
+          <strong id=homeLatestUpdate class=> —
+    <div id= class=reference-divider> 
+    <section id= class=reference-bottom> 
+      <div id= class=reference-latest> 
+        <div id= class=reference-section-head> 
+          <h2 id= class=> Latest Polls
+          <button id= class=> View All
+            <span id= class=> →
+        <div id=homeLatestPolls class=reference-poll-list> 
+          <div id= class=reference-empty> No polls entered yet.
+      <div id= class=reference-featured> 
+        <div id= class=reference-section-head> 
+          <h2 id= class=> Featured Map
+          <button id= class=> View Map
+            <span id= class=> →
+        <button id= class=reference-map-card> 
+          <div id= class=reference-map-preview> 
+          <div id= class=reference-map-copy> 
+            <strong id= class=> 2026 Senate Map
+            <span id= class=> Competitive races, current ratings, and your latest calls.
