@@ -1,0 +1,115 @@
+/* Research Edition — companion styles for standalone governor,
+   historical Senate map archive, and election-night pages.
+   Never changes state colors, maps, electoral data, or event handlers. */
+:root{
+ --wr-ink:#152a43;--wr-line:#dce4ed;--wr-paper:#f5f7fa;
+ --wr-serif:"Iowan Old Style",Baskerville,"Palatino Linotype",Palatino,Georgia,serif;
+ --wr-sans:Inter,"Helvetica Neue",Arial,ui-sans-serif,system-ui,sans-serif;
+}
+body.wr-governor,body.wr-archive{background:var(--wr-paper);color:var(--wr-ink);font-family:var(--wr-sans)}
+body.wr-governor .site-header{
+ background:#101d32;color:#fff;border-bottom:1px solid #334459;
+ min-height:72px;height:auto;box-shadow:0 8px 23px rgba(10,28,51,.11);
+}
+body.wr-governor .site-header :is(.brand,.nav a){color:#e3eaf5}
+body.wr-governor .site-header .nav a.active{background:#2f527f;color:#fff}
+body.wr-governor .site-header .nav a:hover{background:#2b4466;color:#fff}
+body.wr-governor .page-head{
+ max-width:1480px;padding:35px clamp(16px,3.5vw,55px) 24px;
+}
+body.wr-governor .page-head .eyebrow,
+body.wr-archive .eyebrow{
+ color:#587494;font-size:10px;font-weight:800;letter-spacing:.17em;
+}
+body.wr-governor .page-head h1,
+body.wr-archive .title-row h1{
+ font-family:var(--wr-serif);font-size:clamp(37px,4.3vw,62px);
+ font-weight:500;line-height:1.08;letter-spacing:-.044em;
+ color:#192d47;
+}
+body.wr-governor .page-head p,
+body.wr-archive .title-row p{
+ color:#62758b;font-size:14px;line-height:1.7;max-width:850px;
+}
+body.wr-governor .content{
+ max-width:1480px;padding-inline:clamp(13px,3.3vw,49px);
+}
+body.wr-governor .balance,
+body.wr-governor .map-card,
+body.wr-governor .poll-card,
+body.wr-archive .card{
+ background:#fff;border:1px solid #dce3ea;border-radius:9px;
+ box-shadow:0 9px 26px rgba(24,53,89,.05);
+}
+body.wr-governor .map-wrap,
+body.wr-archive .map-wrap{
+ background:#eff3f8;border-radius:6px;
+}
+body.wr-governor .map-title,
+body.wr-archive .title-row :is(h2,h3){
+ color:#223750;letter-spacing:-.025em;
+}
+body.wr-governor .seat{
+ border-radius:5px;border-color:#dce3ea;background:#f9fbfd;
+}
+body.wr-governor .seat b{font-family:var(--wr-serif);font-weight:500;font-size:33px}
+body.wr-governor .detail,
+body.wr-archive .detail{
+ border:1px solid #d9e3ed;border-radius:8px;
+ background:#fff;box-shadow:0 14px 35px rgba(17,46,81,.13);
+}
+body.wr-governor .tile-map button,
+body.wr-archive .tile-map button{
+ transition:filter .13s ease,transform .13s ease;
+}
+body.wr-governor .tile-map button:hover,
+body.wr-archive .tile-map button:hover{filter:brightness(1.04)}
+body.wr-archive .wrap{
+ max-width:1400px;padding:35px clamp(15px,3.8vw,56px) 74px;
+}
+body.wr-archive .title-row{
+ border-bottom:1px solid #dfe6ee;padding:0 0 26px;margin-bottom:22px;
+}
+body.wr-archive .title-row h1{margin-top:9px}
+body.wr-archive .controls select{
+ border-radius:6px;border-color:#cbd8e5;background:#fff;color:#182e4a;
+ font-family:var(--wr-sans);font-weight:700;
+}
+body.wr-archive .summary .chip{
+ border-radius:6px;background:#fff;border-color:#dce4ed;
+ font-size:11px;font-weight:730;
+}
+body.wr-archive .card{padding:clamp(15px,2vw,29px)}
+body.wr-archive .legend{font-size:11px;font-weight:700}
+body.wr-governor :is(button,a,select):focus-visible,
+body.wr-archive :is(button,a,select):focus-visible,
+body.wr-night :is(button,a,select):focus-visible{
+ outline:3px solid #86aee8;outline-offset:3px;
+}
+/* Keep the election night results dashboard dark, with the same restrained type. */
+body.wr-night{
+ font-family:var(--wr-sans);letter-spacing:0;
+}
+body.wr-night .top{
+ border-bottom-color:rgba(173,193,223,.19);
+}
+body.wr-night .intro h1{
+ font-family:var(--wr-serif);font-weight:500;
+ letter-spacing:-.043em;line-height:1.05;
+}
+body.wr-night :is(.map-card,.side-card){
+ border-radius:9px;
+}
+body.wr-night :is(.score-party strong,.score-total){
+ font-family:var(--wr-serif);font-weight:500;letter-spacing:-.038em;
+}
+body.wr-night .sourcebar{
+ border-radius:8px;
+}
+@media(max-width:770px){
+ body.wr-governor .page-head{padding:22px 15px 18px}
+ body.wr-governor .page-head h1,
+ body.wr-archive .title-row h1{font-size:clamp(36px,8vw,48px)}
+ body.wr-archive .wrap{padding:24px 12px 56px}
+ body.wr-archive .title-row{margin-bottom:17px}
+}
