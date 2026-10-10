@@ -17,6 +17,13 @@
   }
   if(hdr.nextElementSibling!==el)hdr.insertAdjacentElement("afterend",el);
  }
+ function heroIntro(){
+  const copy=document.querySelector("#page-home.reference-home .reference-hero-copy > p:not(#homeModelNote)");
+  if(!copy||copy.dataset.wrHistoricalIntro==="1")return;
+  copy.classList.add("wr-history-intro");
+  copy.innerHTML='Explore my 2026 Senate forecasts alongside a deeper look at how polling has performed in past elections. In <strong>Past Polling Errors</strong>, I compare final pre-election polls with actual Senate results, race by race, to reveal where surveys missed—and why those mistakes matter when evaluating new predictions.';
+  copy.dataset.wrHistoricalIntro="1";
+ }
  function guide(){
   const shell=document.querySelector("#page-home .reference-home-shell");
   if(!shell||shell.querySelector(".wr-research-guide"))return;
@@ -73,7 +80,7 @@
   const el=event.target?.closest?.("[data-wr-go]");if(!el)return;
   event.preventDefault();navigate(el.dataset.wrGo);
  });
- function apply(){queued=false;skip();strip();guide();about();footer()}
+ function apply(){queued=false;skip();strip();heroIntro();guide();about();footer()}
  function schedule(){if(queued)return;queued=true;requestAnimationFrame(apply)}
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply();
  [150,500,1500,3500].forEach(ms=>setTimeout(apply,ms));
