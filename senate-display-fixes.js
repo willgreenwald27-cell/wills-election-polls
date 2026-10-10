@@ -94,10 +94,11 @@
   }
 
   function findStatePanel(root,stateName){
-    const candidates=leafs(root).filter(el=>norm(el.textContent)===stateName&&el.getClientRects().length);
+    const candidates=leafs(root).filter(el=>norm(el.textContent)===stateName&&el.getClientRects().length&&!el.closest('.sidebar,.rating-table-card,.wg-studio-radar,.senate-night-panel,.page-head'));
     for(const stateEl of candidates){
       let box=stateEl.parentElement;
       for(let depth=0;box&&box!==root&&depth<12;depth++,box=box.parentElement){
+        if(box.matches('.forecast-layout,.content,.map-card,.map-wrap,.sidebar'))break;
         const t=norm(box.textContent);
         if(/(WILL'S CALL|MY PROJECTED WINNER|MY PREDICTION)/i.test(t)&&/(AVG POLLS|POLL AVERAGE|WIN ODDS|STATISTICAL ODDS)/i.test(t)) return box;
       }
