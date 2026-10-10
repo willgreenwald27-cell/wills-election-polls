@@ -1,4 +1,24 @@
 /* 2026 SENATE IMMERSIVE FORECAST — scoped, data-preserving */
+/* Only darken the shared navigation while the Senate forecast tab is active. */
+body:has(#page-senate.senate-immersive.active) .site-header{
+ background:rgba(6,22,40,.98)!important;border-bottom:1px solid #294b6d!important;
+ box-shadow:0 3px 15px rgba(0,0,0,.2)!important;
+ color:#f2f7ff!important;
+}
+body:has(#page-senate.senate-immersive.active) .site-header .reference-brand-name,
+body:has(#page-senate.senate-immersive.active) .site-header .reference-brand-name *{
+ color:#edf5ff!important;
+}
+body:has(#page-senate.senate-immersive.active) .site-header .nav button:not(#editToggle):not(#settingsBtn){
+ color:#c6d9eb!important;background:transparent!important;
+ border-color:transparent!important;
+}
+body:has(#page-senate.senate-immersive.active) .site-header .nav button.active:not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.senate-immersive.active) .site-header .nav button[data-accepted-page="senate"]{
+ color:#fff!important;background:#18446d!important;
+ border:1px solid #39618c!important;
+}
+
 #page-senate.senate-immersive{
  --night:#06182b;--night-card:#0b2137;--night-2:#102d49;--night-border:#294762;
  --night-text:#eff6ff;--night-soft:#b6c9dd;--night-dim:#8faac5;
