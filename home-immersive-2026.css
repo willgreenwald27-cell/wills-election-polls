@@ -58,6 +58,11 @@ body:has(#page-home.reference-home.active) .site-header .nav button[data-accepte
  align-items:stretch!important;
  box-sizing:border-box!important;
 }
+/* Any small optional homepage widget inherits a full-width grid lane. */
+#page-home.reference-home .reference-home-shell > :not(.reference-hero):not(.reference-metrics):not(.reference-divider):not(.reference-bottom):not(#housePrediction2026):not(#homePastPollingMisses){
+ grid-column:1/-1!important;min-width:0!important;
+}
+#page-home.reference-home #homeModelNote{grid-column:1/-1!important}
 /* The existing hero is promoted to an edge-lit editorial main stage. */
 #page-home.reference-home .reference-hero{
  grid-column:1 / span 8!important;
