@@ -145,7 +145,8 @@
       }
     }
 
-    removeLatestUpdateMetric();
+    // Keep the Last Updated tile in the four-column Split Screen dashboard.
+    if(!document.querySelector('link[href*="home-splitscreen-2026.css"]')) removeLatestUpdateMetric();
     removeOhioTexasForecastWhy();
   }
 
