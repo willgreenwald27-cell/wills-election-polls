@@ -54,7 +54,11 @@
    const s=rows[ab];
    return s?[ab,s.rating,s.updated,s.prediction,s.predictionParty,s.candidate1,s.candidate2,
      s.candidate1Poll,s.candidate2Poll,s.candidate1Odds,s.candidate2Odds].join('|'):'';
-  }).join('||')+'|'+selected;
+  }).join('||')+'|'+selected+'|'+(rows[selected]?[
+   rows[selected].rating,rows[selected].updated,rows[selected].prediction,
+   rows[selected].candidate1Poll,rows[selected].candidate2Poll,
+   rows[selected].candidate1Odds,rows[selected].candidate2Odds
+  ].join('|'):'');
  }
  function viewState(ab){
   const r=root();
@@ -160,8 +164,7 @@
    });
    button.addEventListener('click',()=>{
     selected=ab;signature='';render();
-    const path=r.querySelector('.map-wrap .state-shape[data-state="'+ab+'"]');
-    if(path){path.scrollIntoView({block:'nearest',inline:'nearest'});}
+    // Update the sidebar without moving the visitor's scroll position.
    });
    frag.appendChild(button);
   }
