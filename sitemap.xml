@@ -2,7 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://willelectionpolls.com/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-10-10</lastmod>
+  </url>
+  <url>
+    <loc>https://willelectionpolls.com/2026-senate-election-forecast.html</loc>
+    <lastmod>2026-10-10</lastmod>
+  </url>
+  <url>
+    <loc>https://willelectionpolls.com/past-polling-errors-research.html</loc>
+    <lastmod>2026-10-10</lastmod>
+  </url>
+  <url>
+    <loc>https://willelectionpolls.com/governor.html</loc>
+    <lastmod>2026-10-10</lastmod>
+  </url>
+  <url>
+    <loc>https://willelectionpolls.com/past-senate-maps.html</loc>
   </url>
 </urlset>
