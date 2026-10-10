@@ -46,13 +46,15 @@
     const labels=[...root.querySelectorAll('*')].filter(el=>
       el.children.length===0 &&
       el.getClientRects().length &&
-      norm(el.textContent).toLowerCase()===wanted
+      norm(el.textContent).toLowerCase()===wanted &&
+      !el.closest('.sidebar,.rating-table-card,.wg-studio-radar,.senate-night-panel,.page-head')
     );
 
     const hits=[];
     for(const label of labels){
       let p=label.parentElement;
       for(let i=0;p&&p!==root&&i<12;i++,p=p.parentElement){
+        if(p.matches('.forecast-layout,.content,.map-card,.map-wrap,.sidebar'))break;
         if(!p.getClientRects().length)continue;
         const t=norm(p.textContent);
         if(/WILL[’']S CALL|MY PREDICTION|AVG POLLS|POLL AVERAGE/i.test(t)){
