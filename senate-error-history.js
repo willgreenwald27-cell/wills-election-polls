@@ -493,6 +493,9 @@
       @media(prefers-reduced-motion:reduce){
         #page-errors .ipe-race,#page-errors .ipe-shock{transition:none!important;scroll-behavior:auto!important}
       }
+      @media(max-width:700px){
+        #page-errors .ipe-modal-nav span::after{content:"SWIPE LEFT OR RIGHT FOR NEXT RACE";display:block;margin-top:3px;font-size:9px;font-weight:800;letter-spacing:1px;color:#b7cadf}
+      }
     `;
     document.head.appendChild(st);
   }
@@ -632,6 +635,26 @@
     document.getElementById('ipeModalClose')?.addEventListener('click',closeStory);
     document.getElementById('ipePrev')?.addEventListener('click',()=>moveStory(-1));
     document.getElementById('ipeNext')?.addEventListener('click',()=>moveStory(1));
+    // On phones, swipe horizontally between full-screen polling stories.
+    // Vertical movement stays native page scrolling and state-history views
+    // retain their existing layout (their story navigation is hidden).
+    const storyModal=document.getElementById('ipeModal');
+    let gesture=null;
+    storyModal?.addEventListener('touchstart',event=>{
+      if(event.touches.length!==1||event.target.closest('button,a,input,select')){gesture=null;return;}
+      const t=event.touches[0];
+      gesture={x:t.clientX,y:t.clientY};
+    },{passive:true});
+    storyModal?.addEventListener('touchend',event=>{
+      if(!gesture||!event.changedTouches.length)return;
+      const nav=storyModal.querySelector('.ipe-modal-nav');
+      const t=event.changedTouches[0],dx=t.clientX-gesture.x,dy=t.clientY-gesture.y;
+      gesture=null;
+      if(nav?.style.display==='none'||!window.matchMedia('(max-width:700px)').matches)return;
+      if(Math.abs(dx)<72||Math.abs(dx)<Math.abs(dy)*1.5)return;
+      moveStory(dx<0?1:-1);
+    },{passive:true});
+
     document.getElementById('ipeModal')?.addEventListener('click',e=>{if(e.target===e.currentTarget)closeStory()});
     rendering=false;
   }
