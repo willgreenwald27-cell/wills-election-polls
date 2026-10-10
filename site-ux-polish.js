@@ -101,11 +101,14 @@
     if(!metrics)return;
 
     const mobileMetrics=window.matchMedia('(max-width:800px)').matches;
+    // Split-screen home has four side-by-side tiles. Legacy full-row countdown
+    // styling would push the other three stats onto a second row.
+    const splitScreenHome=!!document.querySelector('link[href*="home-splitscreen-2026.css"]');
     metrics.style.setProperty('display','grid','important');
-    metrics.style.setProperty('grid-template-columns',mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))','important');
+    metrics.style.setProperty('grid-template-columns',splitScreenHome?(mobileMetrics?'repeat(2,minmax(0,1fr))':'repeat(4,minmax(0,1fr))'):(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'),'important');
     metrics.style.setProperty('grid-auto-columns','unset','important');
     metrics.style.setProperty('grid-auto-flow','row','important');
-    metrics.style.setProperty('gap','14px','important');
+    metrics.style.setProperty('gap',splitScreenHome?'0':'14px','important');
     metrics.style.setProperty('width','100%','important');
     metrics.style.setProperty('max-width','100%','important');
 
@@ -240,7 +243,7 @@
       metrics.replaceChildren(countdown,toss,updated,forecast);
     }
 
-    countdown.style.setProperty('grid-column','1 / -1','important');
+    countdown.style.setProperty('grid-column',splitScreenHome?'auto':'1 / -1','important');
     for(const el of [toss,updated,forecast]){
       el.style.setProperty('grid-column','auto','important');
       el.style.setProperty('width','100%','important');
