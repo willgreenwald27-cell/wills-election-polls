@@ -747,7 +747,29 @@
     }
   }
 
+  // Suppress empty prediction placeholder copy in state panels.
+  // Keep the element itself so a genuine prediction can still be populated later.
+  const emptyPredictionText=/^no\s+(?:written\s+)?prediction(?:\s+text)?\s+(?:has\s+been\s+)?entered\s+yet[.!]?$/i;
+  function suppressEmptyPredictionCopy(){
+    const root=document.getElementById('page-senate');
+    if(!root)return;
+    for(const el of root.querySelectorAll('*')){
+      if(el.childElementCount!==0)continue;
+      const t=norm(el.textContent);
+      if(emptyPredictionText.test(t)){
+        el.textContent='';
+        el.dataset.wgEmptyPredictionHidden='1';
+        el.style.setProperty('display','none','important');
+      }else if(el.dataset.wgEmptyPredictionHidden==='1'&&t){
+        // Other scripts can later replace placeholders with actual predictions.
+        delete el.dataset.wgEmptyPredictionHidden;
+        el.style.removeProperty('display');
+      }
+    }
+  }
+
   function apply(){
+    suppressEmptyPredictionCopy();
     syncData();
     forceMontanaAverage();
     keepTopSeatPartyLabels();
