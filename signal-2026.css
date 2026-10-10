@@ -520,3 +520,48 @@ body:has(#page-senate.wg-studio.active) .site-header .nav>button.active:not(#edi
   max-height:190px!important;
  }
 }
+
+
+/* HISTORICAL RESEARCH FEATURE — permanent nav emphasis, not false active state. */
+body .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.senate-immersive.active) .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.wg-studio.active) .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):not(#editToggle):not(#settingsBtn){
+ color:#ffe8f0!important;
+ background:linear-gradient(120deg,rgba(134,47,83,.40),rgba(92,31,68,.42))!important;
+ border:1px solid #b9557f!important;
+ box-shadow:inset 0 0 0 1px rgba(255,178,202,.08),0 0 18px rgba(233,83,124,.14)!important;
+ font-weight:780!important;
+}
+body .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):not(#editToggle):not(#settingsBtn):hover{
+ color:#fff!important;
+ background:linear-gradient(120deg,#ab456c,#7d3055)!important;
+ border-color:#f48aa7!important;
+ box-shadow:0 0 22px rgba(245,104,151,.25)!important;
+}
+body .site-header .nav > :is(button,a):is([data-accepted-page="errors"],[data-will-page="errors"],[data-spa-page="errors"],[data-page-link="errors"]):is(.active,[aria-current="page"]):not(#editToggle):not(#settingsBtn){
+ color:#fff!important;
+ background:linear-gradient(120deg,#c14c77,#90365f)!important;
+ border-color:#ffb2c8!important;
+ box-shadow:0 0 0 1px rgba(255,220,230,.15),0 0 22px rgba(250,101,147,.33)!important;
+}
+#page-home.reference-home .reference-hero-copy > p.wr-history-intro{
+ max-width:625px!important;
+ font:500 clamp(15px,1.29vw,18px)/1.7 var(--sg-sans)!important;
+ letter-spacing:-.006em!important;
+ color:#c8d9ee!important;
+ margin:0 0 15px!important;
+}
+#page-home.reference-home .reference-hero-copy > p.wr-history-intro strong{
+ color:#fff!important;
+ font-weight:800!important;
+ text-decoration:underline;
+ text-decoration-color:#f17791;
+ text-decoration-thickness:2px;
+ text-underline-offset:4px;
+}
+@media(max-width:500px){
+ #page-home.reference-home .reference-hero-copy > p.wr-history-intro{
+  font-size:14px!important;
+  line-height:1.68!important;
+ }
+}
