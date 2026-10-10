@@ -19,7 +19,7 @@
     }
     const count=Math.max(1,metrics.children.length);
     const cols=resize.matches
-      ? '1fr'
+      ? 'repeat(2, minmax(0, 1fr))'
       : 'repeat(3, minmax(0, 1fr))';
     if(metrics.style.getPropertyValue('grid-template-columns')!==cols ||
         metrics.style.getPropertyPriority('grid-template-columns')!=='important'){
