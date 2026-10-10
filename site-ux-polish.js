@@ -43,10 +43,10 @@
     const fixed=[
       find('home','Home'),
       find('senate','2026 Senate Prediction'),
+      find('errors','Past Polling Errors'),
       find('governor','2026 Governor Map'),
       find('polls','New Polls'),
-      find('betting','Betting Odds'),
-      find('errors','Past Polling Errors')
+      find('betting','Betting Odds')
     ].filter(Boolean);
     const about=find('about','About Me');
     const trailing=[about].filter(Boolean);
