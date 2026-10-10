@@ -7,6 +7,12 @@
   "theme_color": "#0c223d",
   "icons": [
     {
+      "src": "/site-icon.svg?v=20261009-mark1",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
