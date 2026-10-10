@@ -320,6 +320,177 @@
       }
       @media(max-width:700px){
         #page-errors .ipe-shell,#page-errors .ipe-hero-inner{width:calc(100% - 24px)}#page-errors .ipe-hero{min-height:auto}.ipe-hero-inner{padding:42px 0 70px!important}.ipe-hero h1{font-size:48px!important;letter-spacing:-1.8px!important}.ipe-demo-stage{grid-template-columns:1fr!important}.ipe-demo-arrow{transform:rotate(90deg)}.ipe-demo-verdicts{grid-template-columns:1fr!important}.ipe-main{margin-top:-35px!important}.ipe-metrics{grid-template-columns:1fr!important}.ipe-method{padding:20px!important}.ipe-method h2,.ipe-section-head h2{font-size:31px!important}.ipe-section-head{align-items:flex-start!important;flex-direction:column!important;gap:10px!important}.ipe-shocks{display:flex!important;overflow:auto!important;scroll-snap-type:x mandatory;padding-bottom:5px}.ipe-shock{min-width:245px;scroll-snap-align:start}.ipe-controls{grid-template-columns:1fr!important}.ipe-state-grid{grid-template-columns:1fr!important}.ipe-state-head{align-items:flex-start!important;flex-direction:column!important;gap:5px!important}.ipe-state-head span{text-align:left!important}.ipe-modal-title{align-items:flex-start!important;flex-direction:column!important}.ipe-modal-shift{text-align:left!important}.ipe-modal-title h2{font-size:58px!important}.ipe-modal-hero{padding:70px 16px 30px!important}.ipe-modal-body{padding-left:12px!important;padding-right:12px!important}.ipe-modal-nav{grid-template-columns:1fr 1fr!important;padding:10px 12px!important}.ipe-modal-nav span{grid-column:1/-1;grid-row:1}.ipe-candidate-stats{grid-template-columns:1fr 1fr 1fr!important}.ipe-context{grid-template-columns:1fr!important}
+
+      /* Mobile editorial upgrade: large readable type and full-width race storytelling. */
+      #page-errors .ipe-mobile-jumps{display:none}
+      @media(max-width:700px){
+        #page-errors{background:#f3f6fb!important}
+        #page-errors .ipe-root{overflow:visible!important}
+        #page-errors .ipe-shell,#page-errors .ipe-hero-inner{width:calc(100% - 28px)!important}
+        #page-errors .ipe-hero{background:linear-gradient(155deg,#071a3d 0%,#123b73 50%,#802e57 100%)}
+        #page-errors .ipe-hero-inner{padding:35px 0 63px!important;gap:24px!important}
+        #page-errors .ipe-kicker{font-size:10px!important;letter-spacing:1.3px!important;line-height:1.5}
+        #page-errors .ipe-hero h1{font-size:clamp(40px,10.5vw,55px)!important;line-height:1.01!important;letter-spacing:-1.8px!important;margin:0 0 16px!important}
+        #page-errors .ipe-hero-copy>p{font-size:15px!important;line-height:1.7!important;color:#e8effa!important}
+        #page-errors .ipe-hero-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;margin-top:22px!important}
+        #page-errors .ipe-btn{min-height:49px;font-size:12px!important;line-height:1.25!important;padding:10px 12px!important;border-radius:12px}
+        #page-errors .ipe-demo{padding:16px!important;border-radius:18px;box-shadow:0 16px 40px rgba(2,14,38,.25)}
+        #page-errors .ipe-demo-label{font-size:11px!important;line-height:1.45;letter-spacing:.9px!important}
+        #page-errors .ipe-demo-stage{grid-template-columns:1fr 1fr!important;gap:7px!important}
+        #page-errors .ipe-demo-arrow{grid-column:1/-1;transform:none!important;min-height:17px;font-size:20px}
+        #page-errors .ipe-demo-card{padding:15px 12px!important;min-height:132px;border-radius:12px}
+        #page-errors .ipe-demo-card span{font-size:10px!important;line-height:1.35}
+        #page-errors .ipe-demo-card b{font-size:clamp(19px,5.2vw,24px)!important;line-height:1.14!important;overflow-wrap:anywhere}
+        #page-errors .ipe-demo-card small{font-size:10px!important;line-height:1.45}
+        #page-errors .ipe-demo-verdicts{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}
+        #page-errors .ipe-demo-verdicts div{padding:10px 7px}
+        #page-errors .ipe-demo-verdicts span{font-size:9px!important;line-height:1.3;letter-spacing:0!important}
+        #page-errors .ipe-demo-verdicts b{font-size:13px!important;line-height:1.35}
+        #page-errors .ipe-main{margin-top:-26px!important;padding-bottom:30px!important}
+        #page-errors .ipe-mobile-jumps{position:sticky;top:0;z-index:30;display:block;margin:0 -3px 13px;padding:10px 8px 10px;border:1px solid rgba(202,215,230,.8);border-radius:14px;background:rgba(249,251,255,.97);box-shadow:0 8px 24px rgba(17,36,63,.10);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+        #page-errors .ipe-jumps-label{display:block;font-size:9px;font-weight:950;letter-spacing:1.2px;color:#596f8b;margin:0 0 7px 4px}
+        #page-errors .ipe-jumps-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+        #page-errors .ipe-jumps-actions button{font-family:inherit;min-height:42px;padding:7px 4px;border:1px solid #dce5f0;border-radius:9px;background:#edf3fa;color:#203b60;font-size:11px;line-height:1.2;font-weight:850;cursor:pointer}
+        #page-errors .ipe-jumps-actions button:focus-visible{outline:3px solid #77a6e8;outline-offset:1px}
+        #page-errors #ipeMethod,#page-errors #ipeSwing,#page-errors #ipeArchive{scroll-margin-top:100px}
+        #page-errors .ipe-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+        #page-errors .ipe-metric{min-height:140px!important;padding:15px 13px!important;border-radius:15px}
+        #page-errors .ipe-metric span{font-size:10px!important;line-height:1.4;letter-spacing:.55px!important}
+        #page-errors .ipe-metric b{font-size:clamp(31px,8vw,43px)!important;line-height:1.03}
+        #page-errors .ipe-metric small{font-size:11px!important;line-height:1.45!important}
+        #page-errors .ipe-method{margin:21px 0!important;padding:22px 16px!important;border-radius:18px}
+        #page-errors .ipe-section-kicker{font-size:10px!important;line-height:1.4}
+        #page-errors .ipe-method h2,#page-errors .ipe-section-head h2{font-size:clamp(30px,7.8vw,39px)!important;line-height:1.12!important;letter-spacing:-.9px!important}
+        #page-errors .ipe-method-intro,#page-errors .ipe-section-head p{font-size:14px!important;line-height:1.65!important;color:#52647b!important}
+        #page-errors .ipe-method-grid{margin-top:16px!important;gap:10px!important}
+        #page-errors .ipe-method-card{padding:17px!important;border-radius:13px}
+        #page-errors .ipe-method-card h3{font-size:23px!important;line-height:1.16!important}
+        #page-errors .ipe-method-card p{font-size:14px!important;line-height:1.65!important}
+        #page-errors .ipe-method-num{min-width:36px;height:34px;font-size:18px}
+        #page-errors .ipe-method-note{font-size:13px!important;line-height:1.6;padding:14px}
+        #page-errors .ipe-swing{margin:29px 0 30px}
+        #page-errors .ipe-section-head{gap:12px!important;margin-bottom:16px!important}
+        #page-errors .ipe-section-head .ipe-chip{font-size:11px!important;padding:10px 12px}
+        #page-errors .ipe-shocks{gap:12px!important;margin:0 -14px 0 -14px!important;padding:4px 14px 20px!important;scroll-padding-inline:14px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+        #page-errors .ipe-shock{min-width:min(86vw,370px)!important;min-height:265px!important;padding:19px!important;border-radius:17px;scroll-snap-align:center!important;box-shadow:0 14px 31px rgba(16,38,75,.18)}
+        #page-errors .ipe-shock strong{font-size:36px!important;line-height:1.1!important}
+        #page-errors .ipe-shock-rank{font-size:11px!important;line-height:1.4}
+        #page-errors .ipe-cand-pill{font-size:12px!important;max-width:47%;padding:9px 9px!important}
+        #page-errors .ipe-shock-route span,#page-errors .ipe-shock-foot small{font-size:11px!important;line-height:1.4!important}
+        #page-errors .ipe-shock-route b,#page-errors .ipe-shock-foot em{font-size:15px!important}
+        #page-errors .ipe-swing-organized{gap:11px!important}
+        #page-errors .ipe-swing-toggle{padding:18px 15px!important;min-height:87px!important}
+        #page-errors .ipe-swing-toggle strong{font-size:29px!important;line-height:1.15}
+        #page-errors .ipe-swing-toggle small,#page-errors .ipe-swing-toggle .ipe-toggle-meta{font-size:11px!important;line-height:1.45!important}
+        #page-errors .ipe-swing-body{gap:10px!important;padding:12px!important}
+        #page-errors .ipe-swing-race{padding:14px!important}
+        #page-errors .ipe-swing-race-top b{font-size:21px!important}
+        #page-errors .ipe-swing-race-top span{font-size:11px!important}
+        #page-errors .ipe-party-matchup{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+        #page-errors .ipe-party-vs{grid-column:1/-1;grid-row:2;min-height:14px}
+        #page-errors .ipe-party-candidate{padding:12px 10px!important}
+        #page-errors .ipe-party-candidate span,#page-errors .ipe-party-candidate small{font-size:11px!important;line-height:1.35!important}
+        #page-errors .ipe-party-candidate b{font-size:17px!important;line-height:1.2!important;overflow-wrap:anywhere}
+        #page-errors .ipe-swing-numbers{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+        #page-errors .ipe-swing-number{padding:10px 7px!important}
+        #page-errors .ipe-swing-number span{font-size:9px!important;line-height:1.4!important}
+        #page-errors .ipe-swing-number b{font-size:15px!important;line-height:1.3}
+        #page-errors .ipe-unsaved-poll{font-size:12px!important;line-height:1.55}
+        #page-errors .ipe-controls{gap:9px!important;padding:12px!important;border-radius:15px;margin:14px 0 15px!important}
+        #page-errors .ipe-controls input,#page-errors .ipe-controls select{min-height:49px!important;font-size:15px!important;line-height:1.3!important;border-radius:10px!important;padding:0 13px!important;width:100%;min-width:0}
+        #page-errors .ipe-controls input::placeholder{color:#687d97;opacity:1}
+        #page-errors .ipe-results{font-size:12px!important;line-height:1.5!important;margin:0 2px 14px}
+        #page-errors .ipe-state{margin-bottom:22px}
+        #page-errors .ipe-state-head{padding:17px 14px!important;gap:7px!important}
+        #page-errors .ipe-state-head h3{font-size:32px!important}
+        #page-errors .ipe-state-head span{font-size:11px!important;line-height:1.4!important}
+        #page-errors .ipe-state-grid{gap:12px!important}
+        #page-errors .ipe-race{min-height:0!important;padding:18px 15px 43px!important;border-radius:16px!important;box-shadow:0 8px 25px rgba(19,39,72,.075)}
+        #page-errors .ipe-race-year{font-size:11px!important;line-height:1.4!important}
+        #page-errors .ipe-race h4{font-size:clamp(22px,5.9vw,27px)!important;line-height:1.17!important;overflow-wrap:anywhere}
+        #page-errors .ipe-race-match{font-size:12px!important;line-height:1.55!important}
+        #page-errors .ipe-status{font-size:10px!important;padding:8px 10px!important;border-radius:9px}
+        #page-errors .ipe-journey{grid-template-columns:1fr!important;gap:5px!important;margin:16px 0 12px!important}
+        #page-errors .ipe-journey-box{padding:14px!important;border-radius:12px}
+        #page-errors .ipe-journey-box span{font-size:11px!important;line-height:1.35!important}
+        #page-errors .ipe-journey-box b{font-size:23px!important;line-height:1.2!important;white-space:normal!important;text-overflow:clip!important;overflow-wrap:anywhere}
+        #page-errors .ipe-journey-mid{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 5px!important;text-align:left!important}
+        #page-errors .ipe-journey-mid span{font-size:11px!important;line-height:1.3!important}
+        #page-errors .ipe-journey-mid b{font-size:16px!important}
+        #page-errors .ipe-mini-grid{gap:6px!important}
+        #page-errors .ipe-mini{padding:10px 7px!important}
+        #page-errors .ipe-mini span{font-size:9px!important;line-height:1.4!important;letter-spacing:0!important}
+        #page-errors .ipe-mini b{font-size:14px!important;line-height:1.2!important;white-space:normal!important;overflow-wrap:anywhere}
+        #page-errors .ipe-nopoll-copy{font-size:14px!important;line-height:1.65!important}
+        #page-errors .ipe-open{font-size:11px!important;right:14px;bottom:17px}
+        #page-errors .ipe-source{font-size:12px!important;line-height:1.65!important;overflow-wrap:anywhere}
+        #page-errors .ipe-modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+        #page-errors .ipe-modal-close{top:calc(env(safe-area-inset-top,0px) + 12px)!important;right:12px!important;min-width:49px!important;min-height:49px!important;border-radius:13px!important;font-size:26px!important}
+        #page-errors .ipe-modal-hero{padding:calc(env(safe-area-inset-top,0px) + 73px) 15px 29px!important}
+        #page-errors .ipe-modal-kicker{font-size:11px!important;line-height:1.4!important}
+        #page-errors .ipe-modal-title h2{font-size:clamp(53px,13vw,76px)!important;letter-spacing:-2px!important;line-height:.98!important}
+        #page-errors .ipe-modal-shift{text-align:left!important}
+        #page-errors .ipe-modal-shift span{font-size:11px!important}
+        #page-errors .ipe-modal-shift b{font-size:39px!important}
+        #page-errors .ipe-modal-journey{grid-template-columns:1fr 1fr!important;gap:8px!important;margin:22px 0 18px!important}
+        #page-errors .ipe-modal-stage{padding:15px 12px!important;border-radius:12px}
+        #page-errors .ipe-modal-stage span{font-size:10px!important;line-height:1.3!important}
+        #page-errors .ipe-modal-stage b{font-size:clamp(19px,5.1vw,25px)!important;line-height:1.15!important;overflow-wrap:anywhere}
+        #page-errors .ipe-modal-stage small{font-size:10px!important;line-height:1.4!important}
+        #page-errors .ipe-modal-arrow{grid-column:1/-1;grid-row:2}
+        #page-errors .ipe-modal-arrow b{font-size:24px!important}
+        #page-errors .ipe-modal-arrow span{font-size:11px!important}
+        #page-errors .ipe-candidates{gap:9px!important}
+        #page-errors .ipe-candidate{padding:15px!important}
+        #page-errors .ipe-candidate-tag{font-size:11px!important}
+        #page-errors .ipe-candidate h3{font-size:26px!important;line-height:1.15!important}
+        #page-errors .ipe-candidate-stats{gap:5px!important}
+        #page-errors .ipe-candidate-stat{padding:10px 6px!important}
+        #page-errors .ipe-candidate-stat span{font-size:9px!important;line-height:1.3!important}
+        #page-errors .ipe-candidate-stat b{font-size:15px!important;line-height:1.3!important;overflow-wrap:anywhere}
+        #page-errors .ipe-modal-body{padding:20px 14px calc(160px + env(safe-area-inset-bottom,0px))!important}
+        #page-errors .ipe-verdict{gap:10px!important;padding:15px!important}
+        #page-errors .ipe-verdict span{font-size:10px!important;line-height:1.4!important}
+        #page-errors .ipe-verdict b{font-size:14px!important;line-height:1.55!important}
+        #page-errors .ipe-insights{gap:10px!important}
+        #page-errors .ipe-insight{min-height:0!important;padding:18px!important;border-radius:15px}
+        #page-errors .ipe-insight span{font-size:11px!important}
+        #page-errors .ipe-insight h3{font-size:25px!important;line-height:1.15!important}
+        #page-errors .ipe-insight .big{font-size:28px!important;line-height:1.2!important;overflow-wrap:anywhere}
+        #page-errors .ipe-insight p{font-size:14px!important;line-height:1.7!important;color:#4e6179!important}
+        #page-errors .ipe-context{gap:8px!important}
+        #page-errors .ipe-context div{padding:12px 9px!important}
+        #page-errors .ipe-context span{font-size:10px!important;line-height:1.35!important}
+        #page-errors .ipe-context b{font-size:16px!important;line-height:1.25!important;overflow-wrap:anywhere}
+        #page-errors .ipe-modal-source{font-size:12px!important;line-height:1.65!important}
+        #page-errors .ipe-state-history-kicker{font-size:11px!important}
+        #page-errors .ipe-state-history-title h2{font-size:clamp(45px,11vw,62px)!important}
+        #page-errors .ipe-state-history-average span{font-size:11px!important}
+        #page-errors .ipe-state-history-average b{font-size:36px!important}
+        #page-errors .ipe-state-history-sub{font-size:14px!important;line-height:1.6!important}
+        #page-errors .ipe-state-history-card{border-radius:15px!important}
+        #page-errors .ipe-state-history-match{grid-template-columns:1fr 1fr!important;gap:8px!important;padding:0 12px 13px!important}
+        #page-errors .ipe-state-history-side{padding:12px 10px!important}
+        #page-errors .ipe-state-history-side span,#page-errors .ipe-state-history-side small{font-size:10px!important;line-height:1.4!important}
+        #page-errors .ipe-state-history-side b{font-size:17px!important;line-height:1.25!important;overflow-wrap:anywhere}
+        #page-errors .ipe-state-history-vs{grid-column:1/-1;grid-row:2}
+        #page-errors .ipe-state-history-foot{padding:14px 12px!important}
+        #page-errors .ipe-state-history-foot p{font-size:12px!important;line-height:1.5!important}
+        #page-errors .ipe-state-history-open{min-height:42px!important;padding:9px 13px!important;font-size:12px!important}
+        #page-errors .ipe-state-history-empty{font-size:13px!important;line-height:1.5!important}
+        #page-errors .ipe-modal-nav{grid-template-columns:1fr 1fr!important;gap:7px!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))!important}
+        #page-errors .ipe-modal-nav button{min-height:48px!important;font-size:12px!important;padding:10px 9px!important;border-radius:11px}
+        #page-errors .ipe-modal-nav span{grid-column:1/-1;grid-row:1;font-size:10px!important;line-height:1.3!important}
+        #page-errors button:focus-visible,#page-errors a:focus-visible,#page-errors select:focus-visible,#page-errors input:focus-visible{outline:3px solid #73aaf4!important;outline-offset:3px}
+      }
+      @media(max-width:370px){
+        #page-errors .ipe-hero-actions{grid-template-columns:1fr!important}
+        #page-errors .ipe-cand-pill{font-size:10px!important;padding:8px 7px!important}
+        #page-errors .ipe-metric{min-height:142px!important;padding:12px 10px!important}
+      }
+      @media(prefers-reduced-motion:reduce){
+        #page-errors .ipe-race,#page-errors .ipe-shock{transition:none!important;scroll-behavior:auto!important}
+      }
       }
     `;
     document.head.appendChild(st);
@@ -451,9 +622,10 @@
     const scoredCycle=cycleRecords.filter(r=>r.pollCount&&absError(r)!==null), missCycle=scoredCycle.filter(r=>String(r.status).toUpperCase()==='MISS');
     const avg=one(scoredCycle.length?scoredCycle.reduce((sum,r)=>sum+absError(r),0)/scoredCycle.length:st.avgAbsError), threshold=one(st.hitThreshold||3), wrong=cycleRecords.filter(r=>r.wrongWinner).length;
     const exPoll=ex?pollResultLabel(ex):'Final polling average', exResult=ex?finalResultLabel(ex):'Final election result', exErr=ex?(absError(ex)??0):0;
-    page.innerHTML=`<div class="${ROOT_CLASS}"><section class="ipe-hero"><div class="ipe-grid"></div><div class="ipe-hero-inner"><div class="ipe-hero-copy"><div class="ipe-kicker">PAST POLLING ERRORS · 2026 SENATE SEATS ONLY</div><h1>See exactly where<br>the <em>polls missed.</em></h1><p>This archive backtests the Senate seats on the ballot in 2026 against prior elections for those same seats. Instead of reducing everything to one number, it shows what polling said, what voters did, and—where available—how the result compared with the state’s partisan baseline.</p><div class="ipe-hero-actions"><button type="button" class="ipe-btn light" id="ipeJumpSwing">Explore swing-state history ↓</button><button type="button" class="ipe-btn ghost" id="ipeJumpArchive">Open full archive ↓</button></div></div><aside class="ipe-demo"><div class="ipe-demo-label">HOW TO READ ONE RACE${ex?` · ${esc(ex.stateName)} ${ex.year}`:''}</div><div class="ipe-demo-stage"><div class="ipe-demo-card party-${partyCardClass(ex?pollLeaderParty(ex):'')}"><span>Polling said</span><b>${esc(exPoll)}</b><small>Final qualifying polling average</small></div><div class="ipe-demo-arrow">→</div><div class="ipe-demo-card party-${partyCardClass(ex?ex.winnerParty:'')}"><span>Voters said</span><b>${esc(exResult)}</b><small>Final election result</small></div></div><div class="ipe-demo-verdicts"><div><span>Margin miss</span><b>${ex?exErr.toFixed(1)+' pts':'—'}</b></div><div><span>Hit / miss</span><b>${ex?esc(ex.status):'—'}</b></div><div><span>Leader reversed?</span><b>${ex?.wrongWinner?'YES':'NO'}</b></div></div></aside></div></section><main class="ipe-shell ipe-main"><section class="ipe-metrics">${statCard('blue','2026 Senate states',String(states.length),'Only seats appearing on the 2026 Senate ballot')}${statCard('red','Historical misses',String(missCycle.length),'Scored races outside the hit definition')}${statCard('purple','Average margin error',avg==='—'?'—':avg+' pts','Mean absolute error among scored races')}${statCard('gold','Polling leader reversed',String(wrong),'Scored races where the final winner differed')}</section><section class="ipe-method"><div class="ipe-section-kicker">METHODOLOGY · IN PLAIN ENGLISH</div><h2>What does “hit” or “miss” mean?</h2><p class="ipe-method-intro">The page uses one transparent rule for the archive and then shows the underlying numbers so you can judge each race yourself.</p><div class="ipe-method-grid"><article class="ipe-method-card blue"><span class="ipe-method-num">01</span><h3>Start with the final polling margin</h3><p>For each historical Senate election, the archive uses its qualifying final pre-election polling average. The candidate vote shares and the two-candidate margin are saved separately.</p></article><article class="ipe-method-card red"><span class="ipe-method-num">02</span><h3>Compare it with the result</h3><p><b>HIT:</b> the polling average picked the winner and missed the final margin by no more than ${threshold} points. <b>MISS:</b> the leader was wrong or the margin error was larger than ${threshold} points.</p></article><article class="ipe-method-card gold"><span class="ipe-method-num">03</span><h3>Add state context</h3><p>Where a state baseline is available, the Senate D–R result is compared with that state’s presidential D–R margin relative to the national presidential vote. This is context, not a causal explanation.</p></article></div><div class="ipe-method-note"><b>No polling is not scored.</b> A historical election with no qualifying public polling stays visible in the full archive but does not count as a hit or miss.</div></section><section class="ipe-swing" id="ipeSwing"><div class="ipe-section-head"><div><div class="ipe-section-kicker">SEPARATE IMMERSIVE CATEGORY</div><h2>2026 swing-state polling history</h2><p>Each card keeps the original immersive format but now shows that state’s average saved polling miss. Click a state to open every saved 21st-century Senate race in one full-screen history.</p></div><span class="ipe-chip">${(data.swingStates||[]).length} swing states</span></div><div class="ipe-shocks" id="ipeShocks"></div></section><section class="ipe-archive" id="ipeArchive"><div class="ipe-section-head"><div><div class="ipe-section-kicker">FULL ARCHIVE · EVERY 2026 SENATE STATE</div><h2>Every state. Every saved cycle.</h2><p>The complete history underneath the swing-state section. Search by candidate, year, or state, or filter by whether the polling average hit, missed, or had no qualifying polling.</p></div></div><div class="ipe-controls"><input id="ipeSearch" placeholder="Search state, candidate or year"><select id="ipeState"><option value="">All 2026 Senate states</option>${states.map(ab=>`<option value="${esc(ab)}">${esc(data.records.find(r=>r.state===ab)?.stateName||ab)}</option>`).join('')}</select><select id="ipeStatus"><option value="">All results</option><option value="MISS">Misses</option><option value="HIT">Hits</option><option value="NO POLLING">No polling</option></select><select id="ipeSort"><option value="state">State / year</option><option value="newest">Newest first</option><option value="miss">Largest margin error</option></select></div><div class="ipe-results" id="ipeResults"></div><div id="ipeArchiveList"></div><div class="ipe-source"><b>Archive scope:</b> ${esc(data.scope||'Historical Senate elections for seats on the 2026 ballot.')}<br>${(data.sources||[]).map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a> — ${esc(s.note||'')}`).join(' · ')}${data.methodNote?`<br>${esc(data.methodNote)}`:''}</div></section></main><section class="ipe-modal" id="ipeModal" aria-hidden="true"><button class="ipe-modal-close" id="ipeModalClose" aria-label="Close race story">×</button><div class="ipe-modal-hero" id="ipeModalContent"></div><div class="ipe-modal-body" id="ipeModalBody"></div><div class="ipe-modal-nav"><button type="button" id="ipePrev">← Previous shock</button><span id="ipeModalPos"></span><button type="button" id="ipeNext">Next shock →</button></div></section></div>`;
+    page.innerHTML=`<div class="${ROOT_CLASS}"><section class="ipe-hero"><div class="ipe-grid"></div><div class="ipe-hero-inner"><div class="ipe-hero-copy"><div class="ipe-kicker">PAST POLLING ERRORS · 2026 SENATE SEATS ONLY</div><h1>See exactly where<br>the <em>polls missed.</em></h1><p>This archive backtests the Senate seats on the ballot in 2026 against prior elections for those same seats. Instead of reducing everything to one number, it shows what polling said, what voters did, and—where available—how the result compared with the state’s partisan baseline.</p><div class="ipe-hero-actions"><button type="button" class="ipe-btn light" id="ipeJumpSwing">Explore swing-state history ↓</button><button type="button" class="ipe-btn ghost" id="ipeJumpArchive">Open full archive ↓</button></div></div><aside class="ipe-demo"><div class="ipe-demo-label">HOW TO READ ONE RACE${ex?` · ${esc(ex.stateName)} ${ex.year}`:''}</div><div class="ipe-demo-stage"><div class="ipe-demo-card party-${partyCardClass(ex?pollLeaderParty(ex):'')}"><span>Polling said</span><b>${esc(exPoll)}</b><small>Final qualifying polling average</small></div><div class="ipe-demo-arrow">→</div><div class="ipe-demo-card party-${partyCardClass(ex?ex.winnerParty:'')}"><span>Voters said</span><b>${esc(exResult)}</b><small>Final election result</small></div></div><div class="ipe-demo-verdicts"><div><span>Margin miss</span><b>${ex?exErr.toFixed(1)+' pts':'—'}</b></div><div><span>Hit / miss</span><b>${ex?esc(ex.status):'—'}</b></div><div><span>Leader reversed?</span><b>${ex?.wrongWinner?'YES':'NO'}</b></div></div></aside></div></section><main class="ipe-shell ipe-main"><nav class="ipe-mobile-jumps" aria-label="Explore polling history"><span class="ipe-jumps-label">EXPLORE THE ARCHIVE</span><div class="ipe-jumps-actions"><button type="button" data-ipe-scroll="ipeMethod">How it works</button><button type="button" data-ipe-scroll="ipeSwing">Swing states</button><button type="button" data-ipe-scroll="ipeArchive">All races</button></div></nav><section class="ipe-metrics">${statCard('blue','2026 Senate states',String(states.length),'Only seats appearing on the 2026 Senate ballot')}${statCard('red','Historical misses',String(missCycle.length),'Scored races outside the hit definition')}${statCard('purple','Average margin error',avg==='—'?'—':avg+' pts','Mean absolute error among scored races')}${statCard('gold','Polling leader reversed',String(wrong),'Scored races where the final winner differed')}</section><section class="ipe-method" id="ipeMethod"><div class="ipe-section-kicker">METHODOLOGY · IN PLAIN ENGLISH</div><h2>What does “hit” or “miss” mean?</h2><p class="ipe-method-intro">The page uses one transparent rule for the archive and then shows the underlying numbers so you can judge each race yourself.</p><div class="ipe-method-grid"><article class="ipe-method-card blue"><span class="ipe-method-num">01</span><h3>Start with the final polling margin</h3><p>For each historical Senate election, the archive uses its qualifying final pre-election polling average. The candidate vote shares and the two-candidate margin are saved separately.</p></article><article class="ipe-method-card red"><span class="ipe-method-num">02</span><h3>Compare it with the result</h3><p><b>HIT:</b> the polling average picked the winner and missed the final margin by no more than ${threshold} points. <b>MISS:</b> the leader was wrong or the margin error was larger than ${threshold} points.</p></article><article class="ipe-method-card gold"><span class="ipe-method-num">03</span><h3>Add state context</h3><p>Where a state baseline is available, the Senate D–R result is compared with that state’s presidential D–R margin relative to the national presidential vote. This is context, not a causal explanation.</p></article></div><div class="ipe-method-note"><b>No polling is not scored.</b> A historical election with no qualifying public polling stays visible in the full archive but does not count as a hit or miss.</div></section><section class="ipe-swing" id="ipeSwing"><div class="ipe-section-head"><div><div class="ipe-section-kicker">SEPARATE IMMERSIVE CATEGORY</div><h2>2026 swing-state polling history</h2><p>Each card keeps the original immersive format but now shows that state’s average saved polling miss. Click a state to open every saved 21st-century Senate race in one full-screen history.</p></div><span class="ipe-chip">${(data.swingStates||[]).length} swing states</span></div><div class="ipe-shocks" id="ipeShocks"></div></section><section class="ipe-archive" id="ipeArchive"><div class="ipe-section-head"><div><div class="ipe-section-kicker">FULL ARCHIVE · EVERY 2026 SENATE STATE</div><h2>Every state. Every saved cycle.</h2><p>The complete history underneath the swing-state section. Search by candidate, year, or state, or filter by whether the polling average hit, missed, or had no qualifying polling.</p></div></div><div class="ipe-controls"><input id="ipeSearch" placeholder="Search state, candidate or year"><select id="ipeState"><option value="">All 2026 Senate states</option>${states.map(ab=>`<option value="${esc(ab)}">${esc(data.records.find(r=>r.state===ab)?.stateName||ab)}</option>`).join('')}</select><select id="ipeStatus"><option value="">All results</option><option value="MISS">Misses</option><option value="HIT">Hits</option><option value="NO POLLING">No polling</option></select><select id="ipeSort"><option value="state">State / year</option><option value="newest">Newest first</option><option value="miss">Largest margin error</option></select></div><div class="ipe-results" id="ipeResults"></div><div id="ipeArchiveList"></div><div class="ipe-source"><b>Archive scope:</b> ${esc(data.scope||'Historical Senate elections for seats on the 2026 ballot.')}<br>${(data.sources||[]).map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a> — ${esc(s.note||'')}`).join(' · ')}${data.methodNote?`<br>${esc(data.methodNote)}`:''}</div></section></main><section class="ipe-modal" id="ipeModal" aria-hidden="true"><button class="ipe-modal-close" id="ipeModalClose" aria-label="Close race story">×</button><div class="ipe-modal-hero" id="ipeModalContent"></div><div class="ipe-modal-body" id="ipeModalBody"></div><div class="ipe-modal-nav"><button type="button" id="ipePrev">← Previous shock</button><span id="ipeModalPos"></span><button type="button" id="ipeNext">Next shock →</button></div></section></div>`;
     renderShocks(); renderArchive();
     document.getElementById('ipeJumpSwing')?.addEventListener('click',()=>document.getElementById('ipeSwing')?.scrollIntoView({behavior:'smooth',block:'start'}));
+    document.querySelectorAll('#page-errors [data-ipe-scroll]').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.ipeScroll)?.scrollIntoView({behavior:'smooth',block:'start'})));
     document.getElementById('ipeJumpArchive')?.addEventListener('click',()=>document.getElementById('ipeArchive')?.scrollIntoView({behavior:'smooth',block:'start'}));
     ['ipeSearch','ipeState','ipeStatus','ipeSort'].forEach(id=>document.getElementById(id)?.addEventListener(id==='ipeSearch'?'input':'change',renderArchive));
     document.getElementById('ipeModalClose')?.addEventListener('click',closeStory);
