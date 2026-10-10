@@ -1,0 +1,370 @@
+/* WILL'S ELECTION POLLS — RESEARCH EDITION / OCT 2026
+   A coherent editorial design system for the existing election project.
+   UI/presentation only. Live forecasts, poll data and map callbacks remain untouched.
+   The active Senate map keeps its dark canvas for state legibility. */
+
+:root {
+ --wr-navy:#101d32;
+ --wr-navy2:#172b46;
+ --wr-ink:#162b43;
+ --wr-muted:#5f7086;
+ --wr-blue:#275fa8;
+ --wr-dem:#3269ad;
+ --wr-red:#a84959;
+ --wr-rule:#dce3eb;
+ --wr-paper:#f6f8fa;
+ --wr-white:#fff;
+ --wr-serif:"Iowan Old Style",Baskerville,"Palatino Linotype",Palatino,Georgia,serif;
+ --wr-sans:Inter,"Helvetica Neue",Arial,ui-sans-serif,system-ui,sans-serif;
+}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--wr-paper);color:var(--wr-ink);font-family:var(--wr-sans)}
+body,*{ -webkit-font-smoothing:antialiased }
+:where(.page) :is(button,input,select,textarea){font-family:var(--wr-sans)}
+:where(.page) :is(button,a,[role="button"]){-webkit-tap-highlight-color:transparent}
+:where(.page) :is(button,a,input,select,textarea):focus-visible{
+ outline:3px solid #80aef3!important;outline-offset:3px!important;
+}
+/* Unified site masthead — sits on every tab and remains usable on small screens. */
+body .site-header,
+body:has(#page-senate.senate-immersive.active) .site-header,
+body:has(#page-senate.wg-studio.active) .site-header{
+ position:sticky!important;top:0!important;z-index:3000!important;
+ box-sizing:border-box!important;
+ min-height:77px!important;height:auto!important;
+ padding:11px clamp(12px,2.2vw,37px)!important;
+ display:flex!important;align-items:center!important;
+ gap:clamp(13px,2vw,31px)!important;
+ background:rgba(15,27,44,.975)!important;color:#fff!important;
+ border:0!important;border-bottom:1px solid rgba(189,208,230,.20)!important;
+ box-shadow:0 8px 24px rgba(5,17,32,.13)!important;
+ backdrop-filter:blur(20px)!important;
+}
+body .site-header :is(.reference-brand-name,.reference-brand-name *,.brand,.brand-name),
+body:has(#page-senate.senate-immersive.active) .site-header :is(.reference-brand-name,.reference-brand-name *){
+ color:#f7f9fd!important;
+}
+body .site-header :is(.reference-brand-name,.brand-name){
+ font-family:var(--wr-sans)!important;
+ font-size:clamp(12px,1.14vw,16px)!important;
+ font-weight:760!important;line-height:1.2!important;
+ letter-spacing:-.025em!important;
+}
+body .site-header :is(.reference-brand-icon,.brand-mark){
+ flex:none!important;max-width:50px!important;max-height:50px!important;
+}
+body .site-header .nav{
+ display:flex!important;flex-wrap:nowrap!important;align-items:center!important;
+ min-width:0!important;gap:clamp(2px,.35vw,6px)!important;
+ overflow-x:auto!important;overscroll-behavior-x:contain!important;
+ scroll-behavior:smooth!important;scrollbar-width:none!important;
+ padding:5px 1px!important;max-width:100%!important;
+}
+body .site-header .nav::-webkit-scrollbar{display:none}
+body .site-header .nav > :is(button,a):not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.senate-immersive.active) .site-header .nav>button:not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.wg-studio.active) .site-header .nav>button:not(#editToggle):not(#settingsBtn){
+ flex:none!important;
+ min-height:36px!important;padding:8px clamp(10px,.88vw,16px)!important;
+ border:1px solid transparent!important;border-radius:6px!important;
+ background:transparent!important;color:#bdc9dc!important;
+ font:650 clamp(10px,.74vw,12px)/1.25 var(--wr-sans)!important;
+ letter-spacing:0!important;text-transform:none!important;
+ text-decoration:none!important;white-space:nowrap!important;
+ box-shadow:none!important;
+ transition:background .16s ease,color .16s ease,border-color .16s ease!important;
+}
+body .site-header .nav > :is(button,a):not(#editToggle):not(#settingsBtn):hover,
+body:has(#page-senate.senate-immersive.active) .site-header .nav>button:not(#editToggle):not(#settingsBtn):hover{
+ color:#fff!important;background:rgba(219,232,255,.095)!important;
+}
+body .site-header .nav > :is(button,a).active:not(#editToggle):not(#settingsBtn),
+body .site-header .nav > :is(button,a)[aria-current="page"]:not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.wg-studio.active) .site-header .nav>button.active:not(#editToggle):not(#settingsBtn),
+body:has(#page-senate.senate-immersive.active) .site-header .nav>button.active:not(#editToggle):not(#settingsBtn){
+ color:#fff!important;background:#27476c!important;
+ border-color:#4c719c!important;font-weight:750!important;
+}
+body .site-header .nav>button:focus-visible{
+ outline:2px solid #aac6f9!important;outline-offset:2px!important;
+}
+body .site-header .nav :is([data-spa-page="electionnight"],[data-will-page="electionnight"],[data-accepted-page="electionnight"]){display:none!important}
+
+/* New project signature, intentionally quiet and informational. */
+.wr-editorial-strip{
+ display:flex;justify-content:center;align-items:center;
+ gap:clamp(12px,2vw,29px);flex-wrap:wrap;
+ margin:0;padding:11px 20px;
+ color:#a8bfdc;background:#15263e;
+ border-bottom:1px solid #2c4464;
+ font:670 10px/1.4 var(--wr-sans);letter-spacing:.15em;
+ text-transform:uppercase;text-align:center;
+}
+.wr-editorial-strip .wr-issue{color:#f5f8fd;font-weight:800}
+.wr-editorial-strip .wr-dot{width:4px;height:4px;background:#a88792;border-radius:50%}
+.wr-editorial-strip .wr-dim{color:#9baec8}
+.wr-editorial-strip .wr-focus{color:#d7e5f8}
+
+/* Home: strong research-journal masthead, not a generic neon dashboard. */
+#page-home.reference-home{
+ background:
+  radial-gradient(ellipse 850px 450px at 102% 0%,rgba(61,112,171,.055),transparent 70%),
+  #f6f8fa!important;
+ color:var(--wr-ink)!important;
+}
+#page-home.reference-home .reference-home-shell{
+ max-width:1450px!important;
+ padding-top:26px!important;padding-bottom:80px!important;
+}
+#page-home.reference-home .reference-hero{
+ background:linear-gradient(112deg,#122943 0%,#1e3d5d 57%,#263a52 100%)!important;
+ border:1px solid #29425d!important;
+ border-radius:10px!important;
+ min-height:420px!important;
+ box-shadow:0 20px 55px rgba(10,31,57,.14)!important;
+}
+#page-home.reference-home .reference-hero:before{
+ height:3px!important;width:100%!important;inset:0 0 auto!important;
+ background:linear-gradient(90deg,#84aedb 0 48%,#fff 48% 52%,#b9767d 52% 100%)!important;
+}
+#page-home.reference-home .reference-hero:after{
+ content:none!important;display:none!important;
+}
+#page-home.reference-home .reference-hero h1{
+ font-family:var(--wr-serif)!important;
+ font-weight:500!important;font-size:clamp(44px,5.1vw,75px)!important;
+ line-height:1.045!important;letter-spacing:-.044em!important;
+ text-shadow:none!important;color:#fff!important;
+}
+#page-home.reference-home .reference-eyebrow{
+ font:750 10px/1.3 var(--wr-sans)!important;
+ letter-spacing:.16em!important;
+ color:#c1d4e8!important;border-color:rgba(194,218,242,.45)!important;
+ background:rgba(255,255,255,.07)!important;
+}
+#page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+ font:450 clamp(15px,1.2vw,18px)/1.65 var(--wr-sans)!important;
+ color:#c3d2e3!important;max-width:610px!important;
+}
+#page-home.reference-home .reference-hero-mark{
+ min-height:210px!important;
+ border-radius:8px!important;border:1px solid #dbe5f1!important;
+ box-shadow:0 14px 40px rgba(0,0,0,.13)!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a){
+ min-height:45px!important;border-radius:5px!important;
+ font:750 11px/1.3 var(--wr-sans)!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-primary{
+ color:#163450!important;background:#f5f8fd!important;
+ border:1px solid #f5f8fd!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-secondary{
+ color:#edf5ff!important;background:transparent!important;
+ border:1px solid rgba(197,218,242,.65)!important;
+}
+#page-home.reference-home #homeModelNote{
+ background:rgba(153,190,235,.095)!important;border-left-color:#98bde5!important;
+ color:#e0ecf8!important;
+}
+#page-home.reference-home .reference-metrics{
+ border-radius:9px!important;border-color:#dce3eb!important;
+ box-shadow:0 9px 30px rgba(30,53,83,.045)!important;
+}
+#page-home.reference-home .reference-metrics>*{
+ background:#fff!important;
+ border-right-color:#e3e8ee!important;
+}
+#page-home.reference-home #homeElectionCountdown{
+ background:#192f4c!important;
+}
+#page-home.reference-home #homeSenateTossups{
+ background:#fdfafa!important;
+}
+#page-home.reference-home #homeSenateForecast{
+ background:#f8f9fc!important;
+}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label){
+ letter-spacing:.12em!important;
+ font-size:10px!important;font-weight:750!important;
+}
+#page-home.reference-home .reference-metrics .wg-metric-value{
+ font-family:var(--wr-serif)!important;
+ font-weight:500!important;letter-spacing:-.03em!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-days{
+ font-family:var(--wr-serif)!important;font-weight:500!important;
+ font-size:clamp(62px,6vw,83px)!important;letter-spacing:-.03em!important;
+}
+/* Clean forecast charts already show user's actual seat calls. */
+#page-home.reference-home #homeForecastSplit .final-forecast-card{
+ border:1px solid #dfe4eb!important;background:#fff!important;
+ box-shadow:0 10px 30px rgba(20,43,72,.05)!important;
+}
+#page-home.reference-home #homeForecastSplit :is(.final-title,.senate-title,.house-title){
+ font-family:var(--wr-serif)!important;
+ font-weight:500!important;font-size:clamp(30px,2.7vw,42px)!important;
+}
+#page-home.reference-home #homeForecastSplit :is(.final-party-number,.party-number){
+ font-family:var(--wr-serif)!important;font-weight:500!important;
+ letter-spacing:-.04em!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:after{content:none!important;display:none!important}
+#page-home.reference-home .reference-latest,
+#page-home.reference-home .reference-featured{
+ border:1px solid var(--wr-rule)!important;
+ border-radius:10px!important;
+ box-shadow:0 11px 28px rgba(18,40,69,.045)!important;
+}
+#page-home.reference-home .reference-section-head h2{
+ font-family:var(--wr-serif)!important;
+ font-weight:550!important;font-size:clamp(27px,2.7vw,38px)!important;
+ letter-spacing:-.03em!important;
+}
+#page-home.reference-home .reference-section-head button{
+ background:#f1f5f9!important;border:1px solid #dbe5ed!important;
+ color:#2d5e94!important;
+ border-radius:5px!important;font:750 11px/1.3 var(--wr-sans)!important;
+}
+#page-home.reference-home .reference-map-card{border-radius:6px!important}
+
+/* Primary research pages share generous section widths and a common reading rhythm. */
+#page-polls,#page-betting,#page-about{
+ background:#f6f8fa!important;
+ color:#162b43!important;
+ min-height:calc(100vh - 78px)!important;
+}
+#page-polls :is(.page-head,.page-header),
+#page-betting :is(.page-head,.page-header),
+#page-about :is(.page-head,.page-header){
+ background:#f6f8fa!important;
+ border-bottom:1px solid #e1e7ed!important;
+ padding:clamp(26px,3.3vw,52px) clamp(18px,4.5vw,74px)!important;
+ margin:0!important;
+}
+#page-polls .page-head:before{
+ content:"THE DATA / 2026 MIDTERM ELECTIONS";
+}
+#page-betting .page-head:before{
+ content:"THE MARKETS / PROBABILITIES";
+}
+#page-about .page-head:before{
+ content:"THE ANALYST / THE PROJECT";
+}
+#page-polls .page-head:before,
+#page-betting .page-head:before,
+#page-about .page-head:before{
+ display:block!important;margin:0 0 13px!important;
+ color:#637d9a!important;font:800 10px/1.25 var(--wr-sans)!important;
+ letter-spacing:.18em!important;
+}
+#page-polls .page-head h1,#page-betting .page-head h1,
+#page-about .page-head h1{
+ font:500 clamp(40px,5vw,68px)/1.07 var(--wr-serif)!important;
+ letter-spacing:-.045em!important;
+ color:#152840!important;text-shadow:none!important;
+}
+#page-polls .page-head p,#page-betting .page-head p,
+#page-about .page-head p{
+ font:450 15px/1.65 var(--wr-sans)!important;
+ color:#607184!important;
+ max-width:800px!important;
+}
+#page-polls :is(.content,.page-content,.polls-content),
+#page-betting :is(.content,.page-content,.betting-content),
+#page-about :is(.content,.page-content){
+ max-width:1480px!important;margin-inline:auto!important;
+ padding:clamp(18px,2.5vw,37px)!important;
+}
+#page-polls :is(.panel,.card,.poll-card,.poll-row,.polls-panel),
+#page-betting :is(.panel,.card,.market-card,.betting-card),
+#page-about :is(.panel,.card,.about-profile-card){
+ border-color:#dce3eb!important;
+ border-radius:9px!important;
+ box-shadow:0 8px 25px rgba(20,47,80,.045)!important;
+}
+#page-polls :is(h2,h3),#page-betting :is(h2,h3),#page-about :is(h2,h3){
+ letter-spacing:-.024em!important;
+}
+#page-polls :is(input,select,button),#page-betting :is(input,select,button){
+ max-width:100%;
+}
+#page-polls :is(input,select),#page-betting :is(input,select){
+ border-radius:6px!important;border-color:#cfd9e4!important;
+ background:#fff!important;color:#1a304b!important;
+}
+#page-polls :is(button,.btn):not(.nav button),
+#page-betting :is(button,.btn):not(.nav button){
+ transition:filter .15s ease,background .15s ease,border-color .15s ease!important;
+}
+#page-polls :is(button,.btn):hover,
+#page-betting :is(button,.btn):hover{filter:brightness(.98)}
+
+/* Senate: the existing map needs a dark readable canvas. Give it a research-grade masthead. */
+#page-senate.senate-immersive.wg-studio{
+ background:#0c1422!important;color:#eff3f9!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head{
+ background:#101e33!important;
+ border-bottom:1px solid #30435d!important;
+ padding-block:clamp(31px,3.3vw,52px)!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head:before{
+ content:none!important;display:none!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head:after{
+ height:2px!important;
+ background:linear-gradient(90deg,#7da2c7 0 47%,#f2f5fa 47% 53%,#ae6474 53% 100%)!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head h1{
+ font:500 clamp(38px,4.35vw,70px)/1.06 var(--wr-serif)!important;
+ text-transform:none!important;letter-spacing:-.046em!important;
+ text-shadow:none!important;color:#f8fafc!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head p{
+ font:450 clamp(13px,1.1vw,16px)/1.7 var(--wr-sans)!important;
+ color:#aebed2!important;max-width:900px!important;
+}
+#page-senate.senate-immersive.wg-studio :is(.wg-studio-eyebrow,.section-eyebrow){
+ font:740 10px/1.4 var(--wr-sans)!important;
+ letter-spacing:.15em!important;color:#b2c7db!important;
+}
+#page-senate.senate-immersive.wg-studio .page-head-inner,
+#page-senate.senate-immersive.wg-studio .content{
+ max-width:1680px!important;
+}
+#page-senate.senate-immersive.wg-studio .wg-studio-eyebrow:before{
+ width:6px!important;height:6px!important;
+ background:#a1bddb!important;box-shadow:none!important;
+}
+#page-senate.senate-immersive.wg-studio .wg-senate-balance{
+ border-color:#30425c!important;border-radius:8px!important;
+}
+#page-senate.senate-immersive.wg-studio :is(.wg-call-card,.wg-maine-panel){
+ border-radius:8px!important;
+}
+#page-senate.senate-immersive.wg-studio .wg-call-card .wg-call-winner{
+ font-family:var(--wr-serif)!important;font-weight:600!important;
+}
+/* Analysis of past polls remains interactive and readable rather than decorative. */
+#page-errors{
+ background:#f6f8fa!important;
+}
+#page-errors .ipe-root{
+ --ipe-navy:#162940;
+ color:#17304b;
+}
+#page-errors :is(.ipe-hero,.ipe-state-history-hero){
+ border-radius:10px!important;
+}
+#page-errors .ipe-hero h1,
+#page-errors :is(.ipe-state-history-title,.ipe-section-head h2){
+ font-family:var(--wr-serif)!important;font-weight:500!important;
+ letter-spacing:-.035em!important;
+}
+#page-errors :is(.ipe-method-card,.ipe-shock,.ipe-state,.ipe-race,.ipe-archive){
+ border-radius:8px!important;
+}
+#page-errors :is(.ipe-btn,.ipe-controls button,.ipe-open){
+ border-radius:6px!important;
+}
