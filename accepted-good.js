@@ -1,6 +1,6 @@
 (()=>{
   const REP='#bd2937', DEM='#2763b8', IND='#8051d2';
-  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['errors','Past Polling Errors'],['about','About Me']];
+  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['about','About Me']];
   let current='home',busy=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=r=>r?[...r.querySelectorAll('*')].filter(el=>el.children.length===0):[];
