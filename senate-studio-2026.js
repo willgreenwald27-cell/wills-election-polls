@@ -33,12 +33,47 @@
   function color(r){
     return /-d$/.test(r||'')?'#4c86ff':/-r$/.test(r||'')?'#fb5470':/-i$/.test(r||'')?'#a98bff':'#b8c6d8';
   }
+  // The original public map only opens states on touch. Delegate clicks to the
+  // actual SVG path for all inputs, including Alaska's inset, without replacing
+  // the site's existing map or drawer.
+  function bindStateClicks(page){
+    const svg=page.querySelector('.map-wrap svg');
+    if(!svg||svg.dataset.wgStudioClickReady==='1')return;
+    svg.dataset.wgStudioClickReady='1';
+    svg.addEventListener('click',event=>{
+      const path=event.target?.closest?.('.state-shape[data-state]');
+      if(!path)return;
+      const ab=path.dataset.state;
+      if(!rows()?.[ab])return;
+      try {
+        if(typeof openState==='function')openState(ab);
+        else if(typeof window.openState==='function')window.openState(ab);
+      } catch(error) {console.warn('Unable to open Senate state:',ab,error);}
+    },true);
+    // SVG state shapes should be keyboard-usable too.
+    svg.querySelectorAll('.state-shape[data-state]').forEach(path=>{
+      path.setAttribute('tabindex','0');
+      path.setAttribute('role','button');
+      path.setAttribute('aria-label','Open '+(rows()?.[path.dataset.state]?.name||path.dataset.state)+' Senate forecast');
+    });
+    svg.addEventListener('keydown',event=>{
+      if(event.key!=='Enter'&&event.key!==' ')return;
+      const path=event.target?.closest?.('.state-shape[data-state]');
+      if(!path)return;
+      event.preventDefault();
+      const ab=path.dataset.state;
+      if(!rows()?.[ab])return;
+      if(typeof openState==='function')openState(ab);
+      else if(typeof window.openState==='function')window.openState(ab);
+    });
+  }
   function sync(){
     const page=document.getElementById(ID), data=rows();
     if(!page||!data)return;
     const svg=page.querySelector('.map-wrap svg');
     if(!svg||svg.querySelectorAll('.state-shape[data-state]').length<30)return;
     page.classList.add('wg-studio');
+    bindStateClicks(page);
     if(!ready){
       const top=page.querySelector('.page-head-inner>div:first-child');
       if(top&&!top.querySelector('.wg-studio-eyebrow')){
