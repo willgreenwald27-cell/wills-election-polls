@@ -561,6 +561,14 @@
     padding:23px!important;
   }
 }
+@media(max-width:780px){
+  #page-home.reference-home .reference-metrics:has(#homeLastUpdated){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateTossups{
+    grid-column:1/-1!important;grid-row:auto!important;
+  }
+}
 @media(max-width:430px){
   #page-home.reference-home .reference-hero h1{
     font-size:clamp(45px,11vw,59px)!important;
