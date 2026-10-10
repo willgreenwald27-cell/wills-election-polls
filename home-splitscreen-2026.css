@@ -398,3 +398,70 @@
     animation:none!important;transition:none!important;
   }
 }
+
+/* HOMEPAGE STAT ROW ALIGNMENT — all four readouts share one row on desktop.
+   Original updater's values are untouched. On mobile the cards form a neat 2x2. */
+#page-home.reference-home .reference-metrics{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  grid-auto-flow:row!important;
+}
+#page-home.reference-home .reference-metrics>*{
+  min-height:178px!important;
+  padding:22px clamp(15px,2vw,29px)!important;
+  justify-content:flex-start!important;
+  align-items:flex-start!important;
+  align-self:stretch!important;
+}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label){
+  display:block!important;
+  min-height:29px!important;
+  margin:0 0 11px!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-days{
+  font-size:clamp(58px,6.2vw,85px)!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-value{
+  font-size:clamp(26px,2.65vw,39px)!important;
+  line-height:1.1!important;
+}
+#page-home.reference-home #homeLastUpdated .wg-metric-value{
+  overflow-wrap:break-word!important;
+}
+@media(max-width:800px){
+  #page-home.reference-home .reference-metrics,
+  #page-home.reference-home .reference-metrics:has(#homeLastUpdated),
+  #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)){
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  #page-home.reference-home .reference-metrics>*,
+  #page-home.reference-home #homeElectionCountdown,
+  #page-home.reference-home #homeSenateTossups,
+  #page-home.reference-home #homeLastUpdated,
+  #page-home.reference-home #homeSenateForecast{
+    grid-column:auto!important;
+    grid-row:auto!important;
+    min-height:163px!important;
+    justify-content:flex-start!important;
+    padding:18px!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-election-days{font-size:70px!important}
+  #page-home.reference-home #homeSenateForecast .wg-forecast-value{font-size:clamp(22px,4.5vw,34px)!important}
+}
+@media(max-width:450px){
+  #page-home.reference-home .reference-metrics>*,
+  #page-home.reference-home #homeElectionCountdown,
+  #page-home.reference-home #homeSenateTossups,
+  #page-home.reference-home #homeLastUpdated,
+  #page-home.reference-home #homeSenateForecast{
+    min-height:154px!important;
+    padding:15px!important;
+  }
+  #page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label){
+    min-height:32px!important;
+    font-size:9px!important;
+    margin-bottom:8px!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-election-days{font-size:62px!important}
+  #page-home.reference-home #homeSenateForecast .wg-forecast-value{font-size:clamp(19px,5.3vw,27px)!important;gap:5px!important}
+}
