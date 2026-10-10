@@ -1,0 +1,585 @@
+/* WILL'S ELECTION DESK — 2026 PRESSROOM EDITION
+   Scoped homepage art direction. No modifications to live forecast data,
+   navigation, poll feeds, state click logic or serialized app markup. */
+#page-home.reference-home{
+  --press-ink:#152138;
+  --press-paper:#f1f1ec;
+  --press-blue:#1268ea;
+  --press-red:#d92843;
+  --press-rule:#d0d4da;
+  position:relative!important;
+  min-height:100vh!important;
+  background:
+    linear-gradient(90deg,transparent calc(50% - 1px),rgba(40,54,79,.027) 50%,transparent calc(50% + 1px)),
+    #efeee9!important;
+  color:#182338!important;
+}
+#page-home.reference-home .reference-home-shell{
+  width:min(1470px,calc(100% - 64px))!important;
+  max-width:1470px!important;
+  margin:0 auto!important;
+  padding:20px 0 86px!important;
+  display:grid!important;
+  grid-template-columns:repeat(12,minmax(0,1fr))!important;
+  column-gap:21px!important;
+  row-gap:22px!important;
+  align-items:stretch!important;
+  box-sizing:border-box!important;
+}
+#page-home.reference-home .reference-home-shell > *{min-width:0}
+#page-home.reference-home .reference-home-shell > :not(.reference-hero):not(.reference-metrics):not(.reference-divider):not(.reference-bottom):not(#housePrediction2026):not(#homePastPollingMisses){
+  grid-column:1/-1!important;
+}
+/* Distinct newspaper masthead — not a full-screen dark dashboard. */
+#page-home.reference-home .reference-hero{
+  grid-column:1/-1!important;
+  grid-row:auto!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.38fr) minmax(240px,.62fr)!important;
+  gap:clamp(22px,5.5vw,84px)!important;
+  align-items:center!important;
+  min-height:432px!important;
+  margin:0!important;
+  padding:clamp(28px,4.5vw,69px)!important;
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border:1px solid #b9c3d1!important;
+  border-top:7px solid #1b2638!important;
+  border-bottom:1px solid #aeb7c4!important;
+  border-radius:2px!important;
+  background:
+    linear-gradient(122deg,rgba(253,253,250,.96) 0%,rgba(245,247,250,.93) 58%,rgba(229,237,249,.92) 100%)!important;
+  box-shadow:7px 8px 0 rgba(17,37,69,.085)!important;
+}
+#page-home.reference-home .reference-hero:before{
+  content:"THE ELECTION DESK   /   2026 MIDTERMS"!important;
+  position:absolute!important;
+  z-index:0!important;
+  top:0!important;right:0!important;left:auto!important;
+  bottom:auto!important;width:auto!important;height:auto!important;
+  padding:9px 15px!important;
+  background:linear-gradient(90deg,#176ae5 0 49%,#d92e4d 49% 100%)!important;
+  color:white!important;
+  border:0!important;border-radius:0!important;
+  font:900 9px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.14em!important;
+  pointer-events:none!important;
+}
+#page-home.reference-home .reference-hero:after{
+  content:"26"!important;
+  position:absolute!important;z-index:-1!important;
+  width:auto!important;height:auto!important;
+  left:auto!important;top:auto!important;
+  right:-.07em!important;bottom:-.29em!important;
+  background:none!important;border:0!important;
+  font:1000 clamp(250px,35vw,540px)/1 "Arial Black",Impact,Inter,Arial,sans-serif!important;
+  letter-spacing:-.12em!important;
+  color:rgba(25,77,155,.06)!important;
+  pointer-events:none!important;
+}
+#page-home.reference-home .reference-hero-copy{
+  position:relative!important;
+  z-index:2!important;
+  min-width:0!important;
+  max-width:820px!important;
+}
+#page-home.reference-home .reference-eyebrow{
+  display:inline-flex!important;
+  width:fit-content!important;
+  max-width:100%!important;
+  align-items:center!important;
+  gap:9px!important;
+  background:none!important;
+  color:#4e5c72!important;
+  border:0!important;
+  border-left:4px solid #d82944!important;
+  padding:0 0 0 12px!important;
+  margin:0 0 23px!important;
+  border-radius:0!important;
+  font:900 11px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.20em!important;
+  text-transform:uppercase!important;
+}
+#page-home.reference-home .reference-hero h1{
+  position:relative!important;
+  z-index:1!important;
+  max-width:900px!important;
+  margin:0 0 21px!important;
+  color:#14233d!important;
+  font-family:Impact,"Arial Narrow","Helvetica Neue",Inter,Arial,sans-serif!important;
+  font-stretch:condensed!important;
+  font-weight:950!important;
+  font-size:clamp(48px,6.55vw,104px)!important;
+  line-height:.96!important;
+  letter-spacing:-.054em!important;
+  text-wrap:balance!important;
+  text-shadow:none!important;
+}
+#page-home.reference-home .reference-hero-copy > p:not(#homeModelNote){
+  margin:0 0 13px!important;
+  max-width:570px!important;
+  font:500 clamp(15px,1.3vw,18px)/1.52 Inter,Arial,sans-serif!important;
+  color:#46546b!important;
+  letter-spacing:0!important;
+}
+#page-home.reference-home .reference-hero-actions{
+  display:flex!important;
+  gap:9px!important;
+  margin:27px 0 0!important;
+  flex-wrap:wrap!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a){
+  display:inline-flex!important;
+  justify-content:center!important;
+  align-items:center!important;
+  min-height:48px!important;
+  padding:12px 20px!important;
+  border-radius:2px!important;
+  font:900 12px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.035em!important;
+  text-transform:uppercase!important;
+  box-shadow:4px 4px 0 rgba(15,32,58,.12)!important;
+  transition:transform .17s ease,box-shadow .17s ease!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-primary{
+  background:#1667de!important;
+  border:1px solid #1667de!important;
+  color:#fff!important;
+}
+#page-home.reference-home .reference-hero-actions .reference-secondary{
+  background:#fff!important;
+  border:1px solid #192942!important;
+  color:#192942!important;
+}
+#page-home.reference-home .reference-hero-actions :is(button,a):hover{
+  transform:translate(-1px,-2px)!important;
+  box-shadow:6px 7px 0 rgba(15,32,58,.11)!important;
+}
+#page-home.reference-home .reference-hero-mark{
+  position:relative!important;
+  z-index:1!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:230px!important;
+  padding:22px!important;
+  background:#fff!important;
+  border:2px solid #253c60!important;
+  border-radius:2px!important;
+  box-shadow:11px 11px 0 rgba(17,84,176,.11)!important;
+  transform:rotate(1.5deg);
+}
+#page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  max-height:260px!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+#page-home.reference-home .reference-mark-caption{
+  color:#6e7d92!important;
+  font:850 10px/1.4 Inter,Arial,sans-serif!important;
+  text-transform:uppercase!important;
+  letter-spacing:.13em!important;
+}
+#page-home.reference-home #homeModelNote{
+  max-width:100%!important;
+  border-left:3px solid #1268ea!important;
+  background:#e5edfa!important;
+  color:#344e70!important;
+  padding:12px 14px!important;
+  border-radius:0!important;
+  font:600 12px/1.5 Inter,Arial,sans-serif!important;
+}
+/* Single horizontal 'newswire' strip of site-provided current metrics. */
+#page-home.reference-home .reference-metrics{
+  grid-column:1/-1!important;
+  grid-row:auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  width:100%!important;
+  max-width:100%!important;
+  gap:0!important;
+  margin:2px 0 0!important;
+  padding:0!important;
+  height:auto!important;
+  min-height:0!important;
+  background:#14233a!important;
+  border:1px solid #14233a!important;
+  border-radius:2px!important;
+  overflow:hidden!important;
+  box-shadow:5px 6px 0 rgba(13,31,58,.12)!important;
+}
+#page-home.reference-home .reference-metrics > *{
+  position:relative!important;
+  grid-column:auto!important;grid-row:auto!important;
+  width:auto!important;min-width:0!important;
+  max-width:none!important;height:auto!important;
+  min-height:170px!important;
+  padding:24px clamp(17px,2.6vw,37px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  text-align:left!important;
+  border:0!important;
+  border-right:1px solid rgba(225,236,255,.18)!important;
+  border-radius:0!important;
+  background:#14233a!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+#page-home.reference-home .reference-metrics > *:last-child{border-right:0!important}
+#page-home.reference-home .reference-metrics > *:before{
+  content:"";width:36px;height:3px;position:absolute;top:0;left:clamp(17px,2.6vw,37px);
+  background:#5c9cff;pointer-events:none;
+}
+#page-home.reference-home #homeElectionCountdown{
+  background:#0b60d0!important;
+}
+#page-home.reference-home #homeElectionCountdown:before{background:#fff!important}
+#page-home.reference-home #homeSenateTossups{background:#1c304f!important}
+#page-home.reference-home #homeSenateTossups:before{background:#fa5d75!important}
+#page-home.reference-home #homeLastUpdated{background:#1e3049!important}
+#page-home.reference-home #homeSenateForecast{
+  background:linear-gradient(125deg,#26334e,#4a2640)!important;
+}
+#page-home.reference-home #homeSenateForecast:before{
+  background:linear-gradient(90deg,#64a4ff 50%,#fb6d83 50%)!important;width:62px!important;
+}
+#page-home.reference-home .reference-metrics :is(.wg-election-label,.wg-metric-label,.metric-label){
+  color:#c0d0eb!important;
+  margin:0 0 12px!important;
+  font:900 10px/1.35 Inter,Arial,sans-serif!important;
+  text-transform:uppercase!important;letter-spacing:.16em!important;
+}
+#page-home.reference-home #homeElectionCountdown .wg-election-label{color:#fff!important}
+#page-home.reference-home .reference-metrics .wg-election-days{
+  color:#fff!important;
+  font:900 clamp(65px,7.5vw,104px)/.89 Inter,Arial,sans-serif!important;
+  letter-spacing:-.09em!important;
+  font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home .reference-metrics .wg-election-copy{
+  color:#d9eaff!important;
+  font:650 13px/1.38 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home .reference-metrics .wg-metric-value{
+  font:900 clamp(28px,3.5vw,49px)/1 Inter,Arial,sans-serif!important;
+  letter-spacing:-.055em!important;
+  color:#fff!important;
+}
+#page-home.reference-home #homeLastUpdated .wg-metric-value{
+  font:800 clamp(14px,1.55vw,20px)/1.23 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateTossups .wg-metric-value{color:#ffa5b5!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-value{
+  display:flex!important;gap:13px!important;flex-wrap:wrap!important;align-items:baseline!important;
+  color:#fff!important;
+  font:900 clamp(26px,3vw,41px)/1 Inter,Arial,sans-serif!important;
+}
+#page-home.reference-home #homeSenateForecast .wg-forecast-dem{color:#91beff!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-rep{color:#ff9db0!important}
+#page-home.reference-home #homeSenateForecast .wg-forecast-divider{color:#b0bcda!important}
+/* If the site's legacy updater retains four cards, give them equal columns. */
+#page-home.reference-home .reference-metrics:has(#homeLastUpdated) {
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+#page-home.reference-home .reference-divider{
+  grid-column:1/-1!important;
+  margin:10px 0 2px!important;
+  height:5px!important;
+  border:0!important;
+  background:linear-gradient(90deg,#156ce8 0 49%,#f4f6f9 49% 51%,#d72b46 51% 100%)!important;
+}
+/* Two clear projections, styled as printed election scoreboard plaques. */
+#page-home.reference-home #housePrediction2026{
+  grid-column:1/-1!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:5px 0 0!important;
+}
+#page-home.reference-home #homeForecastSplit{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  width:100%!important;min-width:0!important;
+  gap:20px!important;
+  margin:0!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card{
+  position:relative!important;
+  display:grid!important;
+  grid-template-rows:auto auto 1fr 22px auto!important;
+  aspect-ratio:auto!important;
+  min-height:338px!important;
+  height:auto!important;
+  width:100%!important;min-width:0!important;
+  overflow:hidden!important;
+  padding:27px 33px!important;
+  border:1px solid #c5ccd7!important;
+  border-radius:2px!important;
+  box-shadow:5px 6px 0 rgba(29,43,66,.11)!important;
+  background:#fff!important;
+  isolation:isolate!important;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:before{
+  content:"";position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,#1469ec 0 50%,#dd2946 50%);
+  pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-forecast-card:after{
+  content:"26";position:absolute;z-index:-1;right:5px;bottom:-.38em;
+  font:900 clamp(180px,19vw,300px)/1 Inter,Arial,sans-serif;
+  color:rgba(43,69,113,.037);letter-spacing:-.09em;pointer-events:none;
+}
+#page-home.reference-home #homeForecastSplit .final-kicker{
+  font:900 11px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.19em!important;
+  text-transform:uppercase!important;color:#526684!important;
+  margin:0 0 10px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-title{
+  color:#12243e!important;
+  font:900 clamp(27px,2.7vw,40px)/1 Inter,Arial,sans-serif!important;
+  letter-spacing:-.055em!important;
+  min-height:48px!important;
+  max-width:100%!important;
+  margin:0 0 20px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-numbers{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;
+  align-items:end!important;align-self:center!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-label{
+  font:900 10px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.16em!important;text-transform:uppercase!important;
+  color:#4e6079!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number{
+  font:950 clamp(64px,6.4vw,103px)/.9 Impact,"Arial Narrow",Inter,Arial,sans-serif!important;
+  letter-spacing:-.04em!important;
+  margin:4px 0 0!important;
+  font-variant-numeric:tabular-nums!important;
+}
+#page-home.reference-home #homeForecastSplit .final-party-number.dem{color:#1267eb!important}
+#page-home.reference-home #homeForecastSplit .final-party-number.rep{color:#d52b43!important}
+#page-home.reference-home #homeForecastSplit .final-bar{
+  height:21px!important;border-radius:0!important;
+  background:#dde2eb!important;
+  overflow:hidden!important;
+  border:1px solid #c1cbd8!important;
+  box-shadow:none!important;
+}
+#page-home.reference-home #homeForecastSplit .final-bar > span.dem{background:#166de9!important}
+#page-home.reference-home #homeForecastSplit .final-bar > span.rep{background:#db2c46!important}
+#page-home.reference-home #homeForecastSplit .final-majority-marker{
+  background:#151c28!important;height:30px!important;
+}
+#page-home.reference-home #homeForecastSplit .final-majority-note{
+  text-align:center!important;font:900 10px/1.4 Inter,Arial,sans-serif!important;
+  text-transform:uppercase!important;letter-spacing:.14em!important;color:#586980!important;
+}
+/* The original polls and featured map stay functional, now newspaper columns. */
+#page-home.reference-home .reference-bottom{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.23fr) minmax(0,1fr)!important;
+  gap:19px!important;
+  margin:4px 0 0!important;
+  align-items:stretch!important;
+}
+#page-home.reference-home .reference-latest,
+#page-home.reference-home .reference-featured{
+  display:flex!important;flex-direction:column!important;
+  width:100%!important;min-width:0!important;
+  padding:clamp(23px,2.7vw,36px)!important;
+  border:1px solid #c6cdd6!important;
+  border-radius:2px!important;
+  background:#fff!important;
+  box-shadow:5px 6px 0 rgba(26,44,72,.095)!important;
+}
+#page-home.reference-home .reference-latest:before,
+#page-home.reference-home .reference-featured:before{
+  content:"";align-self:stretch;height:5px;margin:-1px 0 20px;
+  background:linear-gradient(90deg,#1468e8 0 52%,#d82a48 52% 100%);
+}
+#page-home.reference-home .reference-section-head{
+  display:flex!important;align-items:center!important;flex-wrap:wrap!important;
+  justify-content:space-between!important;gap:12px!important;
+  border-bottom:2px solid #18283e!important;
+  margin:0 0 16px!important;padding:0 0 17px!important;
+}
+#page-home.reference-home .reference-section-head h2{
+  font:900 clamp(26px,2.8vw,39px)/1 Impact,"Arial Narrow",Inter,Arial,sans-serif!important;
+  letter-spacing:-.025em!important;color:#17243a!important;
+}
+#page-home.reference-home .reference-section-head button{
+  font:900 10px/1.3 Inter,Arial,sans-serif!important;
+  letter-spacing:.05em!important;
+  background:#fff!important;color:#195ec7!important;
+  border:1px solid #97accf!important;border-radius:0!important;
+  padding:11px 13px!important;
+}
+#page-home.reference-home .reference-section-head button:hover{
+  background:#eaf1fb!important;border-color:#195ec7!important;
+}
+#page-home.reference-home #homeLatestPolls{
+  width:100%!important;min-width:0!important;
+  color:#192945!important;
+}
+#page-home.reference-home #homeLatestPolls > *{
+  border-bottom:1px solid #dce1e9!important;
+  padding-block:14px!important;
+}
+#page-home.reference-home .reference-map-card{
+  flex:1 1 auto!important;
+  display:flex!important;
+  min-width:0!important;
+  overflow:hidden!important;
+  border:1px solid #becbdd!important;
+  border-radius:0!important;
+  background:#eff4fb!important;
+  box-shadow:none!important;
+  transition:box-shadow .17s ease,transform .17s ease!important;
+}
+#page-home.reference-home .reference-map-card:hover{
+  transform:translateY(-2px)!important;
+  box-shadow:4px 5px 0 rgba(25,79,151,.12)!important;
+}
+#page-home.reference-home .reference-map-preview{
+  background:#dfeaf8!important;
+  min-height:205px!important;
+}
+#page-home.reference-home .reference-map-copy{
+  color:#1e416f!important;
+}
+#page-home.reference-home #homePastPollingMisses{
+  grid-column:1/-1!important;
+  width:100%!important;min-width:0!important;
+  margin:3px 0 0!important;
+  background:#172840!important;color:#fff!important;
+  border:1px solid #172840!important;
+  border-radius:2px!important;
+  box-shadow:6px 6px 0 rgba(10,25,47,.13)!important;
+}
+#page-home.reference-home #homePastPollingMisses:hover{
+  background:#1f3a5e!important;
+}
+#page-home.reference-home :is(a,button):focus-visible{
+  outline:3px solid #236de4!important;outline-offset:4px!important;
+}
+/* Real mobile and tablet layout, no repositioned live widgets. */
+@media(max-width:1100px){
+  #page-home.reference-home .reference-home-shell{
+    width:calc(100% - 34px)!important;gap:15px!important;
+  }
+  #page-home.reference-home .reference-hero{
+    grid-template-columns:minmax(0,1.35fr) minmax(175px,.65fr)!important;
+    gap:18px!important;min-height:390px!important;padding:35px!important;
+  }
+  #page-home.reference-home .reference-hero h1{font-size:clamp(52px,7.5vw,82px)!important}
+  #page-home.reference-home .reference-metrics > *{padding:20px!important}
+}
+@media(max-width:780px){
+  #page-home.reference-home .reference-home-shell{
+    width:calc(100% - 24px)!important;padding:13px 0 50px!important;gap:13px!important;
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #page-home.reference-home .reference-hero,
+  #page-home.reference-home .reference-metrics,
+  #page-home.reference-home .reference-divider,
+  #page-home.reference-home #housePrediction2026,
+  #page-home.reference-home .reference-bottom,
+  #page-home.reference-home #homePastPollingMisses{
+    grid-column:1/-1!important;
+  }
+  #page-home.reference-home .reference-hero{
+    display:flex!important;flex-direction:column!important;align-items:stretch!important;
+    min-height:0!important;padding:33px 23px 26px!important;gap:23px!important;
+  }
+  #page-home.reference-home .reference-hero:before{
+    font-size:8px!important;padding:7px 10px!important;
+  }
+  #page-home.reference-home .reference-hero h1{
+    font-size:clamp(51px,12vw,78px)!important;
+    line-height:.95!important;
+  }
+  #page-home.reference-home .reference-hero-copy > p:not(#homeModelNote){
+    font-size:15px!important;
+  }
+  #page-home.reference-home .reference-hero-mark{
+    min-height:140px!important;
+    padding:16px!important;
+    transform:rotate(0)!important;
+    box-shadow:6px 7px 0 rgba(17,84,176,.09)!important;
+  }
+  #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+    max-height:118px!important;
+  }
+  #page-home.reference-home .reference-metrics{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:0!important;grid-auto-flow:row!important;
+  }
+  #page-home.reference-home .reference-metrics > *{
+    min-height:135px!important;padding:18px!important;
+    border-right:1px solid rgba(225,236,255,.15)!important;
+    border-bottom:1px solid rgba(225,236,255,.15)!important;
+  }
+  #page-home.reference-home #homeElectionCountdown{
+    grid-column:1/-1!important;grid-row:auto!important;
+    min-height:180px!important;
+  }
+  #page-home.reference-home #homeSenateForecast{
+    grid-column:1/-1!important;grid-row:auto!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-election-days{
+    font-size:clamp(73px,19vw,102px)!important;
+  }
+  #page-home.reference-home #homeLastUpdated .wg-metric-value{font-size:13px!important}
+  #page-home.reference-home #homeForecastSplit{
+    grid-template-columns:1fr!important;gap:12px!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-forecast-card{
+    aspect-ratio:auto!important;min-height:300px!important;padding:26px 21px!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-title{
+    font-size:clamp(28px,7.2vw,39px)!important;
+  }
+  #page-home.reference-home #homeForecastSplit .final-party-number{
+    font-size:clamp(72px,19vw,96px)!important;
+  }
+  #page-home.reference-home .reference-bottom{
+    grid-template-columns:1fr!important;gap:12px!important;
+  }
+  #page-home.reference-home .reference-latest,
+  #page-home.reference-home .reference-featured{
+    padding:23px!important;
+  }
+}
+@media(max-width:430px){
+  #page-home.reference-home .reference-hero h1{
+    font-size:clamp(45px,11vw,59px)!important;
+  }
+  #page-home.reference-home .reference-hero-actions{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  #page-home.reference-home .reference-hero-actions :is(button,a){
+    min-width:0!important;padding:11px 9px!important;font-size:10px!important;
+  }
+  #page-home.reference-home .reference-metrics .wg-metric-value{font-size:30px!important}
+  #page-home.reference-home #homeForecastSplit .final-party-number{
+    font-size:clamp(58px,17vw,76px)!important;
+  }
+  #page-home.reference-home .reference-section-head h2{font-size:30px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #page-home.reference-home :is(button,a,.reference-map-card){
+    transition:none!important;
+  }
+}
