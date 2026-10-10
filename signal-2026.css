@@ -463,3 +463,60 @@ body:has(#page-senate.wg-studio.active) .site-header .nav>button.active:not(#edi
 @media(prefers-reduced-motion:reduce){
  #page-home.reference-home .wr-seat{animation:none!important}
 }
+
+
+/* HOMEPAGE LOGO FEATURE — larger without affecting other brand placements. */
+@media(min-width:921px){
+ #page-home.reference-home .reference-hero{
+  grid-template-columns:minmax(0,1.03fr) minmax(340px,.97fr)!important;
+ }
+}
+#page-home.reference-home .reference-hero-mark{
+ width:100%!important;
+ min-width:0!important;
+ min-height:340px!important;
+ box-sizing:border-box!important;
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ padding:clamp(23px,3vw,41px)!important;
+}
+#page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+ display:block!important;
+ width:100%!important;
+ max-width:100%!important;
+ height:auto!important;
+ max-height:295px!important;
+ object-fit:contain!important;
+}
+@media(min-width:801px) and (max-width:920px){
+ #page-home.reference-home .reference-hero{
+  grid-template-columns:minmax(0,1fr) minmax(250px,.83fr)!important;
+ }
+ #page-home.reference-home .reference-hero-mark{
+  min-height:290px!important;
+  padding:24px!important;
+ }
+ #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  max-height:260px!important;
+ }
+}
+@media(max-width:800px){
+ #page-home.reference-home .reference-hero-mark{
+  min-height:245px!important;
+  padding:22px!important;
+ }
+ #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  max-height:212px!important;
+ }
+}
+@media(max-width:500px){
+ #page-home.reference-home .reference-hero-mark{
+  min-height:220px!important;
+  padding:16px!important;
+ }
+ #page-home.reference-home .reference-hero-mark img.brand-arc-hero{
+  max-height:190px!important;
+ }
+}
