@@ -254,6 +254,19 @@ body:has(#page-home.reference-home.active) .site-header .nav button[data-accepte
 #page-home.reference-home #homeSenateForecast .wg-forecast-dem{color:#85b3ff!important}
 #page-home.reference-home #homeSenateForecast .wg-forecast-rep{color:#ff8198!important}
 #page-home.reference-home #homeSenateForecast .wg-forecast-divider{color:#8c9fbd!important}
+/* The legacy metrics script sometimes removes the last-update card.
+   Expand the toss-up card rather than leaving an empty dashboard slot. */
+#page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateTossups{
+ grid-column:1/-1!important;
+}
+@media(min-width:731px) and (max-width:1040px){
+ #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateTossups{
+  grid-column:3/-1!important;
+ }
+ #page-home.reference-home .reference-metrics:not(:has(#homeLastUpdated)) #homeSenateForecast{
+  grid-column:1/-1!important;
+ }
+}
 /* Keep section ordering, and promote election projections to large editorial cards. */
 #page-home.reference-home .reference-divider{
  grid-column:1 / -1!important;
