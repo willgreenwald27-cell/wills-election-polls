@@ -8,10 +8,10 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
-    ['2026-10-08','ME','Maine','Washington Post','Troy Jackson',50,'Susan Collins',46,'Jackson +4 · screenshot supplied Oct 9'],
-    ['2026-10-08','IA','Iowa','Emerson*','Ashley Hinson',47,'Josh Turek',45,'Hinson +2 · screenshot supplied Oct 9'],
-    ['2026-10-08','MN','Minnesota','Rasmussen Reports','Peggy Flanagan',48,'Michele Tafoya',45,'Flanagan +3 · screenshot supplied Oct 9'],
-    ['2026-10-08','MN','Minnesota','Daily Agenda/Morning Consult','Peggy Flanagan',45,'Michele Tafoya',41,'Flanagan +4 · screenshot supplied Oct 9'],
+    ['2026-10-08','ME','Maine','Washington Post','Troy Jackson',50,'Susan Collins',46,'Jackson +4'],
+    ['2026-10-08','IA','Iowa','Emerson*','Ashley Hinson',47,'Josh Turek',45,'Hinson +2'],
+    ['2026-10-08','MN','Minnesota','Rasmussen Reports','Peggy Flanagan',48,'Michele Tafoya',45,'Flanagan +3'],
+    ['2026-10-08','MN','Minnesota','Daily Agenda/Morning Consult','Peggy Flanagan',45,'Michele Tafoya',41,'Flanagan +4'],
     ['2026-10-07','IA','Iowa','CNN','Ashley Hinson',45,'Josh Turek',43,'Hinson +2'],
     ['2026-10-07','OH','Ohio Special Election','CNN','Sherrod Brown',49,'Jon Husted',43,'Brown +6'],
     ['2026-10-07','OH','Ohio Special Election','co/efficient','Sherrod Brown',45,'Jon Husted',46,'Husted +1'],
