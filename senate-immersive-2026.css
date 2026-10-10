@@ -1,3 +1,5 @@
+/* Respect the site's existing .page/.page.active visibility rules.
+   A hidden Senate tab must never be forced visible over Home or other tabs. */
 /* 2026 SENATE IMMERSIVE FORECAST — scoped, data-preserving */
 /* Only darken the shared navigation while the Senate forecast tab is active. */
 body:has(#page-senate.senate-immersive.active) .site-header{
@@ -22,7 +24,7 @@ body:has(#page-senate.senate-immersive.active) .site-header .nav button[data-acc
 #page-senate.senate-immersive{
  --night:#06182b;--night-card:#0b2137;--night-2:#102d49;--night-border:#294762;
  --night-text:#eff6ff;--night-soft:#b6c9dd;--night-dim:#8faac5;
- display:block!important;min-height:100vh!important;
+ min-height:100vh!important;
  background:radial-gradient(ellipse 85% 35% at 50% 19%,#13375a 0%,#091d33 62%,#051424 100%)!important;
  color:var(--night-text)!important;
 }
