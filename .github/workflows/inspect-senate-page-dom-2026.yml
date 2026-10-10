@@ -1,0 +1,62 @@
+name: Inspect Senate page DOM
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-senate-page-dom-2026.yml'
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect original Senate page markup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import base64,gzip
+          parts=['d0.txt','d1.txt','d2.txt','d3.txt','d4.txt','d5.txt','d6.txt','d7.txt','d8a.txt','d8b.txt','d9.txt']
+          html=gzip.decompress(base64.b64decode(''.join(Path(f).read_text().strip() for f in parts))).decode('utf-8','replace')
+          class N:
+              def __init__(self,t,a,p):self.tag=t;self.attrs=dict(a);self.parent=p;self.children=[];self.text=[]
+          class P(HTMLParser):
+              def __init__(self):super().__init__();self.root=N('root',[],None);self.stack=[self.root]
+              def handle_starttag(self,t,a):
+                  o=N(t,a,self.stack[-1]);self.stack[-1].children.append(o)
+                  if t not in ('img','br','input','meta','hr','link','path','circle','rect','polygon','polyline','line','stop','wbr'):self.stack.append(o)
+              def handle_endtag(self,t):
+                  for i in range(len(self.stack)-1,0,-1):
+                      if self.stack[i].tag==t:self.stack=self.stack[:i];break
+              def handle_data(self,d):
+                  x=' '.join(d.split())
+                  if x and self.stack[-1].tag not in ('script','style'):self.stack[-1].text.append(x[:130])
+          p=P();p.feed(html)
+          def get(x,key):
+              if x.attrs.get('id')==key:return x
+              for y in x.children:
+                  r=get(y,key)
+                  if r:return r
+          root=get(p.root,'page-senate')
+          if root is None:raise RuntimeError('Senate page not found')
+          out=[]
+          def walk(x,l=0):
+              if l>7 or x.tag in ('script','style','svg'):return
+              out.append('  '*l+'<'+x.tag+' id='+x.attrs.get('id','')+' class='+x.attrs.get('class','')+'> '+' '.join(x.text)[:150])
+              for ch in x.children[:55]:walk(ch,l+1)
+              if len(x.children)>55:out.append('  '*(l+1)+'[MORE '+str(len(x.children)-55)+' CHILDREN]')
+          walk(root)
+          out+=['','CSS classes/ids around maps']
+          for needle in ('map-wrap','forecast-layout','data-page-grid','balance-count-row','page-head-inner','mapHoverCard'):
+              p=html.find(needle)
+              out.append('  '+needle+' @ '+str(p)+': '+html[max(0,p-350):p+1100].replace('\\n',' '))
+          Path('senate-page-dom-2026.txt').write_text('\n'.join(out))
+          PY
+      - name: Commit inspection
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add senate-page-dom-2026.txt
+          git commit -m 'Inspect Senate page DOM structure'
+          git pull --rebase
+          git push
