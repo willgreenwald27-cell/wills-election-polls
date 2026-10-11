@@ -8,6 +8,11 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-10','ME','Maine','Rasmussen Reports','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
+    ['2026-10-10','SC','South Carolina','Rasmussen Reports','Lindsey Graham',49,'Annie Andrews',45,'Graham +4 · source displays Graham Nordone'],
+    ['2026-10-10','MI','Michigan','InsiderAdvantage','Abdul El-Sayed',48,'Mike Rogers',46,'El-Sayed +2'],
+    ['2026-10-10','AK','Alaska','InsiderAdvantage','Mary Peltola',50,'Dan Sullivan',48,'Peltola +2'],
+    ['2026-10-09','TX','Texas','Trafalgar Group*','James Talarico',47,'Ken Paxton',44,'Talarico +3 · source screenshot partly cropped'],
     ['2026-10-08','ME','Maine','Washington Post','Troy Jackson',50,'Susan Collins',46,'Jackson +4'],
     ['2026-10-08','IA','Iowa','Emerson*','Ashley Hinson',47,'Josh Turek',45,'Hinson +2'],
     ['2026-10-08','MN','Minnesota','Rasmussen Reports','Peggy Flanagan',48,'Michele Tafoya',45,'Flanagan +3'],
