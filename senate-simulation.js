@@ -124,6 +124,7 @@ function updateScenarioBadge(){
  $('scenario-prob').textContent=activeScenario?.custom?'Custom scenario · not ranked':'Model probability '+probability(activeScenario.logprob);
 }
 function progress(s,t){
+ if(t===0)return 0; // Before Play, show the 34–31 non-up seat base only.
  const begin=Math.ceil((s.close-19)*2);
  if(t<begin)return 0;
  const n=t-begin;
