@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const TARGET='/2026-senate-simulation.html';
+const TARGET='/2026-senate-simulation.html?v=resultsdesk-20261013-v2';
 const ID='will-election-sim-nav';
 function install(){
  const nav=document.querySelector('.site-header .nav');
