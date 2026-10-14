@@ -175,8 +175,14 @@
           if(!exists){nativePolls.push(obj);nativeChanged=true;}
         }
       }
-      if(nativeChanged&&typeof window.renderPolls==='function'){
-        try{window.renderPolls();}catch(e){}
+      if(nativeChanged){
+        try{
+          if(typeof renderPolls==='function')renderPolls();
+          else if(typeof window.renderPolls==='function')window.renderPolls();
+        }catch(e){console.warn('Oct 12 native poll rendering unavailable',e);}
+        try{
+          if(typeof renderHomeDashboard==='function')renderHomeDashboard();
+        }catch(e){}
       }
     }catch(e){}
   }
@@ -213,7 +219,7 @@
   }
 
   apply();
-  [100,350,900,1800,3200,5200].forEach(ms=>setTimeout(apply,ms));
+  [100,350,900,1800,3200,5200,8500].forEach(ms=>setTimeout(apply,ms));
   // Keep averages current after older page-specific UI scripts rerender on navigation.
   document.addEventListener('click',e=>{
     if(e.target?.closest?.('#page-senate,#page-polls,.site-header')) setTimeout(apply,250);
