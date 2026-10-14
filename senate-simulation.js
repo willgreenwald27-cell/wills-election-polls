@@ -9,37 +9,37 @@ const ROWS=[
 ['AK','Alaska',.55,'Mary Peltola','Dan Sullivan',24,353000],
 ['AR','Arkansas',.08,'Hallie Shoffner','Tom Cotton',20.5,1100000],
 ['CO','Colorado',.985,'John Hickenlooper','Mark Baisley',21,2460000],
-['DE','Delaware',.987,'Chris Coons','Republican nominee',20,460000],
+['DE','Delaware',.987,'Chris Coons','Michael Katz',20,460000],
 ['FL','Florida',.21,'Angie Nixon','Ashley Moody',19,8000000],
 ['GA','Georgia',.86,'Jon Ossoff','Mike Collins',19,4130000],
 ['ID','Idaho',.09,'Todd Achilles','Jim Risch',22,710000],
-['IL','Illinois',.985,'Democratic nominee','Republican nominee',20,4980000],
+['IL','Illinois',.985,'Juliana Stratton','Don Tracy',20,4980000],
 ['IA','Iowa',.53,'Josh Turek','Ashley Hinson',21,1490000],
 ['KS','Kansas',.37,'Adam Hamilton','Roger Marshall',20,1250000],
-['KY','Kentucky',.065,'Democratic nominee','Republican nominee',18,1880000],
-['LA','Louisiana',.045,'Democratic nominee','Republican nominee',21,1670000],
+['KY','Kentucky',.065,'Charles Booker','Andy Barr',18,1880000],
+['LA','Louisiana',.045,'Jamie Davis','Julia Letlow',21,1670000],
 ['ME','Maine',.485,'Troy Jackson','Susan Collins',20,740000],
-['MA','Massachusetts',.985,'Ed Markey','Republican nominee',20,2750000],
+['MA','Massachusetts',.985,'Ed Markey','John Deaton',20,2750000],
 ['MI','Michigan',.57,'Abdul El-Sayed','Mike Rogers',20,4400000],
 ['MN','Minnesota',.82,'Peggy Flanagan','Michele Tafoya',21,2520000],
-['MS','Mississippi',.035,'Democratic nominee','Cindy Hyde-Smith',20,1160000],
+['MS','Mississippi',.035,'Scott Colom','Cindy Hyde-Smith',20,1160000],
 ['MT','Montana',.18,'Seth Bodnar','Kurt Alme',22,480000,'I'],
 ['NE','Nebraska',.35,'Dan Osborn','Pete Ricketts',21,860000,'I'],
 ['NH','New Hampshire',.79,'Chris Pappas','John Sununu',19,775000],
-['NJ','New Jersey',.975,'Cory Booker','Republican nominee',20,3400000],
+['NJ','New Jersey',.975,'Cory Booker','Justin Murphy',20,3400000],
 ['NM','New Mexico',.955,'Ben Ray Luján','Larry Marker',21,880000],
 ['NC','North Carolina',.88,'Roy Cooper','Michael Whatley',19.5,4610000],
 ['OH','Ohio',.59,'Sherrod Brown','Jon Husted',19.5,4760000],
-['OK','Oklahoma',.035,'Democratic nominee','Republican nominee',20,1310000],
-['OR','Oregon',.97,'Jeff Merkley','Republican nominee',23,1900000],
+['OK','Oklahoma',.035,"N'Kiyla Thomas",'Kevin Hern',20,1310000],
+['OR','Oregon',.97,'Jeff Merkley','David Brock Smith',23,1900000],
 ['RI','Rhode Island',.99,'Jack Reed','Allen McKay',20,470000],
-['SC','South Carolina',.09,'Annie Andrews','Darline Graham',19,2100000],
-['SD','South Dakota',.04,'Democratic nominee','Mike Rounds',21,366000],
+['SC','South Carolina',.09,'Annie Andrews','Darline Graham Nordone',19,2100000],
+['SD','South Dakota',.04,'Brian Bengs','Mike Rounds',21,366000,'I'],
 ['TN','Tennessee',.09,'Marquita Bradshaw','Bill Hagerty',20,2880000],
 ['TX','Texas',.55,'James Talarico','Ken Paxton',20,10300000],
-['VA','Virginia',.98,'Mark Warner','Republican nominee',19,3900000],
-['WV','West Virginia',.025,'Democratic nominee','Shelley Moore Capito',19.5,690000],
-['WY','Wyoming',.025,'Democratic nominee','Republican nominee',21,280000]
+['VA','Virginia',.98,'Mark Warner','Bert Mizusawa',19,3900000],
+['WV','West Virginia',.025,'Rachel Fetty Anderson','Shelley Moore Capito',19.5,690000],
+['WY','Wyoming',.025,'Jim Byrd','Harriet Hageman',21,280000]
 ];
 const STATES=ROWS.map(([ab,name,p,a,b,close,total,alt])=>({ab,name,p,a,b,close,total,alt:alt||'D'}));
 
@@ -196,7 +196,7 @@ function drawMap(res){
    if(r.called){p.dataset.side=r.winner;p.removeAttribute('data-leading');}
    else{p.removeAttribute('data-side');if(r.completion>0)p.dataset.leading=r.leader;else p.removeAttribute('data-leading');}
    const status=r.called?'called '+pretty(r.winner):r.completion?'reporting '+r.completion+' percent':'uncalled';
-   p.setAttribute('aria-label',s.name+' Senate: '+status);
+   p.setAttribute('aria-label',s.name+' Senate: '+s.a+' versus '+s.b+'; '+status);
   }
  }
  const fallback=$('map-fallback');
@@ -290,7 +290,7 @@ function ensureTooltip(){
 function tooltipRow(name,party,votes,share){
  const row=document.createElement('div');row.className='sim-tip-row';
  const dot=document.createElement('i');dot.className='sim-tip-dot '+party.toLowerCase();
- const candidate=document.createElement('span');candidate.className='sim-tip-name';candidate.textContent=name;
+ const candidate=document.createElement('span');candidate.className='sim-tip-name '+party.toLowerCase();candidate.textContent=name;
  const vote=document.createElement('strong');vote.textContent=fmt(votes);
  const pct=document.createElement('b');pct.textContent=share.toFixed(1)+'%';
  row.append(dot,candidate,vote,pct);return row;
