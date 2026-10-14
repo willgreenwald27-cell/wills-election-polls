@@ -42,10 +42,45 @@ const ROWS=[
 ['WY','Wyoming',.025,'Democratic nominee','Republican nominee',21,280000]
 ];
 const STATES=ROWS.map(([ab,name,p,a,b,close,total,alt])=>({ab,name,p,a,b,close,total,alt:alt||'D'}));
+
+// Election-night media projection times, EASTERN STANDARD TIME on Nov 3–4.
+// In split-zone states, [first, last] marks the different local closures.
+// First represents the earliest major close; network projections can differ.
+// References: thegreenpapers.com/G26/closing.phtml?format=ga and
+// 270towin.com/content/local-poll-closing-times-november-2026-general-election/
+const CLOSE_WINDOWS={
+ AL:[20], AK:[24,25], AR:[20.5], CO:[21], DE:[20],
+ FL:[19,20], GA:[19], ID:[22,23], IL:[20], IA:[21],
+ KS:[20,21], KY:[18,19], LA:[21], ME:[20], MA:[20],
+ MI:[20,21], MN:[21], MS:[20], MT:[22], NE:[21],
+ NH:[19,20], NJ:[20], NM:[21], NC:[19.5], OH:[19.5],
+ OK:[20], OR:[22,23], RI:[20], SC:[19], SD:[20,21],
+ TN:[20], TX:[20,21], VA:[19], WV:[19.5], WY:[21]
+};
+const CLOSE_NOTES={
+ AK:'Most of Alaska closes at midnight ET (Nov 4); western Aleutians close at 1 AM ET.',
+ FL:'Most Florida counties close at 7 PM ET; Central Time counties close at 8 PM ET.',
+ ID:'Mountain Time counties close at 10 PM ET; Pacific Time counties at 11 PM ET.',
+ KS:'Most Kansas polls close at 8 PM ET; Mountain Time counties at 9 PM ET.',
+ KY:'Eastern Kentucky closes at 6 PM ET; Central Kentucky at 7 PM ET.',
+ MI:'Most Michigan polls close at 8 PM ET; Central Time counties at 9 PM ET.',
+ NH:'Most New Hampshire towns close at 7 PM ET; some communities close at 8 PM ET.',
+ OR:'Mountain Time areas close at 10 PM ET; most of Oregon closes at 11 PM ET.',
+ SD:'Central Time areas close at 8 PM ET; Mountain Time areas at 9 PM ET.',
+ TX:'Most Texas counties close at 8 PM ET; El Paso/Hudspeth at 9 PM ET.'
+};
+function closeClock(h){const d=h>=24?' (Nov 4)':'',hr=Math.floor(h)%24;return (hr%12||12)+':'+(h%1?'30':'00')+(hr<12?' AM':' PM')+d;}
+function closeRange(s){
+ const span=CLOSE_WINDOWS[s.ab]||[s.close];
+ const a=closeClock(span[0]),b=span.length>1?closeClock(span[1]):'';
+ return a+(b?' – '+b:'')+' ET';
+}
+function isAllClosed(s,t){const span=CLOSE_WINDOWS[s.ab]||[s.close];return 19+t/2>=span[span.length-1];}
+
 const BY=Object.fromEntries(STATES.map(s=>[s.ab,s]));
 const $=id=>document.getElementById(id);
 const MAX_TICK=18,BASE_D=34,BASE_R=31;
-let tick=0,playing=false,timer=null,selected='TX',mode='likely',currentIndex=0,activeScenario=null;
+let tick=0,playing=false,timer=null,selected='TX',hovered=null,mode='likely',currentIndex=0,activeScenario=null;
 const outcomeSide=(s,scenario)=>scenario[s.ab] || (s.p>=.5?s.alt:'R');
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const fmt=n=>Math.round(n).toLocaleString('en-US');
@@ -53,7 +88,7 @@ const percent=x=>Number(x).toFixed(1)+'%';
 const hash=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295};
 function clock(t){const min=19*60+t*30, h24=Math.floor(min/60)%24, m=min%60,h=h24%12||12;return h+':'+String(m).padStart(2,'0')+(h24<12?' AM':' PM')+' ET';}
 function clockShort(t){return clock(t).replace(' ET','').replace(':00','');}
-function closing(s){let h=Math.floor(s.close)%24,half=s.close%1?'30':'00';return (h%12||12)+':'+half+(h<12?' AM':' PM')+' ET';}
+function closing(s){return closeRange(s);}
 function label(s,side){return side==='R'?s.b:s.a}
 function initials(s,side){return (side==='R'?'R':side==='I'?'I':'D');}
 function pretty(side){return side==='D'?'DEMOCRATIC':side==='R'?'REPUBLICAN':'INDEPENDENT'}
@@ -145,7 +180,8 @@ function stateResult(s,t,choices){
  const closeness=Math.abs(s.p-.5);
  const elapsed=t-Math.ceil((s.close-19)*2);
  const threshold=closeness>.38?0:closeness>.25?1:closeness>.13?3:closeness>.07?5:7;
- const called=completion>0&&elapsed>=threshold&&(completion>=12||closeness>.38);
+ // Never claim a race in the simulation before the applicable poll-close wave.
+ const called=completion>0&&isAllClosed(s,t)&&elapsed>=threshold&&(completion>=12||closeness>.38);
  return {completion,winner,called,leader,aVotes,bVotes,total,aShare:total?100*aVotes/total:0,bShare:total?100*bVotes/total:0};
 }
 function allAt(t){const res={};STATES.forEach(s=>res[s.ab]=stateResult(s,t,activeScenario.choices));return res;}
@@ -184,11 +220,12 @@ function candidateLine(s,side,votes,pct){
  container.append(head,foot,track);return container;
 }
 function detail(res){
- const s=BY[selected],r=res[selected];if(!s)return;
+ const focus=hovered||selected,s=BY[focus],r=res[focus];if(!s)return;
  $('state-name').textContent=s.name;$('state-code').textContent=s.ab;
  const uncertainty=Math.abs(s.p-.5);
  $('state-rating').textContent=uncertainty<=.07?'TOSS-UP':uncertainty<=.18?'COMPETITIVE':uncertainty<=.35?'LEANING':'SAFE / LIKELY';
  $('poll-close').textContent=closing(s);
+ const note=$('poll-close-note');if(note){note.textContent=CLOSE_NOTES[s.ab]||'Times shown in Eastern Standard Time on Nov 3 unless marked Nov 4.';}
  const call=$('state-call');call.className='call-pill'+(r.called?' '+(r.winner==='R'?'rep':r.winner==='I'?'ind':'dem'):'');
  call.textContent=r.called?'SIMULATED CALL: '+pretty(r.winner):r.completion>0?'REPORTING · NOT CALLED':'AWAITING POLL CLOSE';
  $('reporting').textContent=r.completion+'%';$('report-bar').style.width=r.completion+'%';
@@ -230,14 +267,97 @@ function render(){
  $('map-when').textContent=s.called+' of 35 calls · '+clock(tick);
  $('timeline').value=tick;
  drawMap(res);detail(res);desk(res);
+ if(hovered&&BY[hovered])buildTooltip(hovered,hoverPointer);
 }
 function pause(){playing=false;clearTimeout(timer);timer=null;$('play').querySelector('span').textContent='PLAY ELECTION NIGHT';$('play').firstChild.nodeValue='▶ ';}
 function step(){if(!playing)return;if(tick>=MAX_TICK){pause();return;}tick++;render();if(tick===MAX_TICK){pause();return;}timer=setTimeout(step,Number($('speed').value));}
 function play(){if(playing){pause();return;}if(tick===MAX_TICK)tick=0;playing=true;$('play').querySelector('span').textContent='PAUSE SIMULATION';$('play').firstChild.nodeValue='❚❚ ';timer=setTimeout(step,Number($('speed').value));render();}
 function selectState(ab){if(!BY[ab])return;selected=ab;render();}
+
+/* Pointer-preview results desk. Clicking remains an optional touch/keyboard pin. */
+let tooltip=null,hoverPointer=null,tooltipState=null;
+function ensureTooltip(){
+ if(tooltip)return tooltip;
+ tooltip=document.createElement('div');
+ tooltip.id='sim-state-tooltip';
+ tooltip.className='sim-state-tooltip';
+ tooltip.setAttribute('role','tooltip');
+ tooltip.setAttribute('aria-hidden','true');
+ tooltip.hidden=true;
+ document.body.appendChild(tooltip);
+ return tooltip;
+}
+function tooltipRow(name,party,votes,share){
+ const row=document.createElement('div');row.className='sim-tip-row';
+ const dot=document.createElement('i');dot.className='sim-tip-dot '+party.toLowerCase();
+ const candidate=document.createElement('span');candidate.className='sim-tip-name';candidate.textContent=name;
+ const vote=document.createElement('strong');vote.textContent=fmt(votes);
+ const pct=document.createElement('b');pct.textContent=share.toFixed(1)+'%';
+ row.append(dot,candidate,vote,pct);return row;
+}
+function positionTooltip(evt,ab){
+ const node=ensureTooltip();
+ let x=evt?.clientX,y=evt?.clientY;
+ if(!Number.isFinite(x)||!Number.isFinite(y)){
+  const target=$('map').querySelector('.state-shape[data-state="'+ab+'"]');
+  const rect=target?.getBoundingClientRect();
+  x=(rect?.left||window.innerWidth/2)+(rect?.width||0)/2;
+  y=(rect?.top||window.innerHeight/2)+(rect?.height||0)/2;
+ }
+ const w=node.offsetWidth||316,h=node.offsetHeight||210,margin=12;
+ node.style.left=clamp(x+18,margin,Math.max(margin,window.innerWidth-w-margin))+'px';
+ node.style.top=clamp(y+15,margin,Math.max(margin,window.innerHeight-h-margin))+'px';
+}
+function buildTooltip(ab,evt){
+ const s=BY[ab];if(!s)return;
+ const rs=stateResult(s,tick,activeScenario.choices),box=ensureTooltip();
+ tooltipState=ab;
+ box.replaceChildren();
+ const top=document.createElement('div');top.className='sim-tip-header';
+ const name=document.createElement('strong');name.textContent=s.name.toUpperCase()+'  ·  SENATE';
+ const status=document.createElement('span');status.textContent='SIMULATED · '+(rs.called?'CALLED':rs.completion+'% REPORTING');
+ top.append(name,status);box.append(top);
+ const contents=document.createElement('div');contents.className='sim-tip-body';
+ if(rs.called){
+  const called=document.createElement('div');called.className='sim-tip-call '+rs.winner.toLowerCase();
+  called.textContent=pretty(rs.winner)+' · PROJECTED';contents.append(called);
+ }
+ contents.append(tooltipRow(s.a,s.alt,rs.aVotes,rs.aShare),tooltipRow(s.b,'R',rs.bVotes,rs.bShare));
+ const total=document.createElement('div');total.className='sim-tip-summary';
+ total.textContent='SIMULATED VOTES '+fmt(rs.total)+'  ·  '+rs.completion+'% REPORTED';
+ contents.append(total);
+ const closes=document.createElement('div');closes.className='sim-tip-closes';
+ closes.textContent='POLLS CLOSE  '+closing(s);contents.append(closes);
+ if(CLOSE_NOTES[s.ab]){
+  const note=document.createElement('small');note.className='sim-tip-note';note.textContent=CLOSE_NOTES[s.ab];contents.append(note);
+ }
+ box.append(contents);
+ box.hidden=false;box.setAttribute('aria-hidden','false');positionTooltip(evt,ab);
+}
+function startHover(ab,evt){
+ if(!BY[ab])return;
+ hovered=ab;hoverPointer=evt||null;
+ buildTooltip(ab,evt);detail(allAt(tick));
+}
+function moveHover(ab,evt){if(hovered!==ab)startHover(ab,evt);else{hoverPointer=evt;positionTooltip(evt,ab);}}
+function endHover(ab){
+ if(ab&&hovered!==ab)return;
+ hovered=null;hoverPointer=null;tooltipState=null;
+ if(tooltip){tooltip.hidden=true;tooltip.setAttribute('aria-hidden','true');}
+ detail(allAt(tick));
+}
+function wireMapShape(p,ab){
+ if(!BY[ab])return;
+ p.addEventListener('pointerenter',evt=>{if(evt.pointerType!=='touch')startHover(ab,evt);});
+ p.addEventListener('pointermove',evt=>{if(evt.pointerType!=='touch')moveHover(ab,evt);});
+ p.addEventListener('pointerleave',()=>endHover(ab));
+ p.addEventListener('focus',evt=>startHover(ab,evt));
+ p.addEventListener('blur',()=>endHover(ab));
+}
+
 function setupMap(){
  const fallback=$('map-fallback');
- for(const s of STATES){const b=document.createElement('button');b.type='button';b.dataset.state=s.ab;b.textContent=s.ab;b.addEventListener('click',()=>selectState(s.ab));fallback.appendChild(b);}
+ for(const s of STATES){const b=document.createElement('button');b.type='button';b.dataset.state=s.ab;b.textContent=s.ab;b.addEventListener('click',()=>selectState(s.ab));b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')startHover(s.ab,e);});b.addEventListener('pointermove',e=>{if(e.pointerType!=='touch')moveHover(s.ab,e);});b.addEventListener('pointerleave',()=>endHover(s.ab));b.addEventListener('focus',e=>startHover(s.ab,e));b.addEventListener('blur',()=>endHover(s.ab));fallback.appendChild(b);}
  fetch('/election-night-map.svg?v=20261013-sim',{cache:'force-cache'}).then(r=>{if(!r.ok)throw Error('Map HTTP '+r.status);return r.text()}).then(svgText=>{
    const doc=new DOMParser().parseFromString(svgText,'image/svg+xml'),svg=doc.documentElement;
    if(doc.querySelector('parsererror')||svg.localName!=='svg'||svg.querySelectorAll('.state-shape[data-state]').length<45)throw Error('Invalid state outlines');
@@ -248,6 +368,7 @@ function setupMap(){
       const ab=p.dataset.state;
       if(!BY[ab]){p.setAttribute('aria-label','No 2026 Senate race');return;}
       p.setAttribute('role','button');p.setAttribute('tabindex','0');
+      wireMapShape(p,ab);
       p.addEventListener('click',()=>selectState(ab));
       p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectState(ab);}});
       let title=p.querySelector('title');if(!title){title=document.createElementNS('http://www.w3.org/2000/svg','title');p.appendChild(title);}title.textContent=BY[ab].name+' Senate race';
