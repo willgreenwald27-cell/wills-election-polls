@@ -1,0 +1,260 @@
+/* SIGNAL / 26 — Election Night Simulation.
+   Inherits the live site's dark-cobalt editorial branding without loading its
+   legacy global styles or changing any simulation state/logic. */
+:root{
+ --sg-night:#081322;--sg-night2:#102641;--sg-electric:#367bf7;
+ --sg-laser:#71b4ff;--sg-coral:#fa6272;--sg-paper:#edf3f9;
+ --sg-border:#cddbed;--sg-ink:#162b43;--sg-muted:#62788f;
+ --sg-sans:Inter,"Helvetica Neue",Arial,system-ui,sans-serif;
+}
+html{background:#edf3f9}
+body{
+ background:
+ radial-gradient(ellipse at -10% 26%,rgba(54,123,247,.065),transparent 34%),
+ radial-gradient(ellipse at 112% 64%,rgba(238,75,106,.06),transparent 38%),
+ linear-gradient(180deg,#e7eef8 0%,#f6f9fc 43%,#edf3fa 100%);
+ color:var(--sg-ink);font-family:var(--sg-sans);
+}
+.shell{max-width:1610px;padding-inline:clamp(15px,2.65vw,42px)}
+/* Branded dark newsroom navigation, with the same blue/red signal rule. */
+.mast{
+ background:#071321;color:#f7faff;border-bottom:1px solid #25415f;
+ box-shadow:0 8px 30px rgba(0,15,35,.15);position:relative;
+ min-height:82px;gap:26px;flex-wrap:nowrap;
+ margin-inline:calc(-1 * clamp(15px,2.65vw,42px));
+ padding:10px clamp(15px,2.65vw,42px);
+}
+.mast::before{
+ content:"";position:absolute;top:0;left:0;right:0;height:3px;
+ background:linear-gradient(90deg,#3278ef 0 49.6%,#d8e9ff 49.6% 50.4%,#e95066 50.4%);
+}
+.brand{font-size:12px;font-weight:770;letter-spacing:-.025em;gap:12px;flex-shrink:0;line-height:1.27}
+.brand strong{display:block;color:#f7faff;font-weight:850;font-size:13px;letter-spacing:-.02em}
+.brandmark{width:43px;height:43px;object-fit:contain;background:#fff;border-radius:6px;padding:3px;flex:0 0 auto}
+.mastnav{
+ gap:5px;align-items:center;justify-content:flex-end;flex:1;min-width:0;
+ overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;padding:5px 0;
+ color:#bdc9dc;font-size:11px;font-weight:800;
+}
+.mastnav a,.mastnav .navactive{
+ padding:10px 12px;min-height:37px;display:inline-flex;align-items:center;flex:none;
+ border:1px solid transparent;border-radius:6px;white-space:nowrap;transition:background .18s;
+}
+.mastnav a:hover{background:rgba(153,190,235,.10);color:#fff;text-decoration:none}
+.mastnav .navactive{
+ border:1px solid #5a9aee;background:#2563c2;color:#fff;
+ box-shadow:0 3px 18px rgba(50,120,242,.17);
+}
+/* Editorial strip mirrors the site's navy issue banner. */
+.livebar{
+ margin-top:20px;border:1px solid #284c72;border-radius:7px;
+ padding:13px 17px;background:linear-gradient(90deg,#122b49,#14233b 67%,#222638);
+ color:#c3d6ea;
+}
+.livebar strong{color:#fff}.livebarline{color:#b5d0ed;opacity:1}
+.sim-label{
+ color:#fff!important;letter-spacing:.075em!important;
+ background:rgba(238,94,113,.12);border:1px solid rgba(255,130,145,.3);
+ padding:6px 9px;border-radius:4px;font-size:10px!important;
+}
+/* Familiar Signal / 26 hero, including its watermarked 26 and blue grid. */
+.hero{
+ min-height:305px;position:relative;isolation:isolate;overflow:hidden;
+ margin:18px 0 0;padding:clamp(28px,3.4vw,53px);
+ background:radial-gradient(ellipse at 73% 15%,rgba(46,114,222,.19),transparent 37%),
+ linear-gradient(116deg,#071625 0%,#102b51 54%,#1c2340 100%);
+ border:1px solid #29496b;border-radius:11px 11px 0 0;
+ box-shadow:0 17px 42px rgba(15,36,70,.13);color:#fff;
+ align-items:center;
+}
+.hero::before{
+ content:"";position:absolute;inset:0 0 0 49%;pointer-events:none;z-index:-1;
+ background:repeating-linear-gradient(90deg,transparent 0 53px,rgba(139,185,255,.065) 54px),
+ repeating-linear-gradient(0deg,transparent 0 53px,rgba(139,185,255,.053) 54px);
+ mask-image:linear-gradient(90deg,transparent,black 35%);
+}
+.hero::after{
+ content:"26";position:absolute;right:-.02em;bottom:-.34em;z-index:-1;
+ font:900 clamp(230px,30vw,440px)/1 var(--sg-sans);
+ letter-spacing:-.14em;color:rgba(143,188,255,.065);pointer-events:none;
+}
+.eyebrow{
+ display:inline-flex;align-items:center;background:rgba(57,105,179,.15);
+ border:1px solid #3f6b99;border-radius:3px;
+ padding:9px 12px;letter-spacing:.15em;color:#bddbff;font-weight:850;
+}
+.hero h1{color:#fff;font-family:var(--sg-sans);font-size:clamp(41px,5.1vw,75px);letter-spacing:-.077em;font-weight:850;line-height:.98;margin:19px 0}
+.hero h1 em{font-style:normal;color:#8cbcff}
+.hero p{color:#bdcee6;font-size:clamp(13px,1.05vw,16px);line-height:1.67;max-width:620px}
+.hero-tag{
+ background:rgba(255,255,255,.96);border:1px solid #edf4ff;border-left:0;
+ border-radius:7px;padding:20px 25px;min-width:208px;
+ box-shadow:0 23px 50px rgba(0,0,0,.25),11px 11px 0 rgba(70,137,255,.11);
+}
+.hero-tag span{color:#627c9e;font-weight:850}.hero-tag strong{color:#0f2f56;font-size:50px;letter-spacing:-.07em;margin:8px 0}
+.hero-tag small{color:#52759c;font-size:11px}
+/* Same statistical studio design as the live homepage's seat readout. */
+.scoreboard{
+ margin:0 0 19px;border:1px solid #29496b;border-top:1px solid #355577;
+ border-radius:0 0 11px 11px;background:linear-gradient(120deg,#102640,#0b1c33 65%,#18213c);
+ padding:16px 19px;box-shadow:0 20px 48px rgba(15,36,70,.14);gap:11px;
+}
+.seat{
+ background:rgba(7,24,44,.57);border:1px solid rgba(148,181,226,.25);
+ border-radius:6px;padding:17px 19px;
+}
+.seat>span{color:#9bbbe2;font-size:10px}.seat small{color:#9ab2cf;font-size:10px}
+.seat strong{font-size:clamp(39px,4vw,59px);letter-spacing:-.085em}
+.score-dem strong{color:#82bcff}.score-rep strong{color:#ff8596}.score-ind strong{color:#c5a8ff}
+.balance-wrap{padding:14px 17px}.balance-top span{color:#c4d8f0;font-weight:850}
+.balance-top b{color:#eef5ff}
+.majority-track{height:29px;margin-top:18px;border-radius:2px;background:#30415a;overflow:visible}
+.majority-track #dem-bar{background:linear-gradient(180deg,#8ec3ff,#2267cf)}
+.majority-track #rep-bar{background:linear-gradient(180deg,#ff99a4,#c9435d)}
+.majority-track #out-bar{background:repeating-linear-gradient(-45deg,#344862,#344862 5px,#263c56 5px,#263c56 10px)}
+.majority-line{height:39px;top:-5px;background:#fff}
+.balance-bottom{color:#d6e4f8;font-size:11px}
+.baseline{color:#9ab0ce;font-size:10px}
+/* Control toolbar becomes a flat, light analytics card. */
+.command{
+ background:#fff;border:1px solid #cfdbea;border-radius:9px;
+ color:#162d48;box-shadow:0 11px 27px rgba(26,58,115,.07);
+ padding:18px 20px;margin:0 0 18px;
+}
+.play{background:#347bf1;border:1px solid #5b9dff;border-radius:5px;box-shadow:0 6px 19px rgba(12,87,238,.18)}
+.play:hover{background:#195fd7}
+.play:active{box-shadow:none}
+.control-secondary{border-color:#c7d6e8;background:#f5f8fc;color:#2c4c6e}
+.clock strong{color:#15375c}.clock span,.speed,.scrub{color:#66809a}
+.speed select{background:#f7faff;border-color:#ccd9e8;color:#163554;border-radius:5px}
+.scrub input{accent-color:#347bf1}
+/* Light editorial cards with dark map inset—same as the Senate prediction tab. */
+.main{gap:18px}
+.map-panel{
+ background:#fff;border:1px solid #cfdbea;border-radius:10px;
+ box-shadow:0 16px 36px rgba(18,43,82,.075);overflow:hidden;
+}
+.panel-top{padding:23px 24px 13px}
+.panel-top h2{font-size:22px;color:#162d48;letter-spacing:-.04em}
+.panel-kicker{color:#5d789b}
+.legend{padding:4px 24px 17px;color:#5b7089}
+.legend-box.dem{background:#3377d4}.legend-box.rep{background:#d64c67}
+.legend-box.ind{background:#9263bd}.legend-box.un{background:#637c98}
+.legend-box.static{background:#26394e;border-color:#426283}
+#map{
+ margin:0 17px 0;min-height:385px;padding:15px 8px;
+ border:1px solid #315271;border-radius:8px;
+ background:radial-gradient(ellipse 75% 70% at 49% 49%,#143652 0%,#0a2036 70%,#071b2e 100%);
+ box-shadow:inset 0 0 50px rgba(0,0,0,.15);
+}
+#map svg{max-height:620px}
+#map .map-loading{color:#a9c9e9}
+#map .state-shape{stroke:#365672;stroke-width:1.5;fill:#213c56}
+#map .state-shape[data-race="no"]{fill:#1d364e;stroke:#3c5873}
+#map .state-shape[data-race="yes"]{fill:#516d8a;stroke:#9db3c9;stroke-width:1.8}
+#map .state-shape[data-side="D"]{fill:#3377d4;stroke:#accaff}
+#map .state-shape[data-side="R"]{fill:#d64c67;stroke:#ffc5cc}
+#map .state-shape[data-side="I"]{fill:#9263bd;stroke:#dfc7fa}
+#map .state-shape[data-leading="D"]{fill:#6b9dce}
+#map .state-shape[data-leading="R"]{fill:#a75b73}
+#map .state-shape[data-leading="I"]{fill:#936cba}
+#map .state-shape:hover,#map .state-shape:focus-visible{filter:brightness(1.23);stroke:#fff;stroke-width:2.8}
+#map .state-shape[data-selected="true"]{stroke:#fff;stroke-width:3.6;filter:drop-shadow(0 0 7px #83bdff90)}
+#map svg text{fill:#e6f0ff;stroke:#061b31;stroke-width:2.3px;font-weight:900}
+.map-bottom{border:0;background:#fff;padding:16px 24px;color:#5a718a}
+.map-bottom strong{color:#214b78}
+.map-fallback{margin:0 17px;background:#102d49;padding:12px 15px 16px;border-radius:0 0 7px 7px}
+.map-fallback button{background:#526c89;color:#f7fbff;border-color:#7792ad}
+.lower-grid{background:#f8fafd;border-top:1px solid #e0e7f0;padding:17px}
+.feed-panel,.key-panel{background:#fff;border-color:#d8e3ef;border-radius:7px}
+.mini-head h3{font-size:14px;color:#162d48}.feed>div{color:#566f88}
+.key-panel p{color:#5f758d}.key-panel p b{color:#204972}
+/* Side analysis uses the site's white "race desk" cards rather than dark blocks. */
+.detail-card,.scenario-card{
+ border:1px solid #cfdbea;border-radius:9px;background:#fff;
+ color:#162d48;box-shadow:0 16px 36px rgba(18,43,82,.075);
+ padding:22px;
+}
+.detail-card::before,.scenario-card::before{
+ content:"";display:block;height:4px;border-radius:3px;
+ background:linear-gradient(90deg,#397bdb 0 51%,#ec596d 51%);margin:-22px -22px 18px;
+}
+.detail-heading span{color:#5d789b}.detail-heading strong{color:#2d5d98;background:#edf4ff}
+.detail-title h2{color:#102b49;font-size:30px}
+.detail-title span{color:#67819b}
+.call-pill{background:#eef3fa;border-color:#d4e1ee;color:#385675}
+.call-pill.dem{background:#ecf4ff;color:#245da7;border-color:#b9d6fb}
+.call-pill.rep{background:#fff0f3;color:#a92d49;border-color:#f4c8d2}
+.call-pill.ind{background:#f6efff;color:#7544ab;border-color:#e1d0f4}
+.detail-progress{color:#69809a}.detail-progress strong{color:#214467}
+.report-track{background:#d9e3ee}.report-track i{background:#3176db}
+.candidate{border-top-color:#e0e8f1}.candidate-head{color:#19334d}
+.candidate-head .party{color:#7891aa}.candidate-votes{color:#66809a}
+.candidate-votes strong{color:#1b3753}
+.candidate-bar{background:#e1e8f1}.candidate.d i{background:#3279d7}
+.candidate.r i{background:#dc4b66}.candidate.i i{background:#9164bd}
+.detail-meta{border-color:#e1e8f0;color:#627f9a}.detail-meta b{color:#1c4672}
+.detail-card h3{font-size:13px;color:#1a3958}
+.hour-item{border-bottom-color:#e2eaf3;color:#4f6a86}
+.hour-item b,.hour-item strong{color:#193b5f}.hour-item time{color:#67849f}
+.scenario-top span{color:#5f7998}.scenario-top h2{color:#162d48;font-size:21px}
+.scenario-count{color:#7e597d!important}
+.scenario-card>p,.model-note,.scenario-card #custom-pane>p{color:#5f7791}
+.scenario-tabs{border-color:#dce5ef;gap:2px}
+.scenario-tabs button{color:#5a7899;border-bottom-color:transparent;font-size:10px}
+.scenario-tabs button.active{color:#245b9d;border-bottom-color:#347bf1}
+.scenario-list{scrollbar-color:#bbccdf transparent}
+.scenario-option{
+ background:#f7faff;border:1px solid #d4e1ee;color:#234565;
+ border-radius:6px;transition:background .15s,border-color .15s;
+}
+.scenario-option:hover{background:#edf4ff;border-color:#94b7e5}
+.scenario-option[aria-current="true"]{background:#e9f2ff;border-color:#4387df;box-shadow:inset 3px 0 #347bf1}
+.scenario-option small{color:#6d849a}
+.model-note{border-top-color:#e1e8f2;color:#6d8297}
+.custom-race{color:#355778;border-color:#e2eaf2}
+.custom-race select{color:#24496d;background:#f7faff;border-color:#c7d8e9}
+footer{color:#667f98;border-top:1px solid #d7e2ed;margin-top:26px;padding-top:24px}
+footer a{font-weight:800;color:#245ca1}
+@media(max-width:1230px){
+ .mastnav{justify-content:flex-start}
+ .brand strong{font-size:11px}
+ .mastnav a,.mastnav .navactive{padding:9px 10px;font-size:10px}
+}
+@media(max-width:850px){
+ .mast{gap:14px}
+ .hero{min-height:270px}
+ .hero-tag{display:none}
+ .scoreboard{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .balance-wrap{grid-column:1/-1;grid-row:2}
+ .score-ind{grid-column:auto}
+ .main{grid-template-columns:1fr}
+ .detail-card,.scenario-card{padding:20px}
+ .detail-card::before,.scenario-card::before{margin:-20px -20px 17px}
+}
+@media(max-width:590px){
+ .mast{min-height:67px;padding-inline:14px;gap:8px}
+ .brand{font-size:10px;gap:7px}
+ .brand strong{font-size:10px}
+ .brandmark{width:33px;height:33px}
+ .mastnav{justify-content:flex-start}
+ .mastnav a,.mastnav .navactive{font-size:10px;padding:8px 9px}
+ .livebar{margin-top:12px;padding:11px;gap:7px}
+ .sim-label{font-size:8px!important;max-width:155px;text-align:right}
+ .hero{margin-top:13px;min-height:255px;padding:25px 20px}
+ .hero h1{font-size:clamp(37px,9.8vw,54px);margin:17px 0}
+ .hero p{font-size:13px}
+ .scoreboard{gap:7px;padding:9px}
+ .seat{padding:12px}
+ .seat strong{font-size:39px}
+ .balance-wrap{padding:12px 5px}
+ .command{padding:14px}
+ .main{gap:13px}
+ .panel-top{padding:18px 16px 12px}.panel-top h2{font-size:18px}
+ .legend{padding:5px 16px 14px}
+ #map{min-height:260px;margin:0 8px;padding:7px 1px}
+ #map svg{min-height:210px}
+ .map-bottom{padding:14px}
+ .lower-grid{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){.hero:before,.hero:after{animation:none}}
