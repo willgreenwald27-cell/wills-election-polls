@@ -258,3 +258,57 @@ footer a{font-weight:800;color:#245ca1}
  .lower-grid{padding:10px}
 }
 @media(prefers-reduced-motion:reduce){.hero:before,.hero:after{animation:none}}
+
+/* V2 · Data-first state hover results desk, with original SIGNAL colors. */
+#map{position:relative;cursor:default}
+#map .state-shape[data-race="yes"]{cursor:crosshair}
+.sim-state-tooltip{
+ position:fixed;z-index:100000;pointer-events:none;width:330px;max-width:calc(100vw - 24px);
+ background:#fff;color:#122b47;border:1px solid #bfcfe2;border-radius:8px;overflow:hidden;
+ box-shadow:0 20px 68px rgba(2,22,48,.34),0 4px 12px rgba(2,22,48,.15);
+ font:500 12px/1.45 Inter,Arial,sans-serif;
+}
+.sim-state-tooltip[hidden]{display:none!important}
+.sim-tip-header{display:flex;align-items:center;justify-content:space-between;gap:8px;
+ background:#091e34;color:#fff;padding:12px 13px;border-top:3px solid #4e96f1}
+.sim-tip-header strong{font-size:12px;font-weight:900;letter-spacing:.02em}
+.sim-tip-header span{font-size:9px;line-height:1.3;color:#bccee2;text-align:right;font-weight:800;letter-spacing:.04em}
+.sim-tip-body{padding:9px 13px 12px}
+.sim-tip-call{margin:0 0 7px;padding:5px 7px;font-size:10px;font-weight:900;letter-spacing:.07em;border-radius:3px}
+.sim-tip-call.d{color:#1559a9;background:#eaf3ff}
+.sim-tip-call.r{color:#ae2945;background:#fff0f3}
+.sim-tip-call.i{color:#7345a4;background:#f4effe}
+.sim-tip-row{display:grid;grid-template-columns:8px minmax(0,1fr) minmax(75px,auto) 50px;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid #e5ecf3}
+.sim-tip-dot{height:8px;width:8px;border-radius:2px}
+.sim-tip-dot.d{background:#3377d4}.sim-tip-dot.r{background:#d64c67}.sim-tip-dot.i{background:#9263bd}
+.sim-tip-name{font-weight:780;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-tip-row strong{font-size:13px;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.sim-tip-row b{font-size:11px;color:#526d86;text-align:right}
+.sim-tip-summary{padding:10px 0 4px;color:#466985;font-size:10px;font-weight:850;letter-spacing:.02em}
+.sim-tip-closes{margin-top:6px;padding:8px;background:#ecf3fb;border-left:3px solid #3278ed;color:#1e4b7c;font-size:10px;font-weight:850}
+.sim-tip-note{display:block;font-size:10px;line-height:1.45;color:#70849b;margin-top:7px}
+.detail-meta{flex-wrap:wrap}
+#poll-close-note{font-size:10px;color:#6a7f98;line-height:1.45;margin:-3px 0 14px}
+.sim-guide{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;
+ color:#4f7294;font-size:11px;font-weight:720;padding:9px 24px 5px;line-height:1.5}
+.sim-guide b{color:#1d4e86;font-weight:850}
+.sim-guide a{color:#245ca1;text-decoration:underline;font-size:10px;font-weight:760}
+.sim-release{
+ display:inline-flex;align-items:center;gap:6px;background:#dceaff;color:#255896;
+ border:1px solid #a9c7ef;padding:5px 9px;border-radius:4px;font-weight:900;
+ letter-spacing:.08em;font-size:9px
+}
+/* A more editorial, data-dense top desk: clear functional areas and restrained rules. */
+.command{border-top:4px solid #347bf1}
+.panel-top{border-bottom:1px solid #e3eaf3;margin-bottom:5px}
+.panel-top h2,.detail-title h2,.scenario-top h2{font-variant-numeric:tabular-nums}
+#candidate-results{padding-block:1px 4px}
+.candidate-head{font-size:13px}.candidate-votes{font-size:12px}
+.hour-item{grid-template-columns:68px 1fr 48px}
+@media(max-width:590px){
+ .sim-guide{padding:9px 14px 6px}
+ .sim-state-tooltip{width:min(310px,calc(100vw - 24px))}
+ .sim-tip-header{padding:10px}
+ .sim-tip-body{padding:7px 10px 10px}
+ #poll-close-note{font-size:9px}
+}
