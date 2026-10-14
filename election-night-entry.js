@@ -1,52 +1,43 @@
 (()=>{
 'use strict';
-const TARGET='/election-night.html';
+const TARGET='/2026-senate-simulation.html';
+const ID='will-election-sim-nav';
 function install(){
  const nav=document.querySelector('.site-header .nav');
  if(!nav)return;
- if(!document.getElementById('wg-night-nav-style')){
-  const style=document.createElement('style');
-  style.id='wg-night-nav-style';
-  style.textContent=`
-    .site-header .nav [data-election-night-nav]{
-      border:1px solid #cb4656!important;
-      background:#c7283d!important;
-      color:#fff!important;
-      font-weight:900!important;
-      font-size:12px!important;
-      padding:10px 13px!important;
-      border-radius:9px!important;
-      white-space:nowrap!important;
-      cursor:pointer!important;
-      flex-shrink:0!important;
-      letter-spacing:.1px!important;
-      text-decoration:none!important;
-      pointer-events:auto!important;
-    }
-    .site-header .nav [data-election-night-nav]:hover{background:#a9192c!important}
+ if(!document.getElementById('will-sim-nav-style')){
+  const css=document.createElement('style');
+  css.id='will-sim-nav-style';
+  css.textContent=`
+    .site-header .nav #${ID}{display:inline-flex!important;align-items:center;justify-content:center;gap:4px;cursor:pointer!important;
+      border:1px solid #c3394c!important;background:#c3394c!important;color:white!important;
+      padding:8px 11px!important;font:800 11px/1.2 Inter,Arial,sans-serif!important;
+      border-radius:6px!important;white-space:nowrap!important;text-decoration:none!important;opacity:1!important;visibility:visible!important}
+    .site-header .nav #${ID}:hover{background:#9f263a!important}
+    @media(max-width:700px){.site-header .nav #${ID}{font-size:10px!important;padding:8px!important}}
   `;
-  document.head.appendChild(style);
+  document.head.appendChild(css);
  }
- if(nav.querySelector('[data-election-night-nav]'))return;
- const button=document.createElement('button');
- button.type='button';
- button.dataset.electionNightNav='1';
- button.textContent='Election Night';
- button.setAttribute('aria-label','2026 Election Night live results');
- button.addEventListener('click',e=>{
-  e.preventDefault();
-  e.stopPropagation();
-  window.location.assign(TARGET);
- });
- nav.appendChild(button);
+ const existing=nav.querySelector('#'+ID);
+ if(existing)return;
+ const btn=document.createElement('a');
+ btn.id=ID;btn.href=TARGET;
+ btn.textContent='Election Night Simulator';
+ btn.title='2026 Senate Election Night Simulation';
+ btn.setAttribute('aria-label','2026 Senate Election Night Simulation');
+ // Put it immediately before About, as the final main navigation tab.
+ const about=[...nav.querySelectorAll('a,button,[role="link"]')].find(el=>/^(about|about me)$/i.test((el.textContent||'').trim())||
+   /about/i.test(el.getAttribute('data-page')||el.getAttribute('data-accepted-page')||''));
+ if(about)nav.insertBefore(btn,about);
+ else nav.appendChild(btn);
 }
 function init(){
  install();
- // Several legacy scripts rebuild the navigation, so restore this one
- // supplemental link without modifying their page state or button lists.
- setInterval(install,1200);
+ let waiting=false;
+ new MutationObserver(()=>{if(waiting)return;waiting=true;requestAnimationFrame(()=>{waiting=false;install();});})
+  .observe(document.body,{subtree:true,childList:true});
  window.addEventListener('pageshow',install);
+ setInterval(install,1700);
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
-else init();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
