@@ -3,13 +3,25 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#071321">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>2026 Senate Election Night Simulation | Will's Election Polls</title>
 <meta name="description" content="Interactive 2026 U.S. Senate election night simulator. Play a fictional results broadcast hour by hour, inspect state vote totals, explore ranked Senate outcomes and change playback speed.">
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
-<link rel="stylesheet" href="/senate-simulation.css?v=20261013-v1">
-<link rel="stylesheet" href="/senate-simulation-theme.css?v=20261013-signal1">
+<link rel="stylesheet" href="/senate-simulation.css?v=20261013-v3">
+<link rel="stylesheet" href="/senate-simulation-theme.css?v=20261013-resultsdesk-v2">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<script defer src="/senate-simulation.js?v=20261013-v2"></script>
+<style id="wg-simulation-design-v2">
+/* Minimum styling is in this HTML so an old cached external theme cannot restore the old design. */
+html,body{background:#edf3f9!important;color:#172e4b}
+.mast{background:#071321!important;border-top:3px solid #3278ef!important;color:#fff!important}
+.hero{background:linear-gradient(116deg,#071625,#102b51 54%,#1c2340)!important;color:#fff!important;border:1px solid #29496b!important}
+.hero h1{color:#fff!important}.hero h1 em{color:#8cbcff!important}
+.map-panel,.detail-card,.scenario-card{background:#fff!important;color:#162d48!important;border:1px solid #cfdbea!important}
+#map{background:radial-gradient(ellipse at center,#143652 0%,#0a2036 70%,#071b2e 100%)!important}
+.scoreboard{background:linear-gradient(120deg,#102640,#0b1c33 65%,#18213c)!important}
+</style>
+<script defer src="/senate-simulation.js?v=20261013-hover-times-v3"></script>
 </head>
 <body>
 <div class="shell">
@@ -27,7 +39,7 @@
 </header>
 <div class="livebar"><div><span class="redpulse"></span><strong>2026 MIDTERMS</strong><span class="livebarline">SENATE ELECTION NIGHT</span></div><strong class="sim-label">INTERACTIVE SIMULATION · NOT LIVE RESULTS</strong></div>
 <section class="hero">
-  <div><div class="eyebrow">THE ROAD TO 51 <span class="slash">/</span> NOVEMBER 3, 2026</div><h1>Election night,<br><em>your way.</em></h1><p>Play a fictional election night from coast to coast. Click any state for its hour-by-hour count, explore alternative outcomes, and control the pace.</p></div>
+  <div><div class="eyebrow">THE ROAD TO 51 <span class="slash">/</span> NOVEMBER 3, 2026</div> <span class="sim-release">RESULTS DESK · V2</span><h1>Election night,<br><em>your way.</em></h1><p>Play a fictional election night from coast to coast. Hover over states for simulated vote totals and reporting percentages. Scrub through the night, compare alternative outcomes, and control the pace.</p></div>
   <div class="hero-tag"><span>SCENARIO ENGINE</span><strong id="scenario-rank">#1</strong><small id="scenario-prob">Highest-ranked outcome</small></div>
 </section>
 <section class="scoreboard" aria-label="Simulated Senate seat balance">
@@ -56,9 +68,10 @@
  <div class="map-panel">
    <div class="panel-top"><div><span class="panel-kicker">THE MAP DESK</span><h2>U.S. Senate · Race Calls</h2></div><div class="update"><span class="status-dot"></span><span id="map-when">Awaiting polls closing</span></div></div>
    <div class="legend"><span><i class="legend-box dem"></i>Called Democratic</span><span><i class="legend-box rep"></i>Called Republican</span><span><i class="legend-box ind"></i>Called Independent</span><span><i class="legend-box un"></i>Uncalled / not reporting</span><span><i class="legend-box static"></i>No 2026 Senate race</span></div>
-   <div id="map" role="group" aria-label="Select a state to inspect simulated Senate results"><div class="map-loading">Loading the interactive U.S. map…</div></div>
+   <div class="sim-guide"><b>HOVER OVER ANY STATE TO SEE THE VOTE COUNT</b><a href="https://www.thegreenpapers.com/G26/closing.phtml?format=ga" target="_blank" rel="noopener noreferrer">2026 poll closing time source ↗</a></div>
+   <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><div class="map-loading">Loading the interactive U.S. map…</div></div>
    <div id="map-fallback" class="map-fallback" hidden></div>
-   <div class="map-bottom"><span>CLICK ANY 2026 STATE TO EXPLORE ITS COUNT</span><strong id="called-count">0 / 35 RACES CALLED</strong></div>
+   <div class="map-bottom"><span>HOVER TO PREVIEW · CLICK OR TAP TO PIN</span><strong id="called-count">0 / 35 RACES CALLED</strong></div>
    <div class="lower-grid">
      <section class="feed-panel"><div class="mini-head"><h3>Election desk updates</h3><span>SIMULATED</span></div><div id="feed" class="feed" aria-live="polite"></div></section>
      <section class="key-panel"><div class="mini-head"><h3>How the night works</h3></div><p>Polls close at different times. Fictional reporting increases in stages, with race calls following simulated vote margins and estimated reporting. Every count and call on this page is invented for exploration—not a prediction of real returns.</p><p><b>Outcomes:</b> The scenario rank represents a simplified independent-race probability model, not Will's official forecast or a real election-night projection.</p></section>
@@ -72,7 +85,7 @@
      <div class="detail-progress"><span>ESTIMATED VOTE REPORTED</span><strong id="reporting">0%</strong></div>
      <div class="report-track"><i id="report-bar"></i></div>
      <div id="candidate-results"></div>
-     <div class="detail-meta"><span>RACE CLOSES <b id="poll-close">8 PM ET</b></span><span>SIMULATED COUNT</span></div>
+     <div class="detail-meta"><span>POLLS CLOSE <b id="poll-close">8:00 PM ET</b></span><span>SIMULATED COUNT</span></div><div id="poll-close-note" aria-live="polite">Closing times vary in some states.</div>
      <h3>Hourly state reporting</h3>
      <div id="hourly-list" class="hourly"></div>
    </section>
