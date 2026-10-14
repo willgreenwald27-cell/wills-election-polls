@@ -5,9 +5,17 @@
     if(!x||!y) return false;
     if(x===y) return true;
     const xa=x.split(' '),ya=y.split(' ');
+    // Historical Florida poll entries use both "Angie Nixon" and "Jasmine Nixon".
+    // Both represent the same Nixon matchup in this site's archive.
+    if(xa.at(-1)==='nixon'&&ya.at(-1)==='nixon')return true;
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-12','TX','Texas','ReconMR/Siena','James Talarico',48,'Ken Paxton',44,'Talarico +4'],
+    ['2026-10-12','TX','Texas','Quantus Insights*','James Talarico',47,'Ken Paxton',47,'Tie'],
+    ['2026-10-12','NC','North Carolina','WRAL-TV/SurveyUSA','Roy Cooper',54,'Michael Whatley',40,'Cooper +14'],
+    ['2026-10-12','NC','North Carolina','Carolina Forward/Change Res.*','Roy Cooper',50,'Michael Whatley',40,'Cooper +10'],
+    ['2026-10-12','FL','Florida Special Election','Stetson University**','Ashley Moody',52,'Angie Nixon',41,'Moody +11'],
     ['2026-10-10','ME','Maine','Rasmussen Reports','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
     ['2026-10-10','SC','South Carolina','Rasmussen Reports','Lindsey Graham',49,'Annie Andrews',45,'Graham +4 · source displays Graham Nordone'],
     ['2026-10-10','MI','Michigan','InsiderAdvantage','Abdul El-Sayed',48,'Mike Rogers',46,'El-Sayed +2'],
@@ -205,6 +213,11 @@
   }
 
   apply();
-  [100,350,900,1800,3200].forEach(ms=>setTimeout(apply,ms));
+  [100,350,900,1800,3200,5200].forEach(ms=>setTimeout(apply,ms));
+  // Keep averages current after older page-specific UI scripts rerender on navigation.
+  document.addEventListener('click',e=>{
+    if(e.target?.closest?.('#page-senate,#page-polls,.site-header')) setTimeout(apply,250);
+  },true);
   window.addEventListener('pageshow',apply);
+  window.addEventListener('focus',apply);
 })();
