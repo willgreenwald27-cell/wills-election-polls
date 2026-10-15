@@ -44,3 +44,20 @@ footer{color:#a5bed8!important}
 .sim-tip-row b{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;font-size:14px!important;font-weight:750!important;font-variant-numeric:tabular-nums lining-nums!important}
 .sim-tip-header span,.sim-tip-summary,.sim-tip-call,.sim-tip-closes{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;letter-spacing:.015em!important}
 .sim-tip-row{grid-template-columns:8px minmax(0,1fr) minmax(86px,auto) 54px!important;gap:8px!important}
+
+/* Compact state hover results on phones; keep map visible and numbers readable. */
+@media(max-width:650px){
+ .sim-state-tooltip{width:min(245px,calc(100vw - 24px))!important;max-height:min(310px,65dvh)!important;overflow:auto!important;border-radius:6px!important}
+ .sim-tip-header{padding:7px 9px!important;gap:5px!important}
+ .sim-tip-header strong{font-size:14px!important}
+ .sim-tip-header span{font-size:8px!important}
+ .sim-tip-body{padding:5px 9px 8px!important}
+ .sim-tip-row{grid-template-columns:6px minmax(0,1fr) minmax(62px,auto) 38px!important;gap:5px!important;padding:7px 0!important}
+ .sim-tip-name{font-size:11px!important}
+ .sim-tip-row strong{font-size:13px!important}
+ .sim-tip-row b{font-size:10px!important}
+ .sim-tip-call{font-size:9px!important;padding:4px 6px!important}
+ .sim-tip-summary{font-size:9px!important;padding:5px 0 2px!important}
+ .sim-tip-closes{font-size:9px!important;padding:5px!important}
+ .sim-tip-note{font-size:9px!important;margin-top:4px!important}
+}
