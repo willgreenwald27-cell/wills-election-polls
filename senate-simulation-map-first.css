@@ -257,7 +257,9 @@ footer a{color:#a7d1ff!important}
  .map-panel>.command .speed,.map-panel>.command .scrub{font-size:8px!important}
  #map{height:auto!important;min-height:245px!important;padding:0!important}
  #map svg{width:100%!important;height:auto!important;min-height:0!important;max-height:none!important}
- .map-bottom{padding:9px!important;font-size:9px!important;letter-spacing:0!important}
+ .map-bottom{padding:9px!important;font-size:9px!important;letter-spacing:0!important;gap:8px!important;flex-wrap:wrap!important}
+ .map-bottom span{display:none!important}
+ .map-bottom a{font-size:9px!important}
  .legend{padding:10px 11px!important;gap:8px 14px!important;font-size:9px!important}
  .studio-details .lower-grid{grid-template-columns:1fr!important}
  .main>.aside{display:flex!important;flex-direction:column!important}
