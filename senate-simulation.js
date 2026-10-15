@@ -366,6 +366,9 @@ function setupMap(){
    svg.removeAttribute('style');
    $('map').replaceChildren(document.importNode(svg,true));
    const map=$('map').querySelector('svg');
+   // Tighten unused ocean margins without clipping any state or inset labels.
+   map.setAttribute('viewBox','25 18 1035 767');
+   map.setAttribute('preserveAspectRatio','xMidYMid meet');
    map.querySelectorAll('.state-shape[data-state]').forEach(p=>{
       const ab=p.dataset.state;
       if(!BY[ab]){p.setAttribute('aria-label','No 2026 Senate race');return;}
