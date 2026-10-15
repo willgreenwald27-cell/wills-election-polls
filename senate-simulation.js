@@ -181,7 +181,9 @@ function stateResult(s,t,choices){
  const elapsed=t-Math.ceil((s.close-19)*60);
  const threshold=closeness>.38?0:closeness>.25?1:closeness>.13?3:closeness>.07?5:7;
  // Never claim a race in the simulation before the applicable poll-close wave.
- const called=completion>0&&isAllClosed(s,t)&&elapsed>=threshold*30&&(completion>=12||closeness>.38);
+ const requiredReporting=closeness>.38?55:closeness>.25?62:closeness>.13?70:closeness>.07?78:85;
+ // Wait until a clear majority of simulated votes are reported before projecting any race.
+ const called=completion>=requiredReporting&&isAllClosed(s,t)&&elapsed>=threshold*30;
  return {completion,winner,called,leader,aVotes,bVotes,total,aShare:total?100*aVotes/total:0,bShare:total?100*bVotes/total:0};
 }
 function allAt(t){const res={};STATES.forEach(s=>res[s.ab]=stateResult(s,t,activeScenario.choices));return res;}
