@@ -35,3 +35,12 @@ body{background:radial-gradient(ellipse at 50% 28%,#123252 0%,#071321 65%)!impor
 .sim-state-tooltip{box-shadow:0 18px 60px #0009!important}
 footer{color:#a5bed8!important}
 @media(max-width:760px){.shell{padding-inline:9px!important}.hero{padding:18px!important}.hero h1{font-size:36px!important}.hero-tag{display:none!important}.main>.aside{grid-template-columns:1fr!important}.scoreboard{overflow-x:auto!important}.command{gap:12px!important}#map{min-height:300px!important;margin:5px!important;padding:3px!important}#map svg{min-height:260px!important}.panel-top{padding:14px!important}.panel-top h2{font-size:19px!important}.legend{gap:8px!important}.sim-guide{padding:10px!important}}
+
+/* Vote-results popup: Franklin Gothic-style editorial sans with tabular totals */
+.sim-state-tooltip{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,Helvetica,sans-serif!important;font-variant-numeric:tabular-nums lining-nums!important;letter-spacing:-.012em!important}
+.sim-tip-header strong{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;font-size:18px!important;font-weight:800!important;letter-spacing:-.035em!important}
+.sim-tip-name{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;font-size:15px!important;font-weight:800!important;letter-spacing:-.025em!important}
+.sim-tip-row strong{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;font-size:19px!important;font-weight:800!important;letter-spacing:-.035em!important;font-variant-numeric:tabular-nums lining-nums!important}
+.sim-tip-row b{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;font-size:14px!important;font-weight:750!important;font-variant-numeric:tabular-nums lining-nums!important}
+.sim-tip-header span,.sim-tip-summary,.sim-tip-call,.sim-tip-closes{font-family:"Franklin Gothic Medium","Arial Narrow",Arial,sans-serif!important;letter-spacing:.015em!important}
+.sim-tip-row{grid-template-columns:8px minmax(0,1fr) minmax(86px,auto) 54px!important;gap:8px!important}
