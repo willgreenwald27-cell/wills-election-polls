@@ -1,0 +1,37 @@
+/* Election Night Studio — immersive 2026 edition */
+:root{--studio:#07182b;--studio2:#102b49;--edge:#294966;--electric:#4c9dff}
+html,body{background:#071321!important}
+body{background:radial-gradient(ellipse at 50% 28%,#123252 0%,#071321 65%)!important;color:#edf5ff!important}
+.shell{max-width:1920px!important;padding-inline:clamp(10px,1.5vw,28px)!important}
+.mast{margin-inline:calc(-1 * clamp(10px,1.5vw,28px))!important}
+.livebar{margin-top:12px!important;background:#0c223a!important;border:1px solid #284768!important}
+.hero{background:linear-gradient(100deg,#0b2139,#122f50 65%,#0c1c34)!important;border:1px solid #315172!important;box-shadow:0 16px 60px #0004!important;margin-top:12px!important;border-radius:10px!important}
+.hero h1{font-size:clamp(35px,4vw,60px)!important;letter-spacing:-.055em!important}
+.hero p{color:#c3d6ec!important;font-size:14px!important}
+.hero-tag{background:#102d4b!important;border:1px solid #42658b!important;border-left:4px solid #ec5369!important;border-radius:8px!important}
+.scoreboard{background:linear-gradient(90deg,#0b2543,#0b1b31)!important;border:1px solid #335777!important;border-radius:10px!important;box-shadow:0 14px 35px #0003!important}
+.command{background:#102740!important;color:#f3f8ff!important;border:1px solid #345573!important;border-top:3px solid #4c9dff!important;border-radius:10px!important}
+.command label,.clock span,.clock small{color:#c6d9ed!important}
+.main{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:14px!important}
+.main>.map-panel,.main>.aside{grid-column:1!important;width:100%!important}
+.map-panel{background:#091d32!important;color:#f0f6ff!important;border:1px solid #355676!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 22px 80px #0005!important}
+.panel-top{background:linear-gradient(90deg,#102d4a,#0b2037)!important;border-bottom:1px solid #2a4967!important}
+.panel-top h2{color:#fff!important;font-size:clamp(21px,2.2vw,32px)!important}
+.panel-kicker{color:#7db8ff!important}
+.legend,.sim-guide,.map-bottom{background:#0c253e!important;color:#d1e0ef!important;border-color:#284967!important}
+.legend span,.sim-guide b,.map-bottom span,.map-bottom strong{color:#d7eaff!important}
+.sim-guide a{color:#8fc3ff!important}
+#map{background:radial-gradient(ellipse at 50% 45%,#1b4469 0%,#0b2845 62%,#071b31 100%)!important;border:1px solid #264969!important;border-radius:8px!important;margin:12px!important;min-height:clamp(460px,56vw,900px)!important;padding:clamp(8px,1.4vw,24px)!important}
+#map svg{width:100%!important;height:auto!important;min-height:clamp(400px,51vw,800px)!important;max-height:none!important;filter:drop-shadow(0 10px 12px #0004)}
+#map .state-shape{stroke:#c6d7e7!important;stroke-width:1.2!important}
+#map .state-shape[data-race="yes"]:hover{stroke:#fff!important;stroke-width:2.5!important;filter:brightness(1.25) drop-shadow(0 0 6px #7abfff)}
+.lower-grid{background:#0c2137!important;border-top:1px solid #31516f!important}
+.feed-panel,.key-panel{background:#102b46!important;color:#eaf3ff!important;border:1px solid #31516f!important;border-radius:8px!important}
+.feed-panel h3,.key-panel h3{color:#fff!important}
+.key-panel p{color:#c3d5e9!important}
+.main>.aside{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important;gap:14px!important}
+.detail-card,.scenario-card{background:#f6f9fe!important;color:#152d48!important;border:1px solid #aac1dc!important;border-radius:12px!important;box-shadow:0 15px 35px #0003!important}
+.detail-card h2,.scenario-card h2{color:#102c4a!important}
+.sim-state-tooltip{box-shadow:0 18px 60px #0009!important}
+footer{color:#a5bed8!important}
+@media(max-width:760px){.shell{padding-inline:9px!important}.hero{padding:18px!important}.hero h1{font-size:36px!important}.hero-tag{display:none!important}.main>.aside{grid-template-columns:1fr!important}.scoreboard{overflow-x:auto!important}.command{gap:12px!important}#map{min-height:300px!important;margin:5px!important;padding:3px!important}#map svg{min-height:260px!important}.panel-top{padding:14px!important}.panel-top h2{font-size:19px!important}.legend{gap:8px!important}.sim-guide{padding:10px!important}}
