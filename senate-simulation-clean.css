@@ -398,3 +398,18 @@ html.wg-embedded footer{display:none!important}
    max-height:none!important;
  }
 }
+
+/* Final map fit: a small 5% reduction with symmetric margins.
+   Keep full map visible; enlarged/pannable mobile mode is unaffected. */
+#map:not([data-zoomed="true"]) svg{
+ width:95%!important;
+ max-width:95%!important;
+ height:auto!important;
+ margin-left:auto!important;
+ margin-right:auto!important;
+}
+html.wg-embedded #map:not([data-zoomed="true"]) svg{
+ width:95%!important;
+ max-width:95%!important;
+ margin-inline:auto!important;
+}
