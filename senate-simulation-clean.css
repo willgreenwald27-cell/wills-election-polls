@@ -297,3 +297,25 @@ footer a{color:#4271a0}
  .sim-tip-lead{font-size:10px;padding:6px 7px}
  .state-lead{font-size:10px}
 }
+
+/* Election-desk vote percentages: readable, party-colored and dominant. */
+.sim-tip-row{min-height:44px;align-items:center}
+.sim-tip-row b{
+  display:inline-flex;align-items:center;justify-content:flex-end;
+  font-size:14px;font-weight:900;letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums lining-nums;white-space:nowrap;
+  color:#263c52;
+}
+.sim-tip-row.party-d b{color:#146bc5!important}
+.sim-tip-row.party-r b{color:#bf2f4b!important}
+.sim-tip-row.party-i b{color:#7849ad!important}
+.sim-tip-row.is-leader .sim-tip-name{font-weight:900}
+.sim-tip-row.is-leader.party-d{background:linear-gradient(90deg,rgba(38,117,211,.075),transparent 75%)}
+.sim-tip-row.is-leader.party-r{background:linear-gradient(90deg,rgba(195,51,82,.075),transparent 75%)}
+.sim-tip-row.is-leader.party-i{background:linear-gradient(90deg,rgba(128,82,174,.075),transparent 75%)}
+.sim-tip-row.is-leader b{font-size:15px}
+@media(max-width:740px){
+ .sim-tip-row{min-height:36px}
+ .sim-tip-row b{font-size:11px!important;letter-spacing:-.02em}
+ .sim-tip-row.is-leader b{font-size:12px!important}
+}
