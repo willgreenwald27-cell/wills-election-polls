@@ -77,17 +77,35 @@ function closeRange(s){
 }
 function isAllClosed(s,t){const span=CLOSE_WINDOWS[s.ab]||[s.close];return 19+t/60>=span[span.length-1];}
 
+// Editorial prediction by the site owner; minutes from Nov 3 at 7 PM ET.
+const WILL={
+AK:{winner:'D',call:600,report:87,at:1.9,final:2.2,finish:2460},
+FL:{winner:'R',call:150,report:79,at:9,final:8.5},
+GA:{winner:'D',call:162,report:66,at:12.9,final:9.8},
+SC:{winner:'R',call:135,report:62,at:6,final:8},
+NC:{winner:'D',call:203,report:79,at:7,final:7.6},
+OH:{winner:'D',call:330,report:98,at:.7,final:.7},
+IA:{winner:'R',call:293,report:93,at:2.2,final:2.9},
+MI:{winner:'D',call:360,report:86,at:1.6,final:2.9},
+ME:{winner:'R',call:243,report:90,at:3.9,final:3.6},
+MN:{winner:'D',call:225,report:71,at:9,final:8.6},
+TX:{winner:'D',call:405,report:98,at:.9,final:1},
+KS:{winner:'R',call:243,report:81,at:4,final:3.6},
+NE:{winner:'R',call:288,report:76,at:3.2,final:2.9},
+NH:{winner:'D',call:90,report:63,at:8,final:5.7}
+};
+const PACE={FL:.7,GA:.9,SC:.8,NC:1.1,OH:.7,IA:1.1,MI:1.55,ME:1.25,MN:.85,TX:1.25,KS:1.05,NE:1.1,NH:.7,AK:1.45};
 const BY=Object.fromEntries(STATES.map(s=>[s.ab,s]));
 const $=id=>document.getElementById(id);
-const MAX_TICK=540,BASE_D=34,BASE_R=31;
+const MAX_TICK=2460,BASE_D=34,BASE_R=31;
 let tick=0,playing=false,timer=null,selected='TX',hovered=null,mode='likely',currentIndex=0,activeScenario=null;
 const outcomeSide=(s,scenario)=>scenario[s.ab] || (s.p>=.5?s.alt:'R');
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const fmt=n=>Math.round(n).toLocaleString('en-US');
 const percent=x=>Number(x).toFixed(1)+'%';
 const hash=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295};
-function clock(t){const min=19*60+t, h24=Math.floor(min/60)%24, m=min%60,h=h24%12||12;return h+':'+String(m).padStart(2,'0')+(h24<12?' AM':' PM')+' ET';}
-function clockShort(t){return clock(t).replace(' ET','').replace(':00','');}
+function clock(t){const min=19*60+t,h24=Math.floor(min/60)%24,m=min%60,h=h24%12||12;const d=t>=1740?'Nov 5':t>=300?'Nov 4':'Nov 3';return h+':'+String(m).padStart(2,'0')+(h24<12?' AM':' PM')+' ET · '+d;}
+function clockShort(t){return clock(t).replace(':00','');}
 function closing(s){return closeRange(s);}
 function label(s,side){return side==='R'?s.b:s.a}
 function initials(s,side){return (side==='R'?'R':side==='I'?'I':'D');}
@@ -158,33 +176,39 @@ function updateScenarioBadge(){
  $('scenario-rank').textContent=name;
  $('scenario-prob').textContent=activeScenario?.custom?'Custom scenario · not ranked':'Model probability '+probability(activeScenario.logprob);
 }
+function closeTick(s){const a=CLOSE_WINDOWS[s.ab]||[s.close];return Math.ceil((a[a.length-1]-19)*60);}
+function callTick(s){const e=activeScenario?.will?WILL[s.ab]:null;if(e)return e.call;
+ const q=Math.abs(s.p-.5);return closeTick(s)+(q>=.39?0:q>=.3?55:q>=.2?90:q>=.1?150:220);}
+function callReport(s){const e=activeScenario?.will?WILL[s.ab]:null;if(e)return e.report;
+ const q=Math.abs(s.p-.5);return q>=.39?2:q>=.3?60:q>=.2?73:q>=.1?82:92;}
+function finishTick(s){const e=activeScenario?.will?WILL[s.ab]:null;return e?.finish??Math.min(MAX_TICK,callTick(s)+Math.max(65,(100-callReport(s))*10));}
 function progress(s,t){
- if(t===0)return 0; // Before Play, show the 34–31 non-up seat base only.
- const begin=Math.ceil((s.close-19)*60);
- if(t<begin)return 0;
- const n=t-begin;
- const curve=[2,10,23,38,54,69,81,89,95,98,100];
- const phase=clamp(n/30,0,curve.length-1),lo=Math.floor(phase),hi=Math.min(lo+1,curve.length-1);return Math.round(curve[lo]+(curve[hi]-curve[lo])*(phase-lo));
+ if(t===0)return 0;
+ const begin=closeTick(s),call=callTick(s),target=callReport(s),finish=finishTick(s);
+ if(t<begin)return 0;if(t>=finish)return 100;
+ if(t>=call)return Math.round(target+(100-target)*(t-call)/Math.max(1,finish-call));
+ if(call<=begin)return 2;
+ return Math.max(1,Math.min(target,Math.round(target*Math.pow(clamp((t-begin)/(call-begin),0,1),PACE[s.ab]||1))));
 }
 function stateResult(s,t,choices){
- const completion=progress(s,t),winner=outcomeSide(s,choices),fraction=completion/100;
- const favored=s.p>=.5?s.alt:'R',upset=favored!==winner;
- const strength=Math.abs(s.p-.5);
- const margin=clamp((strength*37+1.4)*(upset?.56:1),.75,25);
- const swing=Math.sin((t/30+2)*.95+hash(s.ab)*14)*8*Math.pow(1-fraction,.8);
- const winnerShare=clamp(50+margin/2+swing,45,82);
- const oppShare=100-winnerShare;
- const total=Math.floor(s.total*fraction),first=winner==='R'?oppShare:winnerShare;
- const aVotes=Math.round(total*first/100),bVotes=total-aVotes;
+ const completion=progress(s,t),winner=outcomeSide(s,choices);
+ const e=activeScenario?.will?WILL[s.ab]:null,q=Math.abs(s.p-.5);
+ const base=clamp((q*37+1.4)*((s.p>=.5?s.alt:'R')!==winner?.56:1),.75,25);
+ const call=callTick(s),finish=finishTick(s);
+ const progressToFinal=clamp((t-call)/Math.max(1,finish-call),0,1);
+ const target=e?e.at+(e.final-e.at)*progressToFinal:base;
+ const early=clamp((call-t)/Math.max(45,call-closeTick(s)),0,1);
+ const swing=early*Math.sin(t*.035+hash(s.ab)*14)*(e?Math.min(3.5,e.at*.3+1):4.5);
+ const margin=clamp(target+swing,.1,36),otherPct=activeScenario?.will&&s.ab==='AK'?8:0;
+ const total=Math.floor(s.total*completion/100),otherVotes=Math.round(total*otherPct/100),two=total-otherVotes;
+ const firstWinnerShare=(100-otherPct+margin)/2;
+ const aRatio=(winner==='R'?100-otherPct-firstWinnerShare:firstWinnerShare)/(100-otherPct);
+ const aVotes=Math.round(two*aRatio),bVotes=two-aVotes;
  const leader=aVotes>=bVotes?s.alt:'R';
- const closeness=Math.abs(s.p-.5);
- const elapsed=t-Math.ceil((s.close-19)*60);
- const threshold=closeness>.38?0:closeness>.25?1:closeness>.13?3:closeness>.07?5:7;
- // Never claim a race in the simulation before the applicable poll-close wave.
- const requiredReporting=closeness>.38?55:closeness>.25?62:closeness>.13?70:closeness>.07?78:85;
- // Wait until a clear majority of simulated votes are reported before projecting any race.
- const called=completion>=requiredReporting&&isAllClosed(s,t)&&elapsed>=threshold*30;
- return {completion,winner,called,leader,aVotes,bVotes,total,aShare:total?100*aVotes/total:0,bShare:total?100*bVotes/total:0};
+ const called=completion>0&&t>=call&&isAllClosed(s,t);
+ const provisional=!!(called&&activeScenario?.will&&s.ab==='AK'&&t<WILL.AK.finish);
+ return {completion,winner,called,provisional,leader,aVotes,bVotes,total,otherVotes,
+ aShare:total?100*aVotes/total:0,bShare:total?100*bVotes/total:0,otherShare:total?100*otherVotes/total:0};
 }
 function allAt(t){const res={};STATES.forEach(s=>res[s.ab]=stateResult(s,t,activeScenario.choices));return res;}
 function summary(res){let D=BASE_D,R=BASE_R,I=0,called=0;for(const s of STATES){const row=res[s.ab];if(!row.called)continue;called++;if(row.winner==='R')R++;else if(row.winner==='I')I++;else D++;}return {D,R,I,called};}
