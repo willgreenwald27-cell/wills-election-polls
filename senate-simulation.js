@@ -75,18 +75,18 @@ function closeRange(s){
  const a=closeClock(span[0]),b=span.length>1?closeClock(span[1]):'';
  return a+(b?' – '+b:'')+' ET';
 }
-function isAllClosed(s,t){const span=CLOSE_WINDOWS[s.ab]||[s.close];return 19+t/2>=span[span.length-1];}
+function isAllClosed(s,t){const span=CLOSE_WINDOWS[s.ab]||[s.close];return 19+t/60>=span[span.length-1];}
 
 const BY=Object.fromEntries(STATES.map(s=>[s.ab,s]));
 const $=id=>document.getElementById(id);
-const MAX_TICK=18,BASE_D=34,BASE_R=31;
+const MAX_TICK=540,BASE_D=34,BASE_R=31;
 let tick=0,playing=false,timer=null,selected='TX',hovered=null,mode='likely',currentIndex=0,activeScenario=null;
 const outcomeSide=(s,scenario)=>scenario[s.ab] || (s.p>=.5?s.alt:'R');
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const fmt=n=>Math.round(n).toLocaleString('en-US');
 const percent=x=>Number(x).toFixed(1)+'%';
 const hash=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295};
-function clock(t){const min=19*60+t*30, h24=Math.floor(min/60)%24, m=min%60,h=h24%12||12;return h+':'+String(m).padStart(2,'0')+(h24<12?' AM':' PM')+' ET';}
+function clock(t){const min=19*60+t, h24=Math.floor(min/60)%24, m=min%60,h=h24%12||12;return h+':'+String(m).padStart(2,'0')+(h24<12?' AM':' PM')+' ET';}
 function clockShort(t){return clock(t).replace(' ET','').replace(':00','');}
 function closing(s){return closeRange(s);}
 function label(s,side){return side==='R'?s.b:s.a}
@@ -160,28 +160,28 @@ function updateScenarioBadge(){
 }
 function progress(s,t){
  if(t===0)return 0; // Before Play, show the 34–31 non-up seat base only.
- const begin=Math.ceil((s.close-19)*2);
+ const begin=Math.ceil((s.close-19)*60);
  if(t<begin)return 0;
  const n=t-begin;
  const curve=[2,10,23,38,54,69,81,89,95,98,100];
- return curve[clamp(n,0,curve.length-1)];
+ const phase=clamp(n/30,0,curve.length-1),lo=Math.floor(phase),hi=Math.min(lo+1,curve.length-1);return Math.round(curve[lo]+(curve[hi]-curve[lo])*(phase-lo));
 }
 function stateResult(s,t,choices){
  const completion=progress(s,t),winner=outcomeSide(s,choices),fraction=completion/100;
  const favored=s.p>=.5?s.alt:'R',upset=favored!==winner;
  const strength=Math.abs(s.p-.5);
  const margin=clamp((strength*37+1.4)*(upset?.56:1),.75,25);
- const swing=Math.sin((t+2)*.95+hash(s.ab)*14)*8*Math.pow(1-fraction,.8);
+ const swing=Math.sin((t/30+2)*.95+hash(s.ab)*14)*8*Math.pow(1-fraction,.8);
  const winnerShare=clamp(50+margin/2+swing,45,82);
  const oppShare=100-winnerShare;
  const total=Math.floor(s.total*fraction),first=winner==='R'?oppShare:winnerShare;
  const aVotes=Math.round(total*first/100),bVotes=total-aVotes;
  const leader=aVotes>=bVotes?s.alt:'R';
  const closeness=Math.abs(s.p-.5);
- const elapsed=t-Math.ceil((s.close-19)*2);
+ const elapsed=t-Math.ceil((s.close-19)*60);
  const threshold=closeness>.38?0:closeness>.25?1:closeness>.13?3:closeness>.07?5:7;
  // Never claim a race in the simulation before the applicable poll-close wave.
- const called=completion>0&&isAllClosed(s,t)&&elapsed>=threshold&&(completion>=12||closeness>.38);
+ const called=completion>0&&isAllClosed(s,t)&&elapsed>=threshold*30&&(completion>=12||closeness>.38);
  return {completion,winner,called,leader,aVotes,bVotes,total,aShare:total?100*aVotes/total:0,bShare:total?100*bVotes/total:0};
 }
 function allAt(t){const res={};STATES.forEach(s=>res[s.ab]=stateResult(s,t,activeScenario.choices));return res;}
@@ -232,8 +232,8 @@ function detail(res){
  const box=$('candidate-results');box.textContent='';
  box.append(candidateLine(s,s.alt,r.aVotes,r.aShare),candidateLine(s,'R',r.bVotes,r.bShare));
  const hours=$('hourly-list');hours.textContent='';
- const start=Math.max(0,Math.ceil((s.close-19)*2));
- for(let t=start;t<=tick;t+=2){
+ const start=Math.max(0,Math.ceil((s.close-19)*60));
+ for(let t=start;t<=tick;t+=60){
   const rs=stateResult(s,t,activeScenario.choices),line=document.createElement('div');line.className='hour-item';
   const time=document.createElement('time');time.textContent=clockShort(t);
   const mid=document.createElement('span');mid.textContent=rs.completion?fmt(rs.aVotes)+'–'+fmt(rs.bVotes):'Waiting for polls';
