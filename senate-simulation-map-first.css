@@ -123,15 +123,15 @@ body{
 /* Large unobstructed dark-cobalt cartographic canvas. */
 #map{
  position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;
- width:100%!important;height:clamp(495px,69vh,860px)!important;min-height:0!important;
+ width:100%!important;height:auto!important;min-height:265px!important;
  margin:0!important;padding:clamp(3px,.65vw,12px)!important;
  border:0!important;border-radius:0!important;
  background:radial-gradient(ellipse at center,#174266 0%,#0e2a47 57%,#071c33 100%)!important;
  box-shadow:none!important
 }
 #map svg{
- display:block!important;width:100%!important;height:100%!important;min-height:0!important;
- max-height:100%!important;overflow:visible!important;filter:drop-shadow(0 7px 10px rgba(1,11,23,.18))
+ display:block!important;width:100%!important;height:auto!important;min-height:0!important;margin:0 auto!important;
+ max-width:1480px!important;max-height:none!important;overflow:visible!important;filter:drop-shadow(0 7px 10px rgba(1,11,23,.18))
 }
 #map .state-shape{stroke:#68869f!important;stroke-width:1.35px!important}
 #map .state-shape[data-race="no"]{fill:#1e384f!important;stroke:#4a6b86!important}
@@ -255,8 +255,8 @@ footer a{color:#a7d1ff!important}
  .map-panel>.command .speed select{font-size:10px!important}
  .map-panel>.command .scrub{min-width:0!important;width:58%!important}
  .map-panel>.command .speed,.map-panel>.command .scrub{font-size:8px!important}
- #map{height:clamp(290px,46vh,475px)!important;padding:0!important}
- #map svg{width:100%!important;height:100%!important;min-height:0!important;max-height:100%!important}
+ #map{height:auto!important;min-height:245px!important;padding:0!important}
+ #map svg{width:100%!important;height:auto!important;min-height:0!important;max-height:none!important}
  .map-bottom{padding:9px!important;font-size:9px!important;letter-spacing:0!important}
  .legend{padding:10px 11px!important;gap:8px 14px!important;font-size:9px!important}
  .studio-details .lower-grid{grid-template-columns:1fr!important}
@@ -267,6 +267,6 @@ footer a{color:#a7d1ff!important}
  .panel-top h2{font-size:15px!important}
  .map-panel>.command .play{padding:8px!important}
  .map-bottom span{display:none}
- #map{height:290px!important}
+ #map{height:auto!important;min-height:235px!important}
 }
 @media(prefers-reduced-motion:reduce){#map *{transition:none!important}}
