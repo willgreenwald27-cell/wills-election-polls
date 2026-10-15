@@ -8,9 +8,9 @@
 <title>2026 Senate Election Night Simulation | Will's Election Polls</title>
 <meta name="description" content="Interactive 2026 Senate map-first election-night simulator. Play simulated results, hover over any state to see candidate vote totals, and explore hypothetical race outcomes.">
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
-<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-party-percent-v7">
+<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-will-prediction-v9">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<script defer src="/senate-simulation.js?v=20261014-party-percent-v7"></script>
+<script defer src="/senate-simulation.js?v=20261014-will-prediction-v9"></script>
 </head>
 <body>
 <div class="shell">
@@ -21,7 +21,7 @@
 <section class="main">
  <div class="map-panel">
    <div class="panel-top">
-  <div><span class="panel-kicker">2026 MIDTERMS</span><h1>Senate election night</h1></div>
+  <div><span class="panel-kicker">2026 MIDTERMS</span><h1>Will’s 2026 Senate election night prediction</h1></div>
   <div class="panel-meta"><span class="sim-label">INTERACTIVE SIMULATION · NOT LIVE RESULTS</span><div class="update" aria-live="off"><span class="status-dot"></span><span id="map-when">Awaiting polls closing</span></div></div>
 </div>
    <section class="scoreboard" aria-label="Simulated Senate seat balance">
@@ -37,12 +37,12 @@
 </section>
    <section class="command" aria-label="Election night playback">
   <div class="command-primary">
-    <button id="play" class="play" type="button">▶ <span>PLAY ELECTION NIGHT</span></button>
+    <button id="play" class="play" type="button">▶ <span>PLAY WILL'S ELECTION NIGHT PREDICTION</span></button>
     <div class="clock"><strong id="clock">7:00 PM ET</strong><small>Simulated Eastern time</small></div>
   </div>
   <label class="scrub">ELECTION NIGHT TIMELINE
-    <input id="timeline" type="range" min="0" max="540" value="0" step="1" aria-label="Simulated election-night time">
-    <span><small>7 PM</small><small>4 AM</small></span>
+    <input id="timeline" type="range" min="0" max="2460" value="0" step="1" aria-label="Simulated election-night time">
+    <span><small>Nov 3 · 7 PM ET</small><small>Nov 5 · Noon ET</small></span>
   </label>
   <details class="controls-more"><summary>Options</summary><div class="more-pop">
     <label class="speed">Playback speed
@@ -58,7 +58,7 @@
    <div class="legend" aria-label="Map legend"><span><i class="legend-box dem"></i>Democrats</span><span><i class="legend-box rep"></i>Republicans</span><span><i class="legend-box ind"></i>Independents</span><span><i class="legend-box un"></i>Uncalled</span><span><i class="legend-box static"></i>Not on ballot</span></div>
    <details class="studio-details"><summary>Election desk updates &amp; methodology</summary><div class="lower-grid">
      <section class="feed-panel"><div class="mini-head"><h3>Election desk updates</h3><span>SIMULATED</span></div><div id="feed" class="feed" aria-live="polite"></div></section>
-     <section class="key-panel"><div class="mini-head"><h3>How the night works</h3></div><p>Polls close at different times. Fictional reporting increases in stages, with race calls following simulated vote margins and estimated reporting. Every count and call on this page is invented for exploration—not a prediction of real returns.</p><p><b>Outcomes:</b> The scenario rank represents a simplified independent-race probability model, not Will's official forecast or a real election-night projection. <a href="https://www.thegreenpapers.com/G26/closing.phtml?format=ga" target="_blank" rel="noopener noreferrer">Poll-closing time reference ↗</a></p></section>
+     <section class="key-panel"><div class="mini-head"><h3>How the night works</h3></div><p>Polls close at different times. Fictional reporting varies by state, with calls in Will’s scenario made at his chosen times and percentages. Every count and call on this page is invented for exploration—not a prediction of real returns.</p><p><b>Outcomes:</b> Will’s scenario uses his specified fictional projection times, reporting percentages, and vote margins. Alaska’s ranked-choice resolution on Nov 5 is part of this simulation, not an official count schedule. <a href="https://www.thegreenpapers.com/G26/closing.phtml?format=ga" target="_blank" rel="noopener noreferrer">Poll-closing time reference ↗</a></p></section>
    </div>
    </details>
  </div>
@@ -77,11 +77,11 @@
      <div id="hourly-list" class="hourly"></div>
    </section>
    </details>
-   <details class="scenario-drawer"><summary>Explore alternative outcomes <span id="scenario-rank">#1</span></summary><span id="scenario-prob" class="scenario-prob">Highest-ranked outcome</span>
+   <details class="scenario-drawer"><summary>Explore alternative outcomes <span id="scenario-rank">WILL'S FORECAST</span></summary><span id="scenario-prob" class="scenario-prob">Will's featured prediction</span>
    <section class="scenario-card">
       <div class="scenario-top"><div><span>ALTERNATIVE OUTCOMES</span><h2>Scenario Explorer</h2></div><span class="scenario-count">2<sup>35</sup> POSSIBLE</span></div>
-      <p>Ranked combinations of all 35 Senate races. The highest-ranked outcomes are most likely under the site's illustrative independent probabilities; the lowest-ranked are extreme long shots.</p>
-      <div class="scenario-tabs"><button id="likely" class="active" type="button">Most likely</button><button id="unlikely" type="button">Least likely</button><button id="custom" type="button">Custom outcomes</button></div>
+      <p>Will’s submitted prediction appears first. Other outcomes use illustrative probability weights and are not live results.</p>
+      <div class="scenario-tabs"><button id="likely" class="active" type="button">Will's forecast + alternatives</button><button id="unlikely" type="button">Least likely</button><button id="custom" type="button">Custom outcomes</button></div>
       <div id="scenario-list" class="scenario-list"></div>
       <div id="custom-pane" hidden><p>Choose the winning side in each race and run your own fictional night.</p><div id="custom-races"></div><button class="play full" id="apply-custom" type="button">▶ RUN MY SCENARIO</button></div>
       <div class="model-note">Scenario weights assume races are independent. Exact rank order uses product probabilities; candidate vote totals are dramatized, deterministic estimates. They are not real returns.</div>
