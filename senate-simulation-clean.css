@@ -319,3 +319,13 @@ footer a{color:#4271a0}
  .sim-tip-row b{font-size:11px!important;letter-spacing:-.02em}
  .sim-tip-row.is-leader b{font-size:12px!important}
 }
+
+/* Featured editorial prediction blends into the map-first design. */
+.scenario-option.editorial{background:#f1f7ff;border-color:#8eb6df}
+.scenario-option.editorial b{color:#215b9b}
+.panel-top h1{font-size:clamp(20px,2.2vw,30px)!important;letter-spacing:-.04em!important}
+@media(max-width:740px){
+ .panel-top h1{font-size:21px!important}
+ .command .play{font-size:10px!important;line-height:1.24;max-width:64vw;white-space:normal}
+ .command .scrub>span{font-size:8px!important}
+}
