@@ -8,9 +8,9 @@
 <title>2026 Senate Election Night Simulation | Will's Election Polls</title>
 <meta name="description" content="Interactive 2026 Senate map-first election-night simulator. Play simulated results, hover over any state to see candidate vote totals, and explore hypothetical race outcomes.">
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
-<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-will-prediction-v9">
+<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-map-wide-v10">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<script defer src="/senate-simulation.js?v=20261014-will-prediction-v9"></script>
+<script defer src="/senate-simulation.js?v=20261014-map-wide-v10"></script>
 </head>
 <body>
 <div class="shell">
@@ -51,7 +51,7 @@
     <button id="restart" class="control-secondary" type="button">↺ Restart the night</button>
   </div></details>
 </section>
-   <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><div class="map-loading">Loading the interactive U.S. map…</div></div>
+   <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><button id="map-zoom" type="button" aria-pressed="false" aria-label="Enlarge election map" hidden>ENLARGE MAP ↗</button><div class="map-loading">Loading the interactive U.S. map…</div></div>
    <div id="map-fallback" class="map-fallback" hidden></div>
    
    <div class="map-bottom"><span>HOVER FOR RESULTS · TAP A STATE ON MOBILE</span><strong id="called-count">0 / 35 RACES CALLED</strong></div>
