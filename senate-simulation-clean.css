@@ -284,3 +284,16 @@ footer a{color:#4271a0}
 @media (max-height:600px) and (min-width:741px){
   #map{height:clamp(240px,calc(100dvh - 205px),450px)!important}
 }
+
+/* At-a-glance numerical leader and current vote reporting, including mobile. */
+.state-lead,.sim-tip-lead{
+ font-weight:800;letter-spacing:.01em;font-variant-numeric:tabular-nums;
+ color:#1c446b;background:#eff5fb;border-radius:4px;
+ padding:8px 9px;font-size:11px;line-height:1.4;
+}
+.state-lead{margin:8px 0}
+.sim-tip-lead{margin:2px 0 6px;font-size:11px}
+@media(max-width:740px){
+ .sim-tip-lead{font-size:10px;padding:6px 7px}
+ .state-lead{font-size:10px}
+}
