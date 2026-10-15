@@ -414,7 +414,9 @@ function setupMap(){
    const doc=new DOMParser().parseFromString(svgText,'image/svg+xml'),svg=doc.documentElement;
    if(doc.querySelector('parsererror')||svg.localName!=='svg'||svg.querySelectorAll('.state-shape[data-state]').length<45)throw Error('Invalid state outlines');
    svg.removeAttribute('style');
-   $('map').replaceChildren(document.importNode(svg,true));
+   $('map').querySelector('.map-loading')?.remove();
+   $('map').appendChild(document.importNode(svg,true));
+   const zoom=$('map-zoom');if(zoom)zoom.hidden=false;
    const map=$('map').querySelector('svg');
    // Remove native browser SVG tooltips that duplicated the custom results panel.
    map.querySelectorAll('title').forEach(el=>el.remove());
@@ -438,6 +440,16 @@ function initialize(){
  // Keep mobile map unobstructed until a state is tapped; dismiss the small popup elsewhere.
  document.addEventListener('pointerdown',event=>{
   if(event.pointerType==='touch'&&!event.target.closest('#map .state-shape, #map-fallback button'))endHover();
+ });
+ const mapZoom=$('map-zoom');
+ if(mapZoom)mapZoom.addEventListener('click',()=>{
+   const host=$('map'),enabled=host.dataset.zoomed!=='true';
+   host.dataset.zoomed=enabled?'true':'false';
+   mapZoom.setAttribute('aria-pressed',String(enabled));
+   mapZoom.textContent=enabled?'FIT MAP ↙':'ENLARGE MAP ↗';
+   mapZoom.setAttribute('aria-label',enabled?'Fit entire election map on screen':'Enlarge election map');
+   if(enabled){host.scrollLeft=Math.max(0,(host.scrollWidth-host.clientWidth)*.4);host.scrollTop=0;}
+   else{host.scrollLeft=0;host.scrollTop=0;}
  });
  $('play').addEventListener('click',play);
  $('restart').addEventListener('click',()=>{pause();tick=0;render();});
