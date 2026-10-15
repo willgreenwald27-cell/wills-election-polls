@@ -4,7 +4,7 @@
 // Preserve the main site's navigation and URL instead of opening another page.
 const ROUTE='electionnight';
 const ROUTE_URL='/?page=electionnight';
-const SIM='/2026-senate-simulation.html?embedded=1&v=20261014-inline-night-v1';
+const SIM='/2026-senate-simulation.html?embedded=1&v=20261014-inline-night-v2';
 const NAV_ID='will-election-sim-nav';
 const builtInId='wg-sim-built-in-nav';
 let installed=false;
