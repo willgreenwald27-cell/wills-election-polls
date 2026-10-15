@@ -296,8 +296,8 @@ function ensureTooltip(){
  document.body.appendChild(tooltip);
  return tooltip;
 }
-function tooltipRow(name,party,votes,share){
- const row=document.createElement('div');row.className='sim-tip-row';
+function tooltipRow(name,party,votes,share,leading=false){
+ const row=document.createElement('div');row.className='sim-tip-row party-'+party.toLowerCase()+(leading?' is-leader':'');
  const dot=document.createElement('i');dot.className='sim-tip-dot '+party.toLowerCase();
  const candidate=document.createElement('span');candidate.className='sim-tip-name '+party.toLowerCase();candidate.textContent=name;
  const vote=document.createElement('strong');vote.textContent=fmt(votes);
@@ -334,7 +334,7 @@ function buildTooltip(ab,evt){
   called.textContent=pretty(rs.winner)+' · PROJECTED';contents.append(called);
  }
  const rows=[[s.a,s.alt,rs.aVotes,rs.aShare],[s.b,'R',rs.bVotes,rs.bShare]].sort((a,b)=>b[2]-a[2]);
- rows.forEach(([candidate,party,votes,share])=>contents.append(tooltipRow(candidate,party,votes,share)));
+ rows.forEach(([candidate,party,votes,share],index)=>contents.append(tooltipRow(candidate,party,votes,share,index===0&&rs.total>0)));
  const total=document.createElement('div');total.className='sim-tip-summary';
  total.textContent='SIMULATED VOTES '+fmt(rs.total)+'  ·  '+rs.completion+'% REPORTED';
  contents.append(total);
