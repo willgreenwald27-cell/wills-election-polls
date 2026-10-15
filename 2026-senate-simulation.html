@@ -6,22 +6,12 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <title>2026 Senate Election Night Simulation | Will's Election Polls</title>
-<meta name="description" content="Interactive 2026 U.S. Senate election night simulator. Play a fictional results broadcast hour by hour, inspect state vote totals, explore ranked Senate outcomes and change playback speed.">
+<meta name="description" content="Interactive 2026 Senate map-first election-night simulator. Play simulated results, hover over any state to see candidate vote totals, and explore hypothetical race outcomes.">
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
 <link rel="stylesheet" href="/senate-simulation.css?v=20261013-v3">
 <link rel="stylesheet" href="/senate-simulation-theme.css?v=20261013-mapfirst-v3">
-<link rel="stylesheet" href="/senate-simulation-immersive.css?v=20261014-mobile-popup2">
+<link rel="stylesheet" href="/senate-simulation-map-first.css?v=20261014-v1">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<style id="wg-simulation-design-v2">
-/* Minimum styling is in this HTML so an old cached external theme cannot restore the old design. */
-html,body{background:#edf3f9!important;color:#172e4b}
-.mast{background:#071321!important;border-top:3px solid #3278ef!important;color:#fff!important}
-.hero{background:linear-gradient(116deg,#071625,#102b51 54%,#1c2340)!important;color:#fff!important;border:1px solid #29496b!important}
-.hero h1{color:#fff!important}.hero h1 em{color:#8cbcff!important}
-.map-panel,.detail-card,.scenario-card{background:#fff!important;color:#162d48!important;border:1px solid #cfdbea!important}
-#map{background:radial-gradient(ellipse at center,#143652 0%,#0a2036 70%,#071b2e 100%)!important}
-.scoreboard{background:linear-gradient(120deg,#102640,#0b1c33 65%,#18213c)!important}
-</style>
 <script defer src="/senate-simulation.js?v=20261014-late-calls2"></script>
 </head>
 <body>
@@ -39,11 +29,10 @@ html,body{background:#edf3f9!important;color:#172e4b}
   </nav>
 </header>
 <div class="livebar"><div><span class="redpulse"></span><strong>2026 MIDTERMS</strong><span class="livebarline">SENATE ELECTION NIGHT</span></div><strong class="sim-label">INTERACTIVE SIMULATION · NOT LIVE RESULTS</strong></div>
-<section class="hero">
-  <div><div class="eyebrow">THE ROAD TO 51 <span class="slash">/</span> NOVEMBER 3, 2026</div> <span class="sim-release">IMMERSIVE RESULTS STUDIO · V5</span><h1>Election night,<br><em>your way.</em></h1><p>Play a fictional election night from coast to coast. Hover over states for simulated vote totals and reporting percentages. Scrub through the night, compare alternative outcomes, and control the pace.</p></div>
-  <div class="hero-tag"><span>SCENARIO ENGINE</span><strong id="scenario-rank">#1</strong><small id="scenario-prob">Highest-ranked outcome</small></div>
-</section>
-<section class="scoreboard" aria-label="Simulated Senate seat balance">
+<section class="main">
+ <div class="map-panel">
+   <div class="panel-top"><div><span class="panel-kicker">2026 MIDTERMS · INTERACTIVE ELECTION NIGHT</span><h2>U.S. Senate results map</h2></div><div class="panel-meta"><div class="update"><span class="status-dot"></span><span id="map-when">Awaiting polls closing</span></div><div class="scenario-mini"><span class="scenario-mini-title">SCENARIO <b id="scenario-rank">#1</b></span><small id="scenario-prob">Highest-ranked outcome</small></div></div></div>
+   <section class="scoreboard" aria-label="Simulated Senate seat balance">
   <div class="seat score-dem"><span>DEMOCRATS + CAUCUS</span><strong id="dem-seats">34</strong><small>Projected seats called</small></div>
   <div class="balance-wrap">
     <div class="balance-top"><span>CONTROL OF THE SENATE</span><b>51 FOR CONTROL</b></div>
@@ -54,7 +43,7 @@ html,body{background:#edf3f9!important;color:#172e4b}
   <div class="seat score-rep"><span>REPUBLICANS</span><strong id="rep-seats">31</strong><small>Projected seats called</small></div>
   <div class="seat score-ind"><span>NEW INDEPENDENTS</span><strong id="ind-seats">0</strong><small>Not assigned to either caucus</small></div>
 </section>
-<section class="command" aria-label="Simulation controls">
+   <section class="command" aria-label="Simulation controls">
   <div class="command-primary">
     <button id="play" class="play" type="button">▶ <span>PLAY ELECTION NIGHT</span></button>
     <button id="restart" class="control-secondary" type="button" title="Restart simulation">↺ Reset</button>
@@ -65,18 +54,15 @@ html,body{background:#edf3f9!important;color:#172e4b}
     <label class="scrub">ELECTION NIGHT PROGRESS · 1-MINUTE STEPS<input id="timeline" type="range" min="0" max="540" value="0" step="1"><span><small>7 PM</small><small>4 AM</small></span></label>
   </div>
 </section>
-<section class="main">
- <div class="map-panel">
-   <div class="panel-top"><div><span class="panel-kicker">ELECTION NIGHT · NATIONAL MAP</span><h2>2026 U.S. Senate · State-by-state results</h2></div><div class="update"><span class="status-dot"></span><span id="map-when">Awaiting polls closing</span></div></div>
-   <div class="legend"><span><i class="legend-box dem"></i>Called Democratic</span><span><i class="legend-box rep"></i>Called Republican</span><span><i class="legend-box ind"></i>Called Independent</span><span><i class="legend-box un"></i>Uncalled / not reporting</span><span><i class="legend-box static"></i>No 2026 Senate race</span></div>
-   <div class="sim-guide"><b>HOVER TO SEE CANDIDATES, VOTE TOTALS AND REPORTING · TAP TO PIN A STATE</b><a href="https://www.thegreenpapers.com/G26/closing.phtml?format=ga" target="_blank" rel="noopener noreferrer">2026 poll closing time source ↗</a></div>
    <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><div class="map-loading">Loading the interactive U.S. map…</div></div>
    <div id="map-fallback" class="map-fallback" hidden></div>
-   <div class="map-bottom"><span>HOVER TO PREVIEW · CLICK OR TAP TO PIN</span><strong id="called-count">0 / 35 RACES CALLED</strong></div>
-   <div class="lower-grid">
+   <div class="map-bottom"><span>HOVER TO PREVIEW · TAP TO PIN</span><strong id="called-count">0 / 35 RACES CALLED</strong><a href="https://www.thegreenpapers.com/G26/closing.phtml?format=ga" target="_blank" rel="noopener noreferrer">Poll-closing times ↗</a></div>
+   <div class="legend"><span><i class="legend-box dem"></i>Called Democratic</span><span><i class="legend-box rep"></i>Called Republican</span><span><i class="legend-box ind"></i>Called Independent</span><span><i class="legend-box un"></i>Uncalled / not reporting</span><span><i class="legend-box static"></i>No 2026 Senate race</span></div>
+   <details class="studio-details"><summary>Election desk updates &amp; methodology</summary><div class="lower-grid">
      <section class="feed-panel"><div class="mini-head"><h3>Election desk updates</h3><span>SIMULATED</span></div><div id="feed" class="feed" aria-live="polite"></div></section>
      <section class="key-panel"><div class="mini-head"><h3>How the night works</h3></div><p>Polls close at different times. Fictional reporting increases in stages, with race calls following simulated vote margins and estimated reporting. Every count and call on this page is invented for exploration—not a prediction of real returns.</p><p><b>Outcomes:</b> The scenario rank represents a simplified independent-race probability model, not Will's official forecast or a real election-night projection.</p></section>
    </div>
+   </details>
  </div>
  <aside class="aside">
    <section class="detail-card">
@@ -90,6 +76,7 @@ html,body{background:#edf3f9!important;color:#172e4b}
      <h3>Hourly state reporting</h3>
      <div id="hourly-list" class="hourly"></div>
    </section>
+   <details class="scenario-drawer"><summary>Explore alternative election-night scenarios</summary>
    <section class="scenario-card">
       <div class="scenario-top"><div><span>ALTERNATIVE OUTCOMES</span><h2>Scenario Explorer</h2></div><span class="scenario-count">2<sup>35</sup> POSSIBLE</span></div>
       <p>Ranked combinations of all 35 Senate races. The highest-ranked outcomes are most likely under the site's illustrative independent probabilities; the lowest-ranked are extreme long shots.</p>
@@ -98,6 +85,7 @@ html,body{background:#edf3f9!important;color:#172e4b}
       <div id="custom-pane" hidden><p>Choose the winning side in each race and run your own fictional night.</p><div id="custom-races"></div><button class="play full" id="apply-custom" type="button">▶ RUN MY SCENARIO</button></div>
       <div class="model-note">Scenario weights assume races are independent. Exact rank order uses product probabilities; candidate vote totals are dramatized, deterministic estimates. They are not real returns.</div>
    </section>
+   </details>
  </aside>
 </section>
 <footer><span>© Will's Election Polls & Predictions</span><span>Simulation only · No live results, calls, or official vote data.</span><a href="/">Return to website ↗</a></footer>
