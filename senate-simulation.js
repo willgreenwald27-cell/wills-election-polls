@@ -133,7 +133,9 @@ function rankScenarios(least=false,limit=40){
 }
 function ending(choices){let D=BASE_D,R=BASE_R,I=0;STATES.forEach(s=>{const side=outcomeSide(s,choices);if(side==='R')R++;else if(side==='I')I++;else D++;});return {D,R,I};}
 const likely=rankScenarios(false,48),unlikely=rankScenarios(true,48);
-activeScenario=likely[0];
+const willChoices=Object.fromEntries(STATES.map(s=>[s.ab,WILL[s.ab]?.winner || (s.p>=.5?s.alt:'R')]));
+const willScenario={choices:willChoices,will:true,rank:1,totals:ending(willChoices)};
+activeScenario=willScenario;
 function probability(n){const p=Math.exp(n);return p>=.001?percent(p*100):p>=.0000001?(p*100).toFixed(5)+'%':(p*100).toExponential(1)+'%';}
 function scenarioName(i,least){return (least?'Long-shot':'Scenario')+' #'+(i+1);}
 function renderScenarios(){
@@ -142,12 +144,23 @@ function renderScenarios(){
  for(const id of ['likely','unlikely','custom'])$(id).classList.toggle('active',id===mode);
  if(mode==='custom')return;
  const set=mode==='likely'?likely:unlikely;list.textContent='';
+ if(mode==='likely'){
+  const btn=document.createElement('button');btn.className='scenario-option editorial';
+  btn.setAttribute('aria-current',activeScenario===willScenario?'true':'false');
+  const head=document.createElement('span'),title=document.createElement('b'),note=document.createElement('small');
+  title.textContent="#1 · Will's Election Night Prediction";
+  note.textContent='Featured · exact fictional calls and margins';
+  head.append(title,note);
+  const tally=document.createElement('strong');
+  tally.textContent=willScenario.totals.D+' D · '+willScenario.totals.R+' R'+(willScenario.totals.I?' · '+willScenario.totals.I+' I':'');
+  btn.append(head,tally);btn.addEventListener('click',()=>chooseScenario(willScenario,0));list.append(btn);
+ }
  for(let i=0;i<set.length;i++){
   const obj=set[i],btn=document.createElement('button');
   btn.className='scenario-option';
   btn.setAttribute('aria-current',activeScenario===obj?'true':'false');
   const description=document.createElement('span');
-  const tt=document.createElement('b');tt.textContent=scenarioName(i,mode==='unlikely');
+  const tt=document.createElement('b');tt.textContent=mode==='likely'?'Alternative #'+(i+2):scenarioName(i,true);
   const st=document.createElement('small');st.textContent='Model weight '+probability(obj.logprob);
   description.append(tt,st);
   const total=document.createElement('strong');total.textContent=obj.totals.D+' D  ·  '+obj.totals.R+' R'+(obj.totals.I?'  ·  '+obj.totals.I+' I':'');
@@ -172,9 +185,9 @@ function makeCustom(){
 }
 function chooseScenario(s,i){pause();activeScenario=s;currentIndex=i;tick=0;$('timeline').value=0;renderScenarios();render();updateScenarioBadge();}
 function updateScenarioBadge(){
- const name=activeScenario?.custom?'YOUR PICK':activeScenario?.least?'BOTTOM #'+activeScenario.rank:'#'+activeScenario.rank;
+ const name=activeScenario?.will?"WILL'S FORECAST":activeScenario?.custom?'YOUR PICK':activeScenario?.least?'BOTTOM #'+activeScenario.rank:'ALT #'+(activeScenario.rank+1);
  $('scenario-rank').textContent=name;
- $('scenario-prob').textContent=activeScenario?.custom?'Custom scenario · not ranked':'Model probability '+probability(activeScenario.logprob);
+ $('scenario-prob').textContent=activeScenario?.will?"Featured fictional prediction · not a model probability":activeScenario?.custom?'Custom scenario · not ranked':'Illustrative model weight '+probability(activeScenario.logprob);
 }
 function closeTick(s){const a=CLOSE_WINDOWS[s.ab]||[s.close];return Math.ceil((a[a.length-1]-19)*60);}
 function callTick(s){const e=activeScenario?.will?WILL[s.ab]:null;if(e)return e.call;
@@ -255,15 +268,16 @@ function detail(res){
  $('state-name').textContent=s.name;$('state-code').textContent=s.ab;
  const lead=$('state-lead');if(lead)lead.textContent=leadSummary(s,r);
  const uncertainty=Math.abs(s.p-.5);
- $('state-rating').textContent=uncertainty<=.07?'TOSS-UP':uncertainty<=.18?'COMPETITIVE':uncertainty<=.35?'LEANING':'SAFE / LIKELY';
+ $('state-rating').textContent=r.called?'PROJECTED':r.completion===0?'AWAITING RESULTS':Math.abs(r.aShare-r.bShare)<=1?'TILT':Math.abs(r.aShare-r.bShare)<=5?'LEAN':Math.abs(r.aShare-r.bShare)<=12?'LIKELY':'SOLID';
  $('poll-close').textContent=closing(s);
  const note=$('poll-close-note');if(note){note.textContent=CLOSE_NOTES[s.ab]||'Times shown in Eastern Standard Time on Nov 3 unless marked Nov 4.';}
  const call=$('state-call');call.className='call-pill'+(r.called?' '+(r.winner==='R'?'rep':r.winner==='I'?'ind':'dem'):'');
- call.textContent=r.called?'SIMULATED CALL: '+pretty(r.winner):r.completion>0?'REPORTING · NOT CALLED':'AWAITING POLL CLOSE';
+ call.textContent=r.provisional?'PELTOLA PROJECTED · RANKED CHOICE PENDING':r.called?'SIMULATED CALL: '+label(s,r.winner):r.completion>0?'REPORTING · NOT CALLED':'AWAITING POLL CLOSE';
  $('reporting').textContent=r.completion+'%';$('report-bar').style.width=r.completion+'%';
  const box=$('candidate-results');box.textContent='';
  const ranked=[[s.alt,r.aVotes,r.aShare],['R',r.bVotes,r.bShare]].sort((a,b)=>b[1]-a[1]);
  ranked.forEach(([side,votes,share])=>box.append(candidateLine(s,side,votes,share)));
+ if(r.otherVotes)box.append(candidateLine({...s,a:'Other candidates',alt:'I'},'I',r.otherVotes,r.otherShare));
  const hours=$('hourly-list');hours.textContent='';
  const start=Math.max(0,Math.ceil((s.close-19)*60));
  for(let t=start;t<=tick;t+=60){
@@ -283,6 +297,7 @@ function desk(res){
   else if(r.completion>0&&!r.called&&r.completion<90&&Math.abs(s.p-.5)<.17)updates.push({s,text:s.name+' remains uncalled · '+r.completion+'% simulated count',priority:2});
  }
  updates.sort((a,b)=>a.priority-b.priority||(Math.abs(a.s.p-.5)-Math.abs(b.s.p-.5)));
+ if(activeScenario?.will&&tick>=WILL.AK.finish&&tick-WILL.AK.finish<31)updates.unshift({s:BY.AK,text:'ALASKA · FICTIONAL RANKED-CHOICE TABULATION COMPLETE',priority:0});
  if(!updates.length){const p=document.createElement('div');p.textContent=tick===0?'Polls are closing. Select a state or press Play to begin the simulated night.':'No new calls in this time window. The simulated count continues.';el.appendChild(p);return;}
  for(const u of updates.slice(0,9)){
   const d=document.createElement('div'),time=document.createElement('b');time.textContent=clockShort(tick);
@@ -302,8 +317,8 @@ function render(){
  drawMap(res);detail(res);desk(res);
  if(hovered&&BY[hovered])buildTooltip(hovered,hoverPointer);
 }
-function pause(){playing=false;clearTimeout(timer);timer=null;$('play').querySelector('span').textContent='PLAY ELECTION NIGHT';$('play').firstChild.nodeValue='▶ ';}
-function step(){if(!playing)return;if(tick>=MAX_TICK){pause();return;}tick++;render();if(tick===MAX_TICK){pause();return;}timer=setTimeout(step,Number($('speed').value));}
+function pause(){playing=false;clearTimeout(timer);timer=null;$('play').querySelector('span').textContent="PLAY WILL'S ELECTION NIGHT PREDICTION";$('play').firstChild.nodeValue='▶ ';}
+function step(){if(!playing)return;if(tick>=MAX_TICK){pause();return;}tick+=tick>=780&&tick<2400?Math.min(30,2400-tick):1;render();if(tick>=MAX_TICK){pause();return;}timer=setTimeout(step,Number($('speed').value));}
 function play(){if(playing){pause();return;}if(tick===MAX_TICK)tick=0;playing=true;$('play').querySelector('span').textContent='PAUSE SIMULATION';$('play').firstChild.nodeValue='❚❚ ';timer=setTimeout(step,Number($('speed').value));render();}
 function selectState(ab){if(!BY[ab])return;selected=ab;if(window.matchMedia('(pointer: coarse)').matches){hovered=ab;hoverPointer=null;}render();}
 
@@ -355,10 +370,11 @@ function buildTooltip(ab,evt){
  leadLine.textContent=leadSummary(s,rs);contents.append(leadLine);
  if(rs.called){
   const called=document.createElement('div');called.className='sim-tip-call '+rs.winner.toLowerCase();
-  called.textContent=pretty(rs.winner)+' · PROJECTED';contents.append(called);
+  called.textContent=rs.provisional?'PELTOLA PROJECTED · RCV PENDING':label(s,rs.winner)+' · PROJECTED';contents.append(called);
  }
  const rows=[[s.a,s.alt,rs.aVotes,rs.aShare],[s.b,'R',rs.bVotes,rs.bShare]].sort((a,b)=>b[2]-a[2]);
  rows.forEach(([candidate,party,votes,share],index)=>contents.append(tooltipRow(candidate,party,votes,share,index===0&&rs.total>0)));
+ if(rs.otherVotes)contents.append(tooltipRow('Other candidates','I',rs.otherVotes,rs.otherShare));
  const total=document.createElement('div');total.className='sim-tip-summary';
  total.textContent='SIMULATED VOTES '+fmt(rs.total)+'  ·  '+rs.completion+'% REPORTED';
  contents.append(total);
