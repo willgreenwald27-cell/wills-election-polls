@@ -358,3 +358,25 @@ footer a{color:#4271a0}
  .command .play{font-size:10px!important;line-height:1.24;max-width:64vw;white-space:normal}
  .command .scrub>span{font-size:8px!important}
 }
+
+/* Integrated Election Night tab: give the map virtually the whole page width. */
+html.wg-embedded,html.wg-embedded body{margin:0!important;max-width:100%!important;overflow-x:hidden!important;background:#fff!important}
+html.wg-embedded .mast{display:none!important}
+html.wg-embedded .shell{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}
+html.wg-embedded .main{width:100%!important}
+html.wg-embedded .panel-top{padding:10px 12px 5px!important}
+html.wg-embedded .panel-top h1{font-size:clamp(17px,2.4vw,25px)!important}
+html.wg-embedded .panel-meta{font-size:10px!important}
+html.wg-embedded #map{width:100%!important;margin:0!important;padding:2px!important;min-height:0!important;max-height:none!important;overflow:visible!important}
+html.wg-embedded #map svg{width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;display:block!important}
+html.wg-embedded .scoreboard{padding:5px 12px!important}
+html.wg-embedded .command{padding:6px 12px!important}
+html.wg-embedded footer{display:none!important}
+@media(max-width:740px){
+ html.wg-embedded .panel-top{padding:6px 9px 4px!important}
+ html.wg-embedded .panel-top h1{font-size:18px!important}
+ html.wg-embedded .panel-meta{display:none!important}
+ html.wg-embedded #map{width:100%!important;padding:0!important;max-height:none!important}
+ html.wg-embedded .map-bottom{padding:5px 9px!important}
+ html.wg-embedded .legend{padding:6px 8px!important}
+}
