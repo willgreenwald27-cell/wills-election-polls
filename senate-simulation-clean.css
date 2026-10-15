@@ -368,7 +368,7 @@ html.wg-embedded .panel-top{padding:10px 12px 5px!important}
 html.wg-embedded .panel-top h1{font-size:clamp(17px,2.4vw,25px)!important}
 html.wg-embedded .panel-meta{font-size:10px!important}
 html.wg-embedded #map{width:100%!important;margin:0!important;padding:2px!important;min-height:0!important;max-height:none!important;overflow:visible!important}
-html.wg-embedded #map svg{width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;display:block!important}
+html.wg-embedded #map:not([data-zoomed="true"]) svg{width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;display:block!important}
 html.wg-embedded .scoreboard{padding:5px 12px!important}
 html.wg-embedded .command{padding:6px 12px!important}
 html.wg-embedded footer{display:none!important}
@@ -379,4 +379,22 @@ html.wg-embedded footer{display:none!important}
  html.wg-embedded #map{width:100%!important;padding:0!important;max-height:none!important}
  html.wg-embedded .map-bottom{padding:5px 9px!important}
  html.wg-embedded .legend{padding:6px 8px!important}
+}
+
+/* Ensure the larger panning mode wins over the embedded fit-to-width rules. */
+@media(max-width:740px){
+ html.wg-embedded #map[data-zoomed="true"]{
+   height:min(78dvh,760px)!important;
+   overflow:auto!important;
+   overscroll-behavior:contain;
+   touch-action:pan-x pan-y;
+   display:block!important;
+ }
+ html.wg-embedded #map[data-zoomed="true"] svg{
+   width:max(740px,190vw)!important;
+   min-width:max(740px,190vw)!important;
+   max-width:none!important;
+   height:auto!important;
+   max-height:none!important;
+ }
 }
