@@ -81,29 +81,37 @@ function install(){
   const about=[...nav.querySelectorAll('a,button')].find(el=>/^(about|about me)$/i.test((el.textContent||'').trim()));
   if(about)nav.insertBefore(tab,about);else nav.append(tab);
  }
- tab.href=ROUTE_URL;tab.dataset.wgNightLink='true';
+ tab.href=ROUTE_URL;tab.dataset.wgNightLink='true';tab.removeAttribute('target');
  const duplicate=nav.querySelector('#'+NAV_ID);
  if(duplicate&&duplicate!==tab)duplicate.remove();
  document.querySelectorAll('#wg-sim-home-shortcut a, a[href*="/2026-senate-simulation.html"]').forEach(a=>{
   if(a.closest('#wg-night-view'))return;
-  a.href=ROUTE_URL;a.dataset.wgNightLink='true';
+  a.href=ROUTE_URL;a.dataset.wgNightLink='true';a.removeAttribute('target');
  });
  if(!installed){installed=true;render();}
 }
 function navigate(event){
- const link=event.target.closest('a[href]');
- if(!link)return;
- let parsed;try{parsed=new URL(link.href,location.href);}catch{return;}
- if(parsed.origin!==location.origin)return;
- const toNight=parsed.pathname==='/'&&parsed.searchParams.get('page')===ROUTE;
- if(toNight||parsed.pathname.endsWith('/2026-senate-simulation.html')){
-  event.preventDefault();event.stopPropagation();
-  if(!isNight())history.pushState({wgNight:true},'',ROUTE_URL);
-  render();return;
+ const clicked=event.target.closest('a,button');
+ if(!clicked)return;
+ const isNav=Boolean(clicked.closest('.site-header .nav'));
+ let url;
+ if(clicked.matches('a[href]')){
+  try{url=new URL(clicked.href,location.href)}catch{}
  }
- if(document.body.classList.contains('wg-night-active')){
-  // Let other normal-site navigation run while immediately dismissing the simulator.
-  document.body.classList.remove('wg-night-active');
+ const exactTab=clicked.id===builtInId||clicked.id===NAV_ID||clicked.dataset.wgNightLink==='true';
+ const legacyStandalone=url?.origin===location.origin&&url.pathname.endsWith('/2026-senate-simulation.html');
+ const routeLink=url?.origin===location.origin&&url.pathname==='/'&&url.searchParams.get('page')===ROUTE;
+ if(exactTab||legacyStandalone||routeLink){
+   event.preventDefault();event.stopImmediatePropagation();
+   if(!isNight())history.pushState({wgNight:true},'',ROUTE_URL);
+   render();return;
+ }
+ // Critical: normal site tabs are buttons, not links. Remove the simulator route
+ // BEFORE their original onclick handler executes, so they never reopen the overlay.
+ if(isNav&&isNight()){
+   history.replaceState({},'',location.pathname);
+   document.body.classList.remove('wg-night-active');
+   document.querySelectorAll('[data-wg-night-link="true"]').forEach(a=>a.removeAttribute('aria-current'));
  }
 }
 function init(){
