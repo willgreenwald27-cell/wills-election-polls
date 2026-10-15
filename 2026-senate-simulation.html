@@ -10,7 +10,7 @@
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
 <link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-v1">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<script defer src="/senate-simulation.js?v=20261014-cropped-map3"></script>
+<script defer src="/senate-simulation.js?v=20261014-clean-ui-tap-v4"></script>
 </head>
 <body>
 <div class="shell">
@@ -35,8 +35,6 @@
   <div class="seat score-rep"><span>REPUBLICANS</span><strong id="rep-seats">31</strong><small>Projected seats called</small></div>
   <div class="seat score-ind"><span>NEW INDEPENDENTS</span><strong id="ind-seats">0</strong><small>Not assigned to either caucus</small></div>
 </section>
-   <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><div class="map-loading">Loading the interactive U.S. map…</div></div>
-   <div id="map-fallback" class="map-fallback" hidden></div>
    <section class="command" aria-label="Election night playback">
   <div class="command-primary">
     <button id="play" class="play" type="button">▶ <span>PLAY ELECTION NIGHT</span></button>
@@ -53,6 +51,9 @@
     <button id="restart" class="control-secondary" type="button">↺ Restart the night</button>
   </div></details>
 </section>
+   <div id="map" role="group" aria-label="Hover or focus a state to preview vote totals; click or tap to pin a state"><div class="map-loading">Loading the interactive U.S. map…</div></div>
+   <div id="map-fallback" class="map-fallback" hidden></div>
+   
    <div class="map-bottom"><span>HOVER FOR RESULTS · TAP A STATE ON MOBILE</span><strong id="called-count">0 / 35 RACES CALLED</strong></div>
    <div class="legend" aria-label="Map legend"><span><i class="legend-box dem"></i>Democrats</span><span><i class="legend-box rep"></i>Republicans</span><span><i class="legend-box ind"></i>Independents</span><span><i class="legend-box un"></i>Uncalled</span><span><i class="legend-box static"></i>Not on ballot</span></div>
    <details class="studio-details"><summary>Election desk updates &amp; methodology</summary><div class="lower-grid">
