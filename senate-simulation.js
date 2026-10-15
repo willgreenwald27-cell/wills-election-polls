@@ -221,9 +221,15 @@ function candidateLine(s,side,votes,pct){
  const bar=document.createElement('i');bar.style.width=pct+'%';track.appendChild(bar);
  container.append(head,foot,track);return container;
 }
+function leadSummary(s,r){
+ if(!r.total)return 'AWAITING RESULTS · 0% REPORTING';
+ const lead=r.aVotes>=r.bVotes?s.a:s.b;
+ return lead+' LEADS BY '+fmt(Math.abs(r.aVotes-r.bVotes))+' VOTES · '+r.completion+'% REPORTING';
+}
 function detail(res){
  const focus=hovered||selected,s=BY[focus],r=res[focus];if(!s)return;
  $('state-name').textContent=s.name;$('state-code').textContent=s.ab;
+ const lead=$('state-lead');if(lead)lead.textContent=leadSummary(s,r);
  const uncertainty=Math.abs(s.p-.5);
  $('state-rating').textContent=uncertainty<=.07?'TOSS-UP':uncertainty<=.18?'COMPETITIVE':uncertainty<=.35?'LEANING':'SAFE / LIKELY';
  $('poll-close').textContent=closing(s);
@@ -232,7 +238,8 @@ function detail(res){
  call.textContent=r.called?'SIMULATED CALL: '+pretty(r.winner):r.completion>0?'REPORTING · NOT CALLED':'AWAITING POLL CLOSE';
  $('reporting').textContent=r.completion+'%';$('report-bar').style.width=r.completion+'%';
  const box=$('candidate-results');box.textContent='';
- box.append(candidateLine(s,s.alt,r.aVotes,r.aShare),candidateLine(s,'R',r.bVotes,r.bShare));
+ const ranked=[[s.alt,r.aVotes,r.aShare],['R',r.bVotes,r.bShare]].sort((a,b)=>b[1]-a[1]);
+ ranked.forEach(([side,votes,share])=>box.append(candidateLine(s,side,votes,share)));
  const hours=$('hourly-list');hours.textContent='';
  const start=Math.max(0,Math.ceil((s.close-19)*60));
  for(let t=start;t<=tick;t+=60){
@@ -320,11 +327,14 @@ function buildTooltip(ab,evt){
  const status=document.createElement('span');status.textContent='SIMULATED · '+(rs.called?'CALLED':rs.completion+'% REPORTING');
  top.append(name,status);box.append(top);
  const contents=document.createElement('div');contents.className='sim-tip-body';
+ const leadLine=document.createElement('div');leadLine.className='sim-tip-lead';
+ leadLine.textContent=leadSummary(s,rs);contents.append(leadLine);
  if(rs.called){
   const called=document.createElement('div');called.className='sim-tip-call '+rs.winner.toLowerCase();
   called.textContent=pretty(rs.winner)+' · PROJECTED';contents.append(called);
  }
- contents.append(tooltipRow(s.a,s.alt,rs.aVotes,rs.aShare),tooltipRow(s.b,'R',rs.bVotes,rs.bShare));
+ const rows=[[s.a,s.alt,rs.aVotes,rs.aShare],[s.b,'R',rs.bVotes,rs.bShare]].sort((a,b)=>b[2]-a[2]);
+ rows.forEach(([candidate,party,votes,share])=>contents.append(tooltipRow(candidate,party,votes,share)));
  const total=document.createElement('div');total.className='sim-tip-summary';
  total.textContent='SIMULATED VOTES '+fmt(rs.total)+'  ·  '+rs.completion+'% REPORTED';
  contents.append(total);
@@ -366,6 +376,8 @@ function setupMap(){
    svg.removeAttribute('style');
    $('map').replaceChildren(document.importNode(svg,true));
    const map=$('map').querySelector('svg');
+   // Remove native browser SVG tooltips that duplicated the custom results panel.
+   map.querySelectorAll('title').forEach(el=>el.remove());
    // Tighten unused ocean margins without clipping any state or inset labels.
    map.setAttribute('viewBox','25 18 1035 767');
    map.setAttribute('preserveAspectRatio','xMidYMid meet');
@@ -376,7 +388,7 @@ function setupMap(){
       wireMapShape(p,ab);
       p.addEventListener('click',()=>selectState(ab));
       p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectState(ab);}});
-      let title=p.querySelector('title');if(!title){title=document.createElementNS('http://www.w3.org/2000/svg','title');p.appendChild(title);}title.textContent=BY[ab].name+' Senate race';
+      // Accessible description lives in aria-label, not a native hover tooltip.
    });
    render();
  }).catch(error=>{console.warn('Election night SVG unavailable; using state buttons',error);$('map').textContent='Map temporarily unavailable; use the state buttons below.';fallback.hidden=false;});
