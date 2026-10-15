@@ -8,9 +8,9 @@
 <title>2026 Senate Election Night Simulation | Will's Election Polls</title>
 <meta name="description" content="Interactive 2026 Senate map-first election-night simulator. Play simulated results, hover over any state to see candidate vote totals, and explore hypothetical race outcomes.">
 <link rel="canonical" href="https://willelectionpolls.com/2026-senate-simulation.html">
-<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-v1">
+<link rel="stylesheet" href="/senate-simulation-clean.css?v=20261014-votes-leading-v6">
 <link rel="icon" type="image/svg+xml" href="/site-icon.svg?v=20261009-capitol1">
-<script defer src="/senate-simulation.js?v=20261014-clean-ui-tap-v4"></script>
+<script defer src="/senate-simulation.js?v=20261014-votes-leading-v6"></script>
 </head>
 <body>
 <div class="shell">
@@ -67,6 +67,7 @@
    <section class="detail-card">
      <div class="detail-heading"><span>STATE RESULTS DESK</span><strong id="state-rating">SIMULATION</strong></div>
      <div class="detail-title"><h2 id="state-name">Texas</h2><span id="state-code">TX</span></div>
+     <div id="state-lead" class="state-lead" aria-live="off">AWAITING RESULTS · 0% REPORTING</div>
      <div id="state-call" class="call-pill">NO RESULTS YET</div>
      <div class="detail-progress"><span>ESTIMATED VOTE REPORTED</span><strong id="reporting">0%</strong></div>
      <div class="report-track"><i id="report-bar"></i></div>
