@@ -274,7 +274,7 @@ function render(){
 function pause(){playing=false;clearTimeout(timer);timer=null;$('play').querySelector('span').textContent='PLAY ELECTION NIGHT';$('play').firstChild.nodeValue='▶ ';}
 function step(){if(!playing)return;if(tick>=MAX_TICK){pause();return;}tick++;render();if(tick===MAX_TICK){pause();return;}timer=setTimeout(step,Number($('speed').value));}
 function play(){if(playing){pause();return;}if(tick===MAX_TICK)tick=0;playing=true;$('play').querySelector('span').textContent='PAUSE SIMULATION';$('play').firstChild.nodeValue='❚❚ ';timer=setTimeout(step,Number($('speed').value));render();}
-function selectState(ab){if(!BY[ab])return;selected=ab;render();}
+function selectState(ab){if(!BY[ab])return;selected=ab;if(window.matchMedia('(pointer: coarse)').matches){hovered=ab;hoverPointer=null;}render();}
 
 /* Pointer-preview results desk. Clicking remains an optional touch/keyboard pin. */
 let tooltip=null,hoverPointer=null,tooltipState=null;
@@ -383,6 +383,10 @@ function setupMap(){
 }
 function initialize(){
  makeCustom();setupMap();
+ // Keep mobile map unobstructed until a state is tapped; dismiss the small popup elsewhere.
+ document.addEventListener('pointerdown',event=>{
+  if(event.pointerType==='touch'&&!event.target.closest('#map .state-shape, #map-fallback button'))endHover();
+ });
  $('play').addEventListener('click',play);
  $('restart').addEventListener('click',()=>{pause();tick=0;render();});
  $('speed').addEventListener('change',()=>{if(playing){clearTimeout(timer);timer=setTimeout(step,Number($('speed').value));}});
