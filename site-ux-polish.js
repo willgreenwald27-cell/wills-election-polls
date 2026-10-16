@@ -43,6 +43,7 @@
     const fixed=[
       find('home','Home'),
       find('senate','2026 Senate Prediction'),
+      find('swing','Swing State Explanations'),
       find('errors','Past Polling Errors'),
       find('governor','2026 Governor Map'),
       find('polls','New Polls'),
