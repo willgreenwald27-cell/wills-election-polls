@@ -4,7 +4,7 @@
   const DEST='/2026-senate-battlegrounds.html';
   const NAME='Swing State Explanations';
   const TAB_ID='wg-swing-analysis-tab';
-  const simPattern=/election\\s*night|simulation|simulator/i;
+  const simPattern=/election\s*night|simulation|simulator/i;
   function isSimulator(el){
     return el.id==='wg-sim-built-in-nav'||el.id==='will-election-sim-nav'||
       el.dataset?.wgNightLink==='true'||
