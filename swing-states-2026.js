@@ -90,6 +90,10 @@
   page.querySelector('#wg-swing-clear').addEventListener('click',()=>{input.value='';filter();input.focus();});
   new MutationObserver(()=>{if(!page.hidden)render();}).observe(page,{attributes:true,attributeFilter:['hidden','class']});
   render();
+  // Deep links are handled after this page exists in the same SPA.
+  if(new URLSearchParams(location.search).get('page')==='swing' && typeof window.__acceptedGoodNavigate==='function'){
+    window.__acceptedGoodNavigate('swing',false);
+  }
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
  window.addEventListener('pageshow',()=>{mount();render();});
