@@ -11,6 +11,19 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    ['2026-10-15','OH','Ohio Special Election','Bowling Green/YouGov*','Sherrod Brown',48,'Jon Husted',42,'Brown +6'],
+    ['2026-10-15','MI','Michigan','Rasmussen Reports*','Abdul El-Sayed',46,'Mike Rogers',44,'El-Sayed +2'],
+    ['2026-10-15','AR','Arkansas','Talk Business/Hendrix College','Tom Cotton',50,'Lewis Shoffner',41,'Cotton +9 · Wadlin 5'],
+    ['2026-10-14','IA','Iowa','Marist','Josh Turek',48,'Ashley Hinson',45,'Turek +3'],
+    ['2026-10-14','MN','Minnesota','KSTP/SurveyUSA*','Peggy Flanagan',45,'Michele Tafoya',42,'Flanagan +3'],
+    ['2026-10-14','TX','Texas','InsiderAdvantage*','Ken Paxton',49,'James Talarico',48,'Paxton +1'],
+    ['2026-10-14','ME','Maine','InsiderAdvantage','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
+    ['2026-10-14','KS','Kansas','InsiderAdvantage','Roger Marshall',48,'Adam Hamilton',47,'Marshall +1'],
+    ['2026-10-13','TX','Texas','Marist','James Talarico',47,'Ken Paxton',45,'Talarico +2'],
+    ['2026-10-13','TX','Texas','University of Texas*','James Talarico',50,'Ken Paxton',47,'Talarico +3'],
+    ['2026-10-13','ME','Maine','Suffolk University','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
+    ['2026-10-13','IA','Iowa','YouGov','Josh Turek',47,'Ashley Hinson',46,'Turek +1'],
+    ['2026-10-13','RI','Rhode Island','WPRI/Emerson*','Jack Reed',59,'Allen McKay',25,'Reed +34'],
     ['2026-10-12','TX','Texas','ReconMR/Siena','James Talarico',48,'Ken Paxton',44,'Talarico +4'],
     ['2026-10-12','TX','Texas','Quantus Insights*','James Talarico',47,'Ken Paxton',47,'Tie'],
     ['2026-10-12','NC','North Carolina','WRAL-TV/SurveyUSA','Roy Cooper',54,'Michael Whatley',40,'Cooper +14'],
