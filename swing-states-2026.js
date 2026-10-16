@@ -19,11 +19,16 @@
   if(!s)return {rating:'See live map',tone:'mixed',poll:'<span class="wg-spoll-empty">Polling is displayed on the Senate map</span>',forecast:'Visit the interactive map for Will’s latest prediction',updated:''};
   const rating=String(s.rating||'').toLowerCase();
   const p1=pct(s.candidate1Poll),p2=pct(s.candidate2Poll);
+  const colorFor=party=>{
+    const v=String(party||'').toLowerCase();
+    return v==='d'||v.includes('democrat')?'#3979c5':v==='r'||v.includes('republican')?'#c85967':
+      v==='i'||v.includes('independent')?'#8051d2':'#8499b4';
+  };
   let poll='<span class="wg-spoll-empty">Polling not available in the current forecast</span>';
   if(p1&&p2){
     const n1=parseFloat(p1),n2=parseFloat(p2),sum=n1+n2,share=sum>0?n1/sum*100:50;
     poll='<div class="wg-spoll-names"><span>'+html(s.candidate1||'Candidate 1')+' <b>'+p1+'</b></span><span>'+html(s.candidate2||'Candidate 2')+' <b>'+p2+'</b></span></div>'+
-      '<div class="wg-spoll-track" role="img" aria-label="Listed polling averages: '+html(s.candidate1)+' '+p1+', '+html(s.candidate2)+' '+p2+'"><i style="width:'+share.toFixed(1)+'%"></i></div>'+
+      '<div class="wg-spoll-track" style="background:'+colorFor(s.candidate2Party)+'" role="img" aria-label="Listed polling averages: '+html(s.candidate1)+' '+p1+', '+html(s.candidate2)+' '+p2+'"><i style="width:'+share.toFixed(1)+'%;background:'+colorFor(s.candidate1Party)+'"></i></div>'+
       '<p class="wg-spoll-foot">Displayed averages from Will’s Senate forecast; these are not election probabilities.</p>';
   }
   const pred=String(s.prediction||s.call||'').trim();
