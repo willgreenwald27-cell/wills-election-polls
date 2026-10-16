@@ -1,6 +1,6 @@
 (()=>{
   const REP='#bd2937', DEM='#2763b8', IND='#8051d2';
-  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['about','About Me']];
+  const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['swing','Swing State Explanations'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['about','About Me']];
   let current='home',busy=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=r=>r?[...r.querySelectorAll('*')].filter(el=>el.children.length===0):[];
@@ -117,6 +117,14 @@
         el.classList.toggle('active',on);
         el.style.setProperty('display',on?'block':'none','important');
       }
+      // Reset any legacy full-screen simulator overlay before activating a page.
+      document.body.classList.remove('wg-night-active');
+      document.getElementById('wg-night-view')?.remove();
+      document.getElementById('wg-night-embed-style')?.remove();
+      const url=new URL(location.href);
+      if(k==='swing')url.searchParams.set('page','swing');
+      else if(['swing','electionnight'].includes(url.searchParams.get('page')))url.searchParams.delete('page');
+      if(url.href!==location.href)history.replaceState(null,'',url.pathname+url.search+url.hash);
       current=k; activeNav(); if(scroll) window.scrollTo(0,0);
     }finally{busy=false;}
   }
@@ -381,9 +389,9 @@ function fixAboutPollCount(){
     show(b.dataset.acceptedPage,true);
   },true);
 
-  current='home';
+  current=new URLSearchParams(location.search).get('page')==='swing'?'swing':'home';
   apply();
-  pageEl('governor'); show('home',false);
+  pageEl('governor'); show(current,false);
   setTimeout(apply,100); setTimeout(apply,500); setTimeout(apply,1500);
   new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',()=>{apply();show(current,false)});
