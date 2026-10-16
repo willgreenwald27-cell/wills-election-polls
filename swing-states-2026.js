@@ -48,9 +48,12 @@
   }
  }
  function mount(){
-  if(document.getElementById(id))return;
-  const page=document.createElement('section');page.id=id;page.className='page wg-swing-page';
-  page.hidden=true;page.style.setProperty('display','none','important');
+  let page=document.getElementById(id);
+  if(page&&!page.classList.contains('wg-swing-fallback'))return;
+  const wasVisible=!!(page&&!page.hidden);
+  const newlyCreated=!page;
+  if(!page){page=document.createElement('section');page.id=id;page.hidden=true;page.style.setProperty('display','none','important');}
+  page.className='page wg-swing-page';
   page.setAttribute('aria-label','2026 Swing State Explanations');
   page.innerHTML='<div class="wg-swing-shell">'+
     '<header class="wg-swing-hero"><div class="wg-swing-kicker"><span class="wg-swing-live-dot"></span> THE RACES BEHIND THE MAP <span class="wg-swing-kicker-year">/ 2026</span></div>'+
@@ -76,8 +79,11 @@
     }).join('')+'</div><p class="wg-swing-no-results" hidden>No matching battlegrounds. Try a different state or candidate.</p>'+
     '<aside class="wg-swing-method"><span class="wg-swing-overline">HOW TO READ THE FORECAST</span><h2>Polls measure opinion. Forecasts interpret uncertainty.</h2><p>Poll numbers on this page come from the existing interactive Senate forecast, not a separate model. Race ratings and predictions may change. Historical election patterns, incumbency and survey methodologies help explain what the numbers cannot tell us alone.</p><button type="button" data-swing-open-senate="1">Compare all states on Will’s live map →</button></aside>'+
     '</div>';
-  const before=document.getElementById('page-about');
-  if(before?.parentNode)before.parentNode.insertBefore(page,before);else document.body.appendChild(page);
+  if(newlyCreated){
+    const before=document.getElementById('page-about');
+    if(before?.parentNode)before.parentNode.insertBefore(page,before);else document.body.appendChild(page);
+  }
+  if(wasVisible){page.hidden=false;page.style.setProperty('display','block','important');}
   page.addEventListener('click',event=>{
    const link=event.target.closest('[data-swing-open-senate]');
    if(link){event.preventDefault();if(typeof window.__acceptedGoodNavigate==='function')window.__acceptedGoodNavigate('senate');return;}
@@ -91,10 +97,11 @@
   new MutationObserver(()=>{if(!page.hidden)render();}).observe(page,{attributes:true,attributeFilter:['hidden','class']});
   render();
   // Deep links are handled after this page exists in the same SPA.
-  if(new URLSearchParams(location.search).get('page')==='swing' && typeof window.__acceptedGoodNavigate==='function'){
+  if((wasVisible||new URLSearchParams(location.search).get('page')==='swing') && typeof window.__acceptedGoodNavigate==='function'){
     window.__acceptedGoodNavigate('swing',false);
   }
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
  window.addEventListener('pageshow',()=>{mount();render();});
+ window.__wgSwingRender=render;
 })();
