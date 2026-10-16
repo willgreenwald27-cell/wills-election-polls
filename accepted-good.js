@@ -86,12 +86,32 @@
   function pageEl(k){
     if(k==='governor') return makeFrame('accepted-governor','/governor.html?embedded=1','2026 Governor Map');
     if(k==='pastmaps') return makeFrame('accepted-pastmaps','/past-senate-maps.html?embedded=1','Past Senate Maps');
+    if(k==='swing'){
+      let p=document.getElementById('page-swing');
+      if(!p){
+        // A readable in-site fallback until the colorful cards are mounted.
+        p=document.createElement('section');p.id='page-swing';p.className='page wg-swing-page wg-swing-fallback';
+        p.setAttribute('aria-label','2026 Swing State Explanations');
+        p.innerHTML='<div style="max-width:1100px;margin:auto;padding:36px 22px;color:#1a3559">'+
+          '<h1>2026 Swing State Explanations</h1><p>Research and polling context behind eight Senate races.</p>'+
+          '<iframe title="Swing-state research and race analysis" loading="eager" src="/2026-senate-battlegrounds.html?embedded=1" style="width:100%;height:90vh;min-height:650px;border:0;border-radius:12px;background:#081525"></iframe></div>';
+        const about=document.getElementById('page-about');
+        if(about?.parentNode)about.parentNode.insertBefore(p,about);else document.body.appendChild(p);
+      }
+      return p;
+    }
     return document.getElementById('page-'+k);
   }
 
   function buildNav(){
     const nav=document.querySelector('.site-header .nav');
     if(!nav) return;
+    // Remove leftover standalone links from a prior navigation script.
+    nav.querySelectorAll('#wg-swing-analysis-tab,a[href*="2026-senate-battlegrounds.html"]').forEach(el=>el.remove());
+    for(const el of [...nav.children]){
+      if(el.getAttribute('data-accepted-page')==='swing')continue;
+      if((el.textContent||'').trim().toLowerCase()==='swing state explanations')el.remove();
+    }
     if(nav.dataset.acceptedNav==='1'&&nav.querySelectorAll(':scope>[data-accepted-page]').length===PAGES.length) return;
     nav.textContent='';
     nav.dataset.acceptedNav='1';
