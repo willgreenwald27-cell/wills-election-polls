@@ -94,7 +94,7 @@
         p.setAttribute('aria-label','2026 Swing State Explanations');
         p.innerHTML='<div style="max-width:1100px;margin:auto;padding:36px 22px;color:#1a3559">'+
           '<h1>2026 Swing State Explanations</h1><p>Research and polling context behind eight Senate races.</p>'+
-          '<iframe title="Swing-state research and race analysis" loading="eager" src="/2026-senate-battlegrounds.html?embedded=1" style="width:100%;height:90vh;min-height:650px;border:0;border-radius:12px;background:#081525"></iframe></div>';
+          '<iframe title="Swing-state research and race analysis" loading="lazy" src="/2026-senate-battlegrounds.html?embedded=1" style="width:100%;height:90vh;min-height:650px;border:0;border-radius:12px;background:#081525"></iframe></div>';
         const about=document.getElementById('page-about');
         if(about?.parentNode)about.parentNode.insertBefore(p,about);else document.body.appendChild(p);
       }
