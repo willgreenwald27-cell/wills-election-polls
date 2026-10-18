@@ -178,7 +178,11 @@
   apply();
   [80,250,700,1500,3000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1200);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  // Process structural updates only. Following style and text mutations
+  // produced a self-sustaining feedback loop whenever the map was hovered.
+  new MutationObserver(records=>{
+    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))schedule();
+  }).observe(document.body,{childList:true,subtree:true});
   window.addEventListener('pageshow',apply);
   window.addEventListener('resize',apply);
 })();
