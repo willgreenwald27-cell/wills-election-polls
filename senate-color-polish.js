@@ -77,9 +77,9 @@
     const senate=kind==='senate';
     const title=senate?'Will’s Senate Prediction':'Will’s House of Reps Prediction';
     const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
-    const dem=senate?'51':'231', rep=senate?'49':'204';
-    const demW=senate?'51%':'53.1034%', repW=senate?'49%':'46.8966%';
-    const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
+    const dem=senate?'50':'231', rep=senate?'50':'204';
+    const demW=senate?'50%':'53.1034%', repW=senate?'50%':'46.8966%';
+    const note=senate?'50–50 projection · VP JD Vance breaks Senate ties for Republicans':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
       <div class="final-kicker">${kicker}</div>
@@ -114,7 +114,8 @@
       #page-home #homeForecastSplit .dem{color:${BLUE}!important}.rep{color:${RED}!important}
       #page-home #homeForecastSplit .final-bar{position:relative!important;height:18px!important;border-radius:999px!important;overflow:hidden!important;display:flex!important;box-shadow:inset 0 0 0 1px rgba(20,34,53,.08)!important}
       #page-home #homeForecastSplit .final-bar>span{display:block!important;height:100%!important}.final-bar>span.dem{background:${BLUE}!important}.final-bar>span.rep{background:${RED}!important}
-      #page-home #homeForecastSplit .final-majority-marker{position:absolute!important;top:-5px!important;width:2px!important;height:28px!important;background:${NAVY}!important;transform:translateX(-1px)!important;opacity:.8!important}.final-majority-marker.house{left:50.1149%!important}.final-majority-marker.senate{left:51%!important}
+      #page-home #homeForecastSplit .final-majority-marker{position:absolute!important;top:-5px!important;width:2px!important;height:28px!important;background:${NAVY}!important;transform:translateX(-1px)!important;opacity:.8!important}.final-majority-marker.house{left:50.1149%!important}.final-majority-marker.senate{left:50%!important}
+      #page-home #homeForecastSplit .final-senate-card .final-majority-note{color:#a33a4d!important;font-size:11px!important;letter-spacing:.15px!important;text-transform:none!important;line-height:1.35!important}
       #page-home #homeForecastSplit .final-majority-note{margin-top:8px!important;font:800 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#6c798b!important;text-align:center!important}
       #page-home #homeForecastSplit .final-tiebreak{position:absolute!important;top:14px!important;right:16px!important;color:${RED}!important;font:900 9px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;letter-spacing:1.3px!important;text-transform:uppercase!important;text-align:right!important}.final-tiebreak strong{display:block!important;font-size:14px!important;letter-spacing:.4px!important;margin-top:2px!important;color:${RED}!important}
       @media(max-width:760px){#page-home #homeForecastSplit{grid-template-columns:1fr!important;gap:12px!important}#page-home #homeForecastSplit .final-forecast-card{aspect-ratio:1672/941!important;padding:18px!important}#page-home #homeForecastSplit .final-title{font-size:30px!important;min-height:64px!important}#page-home #homeForecastSplit .final-party-number{font-size:54px!important}#page-home #homeForecastSplit .final-tiebreak{top:12px!important;right:12px!important;font-size:7px!important}.final-tiebreak strong{font-size:11px!important}}
