@@ -143,7 +143,7 @@
     let box=marker.parentElement;
     for(let i=0;box&&box!==root&&i<6;i++,box=box.parentElement){
       const t=norm(box.textContent);
-      if(/DEMOCRAT/i.test(t)&&/REPUBLICAN/i.test(t)&&/49/.test(t)&&/51/.test(t)){box.classList.add('wg-senate-balance');break;}
+      if(/DEMOCRAT/i.test(t)&&/REPUBLICAN/i.test(t)&&/\b50\b/.test(t)){box.classList.add('wg-senate-balance');break;}
     }
   }
 
