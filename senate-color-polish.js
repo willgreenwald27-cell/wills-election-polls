@@ -79,7 +79,7 @@
     const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
     const dem=senate?'50':'231', rep=senate?'50':'204';
     const demW=senate?'50%':'53.1034%', repW=senate?'50%':'46.8966%';
-    const note=senate?'50–50 projection · VP JD Vance breaks Senate ties for Republicans':'218 seats needed for a majority';
+    const note=senate?'50–50 · VP JD Vance breaks ties (R)':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
       <div class="final-kicker">${kicker}</div>
