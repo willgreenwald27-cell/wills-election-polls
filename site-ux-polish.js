@@ -260,10 +260,10 @@
     toss.querySelector('.wg-metric-value').textContent=tossups;
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
-    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
-    updated.setAttribute('aria-label','Last updated October 8, 2026');
+    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 16, 2026</strong>';
+    updated.setAttribute('aria-label','Last updated October 16, 2026');
 
-    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div>';
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div><small class="wg-vp-metric-note" style="display:block;margin-top:7px;font:750 11px/1.35 Inter,system-ui,sans-serif;color:#a23d4b">Republican tie-break: VP JD Vance</small>';
     forecast.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans. Vice President JD Vance breaks ties for Republicans.');
   }
 
