@@ -28,6 +28,15 @@
         if(norm(me.candidate1)==='Troy Jackson') me.candidate1Odds='52';
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
+      if(stateData.MI&&stateData.MI.active){
+        const mi=stateData.MI;
+        for(const slot of [1,2]){
+          const name=norm(mi['candidate'+slot]);
+          const key='candidate'+slot+'Odds';
+          if(/El[- ]Sayed/i.test(name)&&String(mi[key])!=='55')mi[key]='55';
+          if(/Rogers/i.test(name)&&String(mi[key])!=='45')mi[key]='45';
+        }
+      }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
       if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
       if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Tilt Republican';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Republican';if('call' in stateData.TX)stateData.TX.call='Tilt Republican';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='47';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='53';}}
