@@ -280,14 +280,22 @@
       if(dem!==row.firstElementChild)row.insertBefore(dem,row.firstElementChild);
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
-      const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='50';const rn=rep.querySelector('strong');if(rn)rn.textContent='50';
+      const ds=dem.querySelector('span');if(ds){if(ds.textContent!=='Democratic')ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
+      const rs=rep.querySelector('span');if(rs){if(rs.textContent!=='Republican')rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}
+      const dn=dem.querySelector('strong');if(dn&&dn.textContent!=='50')dn.textContent='50';
+      const rn=rep.querySelector('strong');if(rn&&rn.textContent!=='50')rn.textContent='50';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
     const kn=key?.querySelector('.key-neutral');
     const kr=key?.querySelector('.key-side.republican');
-    if(key&&kd&&kr){key.appendChild(kd);if(kn)key.appendChild(kn);key.appendChild(kr);}
+    // AppendChild on an element already in the right place still moves it,
+    // firing all map observers every 750ms. Reorder only if necessary.
+    if(key&&kd&&kr){
+      if(key.firstElementChild!==kd)key.insertBefore(kd,key.firstElementChild);
+      if(kn&&kn.previousElementSibling!==kd)key.insertBefore(kn,kr);
+      if(key.lastElementChild!==kr)key.appendChild(kr);
+    }
   }
 
   function fixGrahamText(){
