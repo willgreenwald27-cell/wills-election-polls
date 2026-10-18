@@ -330,8 +330,8 @@
       bar.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans; Vice President JD Vance breaks ties for Republicans');
     }
     const note=card.querySelector('.final-majority-note,.majority-note');
-    if(note&&note.textContent!=='50–50 projected · VP JD Vance breaks Senate ties for Republicans')
-      note.textContent='50–50 projected · VP JD Vance breaks Senate ties for Republicans';
+    if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
+      note.textContent='50–50 · VP JD Vance breaks ties (R)';
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
 
