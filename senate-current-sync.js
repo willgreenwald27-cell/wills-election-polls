@@ -223,7 +223,7 @@
     const root=document.getElementById('page-senate');if(!root)return;
     // The map, prediction pill and hover card must all match Tilt Republican.
     root.querySelectorAll('.map-wrap svg .state-shape[data-state="TX"]').forEach(el=>{
-      el.style.setProperty('fill',RED_LIGHT,'important');
+      if(el.style.getPropertyValue('fill')!==RED_LIGHT)el.style.setProperty('fill',RED_LIGHT,'important');
     });
     const labels=leafs(root).filter(el=>norm(el.textContent)==='Texas'&&el.getClientRects().length);
     for(const label of labels){
@@ -235,7 +235,7 @@
       if(!box||box===root)continue;
       for(const el of leafs(box)){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
+        if(/^Prediction:\s*/i.test(t)&&t!=='Prediction: Tilt Republican')el.textContent='Prediction: Tilt Republican';
       }
       const heading=leafs(box).find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
       if(heading){
@@ -246,10 +246,10 @@
         }
         if(card&&card!==box){
           const party=[...card.querySelectorAll('*')].find(el=>el.children.length===0&&/^(?:Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-          if(party)party.textContent='Republican';
+          if(party&&party.textContent!=='Republican')party.textContent='Republican';
           const rating=[...card.querySelectorAll('*')].find(el=>el.children.length===0&&/^(?:TILT|LEAN|LIKELY|SOLID)\s+(?:DEMOCRAT(?:IC)?|REPUBLICAN)$/i.test(norm(el.textContent)));
-          if(rating)rating.textContent='TILT REPUBLICAN';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Republican';
+          if(rating&&rating.textContent!=='TILT REPUBLICAN')rating.textContent='TILT REPUBLICAN';
+          const copy=card.querySelector('.prediction-copy');if(copy&&copy.textContent!=='Tilt Republican')copy.textContent='Tilt Republican';
         }
       }
       box.querySelectorAll('.wg-tx-explanation,[data-forecast-disagreement="TX"],.wg-forecast-explanation[data-state-explanation="TX"]').forEach(el=>el.remove());
