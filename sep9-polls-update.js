@@ -219,7 +219,7 @@
               <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">50</div></div>
             </div>
             <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
-            <div class="majority-note">50–50 projection · VP JD Vance breaks Senate ties for Republicans</div>
+            <div class="majority-note">50–50 · VP JD Vance breaks ties (R)</div>
             <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
           </div>
         </div>`;
