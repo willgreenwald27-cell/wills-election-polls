@@ -146,6 +146,12 @@
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,700);
-  new MutationObserver(()=>{clearTimeout(window.__senateColorPolishTimer);window.__senateColorPolishTimer=setTimeout(apply,35)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  // Never watch the inline color/style changes made by this function.
+  // Limit follow-up passes to genuinely inserted/replaced elements.
+  new MutationObserver(records=>{
+    if(!records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))return;
+    clearTimeout(window.__senateColorPolishTimer);
+    window.__senateColorPolishTimer=setTimeout(apply,70);
+  }).observe(document.body,{childList:true,subtree:true});
   window.addEventListener('pageshow',apply);
 })();
