@@ -3,6 +3,7 @@
   const BLUE='#d3e2f7';
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   let queued=false;
+  let mapDomObserver=null;
 
   function syncData(){
     try{
@@ -274,7 +275,6 @@
         }
         if(!visiblePanel('Maine'))safeOpen();
         keepMainePartyLabelsVisible();
-    stabilizeMaineHover();
         bindPanel();
       },70);
     };
@@ -768,18 +768,27 @@
     }
   }
 
+  // Disconnect our observer while applying popup fixes. Otherwise each
+  // style/text mutation schedules another frame, creating a self-triggering
+  // loop that makes state hover cards flicker and pointer tracking lag.
   function apply(){
-    suppressEmptyPredictionCopy();
-    syncData();
-    forceMontanaAverage();
-    keepTopSeatPartyLabels();
-    forceOhioStable();
-    fixSenateSeatBalanceBar();
-    removeTexasExplanation();
-    removeWhyBlock('Ohio');
-    ensureIowaKansasExplanations();
-    forceNebraskaOdds();
-    ensureNebraskaExplanation();
+    if(mapDomObserver)mapDomObserver.disconnect();
+    try{
+      suppressEmptyPredictionCopy();
+      syncData();
+      forceMontanaAverage();
+      keepTopSeatPartyLabels();
+      forceOhioStable();
+      fixSenateSeatBalanceBar();
+      removeTexasExplanation();
+      removeWhyBlock('Ohio');
+      ensureIowaKansasExplanations();
+      forceNebraskaOdds();
+      ensureNebraskaExplanation();
+    }finally{
+      const root=document.getElementById('page-senate');
+      if(root&&mapDomObserver)mapDomObserver.observe(root,{childList:true,subtree:true});
+    }
   }
   function schedule(){
     if(queued)return;
@@ -787,6 +796,9 @@
     requestAnimationFrame(()=>{queued=false;apply();});
   }
 
+  // Only respond to meaningful Senate DOM changes, not unrelated pages,
+  // hover style toggles or the attributes that our own fixes write.
+  mapDomObserver=new MutationObserver(schedule);
   apply();
   [80,220,600,1400].forEach(ms=>setTimeout(apply,ms));
   document.addEventListener('click',e=>{
@@ -794,6 +806,5 @@
       setTimeout(apply,0);setTimeout(apply,80);setTimeout(apply,180);
     }
   },true);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);
 })();
