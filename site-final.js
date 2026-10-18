@@ -164,8 +164,8 @@
         }
       }
       const note=senateCard.querySelector('.majority-note,.final-majority-note');
-      if(note&&note.textContent!=='50–50 projection · JD Vance breaks Senate ties for Republicans')
-        note.textContent='50–50 projection · JD Vance breaks Senate ties for Republicans';
+      if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
+        note.textContent='50–50 · VP JD Vance breaks ties (R)';
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
