@@ -375,3 +375,13 @@ body:has(#page-senate.wg-studio.active) .site-header .nav button.active:not(#edi
   cursor:pointer!important;
   touch-action:manipulation;
 }
+
+/* Hover stability: the read-only forecast tooltip must not steal pointer
+   events from the SVG state beneath it when it follows the cursor. Selected
+   state panels, map clicks, keyboard focus and touch behavior are unchanged. */
+@media (hover:hover) and (pointer:fine){
+  #page-senate #mapHoverCard,
+  #page-senate .map-hover-card{
+    pointer-events:none!important;
+  }
+}
