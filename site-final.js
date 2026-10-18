@@ -56,7 +56,7 @@
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n){n.textContent=value;break;}
+        if(n){if(n.textContent!==value)n.textContent=value;break;}
       }
     }
   }
@@ -151,16 +151,16 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) nums[0].textContent='50';
-      if(nums[1]) nums[1].textContent='50';
+      if(nums[0]) if(nums[0].textContent!=='50')nums[0].textContent='50';
+      if(nums[1]) if(nums[1].textContent!=='50')nums[1].textContent='50';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
-        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^Democrats?:\s*\d+$/i.test(t)&&!/:\s*50$/.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^Republicans?:\s*\d+$/i.test(t)&&!/:\s*50$/.test(t)) el.textContent=t.replace(/\d+$/,'50');
         if(/^\d+ seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)) el.textContent='50 seats';
-          if(/Republican/i.test(parent)) el.textContent='50 seats';
+          if(/Democrat/i.test(parent)&&t!=='50 seats') el.textContent='50 seats';
+          if(/Republican/i.test(parent)&&t!=='50 seats') el.textContent='50 seats';
         }
       }
       const note=senateCard.querySelector('.majority-note,.final-majority-note');
@@ -184,19 +184,31 @@
     if(senate.nextElementSibling!==errors) nav.insertBefore(errors,senate.nextElementSibling);
   }
 
+  let structuralObserver=null;
   function fixDom(){
-    enforceData();
-    wrapRenderer();
-    setBalance();
-    fixPartyVisuals();
-    fixHome();
-    fixNavOrder();
+    // Suspend observation during our own text, styling and navigation edits.
+    // Observing these edits recursively repeatedly reconstructed Senate views.
+    structuralObserver?.disconnect();
+    try{
+      enforceData();
+      wrapRenderer();
+      setBalance();
+      fixPartyVisuals();
+      fixHome();
+      fixNavOrder();
+    }finally{
+      structuralObserver?.observe(document.body,{childList:true,subtree:true});
+    }
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;fixDom();});}
 
+  // Only actual element insertion/removal should cause a full DOM repair.
+  // Text changes, hover-card content and inline styles should not.
+  structuralObserver=new MutationObserver(records=>{
+    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(node=>node.nodeType===1)))schedule();
+  });
   fixDom();
   setTimeout(fixDom,100);setTimeout(fixDom,600);setTimeout(fixDom,1500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',fixDom);
   window.addEventListener('resize',fixDom);
 
