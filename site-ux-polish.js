@@ -340,8 +340,8 @@
     if(dem)dem.style.setProperty('width','50%','important');
     if(rep)rep.style.setProperty('width','50%','important');
     const note=card.querySelector('.final-majority-note,.majority-note');
-    if(note&&note.textContent!=='50–50 projection · VP JD Vance breaks Senate ties for Republicans')
-      note.textContent='50–50 projection · VP JD Vance breaks Senate ties for Republicans';
+    if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
+      note.textContent='50–50 · VP JD Vance breaks ties (R)';
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
