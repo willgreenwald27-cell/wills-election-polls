@@ -143,8 +143,8 @@
         if(dem) dem.style.setProperty('width','50%','important');
         if(rep) rep.style.setProperty('width','50%','important');
         const note=senate.querySelector('.majority-note,.final-majority-note');
-        if(note&&note.textContent!=='50–50 projection · VP JD Vance breaks Senate ties for Republicans')
-          note.textContent='50–50 projection · VP JD Vance breaks Senate ties for Republicans';
+        if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
+          note.textContent='50–50 · VP JD Vance breaks ties (R)';
       }
     }
 
