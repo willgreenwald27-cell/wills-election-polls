@@ -347,6 +347,10 @@
   installNavClickRepair();apply();
   [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,750);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  // Rebuild navigation only when its direct children change. Watching all
+  // body styles and text caused a feedback loop on every map hover redraw.
+  // The existing 750ms reconciliation handles a completely replaced header.
+  const nav=document.querySelector('.site-header .nav');
+  if(nav)new MutationObserver(schedule).observe(nav,{childList:true});
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();
