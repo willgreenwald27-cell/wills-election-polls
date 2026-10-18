@@ -156,6 +156,10 @@
   applyEqualForecastCards();
   [25,80,150,250,600,1200,2200,4000].forEach(ms=>setTimeout(applyEqualForecastCards,ms));
   setInterval(applyEqualForecastCards,750);
-  new MutationObserver(()=>setTimeout(applyEqualForecastCards,20)).observe(document.body,{childList:true,subtree:true,characterData:true});
+  // React only to actual element replacement, not every numerical text
+  // update: text-based observation continuously re-triggered all site scripts.
+  new MutationObserver(records=>{
+    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))setTimeout(applyEqualForecastCards,40);
+  }).observe(document.body,{childList:true,subtree:true});
   window.addEventListener('pageshow',applyEqualForecastCards);
 })();
