@@ -49,7 +49,7 @@
   function hide(){active='';if(card)card.style.display='none';}
   document.addEventListener('pointermove',e=>{
     if(!fine())return;
-    const shape=e.target?.closest?.('#page-senate .map-wrap svg .state-shape[data-state]');
+    const shape=e.target?.closest?.('#page-senate svg .state-shape[data-state], #page-senate svg path[data-state], #page-senate svg g[data-state]');
     if(shape&&document.getElementById('page-senate')?.getClientRects().length){
       show(shape.getAttribute('data-state'),e.clientX,e.clientY);
     }else hide();
