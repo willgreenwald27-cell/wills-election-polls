@@ -136,8 +136,8 @@
       const senate=split.querySelector('.senate-card');
       if(senate){
         const nums=[...senate.querySelectorAll('.party-number')];
-        if(nums[0]) nums[0].textContent='50';
-        if(nums[1]) nums[1].textContent='50';
+        if(nums[0]&&nums[0].textContent!=='50') nums[0].textContent='50';
+        if(nums[1]&&nums[1].textContent!=='50') nums[1].textContent='50';
         const dem=senate.querySelector('.senate-bar .dem,.senate-bar .democratic,[data-party="dem"]');
         const rep=senate.querySelector('.senate-bar .rep,.senate-bar .republican,[data-party="rep"]');
         if(dem) dem.style.setProperty('width','50%','important');
