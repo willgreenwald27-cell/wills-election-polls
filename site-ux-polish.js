@@ -252,18 +252,18 @@
       el.style.setProperty('min-width','0','important');
     }
 
-    countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
+    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
     countdown.querySelector('.wg-election-days').textContent=String(days);
     countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
 
-    toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
+    if(!toss.querySelector('.wg-metric-value'))toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
     toss.querySelector('.wg-metric-value').textContent=tossups;
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
-    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 16, 2026</strong>';
+    if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 16, 2026</strong>';
     updated.setAttribute('aria-label','Last updated October 16, 2026');
 
-    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div><small class="wg-vp-metric-note" style="display:block;margin-top:7px;font:750 11px/1.35 Inter,system-ui,sans-serif;color:#a23d4b">Republican tie-break: VP JD Vance</small>';
+    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div><small class="wg-vp-metric-note" style="display:block;margin-top:7px;font:750 11px/1.35 Inter,system-ui,sans-serif;color:#a23d4b">Republican tie-break: VP JD Vance</small>';
     forecast.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans. Vice President JD Vance breaks ties for Republicans.');
   }
 
