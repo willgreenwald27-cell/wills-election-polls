@@ -510,7 +510,7 @@
         number=document.createElement('strong');
         box.appendChild(number);
       }
-      number.textContent=count;
+      if(number.textContent!==count)number.textContent=count;
 
       let party=[...box.children].find(el=>el!==number&&/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
       if(!party){
@@ -518,7 +518,7 @@
         if(side==='left')box.insertBefore(party,number);
         else box.appendChild(party);
       }
-      party.textContent=label;
+      if(party.textContent!==label)party.textContent=label;
 
       box.style.setProperty('display','flex','important');
       box.style.setProperty('align-items','baseline','important');
