@@ -151,7 +151,7 @@
       }
       let why=box.querySelector('.maine-why-note');
       if(!why){why=document.createElement('div');why.className='maine-why-note';box.appendChild(why);}
-      why.textContent='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
+      if(why.textContent!=='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).')why.textContent='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
       why.style.cssText='margin-top:12px;padding:12px 14px;border-radius:12px;background:#fff3f4;border:1px solid #f1b8bd;color:#7f2330;font:800 12px/1.5 Inter,system-ui,sans-serif;letter-spacing:.05px';
     }
   }
@@ -268,8 +268,8 @@
         const repBox=summary.querySelector('.balance-party.rep,.republican,[data-party="rep"]');
         const dn=demBox?.querySelector('strong')||demBox;
         const rn=repBox?.querySelector('strong')||repBox;
-        if(dn)dn.textContent='50';
-        if(rn)rn.textContent='50';
+        if(dn&&dn.textContent!=='50')dn.textContent='50';
+        if(rn&&rn.textContent!=='50')rn.textContent='50';
         summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans; Vice President JD Vance breaks ties for Republicans'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
@@ -295,7 +295,7 @@
     }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='7 TOSSUPS';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t)&&el.textContent!=='7 TOSSUPS')el.textContent='7 TOSSUPS';
     }
   }
 
@@ -311,13 +311,13 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='50';}
+    if(nums.length>=2){if(nums[0].textContent!=='50')nums[0].textContent='50';if(nums[1].textContent!=='50')nums[1].textContent='50';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
-      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='7 TOSSUPS';
+      if(/^Democrats?:\s*\d+$/i.test(t)){const next=t.replace(/\d+$/,'50');if(el.textContent!==next)el.textContent=next;}
+      if(/^Republicans?:\s*\d+$/i.test(t)){const next=t.replace(/\d+$/,'50');if(el.textContent!==next)el.textContent=next;}
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t)&&el.textContent!=='7 TOSSUPS')el.textContent='7 TOSSUPS';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
