@@ -7,7 +7,7 @@
   function ensureStyle(){
     let st=document.getElementById('wgSeatPartyPseudoStyle');
     if(!st){st=document.createElement('style');st.id='wgSeatPartyPseudoStyle';document.head.appendChild(st);}
-    st.textContent=`
+    const cssRules=`
       .site-header .nav{position:relative!important;z-index:1001!important}
       .site-header .nav>[data-page-link],.site-header .nav>button{pointer-events:auto!important;position:relative!important;z-index:1002!important}
       #page-senate .balance-count-row{display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:end!important}
@@ -27,6 +27,7 @@
         #page-senate .compact-forecast-key .key-side.democratic,#page-senate .compact-forecast-key .key-side.republican{justify-content:start!important}
       }
     `;
+    if(st.textContent!==cssRules)st.textContent=cssRules;
   }
 
   function reorderNav(){
@@ -121,7 +122,7 @@
       style.id='wgElectionCountdownStyle';
       document.head.appendChild(style);
     }
-    style.textContent=`
+    const countdownRules=`
       #page-home .reference-metrics{
         display:grid!important;
         grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -213,6 +214,7 @@
         #page-home #homeSenateForecast{min-height:104px!important;padding:18px 20px!important;}
       }
     `;
+    if(style.textContent!==countdownRules)style.textContent=countdownRules;
 
     const legacyPresent=leafs(metrics).some(el=>/rated\s+senate\s+races|polls?\s+entered/i.test(norm(el.textContent)));
     let countdown=metrics.querySelector('#homeElectionCountdown');
@@ -341,8 +343,8 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0])nums[0].textContent='50';
-    if(nums[1])nums[1].textContent='50';
+    if(nums[0]&&nums[0].textContent!=='50')nums[0].textContent='50';
+    if(nums[1]&&nums[1].textContent!=='50')nums[1].textContent='50';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
     if(dem)dem.style.setProperty('width','50%','important');
