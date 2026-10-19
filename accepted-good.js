@@ -382,15 +382,12 @@ function fixAboutPollCount(){
     // Keep Texas and Maine on the same native popup structure as every other state.
     root.querySelectorAll('[data-forecast-disagreement],.maine-why-note').forEach(el=>el.remove());
 
-    for(const label of leafs(root)){
-      const t=norm(label.textContent);
-      if(/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)){
-        let box=label.parentElement;
-        for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
-          const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
-          if(n){n.textContent='50';break;}
-        }
-      }
+    // Correct only the actual seat-balance summary. Do not rewrite numeric
+    // leaves inside candidate cards or hover popups: those are not seat totals.
+    const balance=root.querySelector('.balance-count-row');
+    for(const party of ['dem','rep']){
+      const number=balance?.querySelector('.balance-party.'+party+' strong');
+      if(number&&number.textContent!=='50')number.textContent='50';
     }
 
     fixAllCandidateColors(root);
@@ -413,7 +410,7 @@ function fixAboutPollCount(){
   apply();
   pageEl('governor'); show(current,false);
   setTimeout(apply,100); setTimeout(apply,500); setTimeout(apply,1500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  new MutationObserver(records=>{if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))schedule();}).observe(document.body,{childList:true,subtree:true});
   window.addEventListener('pageshow',()=>{apply();show(current,false)});
   window.addEventListener('resize',apply);
   window.__acceptedGoodNavigate=show;
