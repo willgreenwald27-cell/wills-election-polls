@@ -154,7 +154,7 @@
 
     let st=document.getElementById('homeForecastSplitStyle');
     if(!st){st=document.createElement('style');st.id='homeForecastSplitStyle';document.head.appendChild(st);}
-    st.textContent=`
+    const forecastRules=`
       #page-home #housePrediction2026{margin:28px 0 12px!important;width:100%!important;display:block!important}
       #page-home #homeForecastSplit{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important;width:100%!important}
       #page-home #homeForecastSplit .forecast-card{border:1px solid #dde3ec!important;border-radius:20px!important;background:#fff!important;box-shadow:0 10px 28px rgba(20,34,53,.08)!important;overflow:hidden!important;min-width:0!important;aspect-ratio:1672/941!important;box-sizing:border-box!important}
@@ -197,6 +197,7 @@
         .site-header .nav[data-accepted-nav="1"]>button{font-size:11px!important}
       }
     `;
+    if(st.textContent!==forecastRules)st.textContent=forecastRules;
 
     if(!section.querySelector('#homeForecastSplit')){
       section.innerHTML=`
@@ -247,7 +248,8 @@ function updateElectionCountdown(){
   const h=Math.floor(ms/3600000); ms%=3600000;
   const m=Math.floor(ms/60000); ms%=60000;
   const sec=Math.floor(ms/1000);
-  el.textContent=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
+  const next=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
+  if(el.textContent!==next)el.textContent=next;
 }
 
   function removeDuplicateHomeSenatePrediction(){
@@ -315,7 +317,7 @@ function updateElectionCountdown(){
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1800);
   setInterval(updateElectionCountdown,1000);
-  new MutationObserver(()=>{clearTimeout(window.__sep9PollTimer);window.__sep9PollTimer=setTimeout(apply,40);}).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(records=>{if(!records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))return;clearTimeout(window.__sep9PollTimer);window.__sep9PollTimer=setTimeout(apply,90);}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('change',e=>{if(e.target?.closest?.('#julsepPollArchive')) setTimeout(apply,20);},true);
 
 document.addEventListener('click',e=>{
