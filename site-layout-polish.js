@@ -177,8 +177,8 @@
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();
   [80,250,700,1500,3000].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,1200);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  /* Removed recurrent global style mutations. */
+  /* Removed whole-document observer feeding back into rendering. */
   window.addEventListener('pageshow',apply);
   window.addEventListener('resize',apply);
 })();
