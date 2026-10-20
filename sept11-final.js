@@ -175,8 +175,8 @@
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();
   [80,250,700,1500,3000].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  /* Removed half-second global rerender loop. */
+  /* Removed global observer that reacted to its own style mutations. */
   window.addEventListener('pageshow',apply);
   window.addEventListener('resize',apply);
 })();
