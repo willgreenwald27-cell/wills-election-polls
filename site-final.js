@@ -52,7 +52,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value='50';
+      const value=/^DEMOCRAT/i.test(t)?'51':'49';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
@@ -193,7 +193,7 @@
 
   fixDom();
   setTimeout(fixDom,100);setTimeout(fixDom,600);setTimeout(fixDom,1500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  /* Removed global observer: it retriggered its own DOM changes. */
   window.addEventListener('pageshow',fixDom);
   window.addEventListener('resize',fixDom);
 
