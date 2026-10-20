@@ -27,15 +27,15 @@ try:
         tx = driver.find_element(By.CSS_SELECTOR, "#page-senate .state-shape[data-state='TX']")
         ActionChains(driver).move_to_element(tx).pause(0.4).perform()
         result["mouse"] = driver.execute_script("""
-          const c=document.getElementById('mapHoverCard');return {shown:!!c?.classList.contains('show'),opacity:c&&getComputedStyle(c).opacity,display:c&&getComputedStyle(c).display,txt:c?.textContent?.slice(0,240)};
+          const c=document.getElementById('mapHoverCard');return {shown:!!c?.classList.contains('show'),opacity:c&&getComputedStyle(c).opacity,display:c&&getComputedStyle(c).display,visible:!!(c&&getComputedStyle(c).display!=='none'&&Number(getComputedStyle(c).opacity)>.8&&c.getBoundingClientRect().width>30),txt:c?.textContent?.slice(0,240)};
         """)
-        if not result["mouse"]["shown"]:
+        if not result["mouse"]["visible"]:
             driver.execute_script("""
               const x=document.querySelector('#page-senate .state-shape[data-state="TX"]'),r=x.getBoundingClientRect();
               x.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerType:'mouse',clientX:r.left+r.width/2,clientY:r.top+r.height/2}));
             """)
             time.sleep(0.3)
-            result["synthetic"] = driver.execute_script("const c=document.getElementById('mapHoverCard');return {shown:c?.classList.contains('show'),txt:c?.textContent?.slice(0,240),display:c&&getComputedStyle(c).display}")
+            result["synthetic"] = driver.execute_script("const c=document.getElementById('mapHoverCard');return {shown:c?.classList.contains('show'),txt:c?.textContent?.slice(0,240),display:c&&getComputedStyle(c).display,visible:!!(c&&getComputedStyle(c).display!=='none'&&Number(getComputedStyle(c).opacity)>.8&&c.getBoundingClientRect().width>30)}")
     driver.execute_script("""
       window.__mapMutations=0;window.__mapChanges=[];
       const svg=document.querySelector('#page-senate .map-wrap svg');
@@ -46,7 +46,7 @@ try:
     """)
     time.sleep(3.3)
     result["stability"] = driver.execute_script("window.__mapObserver?.disconnect();return {count:window.__mapMutations,changes:window.__mapChanges,texasFill:getComputedStyle(document.querySelector('#page-senate .state-shape[data-state=TX]')).fill}")
-    result["ok"] = bool(result["before"]["senateVisible"] and result["before"]["shapes"]>=40 and (result.get("mouse",{}).get("shown") or result.get("synthetic",{}).get("shown")))
+    result["ok"] = bool(result["before"]["senateVisible"] and result["before"]["shapes"]>=40 and result["before"]["diagnostic"]=="tilt-d" and (result.get("mouse",{}).get("visible") or result.get("synthetic",{}).get("visible")) and result["stability"]["count"]<10)
     driver.save_screenshot("hover-smoke.png")
     print(json.dumps(result,indent=2),flush=True)
     if not result["ok"]:
