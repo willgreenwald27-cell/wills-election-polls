@@ -593,10 +593,10 @@
       dem.style.setProperty('right','auto','important');
       dem.style.setProperty('top','0','important');
       dem.style.setProperty('bottom','0','important');
-      dem.style.setProperty('width','50%','important');
-      dem.style.setProperty('min-width','50%','important');
-      dem.style.setProperty('max-width','50%','important');
-      dem.style.setProperty('flex','0 0 50%','important');
+      dem.style.setProperty('width','51%','important');
+      dem.style.setProperty('min-width','51%','important');
+      dem.style.setProperty('max-width','51%','important');
+      dem.style.setProperty('flex','0 0 51%','important');
       dem.style.setProperty('transform','none','important');
       dem.style.setProperty('clip-path','none','important');
 
@@ -605,10 +605,10 @@
       rep.style.setProperty('left','auto','important');
       rep.style.setProperty('top','0','important');
       rep.style.setProperty('bottom','0','important');
-      rep.style.setProperty('width','50%','important');
-      rep.style.setProperty('min-width','50%','important');
-      rep.style.setProperty('max-width','50%','important');
-      rep.style.setProperty('flex','0 0 50%','important');
+      rep.style.setProperty('width','49%','important');
+      rep.style.setProperty('min-width','49%','important');
+      rep.style.setProperty('max-width','49%','important');
+      rep.style.setProperty('flex','0 0 49%','important');
       rep.style.setProperty('transform','none','important');
       rep.style.setProperty('clip-path','none','important');
 
@@ -625,7 +625,7 @@
         bar.appendChild(majority);
       }
       majority.style.cssText='display:block!important;position:absolute!important;left:50%!important;top:0!important;bottom:0!important;width:4px!important;transform:translateX(-2px)!important;background:#17263d!important;z-index:20!important;pointer-events:none!important;';
-      bar.setAttribute('aria-label','Senate balance: 50 Democratic seats, 50 Republican seats; majority marker at 50 seats plus the vice president');
+      bar.setAttribute('aria-label','Senate balance: 51 Democratic seats, 49 Republican seats');
       break;
     }
   }
@@ -798,7 +798,7 @@
 
   // Only respond to meaningful Senate DOM changes, not unrelated pages,
   // hover style toggles or the attributes that our own fixes write.
-  mapDomObserver=new MutationObserver(schedule);
+  /* Map subtree redraw watcher disabled; keep stable click and pageshow handling. */
   apply();
   [80,220,600,1400].forEach(ms=>setTimeout(apply,ms));
   document.addEventListener('click',e=>{
