@@ -68,7 +68,11 @@
       }catch(_){card.innerHTML=fallback(ab)}
     }
     card.classList.add('show');
-    card.style.removeProperty('display');
+    // Device media queries can classify a trackpad as hover:none and otherwise
+    // hide a genuinely opened popup with display:none!important.
+    card.style.setProperty('display','block','important');
+    card.style.setProperty('opacity','1','important');
+    card.style.setProperty('visibility','visible','important');
   }
   function position(x,y){
     const card=document.getElementById('mapHoverCard');
@@ -86,7 +90,13 @@
     active='';lastEvent=null;
     if(frame)cancelAnimationFrame(frame);
     frame=0;
-    document.getElementById('mapHoverCard')?.classList.remove('show');
+    const card=document.getElementById('mapHoverCard');
+    if(card){
+      card.classList.remove('show');
+      card.style.setProperty('display','none','important');
+      card.style.setProperty('opacity','0','important');
+      card.style.setProperty('visibility','hidden','important');
+    }
   }
   function track(e){
     if(!isFine(e))return;
