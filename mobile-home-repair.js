@@ -98,12 +98,20 @@
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();navigate(target);
   },true);
 
+  // Watch actual drawer content changes, not every style/class mutation on the
+  // whole site. The previous global observer re-triggered its own work.
   let queued=false;
-  function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;fixDrawerColors();});}
+  function schedule(){
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(()=>{queued=false;fixDrawerColors();});
+  }
+  const drawer=document.getElementById('stateDrawer')||document.querySelector('.drawer');
+  if(drawer)new MutationObserver(schedule).observe(drawer,{childList:true,subtree:true,characterData:true});
   fixDrawerColors();
-  [60,150,350,700,1200,2200].forEach(ms=>setTimeout(fixDrawerColors,ms));
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
-  setInterval(fixDrawerColors,700);
-  window.addEventListener('pageshow',fixDrawerColors);
-  window.addEventListener('resize',fixDrawerColors);
+  document.addEventListener('click',e=>{
+    if(e.target?.closest?.('#page-senate,.drawer'))schedule();
+  },true);
+  window.addEventListener('pageshow',schedule);
+  window.addEventListener('resize',schedule);
 })();
