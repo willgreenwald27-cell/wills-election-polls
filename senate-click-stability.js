@@ -11,20 +11,20 @@
       const tx=stateData.TX;
       if(tx){
         tx.rating='tilt-d';
-        tx.predictionParty='Democratic';
+        tx.predictionParty='Democrat';
         tx.prediction='Talarico +0.7%';
         tx.notes='';
-        tx.updated='2026-10-01';
+        // Poll archive owns the latest-update date.
         for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
         if('call' in tx)tx.call='Talarico +0.7%';
       }
       const oh=stateData.OH;
       if(oh){
         oh.rating='tilt-d';
-        oh.predictionParty='Democratic';
+        oh.predictionParty='Democrat';
         oh.prediction='Brown +0.6%';
         oh.notes='';
-        oh.updated='2026-09-20';
+        // Poll archive owns the latest-update date.
         for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in oh)oh[k]='Democratic';
         if('call' in oh)oh.call='Brown +0.6%';
         for(const slot of [1,2]){
