@@ -117,7 +117,7 @@
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
  [180,650,1500,2900].forEach(ms=>setTimeout(mount,ms));
- setInterval(mount,4500);
+ /* Removed 4.5-second remount, keeping existing load and navigation handlers. */
  window.addEventListener('pageshow',mount);
  window.addEventListener('resize',mount);
  document.addEventListener('click',event=>{
