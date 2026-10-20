@@ -20,7 +20,7 @@
         me.predictionParty='Republican';
         me.prediction='Collins +1.3%';
         me.notes='Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
-        me.updated='2026-09-10';
+        /* Keep the date supplied by the current polling archive. */
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) me[k]='Republican';
         if('call' in me) me.call='Collins +1.3%';
         if(norm(me.candidate1)==='Susan Collins') me.candidate1Odds='48';
@@ -29,8 +29,8 @@
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
-      if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Talarico +0.7%';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico +0.7%';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
+      if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democrat';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democrat';stateData.TX.prediction='Talarico +0.7%';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico +0.7%';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
     }catch(e){}
   }
 
