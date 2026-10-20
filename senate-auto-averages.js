@@ -11,6 +11,22 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling listings supplied on October 20, 2026 (poll dates Oct 17–19).
+    ['2026-10-19','OH','Ohio Special Election','Marist','Sherrod Brown',48,'Jon Husted',44,'Brown +4'],
+    ['2026-10-19','MT','Montana','Quantus Insights','Kurt Alme',44,'Seth Bodnar',28,'Four-way poll · Alme +16 · Bankhead 21 · Austin 2'],
+    ['2026-10-19','NC','North Carolina','Elon University*','Roy Cooper',52,'Michael Whatley',39,'Cooper +13'],
+    ['2026-10-19','MA','Massachusetts','Boston Globe/Suffolk*','Ed Markey',60,'John Deaton',32,'Markey +28'],
+    ['2026-10-19','AL','Alabama','The Alabama Poll','Moore',56,'Wess',35,'Moore +21 · candidate surnames as displayed by RCP'],
+    ['2026-10-19','RI','Rhode Island','Pell Center/Embold','Jack Reed',55,'Allen McKay',32,'Reed +23'],
+    ['2026-10-18','TX','Texas','University of Houston*','James Talarico',48,'Ken Paxton',46,'Talarico +2'],
+    ['2026-10-18','FL','Florida Special Election','Univision/YouGov','Ashley Moody',51,'Angie Nixon',42,'Moody +9'],
+    ['2026-10-18','OH','Ohio Special Election','Rasmussen Reports*','Jon Husted',49,'Sherrod Brown',47,'Husted +2'],
+    ['2026-10-18','GA','Georgia','Quantus Insights','Jon Ossoff',52,'Mike Collins',45,'Ossoff +7'],
+    ['2026-10-18','IA','Iowa','co/efficient','Ashley Hinson',49,'Josh Turek',46,'Hinson +3'],
+    ['2026-10-18','AK','Alaska','Rasmussen Reports','Mary Peltola',44,'Dan Sullivan',42,'RCV 1st round · Peltola +2 · Heikes 4 · J. Sullivan 3'],
+    ['2026-10-18','MA','Massachusetts','WCVB-TV/Amherst*','Ed Markey',56,'John Deaton',29,'Markey +27'],
+    ['2026-10-17','TX','Texas','CBS News','James Talarico',51,'Ken Paxton',49,'Talarico +2'],
+    ['2026-10-17','SC','South Carolina','Trafalgar Group*','Graham Nordone',49,'Annie Andrews',46,'Graham Nordone +3'],
     ['2026-10-15','OH','Ohio Special Election','Bowling Green/YouGov*','Sherrod Brown',48,'Jon Husted',42,'Brown +6'],
     ['2026-10-15','MI','Michigan','Rasmussen Reports*','Abdul El-Sayed',46,'Mike Rogers',44,'El-Sayed +2'],
     ['2026-10-15','AR','Arkansas','Talk Business/Hendrix College','Tom Cotton',50,'Lewis Shoffner',41,'Cotton +9 · Wadlin 5'],
