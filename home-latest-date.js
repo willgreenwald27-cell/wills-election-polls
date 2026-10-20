@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   // Editorial date requested by the site owner, not the browser's current date.
-  const DATE='October 16, 2026';
+  const DATE='October 20, 2026';
   const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
   const update=el=>{if(el&&norm(el.textContent)!==DATE)el.textContent=DATE;};
 
