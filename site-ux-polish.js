@@ -122,7 +122,7 @@
       style.id='wgElectionCountdownStyle';
       document.head.appendChild(style);
     }
-    style.textContent=`
+    if(!style.textContent)style.textContent=`
       #page-home .reference-metrics{
         display:grid!important;
         grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -253,18 +253,18 @@
       el.style.setProperty('min-width','0','important');
     }
 
-    countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
-    countdown.querySelector('.wg-election-days').textContent=String(days);
+    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
+    if(countdown.querySelector('.wg-election-days').textContent!==String(days))countdown.querySelector('.wg-election-days').textContent=String(days);
     countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
 
-    toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
-    toss.querySelector('.wg-metric-value').textContent=tossups;
+    if(!toss.querySelector('.wg-metric-value'))toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
+    if(toss.querySelector('.wg-metric-value').textContent!==tossups)toss.querySelector('.wg-metric-value').textContent=tossups;
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
-    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
+    if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
     updated.setAttribute('aria-label','Last updated October 8, 2026');
 
-    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
     forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
   }
 
@@ -281,14 +281,14 @@
       if(dem!==row.firstElementChild)row.insertBefore(dem,row.firstElementChild);
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
-      const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='51';const rn=rep.querySelector('strong');if(rn)rn.textContent='49';
+      const ds=dem.querySelector('span');if(ds){if(ds.textContent!=='Democratic')ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
+      const rs=rep.querySelector('span');if(rs){if(rs.textContent!=='Republican')rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn&&dn.textContent!=='51')dn.textContent='51';const rn=rep.querySelector('strong');if(rn&&rn.textContent!=='49')rn.textContent='49';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
     const kn=key?.querySelector('.key-neutral');
     const kr=key?.querySelector('.key-side.republican');
-    if(key&&kd&&kr){key.appendChild(kd);if(kn)key.appendChild(kn);key.appendChild(kr);}
+    if(key&&kd&&kr){const nodes=[...key.children];if(nodes.indexOf(kd)>nodes.indexOf(kr)||(kn&&nodes.indexOf(kn)<nodes.indexOf(kd))){key.appendChild(kd);if(kn)key.appendChild(kn);key.appendChild(kr);}}
   }
 
   function fixGrahamText(){
@@ -346,10 +346,10 @@
   function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
 
   installNavClickRepair();apply();
-  [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
+  [80,600].forEach(ms=>setTimeout(apply,ms));
   // One-time initialization and navigation changes replace the old 750ms
   // site-wide reconciliation loop, which caused visible flashes.
   const nav=document.querySelector('.site-header .nav');
-  if(nav)new MutationObserver(schedule).observe(nav,{childList:true});
+  // Navigation updates are handled on actual interactions, not by a loop.
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
 })();
