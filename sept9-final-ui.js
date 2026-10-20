@@ -147,7 +147,7 @@
   }
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,1400);
-  new MutationObserver(()=>{clearTimeout(window.__sept9FinalTimer);window.__sept9FinalTimer=setTimeout(apply,45);}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  /* Removed 1400ms rewrite of forecasts and styling. */
+  /* Do not observe our own DOM edits. */
   window.addEventListener('pageshow',apply);
 })();
