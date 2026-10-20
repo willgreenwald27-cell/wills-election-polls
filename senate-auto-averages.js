@@ -172,7 +172,7 @@
     return rows.filter(r=>{
       if(!Array.isArray(r)||r.length<8) return false;
       const meta=norm((r[3]||'')+' '+(r[8]||''));
-      if(meta.includes('rcv 1st round')) return false;
+      if(meta.includes('rcv 1st round')||meta.includes('four-way poll')) return false;
       const p1=r[4],p2=r[6];
       return (same(p1,a)&&same(p2,b))||(same(p1,b)&&same(p2,a));
     });
