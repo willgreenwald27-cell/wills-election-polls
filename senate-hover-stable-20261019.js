@@ -111,6 +111,16 @@
       if(lastEvent&&active)position(lastEvent.x,lastEvent.y);
     });
   }
+  // The native page also installs mouseenter/mousemove/mouseleave listeners
+  // on each state. They compete with pointer tracking, briefly hiding or
+  // repositioning the same tooltip. Leave this one pointer-based owner.
+  const blockNativeHover=e=>{
+    if(e.target?.matches?.('#page-senate .map-wrap svg .state-shape[data-state]'))
+      e.stopPropagation();
+  };
+  document.addEventListener('mouseenter',blockNativeHover,true);
+  document.addEventListener('mousemove',blockNativeHover,true);
+  document.addEventListener('mouseleave',blockNativeHover,true);
   document.addEventListener('pointerover',track,true);
   document.addEventListener('pointermove',track,true);
   if(!window.PointerEvent){
