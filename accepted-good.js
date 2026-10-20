@@ -382,16 +382,7 @@ function fixAboutPollCount(){
     // Keep Texas and Maine on the same native popup structure as every other state.
     root.querySelectorAll('[data-forecast-disagreement],.maine-why-note').forEach(el=>el.remove());
 
-    for(const label of leafs(root)){
-      const t=norm(label.textContent);
-      if(/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)){
-        let box=label.parentElement;
-        for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
-          const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
-          if(n){n.textContent='50';break;}
-        }
-      }
-    }
+    // Preserve the 51–49 pre-Texas-red seat count from the Senate renderer.
 
     fixAllCandidateColors(root);
     fixMobileOddsFallback(root);
@@ -413,7 +404,8 @@ function fixAboutPollCount(){
   apply();
   pageEl('governor'); show(current,false);
   setTimeout(apply,100); setTimeout(apply,500); setTimeout(apply,1500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  // Avoid observing the entire document: our own DOM edits previously
+  // triggered an endless chain of rerenders and flickering.
   window.addEventListener('pageshow',()=>{apply();show(current,false)});
   window.addEventListener('resize',apply);
   window.__acceptedGoodNavigate=show;
