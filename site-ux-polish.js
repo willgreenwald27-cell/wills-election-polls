@@ -6,6 +6,7 @@
 
   function ensureStyle(){
     let st=document.getElementById('wgSeatPartyPseudoStyle');
+    if(st)return; // Static stylesheet must not be rewritten on every pass.
     if(!st){st=document.createElement('style');st.id='wgSeatPartyPseudoStyle';document.head.appendChild(st);}
     st.textContent=`
       .site-header .nav{position:relative!important;z-index:1001!important}
@@ -346,10 +347,8 @@
 
   installNavClickRepair();apply();
   [25,75,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,750);
-  // Rebuild navigation only when its direct children change. Watching all
-  // body styles and text caused a feedback loop on every map hover redraw.
-  // The existing 750ms reconciliation handles a completely replaced header.
+  // One-time initialization and navigation changes replace the old 750ms
+  // site-wide reconciliation loop, which caused visible flashes.
   const nav=document.querySelector('.site-header .nav');
   if(nav)new MutationObserver(schedule).observe(nav,{childList:true});
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
