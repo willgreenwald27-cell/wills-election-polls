@@ -77,6 +77,6 @@
  function schedule(){if(queued)return;queued=true;requestAnimationFrame(apply)}
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply();
  [150,500,1500,3500].forEach(ms=>setTimeout(apply,ms));
- new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});
+ /* Removed whole-document nav/style mutation loop. */
  window.addEventListener("pageshow",apply);
 })();
