@@ -40,7 +40,7 @@
       const set=(s,k,v)=>{if(String(s[k]??'')!==String(v)){s[k]=v;changed=true;}};
       const me=stateData.ME;
       if(me){
-        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);set(me,'updated','2026-09-15');
+        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
@@ -61,7 +61,7 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'rating','tilt-r');set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +3.6%');set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');set(ks,'updated','2026-10-06');
+        set(ks,'rating','tilt-r');set(ks,'predictionParty','Republican');set(ks,'prediction','Marshall +3.6%');set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
         if('call' in ks) set(ks,'call','Marshall +3.6%');
         for(const slot of [1,2]){
@@ -73,14 +73,14 @@
       }
       const ne=stateData.NE;
       if(ne){
-        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');set(ne,'updated','2026-09-22');
+        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
         set(ne,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ne) set(ne,k,'Republican');
         if('call' in ne) set(ne,'call','Ricketts +3.2%');
       }
       const oh=stateData.OH;
       if(oh){
-        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democratic');set(oh,'prediction','Brown +0.6%');set(oh,'notes','');set(oh,'updated','2026-09-20');
+        set(oh,'rating','tilt-d');set(oh,'predictionParty','Democrat');set(oh,'prediction','Brown +0.6%');set(oh,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in oh) set(oh,k,'Democratic');
         if('call' in oh) set(oh,'call','Brown +0.6%');
         for(const slot of [1,2]){
@@ -98,12 +98,12 @@
       }
       const ms=stateData.MS;
       if(ms){
-        set(ms,'rating','solid-r');set(ms,'predictionParty','Republican');set(ms,'updated','2026-10-05');
+        set(ms,'rating','solid-r');set(ms,'predictionParty','Republican');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ms) set(ms,k,'Republican');
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico +0.7%');set(tx,'notes','');set(tx,'updated','2026-10-01');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democrat');set(tx,'prediction','Talarico +0.7%');set(tx,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
         if('call' in tx) set(tx,'call','Talarico +0.7%');
         for(const slot of [1,2]){
