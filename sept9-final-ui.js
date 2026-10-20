@@ -31,10 +31,10 @@
       const t=norm(card.textContent).toLowerCase();
       const leaves=[...card.querySelectorAll('*')].filter(el=>!el.children.length);
       if(t.includes('poll')&&t.includes('entered')){
-        const n=leaves.find(el=>/^\d+$/.test(norm(el.textContent))); if(n&&n.textContent!=='93')n.textContent='93';
+        const n=leaves.find(el=>/^\d+$/.test(norm(el.textContent))); if(n)n.textContent='93';
       }
       if(t.includes('latest')&&t.includes('update')){
-        const d=leaves.find(el=>/2026/.test(norm(el.textContent))); if(d&&d.textContent!=='Sep 9, 2026')d.textContent='Sep 9, 2026';
+        const d=leaves.find(el=>/2026/.test(norm(el.textContent))); if(d)d.textContent='Sep 9, 2026';
       }
     }
   }
@@ -67,7 +67,7 @@
 
   function fixKalshi(){
     const nav=document.querySelector('.site-header .nav [data-accepted-page="betting"]');
-    if(nav&&nav.textContent!=='Live Kalshi Senate Odds')nav.textContent='Live Kalshi Senate Odds';
+    if(nav) nav.textContent='Live Kalshi Senate Odds';
     const root=document.getElementById('page-betting'); if(!root) return;
     let h=[...root.querySelectorAll('h1,h2,h3')].find(el=>/kalshi|betting odds/i.test(norm(el.textContent)));
     if(!h){
@@ -116,8 +116,8 @@
       list.prepend(d);
     }
     if(sec){
-      const sub=sec.querySelector('.jp-sub'); if(sub&&sub.textContent!=='93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.') sub.textContent='93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';
-      const count=sec.querySelector('.jp-count'); if(count&&count.textContent!=='93 polls shown') count.textContent='93 polls shown';
+      const sub=sec.querySelector('.jp-sub'); if(sub) sub.textContent='93 public general-election matchup polls and snapshots from July 7 through September 9, including alternate matchups that were publicly tested during the period.';
+      const count=sec.querySelector('.jp-count'); if(count) count.textContent='93 polls shown';
     }
   }
 
@@ -148,6 +148,6 @@
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1400);
-  new MutationObserver(records=>{if(!records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))return;clearTimeout(window.__sept9FinalTimer);window.__sept9FinalTimer=setTimeout(apply,90);}).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(()=>{clearTimeout(window.__sept9FinalTimer);window.__sept9FinalTimer=setTimeout(apply,45);}).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',apply);
 })();

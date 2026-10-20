@@ -385,20 +385,3 @@ body:has(#page-senate.wg-studio.active) .site-header .nav button.active:not(#edi
     pointer-events:none!important;
   }
 }
-
-/* October 17: Texas Tilt Republican — stable map coloring during hover and
-   rerenders. Apply to SVG features, never to the candidate/polling panels. */
-#page-senate svg [data-state="TX"],
-#page-senate svg [data-state="TX"] path,
-#page-senate svg [data-abbr="TX"],
-#page-senate svg [data-abbr="TX"] path,
-#page-senate svg [data-state-abbr="TX"],
-#page-senate svg [data-state-abbr="TX"] path,
-#page-senate svg #TX,
-#page-senate svg #TX path,
-#page-senate svg #state-TX,
-#page-senate svg #state-TX path{
-  fill:#f8c6ca!important;
-  transition:none!important;
-  animation:none!important;
-}

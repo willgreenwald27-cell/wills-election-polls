@@ -28,18 +28,9 @@
         if(norm(me.candidate1)==='Troy Jackson') me.candidate1Odds='52';
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
-      if(stateData.MI&&stateData.MI.active){
-        const mi=stateData.MI;
-        for(const slot of [1,2]){
-          const name=norm(mi['candidate'+slot]);
-          const key='candidate'+slot+'Odds';
-          if(/El[- ]Sayed/i.test(name)&&String(mi[key])!=='55')mi[key]='55';
-          if(/Rogers/i.test(name)&&String(mi[key])!=='45')mi[key]='45';
-        }
-      }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
       if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democratic';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-r';stateData.TX.predictionParty='Republican';stateData.TX.prediction='Tilt Republican';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Republican';if('call' in stateData.TX)stateData.TX.call='Tilt Republican';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='47';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='53';}}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democratic';stateData.TX.prediction='Talarico +0.7%';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico +0.7%';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
     }catch(e){}
   }
 
@@ -65,7 +56,7 @@
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
-        if(n){if(n.textContent!==value)n.textContent=value;break;}
+        if(n){n.textContent=value;break;}
       }
     }
   }
@@ -160,26 +151,23 @@
     const senateCard=root.querySelector('#homeForecastSplit .senate-card,.will-senate-card');
     if(senateCard){
       const nums=[...senateCard.querySelectorAll('.party-number')];
-      if(nums[0]) if(nums[0].textContent!=='50')nums[0].textContent='50';
-      if(nums[1]) if(nums[1].textContent!=='50')nums[1].textContent='50';
+      if(nums[0]) nums[0].textContent='51';
+      if(nums[1]) nums[1].textContent='49';
       for(const el of leafs(senateCard)){
         const t=norm(el.textContent);
-        if(/^Democrats?:\s*\d+$/i.test(t)&&!/:\s*50$/.test(t)) el.textContent=t.replace(/\d+$/,'50');
-        if(/^Republicans?:\s*\d+$/i.test(t)&&!/:\s*50$/.test(t)) el.textContent=t.replace(/\d+$/,'50');
+        if(/^Democrats?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'51');
+        if(/^Republicans?:\s*\d+$/i.test(t)) el.textContent=t.replace(/\d+$/,'49');
         if(/^\d+ seats$/i.test(t)){
           const parent=norm(el.parentElement?.textContent);
-          if(/Democrat/i.test(parent)&&t!=='50 seats') el.textContent='50 seats';
-          if(/Republican/i.test(parent)&&t!=='50 seats') el.textContent='50 seats';
+          if(/Democrat/i.test(parent)) el.textContent='51 seats';
+          if(/Republican/i.test(parent)) el.textContent='49 seats';
         }
       }
-      const note=senateCard.querySelector('.majority-note,.final-majority-note');
-      if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
-        note.textContent='50–50 · VP JD Vance breaks ties (R)';
       const bar=senateCard.querySelector('.senate-bar');
       if(bar){
         const kids=[...bar.children].filter(x=>x.tagName!=='B');
-        if(kids[0]) kids[0].style.setProperty('width','50%','important');
-        if(kids[1]) kids[1].style.setProperty('width','50%','important');
+        if(kids[0]) kids[0].style.setProperty('width','51%','important');
+        if(kids[1]) kids[1].style.setProperty('width','49%','important');
         if(kids[2]){kids[2].style.setProperty('width','0%','important');kids[2].style.setProperty('display','none','important');}
       }
     }
@@ -193,31 +181,19 @@
     if(senate.nextElementSibling!==errors) nav.insertBefore(errors,senate.nextElementSibling);
   }
 
-  let structuralObserver=null;
   function fixDom(){
-    // Suspend observation during our own text, styling and navigation edits.
-    // Observing these edits recursively repeatedly reconstructed Senate views.
-    structuralObserver?.disconnect();
-    try{
-      enforceData();
-      wrapRenderer();
-      setBalance();
-      fixPartyVisuals();
-      fixHome();
-      fixNavOrder();
-    }finally{
-      structuralObserver?.observe(document.body,{childList:true,subtree:true});
-    }
+    enforceData();
+    wrapRenderer();
+    setBalance();
+    fixPartyVisuals();
+    fixHome();
+    fixNavOrder();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;fixDom();});}
 
-  // Only actual element insertion/removal should cause a full DOM repair.
-  // Text changes, hover-card content and inline styles should not.
-  structuralObserver=new MutationObserver(records=>{
-    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(node=>node.nodeType===1)))schedule();
-  });
   fixDom();
   setTimeout(fixDom,100);setTimeout(fixDom,600);setTimeout(fixDom,1500);
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',fixDom);
   window.addEventListener('resize',fixDom);
 

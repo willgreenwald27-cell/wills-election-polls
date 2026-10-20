@@ -143,7 +143,7 @@
     let box=marker.parentElement;
     for(let i=0;box&&box!==root&&i<6;i++,box=box.parentElement){
       const t=norm(box.textContent);
-      if(/DEMOCRAT/i.test(t)&&/REPUBLICAN/i.test(t)&&/\b50\b/.test(t)){box.classList.add('wg-senate-balance');break;}
+      if(/DEMOCRAT/i.test(t)&&/REPUBLICAN/i.test(t)&&/49/.test(t)&&/51/.test(t)){box.classList.add('wg-senate-balance');break;}
     }
   }
 
@@ -178,11 +178,7 @@
   apply();
   [80,250,700,1500,3000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1200);
-  // Process structural updates only. Following style and text mutations
-  // produced a self-sustaining feedback loop whenever the map was hovered.
-  new MutationObserver(records=>{
-    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))schedule();
-  }).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
   window.addEventListener('pageshow',apply);
   window.addEventListener('resize',apply);
 })();

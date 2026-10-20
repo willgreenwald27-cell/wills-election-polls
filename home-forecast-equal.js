@@ -136,15 +136,12 @@
       const senate=split.querySelector('.senate-card');
       if(senate){
         const nums=[...senate.querySelectorAll('.party-number')];
-        if(nums[0]&&nums[0].textContent!=='50') nums[0].textContent='50';
-        if(nums[1]&&nums[1].textContent!=='50') nums[1].textContent='50';
+        if(nums[0]) nums[0].textContent='51';
+        if(nums[1]) nums[1].textContent='49';
         const dem=senate.querySelector('.senate-bar .dem,.senate-bar .democratic,[data-party="dem"]');
         const rep=senate.querySelector('.senate-bar .rep,.senate-bar .republican,[data-party="rep"]');
-        if(dem) dem.style.setProperty('width','50%','important');
-        if(rep) rep.style.setProperty('width','50%','important');
-        const note=senate.querySelector('.majority-note,.final-majority-note');
-        if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
-          note.textContent='50–50 · VP JD Vance breaks ties (R)';
+        if(dem) dem.style.setProperty('width','51%','important');
+        if(rep) rep.style.setProperty('width','49%','important');
       }
     }
 
@@ -156,10 +153,6 @@
   applyEqualForecastCards();
   [25,80,150,250,600,1200,2200,4000].forEach(ms=>setTimeout(applyEqualForecastCards,ms));
   setInterval(applyEqualForecastCards,750);
-  // React only to actual element replacement, not every numerical text
-  // update: text-based observation continuously re-triggered all site scripts.
-  new MutationObserver(records=>{
-    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))setTimeout(applyEqualForecastCards,40);
-  }).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(()=>setTimeout(applyEqualForecastCards,20)).observe(document.body,{childList:true,subtree:true,characterData:true});
   window.addEventListener('pageshow',applyEqualForecastCards);
 })();

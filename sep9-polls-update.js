@@ -154,7 +154,7 @@
 
     let st=document.getElementById('homeForecastSplitStyle');
     if(!st){st=document.createElement('style');st.id='homeForecastSplitStyle';document.head.appendChild(st);}
-    const forecastRules=`
+    st.textContent=`
       #page-home #housePrediction2026{margin:28px 0 12px!important;width:100%!important;display:block!important}
       #page-home #homeForecastSplit{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:18px!important;align-items:stretch!important;width:100%!important}
       #page-home #homeForecastSplit .forecast-card{border:1px solid #dde3ec!important;border-radius:20px!important;background:#fff!important;box-shadow:0 10px 28px rgba(20,34,53,.08)!important;overflow:hidden!important;min-width:0!important;aspect-ratio:1672/941!important;box-sizing:border-box!important}
@@ -197,7 +197,6 @@
         .site-header .nav[data-accepted-nav="1"]>button{font-size:11px!important}
       }
     `;
-    if(st.textContent!==forecastRules)st.textContent=forecastRules;
 
     if(!section.querySelector('#homeForecastSplit')){
       section.innerHTML=`
@@ -220,7 +219,7 @@
               <div class="party-block"><div class="party-label rep">Republicans</div><div class="party-number rep">50</div></div>
             </div>
             <div class="senate-bar" aria-label="Senate prediction: 50 Democrats and 50 Republicans"><div class="dem"></div><div class="rep"></div></div>
-            <div class="majority-note">50–50 · VP JD Vance breaks ties (R)</div>
+            <div class="majority-note">51 seats needed for a majority</div>
             <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
           </div>
         </div>`;
@@ -248,8 +247,7 @@ function updateElectionCountdown(){
   const h=Math.floor(ms/3600000); ms%=3600000;
   const m=Math.floor(ms/60000); ms%=60000;
   const sec=Math.floor(ms/1000);
-  const next=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
-  if(el.textContent!==next)el.textContent=next;
+  el.textContent=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
 }
 
   function removeDuplicateHomeSenatePrediction(){
@@ -317,7 +315,7 @@ function updateElectionCountdown(){
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
   setInterval(apply,1800);
   setInterval(updateElectionCountdown,1000);
-  new MutationObserver(records=>{if(!records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1)))return;clearTimeout(window.__sep9PollTimer);window.__sep9PollTimer=setTimeout(apply,90);}).observe(document.body,{childList:true,subtree:true});
+  new MutationObserver(()=>{clearTimeout(window.__sep9PollTimer);window.__sep9PollTimer=setTimeout(apply,40);}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('change',e=>{if(e.target?.closest?.('#julsepPollArchive')) setTimeout(apply,20);},true);
 
 document.addEventListener('click',e=>{

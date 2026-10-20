@@ -103,15 +103,14 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-r');set(tx,'predictionParty','Republican');set(tx,'prediction','Tilt Republican');set(tx,'notes','');set(tx,'updated','2026-10-16');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Republican');
-        if('call' in tx) set(tx,'call','Tilt Republican');
-        // Return to Will's previously selected Paxton 53/47 win-odds split.
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democratic');set(tx,'prediction','Talarico +0.7%');set(tx,'notes','');set(tx,'updated','2026-10-01');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
+        if('call' in tx) set(tx,'call','Talarico +0.7%');
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Talarico/i.test(name))set(tx,key,'47');
-          if(/Paxton/i.test(name))set(tx,key,'53');
+          if(/Talarico/i.test(name))set(tx,key,'55');
+          if(/Paxton/i.test(name))set(tx,key,'45');
         }
       }
       return changed;
@@ -151,7 +150,7 @@
       }
       let why=box.querySelector('.maine-why-note');
       if(!why){why=document.createElement('div');why.className='maine-why-note';box.appendChild(why);}
-      if(why.textContent!=='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).')why.textContent='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
+      why.textContent='WHY I THINK MAINE GOES RED · Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).';
       why.style.cssText='margin-top:12px;padding:12px 14px;border-radius:12px;background:#fff3f4;border:1px solid #f1b8bd;color:#7f2330;font:800 12px/1.5 Inter,system-ui,sans-serif;letter-spacing:.05px';
     }
   }
@@ -220,39 +219,49 @@
   }
 
   function forceTexas(){
-    const root=document.getElementById('page-senate');if(!root)return;
-    // The map, prediction pill and hover card must all match Tilt Republican.
-    root.querySelectorAll('.map-wrap svg .state-shape[data-state="TX"]').forEach(el=>{
-      if(el.style.getPropertyValue('fill')!==RED_LIGHT)el.style.setProperty('fill',RED_LIGHT,'important');
+    const root=document.getElementById('page-senate'); if(!root)return;
+    root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
+      el.style.setProperty('fill',TILT_BLUE,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||'')) el.style.setProperty('background',TILT_BLUE,'important');
     });
     const labels=leafs(root).filter(el=>norm(el.textContent)==='Texas'&&el.getClientRects().length);
     for(const label of labels){
       let box=label.parentElement;
       for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){
         const t=norm(box.textContent);
-        if(/WILL[’']S CALL/i.test(t)&&(/AVG POLLS|POLL AVERAGE|MY PREDICTION/i.test(t)))break;
+        if(/WILL[’']S CALL/i.test(t)&&(/AVG POLLS/i.test(t)||/MY PREDICTION/i.test(t))) break;
       }
       if(!box||box===root)continue;
-      for(const el of leafs(box)){
+      let ls=leafs(box);
+      for(const el of ls){
         const t=norm(el.textContent);
-        if(/^Prediction:\s*/i.test(t)&&t!=='Prediction: Tilt Republican')el.textContent='Prediction: Tilt Republican';
+        if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
+        if(/^(Republican|Democrat(?:ic)?|Tossup|TILT REPUBLICAN|LEAN REPUBLICAN|LIKELY REPUBLICAN|SOLID REPUBLICAN|TILT DEMOCRAT(?:IC)?)$/i.test(t)){
+          const nearCall=norm(el.parentElement?.textContent||'');
+          if(/WILL[’']S CALL|MY PREDICTION/i.test(nearCall))el.textContent=/TILT/i.test(t)?'TILT DEMOCRATIC':'Democrat';
+        }
       }
-      const heading=leafs(box).find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
-      if(heading){
-        let card=heading.parentElement;
-        for(let i=0;card&&card!==box&&i<5;i++,card=card.parentElement){
+      const callLeaf=ls.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
+      if(callLeaf){
+        let card=callLeaf.parentElement;
+        for(let i=0;card&&card!==box&&i<4;i++,card=card.parentElement){
           const t=norm(card.textContent);
-          if(/WILL[’']S CALL/i.test(t)&&t.length<260)break;
+          if(/WILL[’']S CALL/i.test(t)&&t.length<180) break;
         }
         if(card&&card!==box){
-          const party=[...card.querySelectorAll('*')].find(el=>el.children.length===0&&/^(?:Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
-          if(party&&party.textContent!=='Republican')party.textContent='Republican';
-          const rating=[...card.querySelectorAll('*')].find(el=>el.children.length===0&&/^(?:TILT|LEAN|LIKELY|SOLID)\s+(?:DEMOCRAT(?:IC)?|REPUBLICAN)$/i.test(norm(el.textContent)));
-          if(rating&&rating.textContent!=='TILT REPUBLICAN')rating.textContent='TILT REPUBLICAN';
-          const copy=card.querySelector('.prediction-copy');if(copy&&copy.textContent!=='Tilt Republican')copy.textContent='Tilt Republican';
+          card.style.setProperty('background',RED_LIGHT,'important');
+          card.style.setProperty('background-image','none','important');
+          card.style.setProperty('border-color','#ef9da5','important');
+          card.style.setProperty('color','#8e1320','important');
+          card.querySelectorAll('*').forEach(el=>el.style.setProperty('color','#8e1320','important'));
+          const vals=leafs(card);
+          const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
+          if(party)party.textContent='Democrat';
+          const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
+          if(rating)rating.textContent='TILT DEMOCRATIC';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.7%';
         }
       }
-      box.querySelectorAll('.wg-tx-explanation,[data-forecast-disagreement="TX"],.wg-forecast-explanation[data-state-explanation="TX"]').forEach(el=>el.remove());
     }
   }
 
@@ -268,34 +277,23 @@
         const repBox=summary.querySelector('.balance-party.rep,.republican,[data-party="rep"]');
         const dn=demBox?.querySelector('strong')||demBox;
         const rn=repBox?.querySelector('strong')||repBox;
-        if(dn&&dn.textContent!=='50')dn.textContent='50';
-        if(rn&&rn.textContent!=='50')rn.textContent='50';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans; Vice President JD Vance breaks ties for Republicans'));
+        if(dn)dn.textContent='51';
+        if(rn)rn.textContent='49';
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
           const dbar=bar.querySelector('.dem,.democratic,[data-party="dem"]')||kids[0];
           const rbar=bar.querySelector('.rep,.republican,[data-party="rep"]')||kids[kids.length-1];
-          if(dbar)dbar.style.setProperty('width','50%','important');
-          if(rbar)rbar.style.setProperty('width','50%','important');
+          if(dbar)dbar.style.setProperty('width','51%','important');
+          if(rbar)rbar.style.setProperty('width','49%','important');
         }
         break;
       }
     }
-    const balance=root.querySelector('.balance-count-row');
-    if(balance){
-      let vp=root.querySelector('#wg-senate-vp-forecast-note');
-      if(!vp){
-        vp=document.createElement('div');vp.id='wg-senate-vp-forecast-note';
-        vp.style.cssText='margin:7px 0 15px;text-align:center;font:800 12px/1.45 Inter,system-ui,sans-serif;color:#a33a4d;letter-spacing:.2px';
-        balance.insertAdjacentElement('afterend',vp);
-      }
-      if(vp.textContent!=='50–50 PROJECTION · VICE PRESIDENT JD VANCE BREAKS TIES FOR REPUBLICANS')
-        vp.textContent='50–50 PROJECTION · VICE PRESIDENT JD VANCE BREAKS TIES FOR REPUBLICANS';
-    }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t)&&el.textContent!=='7 TOSSUPS')el.textContent='7 TOSSUPS';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='7 TOSSUPS';
     }
   }
 
@@ -306,39 +304,36 @@
     let card=title.parentElement;
     for(let i=0;card&&card!==root&&i<7;i++,card=card.parentElement){
       const t=norm(card.textContent);
-      if(/Democrats/i.test(t)&&/Republicans/i.test(t)&&/(?:51 seats needed for a majority|VP JD Vance|50–50)/i.test(t))break;
+      if(/Democrats/i.test(t)&&/Republicans/i.test(t)&&/51 seats needed for a majority/i.test(t))break;
     }
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){if(nums[0].textContent!=='50')nums[0].textContent='50';if(nums[1].textContent!=='50')nums[1].textContent='50';}
+    if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t)){const next=t.replace(/\d+$/,'50');if(el.textContent!==next)el.textContent=next;}
-      if(/^Republicans?:\s*\d+$/i.test(t)){const next=t.replace(/\d+$/,'50');if(el.textContent!==next)el.textContent=next;}
-      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t)&&el.textContent!=='7 TOSSUPS')el.textContent='7 TOSSUPS';
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='7 TOSSUPS';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','50%','important');
-      if(r)r.style.setProperty('width','50%','important');
+      if(d)d.style.setProperty('width','51%','important');
+      if(r)r.style.setProperty('width','49%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');}
-      bar.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans; Vice President JD Vance breaks ties for Republicans');
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans');
     }
-    const note=card.querySelector('.final-majority-note,.majority-note');
-    if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
-      note.textContent='50–50 · VP JD Vance breaks ties (R)';
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
 
   function apply(){
     const changed=syncData();
     if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}
-    forceOhio();forceTexas();forceSenateSummary();forceHome();
+    forceOhio();forceSenateSummary();forceHome();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();[80,250,700,1600,3200].forEach(ms=>setTimeout(apply,ms));

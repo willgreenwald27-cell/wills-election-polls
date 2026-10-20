@@ -7,7 +7,7 @@
   function ensureStyle(){
     let st=document.getElementById('wgSeatPartyPseudoStyle');
     if(!st){st=document.createElement('style');st.id='wgSeatPartyPseudoStyle';document.head.appendChild(st);}
-    const cssRules=`
+    st.textContent=`
       .site-header .nav{position:relative!important;z-index:1001!important}
       .site-header .nav>[data-page-link],.site-header .nav>button{pointer-events:auto!important;position:relative!important;z-index:1002!important}
       #page-senate .balance-count-row{display:grid!important;grid-template-columns:1fr auto 1fr!important;align-items:end!important}
@@ -27,7 +27,6 @@
         #page-senate .compact-forecast-key .key-side.democratic,#page-senate .compact-forecast-key .key-side.republican{justify-content:start!important}
       }
     `;
-    if(st.textContent!==cssRules)st.textContent=cssRules;
   }
 
   function reorderNav(){
@@ -122,7 +121,7 @@
       style.id='wgElectionCountdownStyle';
       document.head.appendChild(style);
     }
-    const countdownRules=`
+    style.textContent=`
       #page-home .reference-metrics{
         display:grid!important;
         grid-template-columns:repeat(3,minmax(0,1fr))!important;
@@ -214,7 +213,6 @@
         #page-home #homeSenateForecast{min-height:104px!important;padding:18px 20px!important;}
       }
     `;
-    if(style.textContent!==countdownRules)style.textContent=countdownRules;
 
     const legacyPresent=leafs(metrics).some(el=>/rated\s+senate\s+races|polls?\s+entered/i.test(norm(el.textContent)));
     let countdown=metrics.querySelector('#homeElectionCountdown');
@@ -254,19 +252,19 @@
       el.style.setProperty('min-width','0','important');
     }
 
-    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
+    countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
     countdown.querySelector('.wg-election-days').textContent=String(days);
     countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
 
-    if(!toss.querySelector('.wg-metric-value'))toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
+    toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
     toss.querySelector('.wg-metric-value').textContent=tossups;
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
-    if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 16, 2026</strong>';
-    updated.setAttribute('aria-label','Last updated October 16, 2026');
+    updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
+    updated.setAttribute('aria-label','Last updated October 8, 2026');
 
-    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">50 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">50 R</span></div><small class="wg-vp-metric-note" style="display:block;margin-top:7px;font:750 11px/1.35 Inter,system-ui,sans-serif;color:#a23d4b">Republican tie-break: VP JD Vance</small>';
-    forecast.setAttribute('aria-label','Senate projection: 50 Democrats and 50 Republicans. Vice President JD Vance breaks ties for Republicans.');
+    forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
   }
 
   function keepPartyLabels(){
@@ -282,22 +280,14 @@
       if(dem!==row.firstElementChild)row.insertBefore(dem,row.firstElementChild);
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
-      const ds=dem.querySelector('span');if(ds){if(ds.textContent!=='Democratic')ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){if(rs.textContent!=='Republican')rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}
-      const dn=dem.querySelector('strong');if(dn&&dn.textContent!=='50')dn.textContent='50';
-      const rn=rep.querySelector('strong');if(rn&&rn.textContent!=='50')rn.textContent='50';
+      const ds=dem.querySelector('span');if(ds){ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
+      const rs=rep.querySelector('span');if(rs){rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn)dn.textContent='51';const rn=rep.querySelector('strong');if(rn)rn.textContent='49';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
     const kn=key?.querySelector('.key-neutral');
     const kr=key?.querySelector('.key-side.republican');
-    // AppendChild on an element already in the right place still moves it,
-    // firing all map observers every 750ms. Reorder only if necessary.
-    if(key&&kd&&kr){
-      if(key.firstElementChild!==kd)key.insertBefore(kd,key.firstElementChild);
-      if(kn&&kn.previousElementSibling!==kd)key.insertBefore(kn,kr);
-      if(key.lastElementChild!==kr)key.appendChild(kr);
-    }
+    if(key&&kd&&kr){key.appendChild(kd);if(kn)key.appendChild(kn);key.appendChild(kr);}
   }
 
   function fixGrahamText(){
@@ -343,15 +333,12 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0]&&nums[0].textContent!=='50')nums[0].textContent='50';
-    if(nums[1]&&nums[1].textContent!=='50')nums[1].textContent='50';
+    if(nums[0])nums[0].textContent='51';
+    if(nums[1])nums[1].textContent='49';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
-    if(dem)dem.style.setProperty('width','50%','important');
-    if(rep)rep.style.setProperty('width','50%','important');
-    const note=card.querySelector('.final-majority-note,.majority-note');
-    if(note&&note.textContent!=='50–50 · VP JD Vance breaks ties (R)')
-      note.textContent='50–50 · VP JD Vance breaks ties (R)';
+    if(dem)dem.style.setProperty('width','51%','important');
+    if(rep)rep.style.setProperty('width','49%','important');
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}

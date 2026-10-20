@@ -38,7 +38,7 @@
      '<div class="wr-signal-side right"><span class="wr-signal-name">Republicans</span><strong class="wr-signal-number" data-sg-rep>—</strong></div>'+
    '</div>'+
    '<div class="wr-seat-grid" role="img" aria-label="Forecast seat-balance graphic; waiting for page data"></div>'+
-   '<div class="wr-signal-foot"><span>2026 projection: 50–50 · Vice President JD Vance breaks ties for Republicans</span><button type="button" data-sg-open-map>Explore the Senate map ↗</button></div>';
+   '<div class="wr-signal-foot"><span>100 Senate seats · 51 needed for a majority</span><button type="button" data-sg-open-map>Explore the Senate map ↗</button></div>';
   hero.appendChild(el);
   el.querySelector("[data-sg-open-map]")?.addEventListener("click",()=>{
    const buttons=[...document.querySelectorAll(".site-header .nav button,.site-header .nav a")];

@@ -10,18 +10,13 @@
       if(typeof stateData==='undefined'||!stateData)return;
       const tx=stateData.TX;
       if(tx){
-        tx.rating='tilt-r';
-        tx.predictionParty='Republican';
-        tx.prediction='Tilt Republican';
+        tx.rating='tilt-d';
+        tx.predictionParty='Democratic';
+        tx.prediction='Talarico +0.7%';
         tx.notes='';
-        tx.updated='2026-10-16';
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Republican';
-        if('call' in tx)tx.call='Tilt Republican';
-        for(const slot of [1,2]){
-          const name=norm(tx['candidate'+slot]);
-          if(/Paxton/i.test(name))tx['candidate'+slot+'Odds']='53';
-          if(/Talarico/i.test(name))tx['candidate'+slot+'Odds']='47';
-        }
+        tx.updated='2026-10-01';
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
+        if('call' in tx)tx.call='Talarico +0.7%';
       }
       const oh=stateData.OH;
       if(oh){
@@ -418,15 +413,15 @@
     const root=document.getElementById('page-senate');
     if(!root)return;
     root.querySelectorAll('[data-state="TX"],[data-state="TX"] path,[data-abbr="TX"],[data-abbr="TX"] path,[data-state-abbr="TX"],[data-state-abbr="TX"] path,#TX,#TX path,#state-TX,#state-TX path').forEach(el=>{
-      el.style.setProperty('fill','#f8c6ca','important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background','#f8c6ca','important');
+      el.style.setProperty('fill',BLUE,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',BLUE,'important');
     });
     const panel=visiblePanel('Texas');
     if(!panel)return;
     const leaves=[...panel.querySelectorAll('*')].filter(el=>el.children.length===0);
     for(const el of leaves){
       const t=norm(el.textContent);
-      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Republican';
+      if(/^Prediction:\s*/i.test(t))el.textContent='Prediction: Tilt Democratic';
     }
     const call=leaves.find(el=>/^WILL[’']S CALL$/i.test(norm(el.textContent)));
     if(call){
@@ -443,10 +438,10 @@
         card.querySelectorAll('*').forEach(el=>el.style.removeProperty('color'));
         const vals=[...card.querySelectorAll('*')].filter(el=>el.children.length===0);
         const party=vals.find(el=>/^(Republican|Democrat(?:ic)?|Tossup)$/i.test(norm(el.textContent)));
-        if(party)party.textContent='Republican';
+        if(party)party.textContent='Democrat';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
-        if(rating)rating.textContent='TILT REPUBLICAN';
-        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Tilt Republican';
+        if(rating)rating.textContent='TILT DEMOCRATIC';
+        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.7%';
       }
     }
   }
@@ -458,8 +453,8 @@
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Talarico/i.test(name))tx[key]='47';
-          if(/Paxton/i.test(name))tx[key]='53';
+          if(/Talarico/i.test(name))tx[key]='55';
+          if(/Paxton/i.test(name))tx[key]='45';
         }
       }
     }catch(e){}
@@ -477,15 +472,15 @@
         const hasP=/\b(?:Ken\s+)?Paxton\b/i.test(t);
         if(hasT!==hasP){who=hasT?'Talarico':'Paxton';break;}
       }
-      if(who==='Talarico')el.textContent='47%';
-      else if(who==='Paxton')el.textContent='53%';
+      if(who==='Talarico')el.textContent='55%';
+      else if(who==='Paxton')el.textContent='45%';
     }
     const lines=[...panel.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length);
     const bar=panel.querySelector('.oddsbar');
     if(bar&&lines.length>=2){
       const odds=lines.map(line=>{
         const name=norm(line.querySelector('.candidate-name')?.textContent);
-        return /Talarico/i.test(name)?47:/Paxton/i.test(name)?53:null;
+        return /Talarico/i.test(name)?55:/Paxton/i.test(name)?45:null;
       });
       const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');
       if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');
@@ -510,7 +505,7 @@
         number=document.createElement('strong');
         box.appendChild(number);
       }
-      if(number.textContent!==count)number.textContent=count;
+      number.textContent=count;
 
       let party=[...box.children].find(el=>el!==number&&/^(Democrat(?:ic)?|Republican)$/i.test(norm(el.textContent)));
       if(!party){
@@ -518,7 +513,7 @@
         if(side==='left')box.insertBefore(party,number);
         else box.appendChild(party);
       }
-      if(party.textContent!==label)party.textContent=label;
+      party.textContent=label;
 
       box.style.setProperty('display','flex','important');
       box.style.setProperty('align-items','baseline','important');
@@ -558,8 +553,8 @@
       }
     };
 
-    ensure(dem,'Democratic','50','#2763b8','left');
-    ensure(rep,'Republican','50','#bd2937','right');
+    ensure(dem,'Democratic','51','#2763b8','left');
+    ensure(rep,'Republican','49','#bd2937','right');
   }
 
   function fixSenateSeatBalanceBar(){
@@ -630,7 +625,7 @@
         bar.appendChild(majority);
       }
       majority.style.cssText='display:block!important;position:absolute!important;left:50%!important;top:0!important;bottom:0!important;width:4px!important;transform:translateX(-2px)!important;background:#17263d!important;z-index:20!important;pointer-events:none!important;';
-      bar.setAttribute('aria-label','2026 Senate projection: 50 Democratic seats and 50 Republican seats; JD Vance has the Republican tie-breaking vote');
+      bar.setAttribute('aria-label','Senate balance: 50 Democratic seats, 50 Republican seats; majority marker at 50 seats plus the vice president');
       break;
     }
   }
