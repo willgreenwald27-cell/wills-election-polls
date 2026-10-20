@@ -237,5 +237,5 @@
  window.addEventListener('pageshow',init);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)init();});
  [200,750,1600,3500,5500].forEach(ms=>setTimeout(init,ms));
- setInterval(init,12000);
+ /* Removed 12-second sidebar repaint; initialize on navigation and visibility changes. */
 })();
