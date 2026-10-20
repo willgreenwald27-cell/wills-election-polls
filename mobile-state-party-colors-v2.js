@@ -115,7 +115,7 @@
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;fix();});}
   fix();
   setTimeout(fix,100);setTimeout(fix,500);setTimeout(fix,1500);
-  new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});
+  /* Apply once and on pageshow instead of reacting to every text update. */
   window.addEventListener('pageshow',fix);
   window.addEventListener('resize',fix);
 })();
