@@ -135,5 +135,5 @@
   else run();
   window.addEventListener('pageshow',run);
   [350,1200,3000,6000].forEach(ms=>setTimeout(run,ms));
-  setInterval(run,14000);
+  /* Removed 14-second radar redraw, which replaced live hover targets. */
 })();
