@@ -1,90 +1,114 @@
-/* Desktop Senate hover restoration, 2026-10-19; keeps Texas blue.
-   Independent lightweight hover preview; no rerender or DOM observer loops. */
+/* Restore the site's native mapHoverCard. No extra cards or global DOM observers. */
 (()=>{
-  const fine=e=>e?.pointerType==='mouse'||window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  if(window.__wgSenateHoverRepairReady)return;
-  window.__wgSenateHoverRepairReady=true;
-  let active='',card=null;
+  'use strict';
+  if(window.__wgNativeHoverRestored)return;
+  window.__wgNativeHoverRestored=true;
+
   const style=document.createElement('style');
-  style.textContent=`
-    /* Keep the restored blue Texas forecast. Only repair hit testing. */
-    #page-senate .map-wrap svg .state-shape[data-state],
-    #page-senate .map-wrap svg path[data-state]{pointer-events:visiblePainted!important;cursor:pointer!important}
-    #page-senate .map-wrap svg .inset-frame,
-    #page-senate .map-wrap svg .inset-label,
-    #page-senate .map-wrap svg .state-label,
-    #page-senate .map-wrap svg [data-label]{pointer-events:none!important}
-    @media (hover:hover) and (pointer:fine){
-      #page-senate #mapHoverCard,#page-senate .map-hover-card{display:none!important;pointer-events:none!important}
-    }
-    #wgSenateHoverRepair{position:fixed;z-index:2147483000;pointer-events:none;display:none;
-      width:245px;max-width:calc(100vw - 24px);padding:14px 16px;border-radius:10px;
-      background:#0c182b;color:#fff;border:1px solid #6287b4;box-shadow:0 14px 35px #0005;
-      font-family:Inter,Arial,sans-serif;font-size:13px;line-height:1.4}
-    #wgSenateHoverRepair .wg-hover-name{font-size:18px;font-weight:900;margin-bottom:5px;color:#fff}
-    #wgSenateHoverRepair .wg-hover-line{margin-top:5px;color:#e9eef8}
-    #wgSenateHoverRepair .wg-hover-label{font-size:10px;letter-spacing:.09em;font-weight:800;color:#9ec0ed}
-    #wgSenateHoverRepair .wg-hover-metric{margin-top:3px;color:#d9e7fa;font-size:12px}
-    @media (hover:none),(pointer:coarse){#wgSenateHoverRepair{display:none!important}}
-  `;
+  style.id='wg-native-hover-restored';
+  style.textContent=[
+    '#page-senate .map-wrap svg .state-shape[data-state]{pointer-events:visiblePainted!important;cursor:pointer!important}',
+    '#page-senate .map-wrap svg .state-label,#page-senate .map-wrap svg .inset-label,#page-senate .map-wrap svg .inset-frame,#page-senate .map-wrap svg [data-label]{pointer-events:none!important}',
+    '@media (hover:hover) and (pointer:fine){',
+    '  #page-senate .map-wrap #mapHoverCard.show{opacity:1!important;visibility:visible!important;display:block!important;pointer-events:none!important;transition:none!important}',
+    '  #page-senate .map-wrap #mapHoverCard:not(.show){opacity:0!important;visibility:hidden!important;pointer-events:none!important}',
+    '}'
+  ].join('\n');
   document.head.appendChild(style);
-  function getCard(){
-    if(!card||!card.isConnected){card=document.createElement('div');card.id='wgSenateHoverRepair';document.body.appendChild(card);}
-    return card;
+  let active='',lastEvent=null,frame=0;
+  const abbr=el=>el?.getAttribute?.('data-state')||el?.closest?.('[data-state]')?.getAttribute('data-state');
+  const isFine=e=>e.pointerType==='mouse'||e.pointerType==='pen'||(!e.pointerType&&matchMedia('(hover:hover) and (pointer:fine)').matches);
+  function data(ab){
+    try{return typeof stateData!=='undefined'?stateData[ab]:window.stateData?.[ab]}catch(_){return null}
   }
-  function stateInfo(ab){
-    try{return typeof stateData!=='undefined'?stateData[ab]:window.stateData?.[ab];}catch(e){return null;}
+  function underPointer(e){
+    const wrap=document.querySelector('#page-senate .map-wrap'),svg=wrap?.querySelector('svg');
+    if(!wrap||!svg)return null;
+    const sr=svg.getBoundingClientRect();
+    if(e.clientX<sr.left||e.clientX>sr.right||e.clientY<sr.top||e.clientY>sr.bottom)return null;
+    const sel='#page-senate .map-wrap svg [data-state]';
+    const target=e.target?.closest?.(sel);
+    if(target&&data(abbr(target)))return abbr(target);
+    for(const el of document.elementsFromPoint(e.clientX,e.clientY)){
+      const p=el.closest?.(sel);
+      if(p&&data(abbr(p)))return abbr(p);
+    }
+    // Overlays sometimes intercept events even when a state shape is visible.
+    // Use the SVG's actual geometry as a final hit test, never just its bbox.
+    for(const path of svg.querySelectorAll('.state-shape[data-state]')){
+      const r=path.getBoundingClientRect();
+      if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)continue;
+      try{
+        if(typeof path.isPointInFill==='function'){
+          const matrix=path.getScreenCTM();
+          if(!matrix)continue;
+          const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());
+          if(path.isPointInFill(p))return abbr(path);
+        }
+      }catch(_){}
+    }
+    return null;
   }
-  function show(ab,x,y){
-    const s=stateInfo(ab),node=getCard();
-    if(!s){hide();return;}
-    if(ab!==active){
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function fallback(ab){
+    const s=data(ab);
+    const line=i=>s?.['candidate'+i]?'<div class="map-hover-line">'+esc(s['candidate'+i])+'</div>':'';
+    return '<div class="map-hover-state">'+esc(s?.name||ab)+'</div>'+
+      '<div class="map-hover-section-title">WILL’S CALL</div>'+
+      '<div class="prediction-copy">'+esc(s?.prediction||String(s?.rating||'').replace(/-/g,' '))+'</div>'+
+      line(1)+line(2);
+  }
+  function show(ab){
+    const card=document.getElementById('mapHoverCard');
+    if(!card||!data(ab))return;
+    if(active!==ab){
       active=ab;
-      const name=s.name||s.state||s.stateName||ab;
-      const pred=s.prediction||s.rating?.replace(/-/g,' ')||'';
-      const p1=s.candidate1||'',p2=s.candidate2||'';
-      const candidate=i=>{
-        const n=s['candidate'+i];if(!n)return '';
-        const poll=s['candidate'+i+'Poll'], odds=s['candidate'+i+'Odds'];
-        const values=[];
-        if(poll!=null&&String(poll).trim())values.push(String(poll).replace(/%$/,'')+'% polls');
-        if(odds!=null&&String(odds).trim())values.push(String(odds).replace(/%$/,'')+'% odds');
-        return '<div class="wg-hover-metric">'+esc(n)+(values.length?' — '+esc(values.join(' · ')):'')+'</div>';
-      };
-      node.innerHTML='<div class="wg-hover-name">'+esc(name)+'</div>'+
-        (pred?'<div class="wg-hover-label">WILL\'S CALL</div><div class="wg-hover-line">'+esc(pred)+'</div>':'')+
-        (p1||p2?'<div class="wg-hover-label" style="margin-top:9px">CANDIDATES</div>'+candidate(1)+candidate(2):'');
+      try{
+        card.innerHTML=typeof hoverCardHTML==='function'?hoverCardHTML(ab):fallback(ab);
+      }catch(_){card.innerHTML=fallback(ab)}
     }
-    node.style.display='block';
-    const w=node.offsetWidth||245,h=node.offsetHeight||120;
-    node.style.left=Math.max(10,Math.min(x+16,window.innerWidth-w-10))+'px';
-    node.style.top=Math.max(10,Math.min(y+18,window.innerHeight-h-10))+'px';
+    card.classList.add('show');
+    card.style.removeProperty('display');
   }
-  function hide(){active='';if(card)card.style.display='none';}
-  const onHover=e=>{
-    if(!fine(e))return;
-    const root=document.getElementById('page-senate');
-    if(!root||!root.getClientRects().length){hide();return;}
-    const selector='#page-senate svg .state-shape[data-state],#page-senate svg path[data-state],#page-senate svg g[data-state]';
-    let shape=e.target?.closest?.(selector);
-    if(!shape&&Number.isFinite(e.clientX)&&Number.isFinite(e.clientY)){
-      // Decorative SVG elements can intercept the hit target; look beneath.
-      for(const el of document.elementsFromPoint(e.clientX,e.clientY)){
-        shape=el.closest?.(selector);if(shape)break;
-      }
-    }
-    const ab=shape?.getAttribute('data-state');
-    if(/^[A-Z]{2}$/.test(ab||''))show(ab,e.clientX,e.clientY);
-    else hide();
-  };
-  document.addEventListener('pointerover',onHover,true);
-  document.addEventListener('pointermove',onHover,true);
+  function position(x,y){
+    const card=document.getElementById('mapHoverCard');
+    const wrap=document.querySelector('#page-senate .map-wrap');
+    if(!card||!wrap||!active)return;
+    const r=wrap.getBoundingClientRect();
+    const width=card.offsetWidth||300,height=card.offsetHeight||140;
+    let left=x-r.left+16,top=y-r.top+16;
+    if(left+width>r.width-10)left=x-r.left-width-16;
+    if(top+height>r.height-10)top=y-r.top-height-16;
+    card.style.left=Math.max(8,Math.min(left,Math.max(8,r.width-width-8)))+'px';
+    card.style.top=Math.max(8,Math.min(top,Math.max(8,r.height-height-8)))+'px';
+  }
+  function hide(){
+    active='';lastEvent=null;
+    if(frame)cancelAnimationFrame(frame);
+    frame=0;
+    document.getElementById('mapHoverCard')?.classList.remove('show');
+  }
+  function track(e){
+    if(!isFine(e))return;
+    const page=document.getElementById('page-senate');
+    if(!page||!page.getClientRects().length){hide();return}
+    const ab=underPointer(e);
+    if(!ab){hide();return}
+    show(ab);
+    lastEvent={x:e.clientX,y:e.clientY};
+    if(!frame)frame=requestAnimationFrame(()=>{
+      frame=0;
+      if(lastEvent&&active)position(lastEvent.x,lastEvent.y);
+    });
+  }
+  document.addEventListener('pointerover',track,true);
+  document.addEventListener('pointermove',track,true);
   if(!window.PointerEvent){
-    document.addEventListener('mouseover',onHover,true);
-    document.addEventListener('mousemove',onHover,true);
+    document.addEventListener('mouseover',track,true);
+    document.addEventListener('mousemove',track,true);
   }
   document.addEventListener('pointerdown',hide,true);
   window.addEventListener('blur',hide);
   window.addEventListener('scroll',hide,true);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide()});
 })();
