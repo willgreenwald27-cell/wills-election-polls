@@ -144,7 +144,9 @@
 
   apply();
   [80,250,600,1200,2200,4000].forEach(ms=>setTimeout(apply,ms));
-  setInterval(apply,700);
-  new MutationObserver(()=>{clearTimeout(window.__senateColorPolishTimer);window.__senateColorPolishTimer=setTimeout(apply,35)}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  // Don't watch our own style changes or repaint every 700ms.
+  document.addEventListener('click',e=>{
+    if(e.target?.closest?.('#page-senate'))setTimeout(apply,100);
+  },true);
   window.addEventListener('pageshow',apply);
 })();
