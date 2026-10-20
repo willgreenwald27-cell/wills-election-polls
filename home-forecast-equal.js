@@ -136,8 +136,8 @@
       const senate=split.querySelector('.senate-card');
       if(senate){
         const nums=[...senate.querySelectorAll('.party-number')];
-        if(nums[0]) nums[0].textContent='51';
-        if(nums[1]) nums[1].textContent='49';
+        if(nums[0]&&nums[0].textContent!=='51') nums[0].textContent='51';
+        if(nums[1]&&nums[1].textContent!=='49') nums[1].textContent='49';
         const dem=senate.querySelector('.senate-bar .dem,.senate-bar .democratic,[data-party="dem"]');
         const rep=senate.querySelector('.senate-bar .rep,.senate-bar .republican,[data-party="rep"]');
         if(dem) dem.style.setProperty('width','51%','important');
@@ -152,7 +152,7 @@
 
   applyEqualForecastCards();
   [25,80,150,250,600,1200,2200,4000].forEach(ms=>setTimeout(applyEqualForecastCards,ms));
-  setInterval(applyEqualForecastCards,750);
-  new MutationObserver(()=>setTimeout(applyEqualForecastCards,20)).observe(document.body,{childList:true,subtree:true,characterData:true});
+  // Use event-driven reconciliation only. The previous 750ms timer and
+  // document-wide observer continuously triggered each other.
   window.addEventListener('pageshow',applyEqualForecastCards);
 })();
