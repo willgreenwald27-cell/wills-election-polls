@@ -47,5 +47,5 @@
 
   function apply(){ensureStyle();buildNav();forceMaineData();fixMainePanel();setActive();}
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
-  current=detect();apply();pageEl('governor');pageEl('pastmaps');show(current,false);document.addEventListener('click',navClick,true);new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});window.addEventListener('pageshow',()=>{apply();show(current,false)});window.addEventListener('resize',apply);window.__willFinalNavigate=show;
+  current=detect();apply();pageEl('governor');pageEl('pastmaps');show(current,false);document.addEventListener('click',navClick,true);/* Removed whole-document rerender observer. */window.addEventListener('pageshow',()=>{apply();show(current,false)});window.addEventListener('resize',apply);window.__willFinalNavigate=show;
 })();
