@@ -46,7 +46,24 @@ try:
     """)
     time.sleep(3.3)
     result["stability"] = driver.execute_script("window.__mapObserver?.disconnect();return {count:window.__mapMutations,changes:window.__mapChanges,texasFill:getComputedStyle(document.querySelector('#page-senate .state-shape[data-state=TX]')).fill}")
-    result["ok"] = bool(result["before"]["senateVisible"] and result["before"]["shapes"]>=40 and result["before"]["diagnostic"]=="tilt-d" and (result.get("mouse",{}).get("visible") or result.get("synthetic",{}).get("visible")) and result["stability"]["count"]<10)
+    driver.execute_script("""
+      window.__panelMutations=0;window.__panelTargets=[];
+      for(const sel of ['#senate-night-key-races','.wg-studio-radar-list']){
+        const node=document.querySelector('#page-senate '+sel);
+        if(node){
+          window.__panelTargets.push(sel);
+          const obs=new MutationObserver(ms=>window.__panelMutations+=ms.filter(m=>m.type==='childList').length);
+          obs.observe(node,{childList:true,subtree:true});
+          (window.__panelObservers||(window.__panelObservers=[])).push(obs);
+        }
+      }
+    """)
+    time.sleep(15.5)
+    result["sidebar"] = driver.execute_script("""
+      window.__panelObservers?.forEach(o=>o.disconnect());
+      return {targets:window.__panelTargets,childListChanges:window.__panelMutations};
+    """)
+    result["ok"] = bool(result["before"]["senateVisible"] and result["before"]["shapes"]>=40 and result["before"]["diagnostic"]=="tilt-d" and (result.get("mouse",{}).get("visible") or result.get("synthetic",{}).get("visible")) and result["stability"]["count"]<10 and result["sidebar"]["childListChanges"]<8)
     driver.save_screenshot("hover-smoke.png")
     print(json.dumps(result,indent=2),flush=True)
     if not result["ok"]:
