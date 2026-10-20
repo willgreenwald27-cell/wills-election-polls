@@ -1,0 +1,31 @@
+name: Senate hover browser smoke
+on:
+  push:
+    paths:
+      - ".github/workflows/hover-smoke.yml"
+      - "tools/hover-smoke.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop-hover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install browser test driver
+        run: python3 -m pip install --break-system-packages selenium
+      - name: Run local site and desktop hover smoke
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/site-server.log 2>&1 &
+          sleep 2
+          python3 tools/hover-smoke.py
+      - name: Save hover screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: senate-hover-screenshot
+          path: hover-smoke.png
+          if-no-files-found: ignore
