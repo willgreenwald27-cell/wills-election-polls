@@ -73,7 +73,7 @@
       }
       const ne=stateData.NE;
       if(ne){
-        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
+        set(ne,'rating','lean-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
         set(ne,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ne) set(ne,k,'Republican');
         if('call' in ne) set(ne,'call','Ricketts +3.2%');
