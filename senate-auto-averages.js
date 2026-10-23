@@ -11,6 +11,13 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling listings supplied on October 23, 2026 (polls dated October 22).
+    ['2026-10-22','ME','Maine','FOX News','Troy Jackson',49,'Susan Collins',49,'Tie'],
+    ['2026-10-22','IA','Iowa','InsiderAdvantage','Ashley Hinson',47,'Josh Turek',45,'Hinson +2'],
+    ['2026-10-22','MI','Michigan','InsiderAdvantage','Abdul El-Sayed',47,'Mike Rogers',46,'El-Sayed +1'],
+    ['2026-10-22','OH','Ohio Special Election','InsiderAdvantage','Sherrod Brown',47,'Jon Husted',44,'Brown +3'],
+    ['2026-10-22','TX','Texas','TPOR**','James Talarico',51,'Ken Paxton',47,'Talarico +4'],
+    ['2026-10-22','MN','Minnesota','Rasmussen Reports','Peggy Flanagan',48,'Michele Tafoya',45,'Flanagan +3'],
     // RealClearPolling listings supplied on October 20, 2026 (poll dates Oct 17–19).
     ['2026-10-19','OH','Ohio Special Election','Marist','Sherrod Brown',48,'Jon Husted',44,'Brown +4'],
     ['2026-10-19','MT','Montana','Quantus Insights','Kurt Alme',44,'Seth Bodnar',28,'Four-way poll · Alme +16 · Bankhead 21 · Austin 2'],
