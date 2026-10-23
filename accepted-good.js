@@ -1,6 +1,8 @@
 (()=>{
   const REP='#bd2937', DEM='#2763b8', IND='#8051d2';
   const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['board','Battleground Board'],['swing','Swing State Explanations'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['about','About Me']];
+  const PRIMARY=[['home','Home'],['senate','Senate Map'],['board','Battlegrounds'],['polls','New Polls']];
+  const EXPLORE=[['swing','Swing State Explanations'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['betting','Live Kalshi Senate Odds'],['about','About Me']];
   let current='home',busy=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=r=>r?[...r.querySelectorAll('*')].filter(el=>el.children.length===0):[];
@@ -46,6 +48,68 @@
       .site-header .nav[data-accepted-nav="1"]>button.active{background:#17263d!important;color:#fff!important}
 
       @media(max-width:760px){.site-header .nav[data-accepted-nav="1"]{overflow-x:auto!important;justify-content:flex-start!important;padding-bottom:7px!important}.site-header .nav[data-accepted-nav="1"]>button{flex:0 0 auto!important;height:38px!important;padding:0 10px!important;font-size:11px!important}}
+
+      /* Compact header: four destinations and an accessible More menu. */
+      body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]{
+        display:flex!important;align-items:center!important;justify-content:flex-end!important;
+        flex-wrap:nowrap!important;gap:8px!important;min-width:0!important
+      }
+      body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button{
+        order:initial!important;flex:0 0 auto!important;padding:0 15px!important;
+        font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;font-size:12px!important;
+        font-weight:800!important;letter-spacing:.005em!important
+      }
+      body .site-header .nav[data-compact-nav="1"]>button[data-compact-more]{
+        display:flex!important;align-items:center!important;gap:7px!important;
+        border:1px solid rgba(164,193,229,.26)!important;color:#e8f2ff!important;
+        -webkit-text-fill-color:#e8f2ff!important
+      }
+      body .site-header .nav[data-compact-nav="1"]>button[data-compact-more][aria-expanded="true"],
+      body .site-header .nav[data-compact-nav="1"]>button[data-compact-more].active{
+        background:rgba(52,104,180,.40)!important;border-color:rgba(120,176,249,.7)!important
+      }
+      #will-nav-more-menu[hidden]{display:none!important}
+      #will-nav-more-menu{
+        position:fixed;z-index:2147480000;display:grid;gap:3px;width:284px;
+        max-width:calc(100vw - 24px);max-height:calc(100vh - 90px);overflow-y:auto;
+        background:#0d213c;border:1px solid #426187;border-radius:15px;padding:9px;
+        box-shadow:0 18px 48px rgba(0,0,0,.44);font-family:Inter,ui-sans-serif,system-ui,sans-serif
+      }
+      #will-nav-more-menu .wg-more-title{
+        color:#91b1d8;font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;
+        text-transform:uppercase;padding:9px 12px 7px
+      }
+      #will-nav-more-menu button{
+        display:block;width:100%;border:0;border-radius:9px;padding:13px 12px;
+        background:transparent;color:#e6f1ff;-webkit-text-fill-color:#e6f1ff;
+        text-align:left;font:750 13px/1.35 Inter,ui-sans-serif,system-ui,sans-serif;
+        cursor:pointer;min-height:43px
+      }
+      #will-nav-more-menu button:hover,#will-nav-more-menu button:focus-visible{
+        background:#1f436f;color:#fff;-webkit-text-fill-color:#fff
+      }
+      #will-nav-more-menu button.active{background:#235aa1;color:#fff;-webkit-text-fill-color:#fff}
+      #will-nav-more-menu button:focus-visible,.site-header .nav[data-compact-nav="1"]>button:focus-visible{
+        outline:2px solid #8bbfff!important;outline-offset:2px!important
+      }
+      @media(max-width:760px){
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]{
+          justify-content:flex-start!important;overflow-x:auto!important;overflow-y:hidden!important;
+          padding:0 0 8px!important;gap:3px!important;-webkit-overflow-scrolling:touch
+        }
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button{
+          height:39px!important;min-height:39px!important;padding:0 10px!important;font-size:11px!important
+        }
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="senate"]{font-size:0!important}
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="senate"]:after{
+          content:"Senate";font:800 11px/1 Inter,ui-sans-serif,system-ui,sans-serif
+        }
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="polls"]{font-size:0!important}
+        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="polls"]:after{
+          content:"Polls";font:800 11px/1 Inter,ui-sans-serif,system-ui,sans-serif
+        }
+        #will-nav-more-menu{width:min(320px,calc(100vw - 24px))}
+      }
     `;
     document.head.appendChild(s);
   }
@@ -108,31 +172,113 @@
     return document.getElementById('page-'+k);
   }
 
+  function ensureMoreMenu(){
+    let menu=document.getElementById('will-nav-more-menu');
+    if(menu)return menu;
+    menu=document.createElement('div');
+    menu.id='will-nav-more-menu';
+    menu.hidden=true;
+    menu.setAttribute('role','group');
+    menu.setAttribute('aria-label','Explore more election pages');
+    const title=document.createElement('div');
+    title.className='wg-more-title';
+    title.textContent='More to explore';
+    menu.appendChild(title);
+    for(const [k,label] of EXPLORE){
+      const b=document.createElement('button');
+      b.type='button';
+      b.dataset.morePage=k;
+      b.textContent=label;
+      menu.appendChild(b);
+    }
+    document.body.appendChild(menu);
+    return menu;
+  }
+
+  function closeMore(){
+    const menu=document.getElementById('will-nav-more-menu');
+    const toggle=document.getElementById('will-nav-more-toggle');
+    if(menu)menu.hidden=true;
+    if(toggle)toggle.setAttribute('aria-expanded','false');
+  }
+
+  function positionMore(){
+    const menu=document.getElementById('will-nav-more-menu');
+    const toggle=document.getElementById('will-nav-more-toggle');
+    if(!menu||!toggle||menu.hidden)return;
+    const rect=toggle.getBoundingClientRect();
+    const width=Math.min(320,window.innerWidth-24);
+    const left=window.innerWidth<=760?Math.max(12,window.innerWidth-width-12):
+      Math.max(12,Math.min(rect.right-width,window.innerWidth-width-12));
+    menu.style.left=left+'px';
+    menu.style.top=Math.max(12,Math.min(rect.bottom+9,window.innerHeight-78))+'px';
+  }
+
+  function toggleMore(){
+    const menu=ensureMoreMenu();
+    const toggle=document.getElementById('will-nav-more-toggle');
+    if(!toggle)return;
+    const open=menu.hidden;
+    menu.hidden=!open;
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+    if(open)positionMore();
+  }
+
   function buildNav(){
     const nav=document.querySelector('.site-header .nav');
-    if(!nav) return;
-    // Remove leftover standalone links from a prior navigation script.
-    nav.querySelectorAll('#wg-swing-analysis-tab,a[href*="2026-senate-battlegrounds.html"]').forEach(el=>el.remove());
-    for(const el of [...nav.children]){
-      if(el.getAttribute('data-accepted-page')==='swing')continue;
-      if((el.textContent||'').trim().toLowerCase()==='swing state explanations')el.remove();
-    }
-    if(nav.dataset.acceptedNav==='1'&&nav.querySelectorAll(':scope>[data-accepted-page]').length===PAGES.length) return;
-    nav.textContent='';
+    if(!nav)return;
+    ensureMoreMenu();
+    const valid=nav.dataset.acceptedNav==='1'&&nav.dataset.compactNav==='1'&&
+      nav.querySelectorAll(':scope > button[data-accepted-page]').length===PRIMARY.length&&
+      nav.querySelector(':scope > button[data-compact-more]');
+    if(valid)return;
+    nav.replaceChildren();
     nav.dataset.acceptedNav='1';
-    for(const [k,label] of PAGES){
+    nav.dataset.compactNav='1';
+    nav.setAttribute('aria-label','Primary website navigation');
+    for(const [k,label] of PRIMARY){
       const b=document.createElement('button');
-      b.type='button'; b.textContent=label; b.dataset.acceptedPage=k;
+      b.type='button';
+      b.textContent=label;
+      b.dataset.acceptedPage=k;
+      b.setAttribute('aria-label',label);
       nav.appendChild(b);
     }
+    const more=document.createElement('button');
+    more.type='button';
+    more.id='will-nav-more-toggle';
+    more.dataset.compactMore='1';
+    more.setAttribute('aria-controls','will-nav-more-menu');
+    more.setAttribute('aria-haspopup','true');
+    more.setAttribute('aria-expanded','false');
+    more.setAttribute('aria-label','Explore more pages');
+    more.innerHTML='<span>Explore</span><span aria-hidden="true">▾</span>';
+    nav.appendChild(more);
+    closeMore();
   }
 
   function activeNav(){
-    document.querySelectorAll('.site-header .nav[data-accepted-nav="1"] [data-accepted-page]').forEach(b=>b.classList.toggle('active',b.dataset.acceptedPage===current));
+    document.querySelectorAll('.site-header .nav[data-compact-nav="1"]>button[data-accepted-page]').forEach(b=>{
+      const active=b.dataset.acceptedPage===current;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-current',active?'page':'false');
+    });
+    document.querySelectorAll('#will-nav-more-menu [data-more-page]').forEach(b=>{
+      const active=b.dataset.morePage===current;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-current',active?'page':'false');
+    });
+    const more=document.getElementById('will-nav-more-toggle');
+    if(more){
+      const active=EXPLORE.some(([k])=>k===current);
+      more.classList.toggle('active',active);
+      more.setAttribute('aria-current',active?'page':'false');
+    }
   }
 
   function show(k,scroll=true){
     if(busy||!PAGES.some(x=>x[0]===k)) return;
+    closeMore();
     busy=true;
     try{
       for(const [key] of PAGES){
@@ -399,11 +545,35 @@ function fixAboutPollCount(){
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
 
   document.addEventListener('click',e=>{
-    const b=e.target.closest?.('.site-header .nav[data-accepted-nav="1"] [data-accepted-page]');
-    if(!b) return;
-    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-    show(b.dataset.acceptedPage,true);
+    const target=e.target;
+    const more=target.closest?.('.site-header .nav[data-compact-nav="1"] [data-compact-more]');
+    if(more){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      toggleMore();
+      return;
+    }
+    const extra=target.closest?.('#will-nav-more-menu [data-more-page]');
+    if(extra){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      show(extra.dataset.morePage,true);
+      return;
+    }
+    const b=target.closest?.('.site-header .nav[data-accepted-nav="1"]>button[data-accepted-page]');
+    if(b){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      show(b.dataset.acceptedPage,true);
+      return;
+    }
+    if(!target.closest?.('#will-nav-more-menu'))closeMore();
   },true);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&!document.getElementById('will-nav-more-menu')?.hidden){
+      e.preventDefault();closeMore();document.getElementById('will-nav-more-toggle')?.focus();
+    }
+  });
+  window.addEventListener('scroll',()=>{if(!document.getElementById('will-nav-more-menu')?.hidden)closeMore();},true);
+  window.addEventListener('resize',positionMore);
+
 
   current=['swing','board'].includes(new URLSearchParams(location.search).get('page'))?new URLSearchParams(location.search).get('page'):'home';
   apply();
