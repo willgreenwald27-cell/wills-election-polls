@@ -6,6 +6,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const n=v=>{const m=String(v??'').trim().match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null;};
 const pct=v=>v===null?'—':v.toFixed(1)+'%';
 const pty=v=>{const x=String(v||'').toLowerCase();return x.includes('democrat')?'dem':x.includes('republican')?'rep':x.includes('independent')?'ind':'other';};
+const classified=(decl,name)=>{const p=pty(decl);return p==='other'&&['dan osborn','seth bodnar','todd achilles'].includes(String(name||'').toLowerCase().trim())?'ind':p;};
 const partyName=p=>p==='dem'?'Democrat':p==='rep'?'Republican':p==='ind'?'Independent':'Unspecified';
 const ratingLabel=r=>{const s=String(r||'').toLowerCase().replace(/-/g,' ');return s==='tossup'||s==='toss up'?'Toss-up':s.replace(/\bd\b/g,'Democratic').replace(/\br\b/g,'Republican').replace(/\b\w/g,c=>c.toUpperCase());};
 let selected='TX',filter='all',sort='close',lastStamp='';
@@ -52,7 +53,7 @@ function rows(){
  return IDS.map(ab=>{
   const s=d?.[ab];
   if(!s||!s.candidate1||!s.candidate2)return null;
-  const a=n(s.candidate1Poll),b=n(s.candidate2Poll),p1=pty(s.candidate1Party),p2=pty(s.candidate2Party),forecast=pty(s.predictionParty);
+  const a=n(s.candidate1Poll),b=n(s.candidate2Poll),p1=classified(s.candidate1Party,s.candidate1),p2=classified(s.candidate2Party,s.candidate2),forecast=pty(s.predictionParty);
   const leader=(a===null||b===null)?null:a===b?'tie':a>b?p1:p2;
   return {ab,s,name:String(s.name||ab),a,b,p1,p2,forecast,leader,gap:a===null||b===null?null:Math.abs(a-b),
    split:leader!==null&&leader!=='tie'&&leader!=='other'&&forecast!=='other'&&leader!==forecast,
