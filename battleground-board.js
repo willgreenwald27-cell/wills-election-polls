@@ -3,7 +3,7 @@
 'use strict';
 const IDS=['TX','ME','AK','IA','OH','MI','KS','NE'];
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const n=v=>{const x=Number(String(v??'').replace('%','').trim());return Number.isFinite(x)?x:null;};
+const n=v=>{const m=String(v??'').trim().match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):null;};
 const pct=v=>v===null?'—':v.toFixed(1)+'%';
 const pty=v=>{const x=String(v||'').toLowerCase();return x.includes('democrat')?'dem':x.includes('republican')?'rep':x.includes('independent')?'ind':'other';};
 const partyName=p=>p==='dem'?'Democrat':p==='rep'?'Republican':p==='ind'?'Independent':'Unspecified';
