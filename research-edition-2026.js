@@ -68,6 +68,7 @@
    ["data-spa-page","data-will-page","data-accepted-page","data-page-link"].some(k=>el.getAttribute(k)===key)
   )||buttons.find(el=>el.textContent?.trim().toLowerCase()===NAMES[key].toLowerCase());
   if(btn)btn.click();
+  else if(typeof window.__acceptedGoodNavigate==='function')window.__acceptedGoodNavigate(key);
  }
  document.addEventListener("click",event=>{
   const el=event.target?.closest?.("[data-wr-go]");if(!el)return;
