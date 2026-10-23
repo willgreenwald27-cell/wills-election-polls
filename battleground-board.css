@@ -99,3 +99,15 @@
 @media(max-width:780px){#page-board .bb-shell{padding:23px 16px 60px}#page-board .bb-topline{margin-bottom:26px}#page-board .bb-topright{font-size:9px}#page-board .bb-hero{display:block}#page-board .bb-hero h1{font-size:clamp(45px,9vw,65px)!important}#page-board .bb-majority{margin-top:27px}#page-board .bb-metrics{gap:8px}#page-board .bb-metric{padding:16px 13px}#page-board .bb-metric strong{font-size:21px}#page-board .bb-metric span{font-size:10px}#page-board .bb-focus-inner{grid-template-columns:1fr}#page-board .bb-focus-info{border-right:0;border-bottom:1px solid #325074}#page-board .bb-focus-polls{gap:17px}#page-board .bb-section-title{margin:32px 0 15px}}
 @media(max-width:520px){#page-board .bb-board-grid{grid-template-columns:1fr}#page-board .bb-card{min-height:224px}#page-board .bb-hero h1{font-size:44px!important}#page-board .bb-metrics{grid-template-columns:1fr}#page-board .bb-metric{padding:14px 18px}#page-board .bb-metric strong{font-size:24px}#page-board .bb-toolbar{align-items:stretch}#page-board .bb-sort-wrap{width:100%;justify-content:space-between}#page-board .bb-sort{flex:1}#page-board .bb-focus-state{font-size:38px}#page-board .bb-focus-info,#page-board .bb-focus-polls{padding:22px}#page-board .bb-top-left{font-size:9px}}
 @media(prefers-reduced-motion:reduce){#page-board .bb-card{transition:none}#page-board .bb-card:hover{transform:none}}
+
+
+/* Fit the new Board tab beside the existing election navigation without wrapping. */
+@media(min-width:761px) and (max-width:1650px){
+  body .site-header .nav[data-accepted-nav="1"]{gap:2px!important;justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:none}
+  body .site-header .nav[data-accepted-nav="1"]::-webkit-scrollbar{display:none}
+  body .site-header .nav[data-accepted-nav="1"]>button[data-accepted-page]{padding:0 8px!important;font-size:11px!important}
+}
+@media(max-width:760px){
+  body .site-header .nav[data-accepted-nav="1"]>button[data-accepted-page="board"]{color:#8cbfff!important}
+  body .site-header .nav[data-accepted-nav="1"]>button[data-accepted-page="board"].active{color:#fff!important}
+}
