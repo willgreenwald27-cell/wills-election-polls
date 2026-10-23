@@ -33,6 +33,8 @@
   function reorderNav(){
     const nav=document.querySelector('.site-header .nav');
     if(!nav)return;
+    // The compact navigation owns its order and keeps secondary links in a separate menu.
+    if(nav.dataset.compactNav==='1')return;
     for(const item of [...nav.children]){
       const key=item.dataset.acceptedPage||item.dataset.willPage||item.dataset.spaPage||item.dataset.pageLink;
       if(key==='electionnight'||norm(item.textContent)==='Election Night')item.remove();
