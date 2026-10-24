@@ -13,8 +13,8 @@ game.className='bb-game';game.setAttribute('data-bb-challenge','');game.setAttri
 game.innerHTML=[
 '<div class="bb-game-head"><div class="bb-game-title"><p class="bb-game-label"><i class="bb-game-pulse" aria-hidden="true"></i> THE 2026 FORECAST CHALLENGE</p>',
 '<h2>Make the Call.</h2><p>Eight battlegrounds. Pick your winners, build your own scenario, and compare your calls with Will’s independent forecast.</p></div>',
-'<button type="button" class="bb-game-toggle" data-bbg-toggle aria-expanded="true" aria-controls="bbChallengeContent"><span data-bbg-toggle-label>Hide challenge</span><span class="bb-game-chevron" aria-hidden="true">▾</span></button></div>',
-'<div id="bbChallengeContent" class="bb-game-content"><div class="bb-game-score" aria-live="polite"><div><p class="bb-game-scorelabel">YOUR BATTLEGROUND SLATE</p>',
+'<button type="button" class="bb-game-toggle" data-bbg-toggle aria-expanded="false" aria-controls="bbChallengeContent"><span data-bbg-toggle-label>Play the challenge</span><span class="bb-game-chevron" aria-hidden="true">▾</span></button></div>',
+'<div id="bbChallengeContent" class="bb-game-content" hidden><div class="bb-game-score" aria-live="polite"><div><p class="bb-game-scorelabel">YOUR BATTLEGROUND SLATE</p>',
 '<div class="bb-game-progressline"><strong class="bb-game-big" data-bbg-progress>0 / 8</strong><span class="bb-game-hint" data-bbg-hint>Pick a winner in each race</span></div>',
 '<div class="bb-game-progress" aria-hidden="true"><span data-bbg-bar></span></div></div>',
 '<div class="bb-game-compare"><strong data-bbg-agreement>—</strong><span>Matches Will’s party calls</span></div></div>',
