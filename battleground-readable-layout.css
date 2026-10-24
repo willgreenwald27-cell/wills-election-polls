@@ -1,0 +1,369 @@
+/* READABLE BATTLEGROUND BOARD — 2026-10-23
+   Visual/accessibility overrides only. This file is loaded last.
+   Goal: strong contrast, 16px+ body text, 48px+ targets, two-column race cards. */
+#page-board{background:#edf3fa!important;color:#132b45!important;overflow:clip!important}
+#page-board .bb-shell{
+ max-width:1380px!important;padding:30px clamp(18px,3vw,45px) 88px!important;
+}
+#page-board .bb-shell:before{background:radial-gradient(ellipse at 88% 10%,rgba(40,106,195,.065),transparent 44%)!important}
+#page-board .bb-shell:after{opacity:.06!important}
+#page-board .bb-topline{
+ border-bottom:1px solid #bdcde0!important;margin-bottom:24px!important;
+ padding-bottom:20px!important;gap:18px!important
+}
+#page-board .bb-top-left{color:#254b75!important;font-size:13px!important;letter-spacing:.055em!important;font-weight:850!important}
+#page-board .bb-star{width:39px!important;height:39px!important;font-size:22px!important}
+#page-board .bb-topright{color:#345372!important;font-size:12px!important;letter-spacing:.025em!important;line-height:1.4!important}
+#page-board .bb-status-dot{background:#137d68!important;box-shadow:0 0 0 4px rgba(19,125,104,.12)!important}
+#page-board .bb-hero{
+ grid-template-columns:minmax(0,1.15fr) minmax(295px,.75fr)!important;
+ align-items:center!important;gap:clamp(28px,3.7vw,52px)!important;
+ background:radial-gradient(circle at 96% 5%,rgba(87,155,247,.14),transparent 34%),
+ linear-gradient(120deg,#071b34,#10355d)!important;
+ color:#fff!important;border:1px solid #2b527c!important;border-radius:19px!important;
+ padding:clamp(28px,3.3vw,49px)!important;margin:0 0 23px!important;
+ box-shadow:0 15px 46px rgba(15,46,86,.11)!important
+}
+#page-board .bb-hero .bb-eyebrow{
+ font-size:13px!important;letter-spacing:.055em!important;color:#a5d0ff!important;
+ margin-bottom:18px!important
+}
+#page-board .bb-hero h1{
+ font-size:clamp(46px,5vw,71px)!important;line-height:1.05!important;
+ letter-spacing:-.047em!important;max-width:860px!important
+}
+#page-board .bb-hero h1 span{color:#a6d0ff!important}
+#page-board .bb-sub{
+ color:#e0ecf9!important;font-size:clamp(16px,1.3vw,18px)!important;
+ line-height:1.7!important;max-width:670px!important;margin:19px 0 0!important
+}
+#page-board .bb-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin-top:26px}
+#page-board .bb-hero-action{
+ font:800 15px/1.35 Inter,system-ui,sans-serif!important;min-height:51px!important;
+ text-align:center!important;border-radius:10px!important;padding:12px 20px!important;
+ cursor:pointer!important
+}
+#page-board .bb-hero-action.primary{
+ color:#103252!important;background:#fff!important;border:2px solid #fff!important
+}
+#page-board .bb-hero-action.secondary{
+ color:#fff!important;background:#173f68!important;border:2px solid #91bce9!important
+}
+#page-board .bb-hero-action:hover{filter:brightness(1.1)}
+#page-board .bb-majority{
+ border:1px solid #6489af!important;border-radius:15px!important;
+ background:rgba(7,24,46,.86)!important;padding:27px!important;box-shadow:none!important
+}
+#page-board .bb-kicker{color:#bdd9f7!important;font-size:13px!important;letter-spacing:.035em!important;line-height:1.4!important}
+#page-board .bb-majority-year{color:#d9e8fa!important;font-size:12px!important}
+#page-board .bb-seats{margin:24px 0 17px!important;gap:12px!important}
+#page-board .bb-seat-side{gap:9px!important}
+#page-board .bb-seat-side strong{font-size:clamp(44px,4vw,60px)!important;line-height:1!important}
+#page-board .bb-seat-side small{font-size:13px!important;color:#edf5ff!important}
+#page-board .bb-seat-track{height:18px!important;gap:3px!important;border-radius:5px!important}
+#page-board .bb-seat-foot{font-size:13px!important;color:#dbe8f8!important;line-height:1.45!important;gap:14px!important}
+#page-board .bb-seat-foot b{color:#fff!important}
+#page-board .bb-metrics{margin:22px 0 30px!important;gap:15px!important}
+#page-board .bb-metric{
+ min-height:157px!important;background:#fff!important;border:1px solid #cbd9e7!important;
+ box-shadow:0 8px 24px rgba(10,38,75,.055)!important;
+ padding:23px 25px!important;border-radius:14px!important
+}
+#page-board .bb-metric small{
+ color:#3c607d!important;font-size:13px!important;letter-spacing:.025em!important;
+ text-transform:none!important;font-weight:800!important;line-height:1.4!important
+}
+#page-board .bb-metric strong{
+ color:#092a4b!important;font-size:clamp(28px,3vw,37px)!important;
+ letter-spacing:-.045em!important;line-height:1.15!important;margin:10px 0 8px!important;
+ overflow-wrap:anywhere!important
+}
+#page-board .bb-metric span{
+ color:#4f6479!important;font-size:14px!important;line-height:1.55!important
+}
+#page-board .bb-section-title{
+ margin:42px 0 19px!important;gap:18px!important;align-items:flex-end!important
+}
+#page-board .bb-section-title .bb-eyebrow{
+ color:#245787!important;font-size:12px!important;letter-spacing:.065em!important;margin-bottom:9px!important
+}
+#page-board .bb-section-title h2{
+ color:#102d4b!important;font-size:clamp(30px,3.4vw,41px)!important;
+ letter-spacing:-.05em!important;line-height:1.18!important
+}
+#page-board .bb-section-title p{
+ color:#516a83!important;font-size:16px!important;
+ line-height:1.55!important;max-width:790px!important;margin-top:9px!important
+}
+#page-board .bb-section-title>.bb-pill{
+ background:#e2edf8!important;border:1px solid #aabed4!important;color:#244c70!important;
+ border-radius:7px!important;font-size:12px!important;line-height:1.4!important;
+ padding:9px 12px!important;white-space:normal!important;text-align:center
+}
+#page-board .bb-focus{
+ background:linear-gradient(120deg,#0b2949,#112f52)!important;
+ border:1px solid #3b6189!important;border-radius:17px!important;
+ box-shadow:0 10px 32px rgba(10,36,67,.14)!important
+}
+#page-board .bb-focus-inner{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+#page-board .bb-focus-info,#page-board .bb-focus-polls{padding:clamp(25px,3.3vw,42px)!important}
+#page-board .bb-focus-info{border-right:1px solid #3b577a!important}
+#page-board .bb-focus-info:after{font-size:155px!important}
+#page-board .bb-focus-state{
+ font-size:clamp(35px,3.9vw,52px)!important;line-height:1.15!important;
+ margin:16px 0 15px!important;letter-spacing:-.04em!important
+}
+#page-board .bb-focus-pills{gap:9px!important;margin-bottom:20px!important}
+#page-board .bb-pill{
+ font-size:13px!important;line-height:1.35!important;letter-spacing:.01em!important;
+ padding:8px 12px!important;border-radius:7px!important
+}
+#page-board .bb-focus .bb-pill{color:#ebf5ff!important;border-color:#607d9f!important;background:#193f66!important}
+#page-board .bb-focus .bb-pill.dem{background:#194f87!important;color:#d2e9ff!important}
+#page-board .bb-focus .bb-pill.rep{background:#762e4a!important;color:#ffe0e7!important}
+#page-board .bb-focus .bb-pill.ind{background:#51377a!important;color:#f0ddff!important}
+#page-board .bb-focus-call{
+ color:#fff!important;font-size:clamp(22px,2.7vw,31px)!important;
+ letter-spacing:-.03em!important;line-height:1.25!important;margin:13px 0!important
+}
+#page-board .bb-focus-desc{
+ color:#d8e7f7!important;font-size:16px!important;line-height:1.7!important;
+ max-width:600px!important;margin:0 0 8px!important
+}
+#page-board .bb-focus-action{
+ min-height:52px!important;padding:13px 19px!important;font-size:15px!important;
+ line-height:1.35!important;border-radius:9px!important;
+ border:2px solid #91bef2!important;color:#fff!important;background:#215a9c!important;
+ text-align:center!important
+}
+#page-board .bb-focus-polls{gap:28px!important}
+#page-board .bb-poll-row-top{gap:15px!important}
+#page-board .bb-poll-name{color:#fff!important;font-size:18px!important;line-height:1.4!important;overflow-wrap:anywhere!important}
+#page-board .bb-party{height:12px!important;width:12px!important;margin-right:11px!important}
+#page-board .bb-poll-value{color:#fff!important;font-size:clamp(27px,3vw,34px)!important}
+#page-board .bb-candidate-bar{height:13px!important;margin-top:15px!important;background:#3a5776!important}
+#page-board .bb-focus-poll-foot{font-size:14px!important;line-height:1.5!important;color:#d0e2f4!important;gap:12px!important}
+#page-board .bb-focus-poll-foot strong{font-size:13px!important;color:#fff!important}
+
+/* Bigger interactive race cards: only two columns, never four. */
+#page-board .bb-toolbar{
+ margin:0 0 18px!important;gap:17px!important;align-items:center!important
+}
+#page-board .bb-filters{gap:10px!important}
+#page-board .bb-filter{
+ border-radius:9px!important;border:2px solid #b5c7d9!important;
+ background:#fff!important;color:#24435f!important;-webkit-text-fill-color:#24435f!important;
+ font:800 15px/1.3 Inter,system-ui,sans-serif!important;
+ padding:13px 17px!important;min-height:51px!important
+}
+#page-board .bb-filter[aria-pressed=true]{
+ background:#164d86!important;border-color:#164d86!important;
+ color:#fff!important;-webkit-text-fill-color:#fff!important
+}
+#page-board .bb-filter:hover{border-color:#3278bd!important}
+#page-board .bb-sort-wrap{font-size:14px!important;letter-spacing:0!important;color:#244767!important;gap:12px!important}
+#page-board .bb-sort{
+ border:2px solid #a9bfd5!important;background:#fff!important;color:#163d60!important;
+ font-size:15px!important;font-weight:800!important;min-height:52px!important;
+ padding:12px 15px!important;border-radius:9px!important;min-width:198px!important
+}
+#page-board .bb-board-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:17px!important}
+#page-board .bb-card{
+ min-height:293px!important;display:flex!important;flex-direction:column!important;
+ background:#fff!important;border:2px solid #ccdbea!important;color:#102c49!important;
+ border-radius:15px!important;padding:25px!important;box-shadow:0 8px 25px rgba(12,39,69,.055)!important;
+ transition:border-color .15s,box-shadow .15s!important
+}
+#page-board .bb-card:hover{
+ background:#f9fcff!important;border-color:#276eaf!important;transform:none!important;
+ box-shadow:0 12px 34px rgba(14,49,90,.12)!important
+}
+#page-board .bb-card[aria-pressed=true]{
+ border-color:#1466b2!important;background:#f2f8ff!important;
+ box-shadow:inset 0 0 0 1px #1466b2,0 9px 28px rgba(33,103,175,.13)!important
+}
+#page-board .bb-card-index{
+ color:#3c6082!important;font-size:13px!important;letter-spacing:.06em!important;
+ gap:12px!important;line-height:1.45!important
+}
+#page-board .bb-card-index em{
+ color:#184e80!important;background:#e7f1fb!important;border:1px solid #bdd5ed!important;
+ padding:6px 11px!important;border-radius:6px!important;text-align:center!important;
+ font-size:13px!important;line-height:1.35!important
+}
+#page-board .bb-card h3{
+ color:#102c49!important;font-size:clamp(28px,2.5vw,37px)!important;
+ line-height:1.14!important;margin:18px 0 12px!important;letter-spacing:-.04em!important
+}
+#page-board .bb-card-call{
+ color:#425b72!important;font-size:16px!important;line-height:1.5!important;
+ font-weight:650!important;min-height:0!important
+}
+#page-board .bb-card-call strong{color:#12395f!important;font-weight:850!important}
+#page-board .bb-card-names{padding-top:24px!important;gap:14px!important;margin:auto 0 16px!important}
+#page-board .bb-card-cand{font-size:17px!important;line-height:1.4!important;gap:14px!important}
+#page-board .bb-card-cand .bb-candidate-name{
+ color:#153553!important;text-overflow:clip!important;white-space:normal!important;
+ overflow:visible!important;overflow-wrap:anywhere!important;flex:1
+}
+#page-board .bb-card-cand .bb-pct{font-size:19px!important;color:#123451!important;flex:none!important}
+#page-board .bb-sharebar{height:14px!important;border-radius:5px!important;background:#d1dce8!important}
+#page-board .bb-card-footer{
+ color:#486785!important;font-size:14px!important;line-height:1.5!important;
+ gap:9px!important;margin-top:14px!important;align-items:start!important
+}
+#page-board .bb-card-footer>span:last-child{color:#1d5b94!important}
+#page-board .bb-card-footer .bb-difference{color:#93541e!important}
+#page-board .bb-empty{
+ background:#fff!important;border-color:#b0c9e2!important;color:#234561!important;
+ font-size:16px!important;line-height:1.5!important
+}
+#page-board .bb-footer{
+ border-top:1px solid #c1d2e4!important;color:#445f78!important;
+ font-size:14px!important;line-height:1.7!important;padding-top:25px!important;
+ margin-top:40px!important
+}
+#page-board .bb-footer a{color:#165d99!important;font-weight:800!important}
+
+/* The optional challenge is easy to discover, but collapsed on arrival. */
+#page-board .bb-game{
+ background:linear-gradient(120deg,#112f51,#0c2442)!important;
+ margin:27px 0 34px!important;border:1px solid #285581!important;border-radius:16px!important;
+ box-shadow:0 12px 28px rgba(13,37,73,.095)!important
+}
+#page-board .bb-game-head{padding:25px 29px!important;gap:20px!important}
+#page-board .bb-game-label{
+ color:#bcdeff!important;font-size:13px!important;letter-spacing:.045em!important;margin:0 0 11px!important
+}
+#page-board .bb-game h2{font-size:clamp(28px,2.8vw,36px)!important;line-height:1.2!important}
+#page-board .bb-game-title>p:last-child{
+ color:#e0eaf7!important;font-size:16px!important;line-height:1.6!important;
+ max-width:760px!important;margin-top:9px!important
+}
+#page-board .bb-game-toggle{
+ min-height:56px!important;padding:14px 22px!important;border:2px solid #fff!important;
+ font-size:16px!important;line-height:1.3!important;border-radius:9px!important;
+ background:#fff!important;color:#123f6b!important;-webkit-text-fill-color:#123f6b!important;
+ white-space:nowrap!important
+}
+#page-board .bb-game-content{padding:25px 28px 30px!important}
+#page-board .bb-game-score{
+ background:#0a2340!important;border-color:#587ca2!important;padding:22px!important
+}
+#page-board .bb-game-scorelabel{font-size:13px!important;letter-spacing:.055em!important;color:#cae3ff!important}
+#page-board .bb-game-big{font-size:37px!important}
+#page-board .bb-game-hint{font-size:16px!important;color:#e2effe!important}
+#page-board .bb-game-progress{height:13px!important;margin-top:16px!important}
+#page-board .bb-game-compare strong{font-size:29px!important}
+#page-board .bb-game-compare span{font-size:14px!important;color:#e1ecfb!important}
+#page-board .bb-game-ledger{gap:13px!important}
+#page-board .bb-game-ledger>div{padding:16px 20px!important}
+#page-board .bb-game-ledger span{font-size:14px!important;line-height:1.45!important}
+#page-board .bb-game-ledger b{font-size:30px!important}
+#page-board .bb-game-scenario{padding:20px!important}
+#page-board .bb-game-scenario-kicker{font-size:13px!important;letter-spacing:.04em!important;color:#c5dffc!important}
+#page-board .bb-game-scenario strong{font-size:clamp(24px,2.5vw,34px)!important;gap:14px!important}
+#page-board .bb-game-scenario p{font-size:14px!important;line-height:1.55!important;color:#e2ecf8!important}
+#page-board .bb-game-subhead h3{font-size:21px!important}
+#page-board .bb-game-subhead span{font-size:14px!important;color:#d2e2f5!important}
+#page-board .bb-game-races{
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:17px!important
+}
+#page-board .bb-game-race{
+ background:#0b2544!important;border-color:#44658b!important;
+ padding:21px!important;border-radius:13px!important
+}
+#page-board .bb-game-racehead h4{font-size:25px!important;line-height:1.2!important}
+#page-board .bb-game-racehead small{font-size:13px!important;color:#d6e6fb!important}
+#page-board .bb-game-status{font-size:12px!important;color:#c7d9eb!important;line-height:1.5!important}
+#page-board .bb-game-race[data-picked=true] .bb-game-status{color:#a2f1d9!important}
+#page-board .bb-game-choices{gap:12px!important}
+#page-board .bb-game-choice{
+ min-height:96px!important;border:2px solid #658ab3!important;border-radius:10px!important;
+ padding:17px!important;gap:8px!important;background:#193d67!important;
+ color:#fff!important;-webkit-text-fill-color:#fff!important
+}
+#page-board .bb-game-choice:hover{border-color:#c9e3ff!important;background:#22527e!important}
+#page-board .bb-game-choice[aria-pressed=true]{
+ border-color:#fff!important;background:#275b8e!important;
+ box-shadow:0 0 0 2px #89bfff!important
+}
+#page-board .bb-game-choice b{
+ font-size:16px!important;line-height:1.35!important;color:#fff!important;
+ overflow-wrap:anywhere!important;white-space:normal!important
+}
+#page-board .bb-game-choice span{font-size:13px!important;color:#d6e8fa!important}
+#page-board .bb-game-command{
+ min-height:52px!important;padding:14px 20px!important;font-size:15px!important;
+ border-radius:9px!important
+}
+#page-board .bb-game-result{padding:22px!important}
+#page-board .bb-game-result strong{font-size:25px!important}
+#page-board .bb-game-result p{font-size:16px!important;line-height:1.65!important}
+#page-board .bb-game-note{font-size:13px!important;line-height:1.6!important;color:#d5e5f6!important;margin-top:18px!important}
+
+/* Focus, selection, keyboard, and screen magnification. */
+#page-board button:focus-visible,#page-board select:focus-visible,
+#page-board a:focus-visible{
+ outline:4px solid #f2b544!important;outline-offset:4px!important
+}
+#page-board :is(#bb-race-list,[data-bb-challenge],[data-bb-focus]){scroll-margin-top:105px}
+#page-board .bb-filter,#page-board .bb-hero-action,#page-board .bb-card,
+#page-board .bb-game-toggle,#page-board .bb-game-choice{touch-action:manipulation}
+
+@media(max-width:1120px){
+ #page-board .bb-hero{grid-template-columns:1fr!important;gap:25px!important}
+ #page-board .bb-majority{max-width:740px!important}
+ #page-board .bb-focus-inner{grid-template-columns:1fr!important}
+ #page-board .bb-focus-info{border-right:0!important;border-bottom:1px solid #3b577a!important}
+ #page-board .bb-game-races{grid-template-columns:1fr!important}
+}
+@media(max-width:760px){
+ #page-board .bb-shell{padding:20px 16px 65px!important}
+ #page-board .bb-topline{gap:12px!important;flex-wrap:wrap!important;margin-bottom:19px!important}
+ #page-board .bb-top-left{font-size:12px!important}
+ #page-board .bb-topright{font-size:12px!important}
+ #page-board .bb-hero{padding:27px 22px!important;border-radius:14px!important}
+ #page-board .bb-hero h1{font-size:clamp(40px,9vw,58px)!important}
+ #page-board .bb-hero-actions{flex-direction:column!important;align-items:stretch!important}
+ #page-board .bb-hero-action{width:100%!important}
+ #page-board .bb-majority{padding:22px!important}
+ #page-board .bb-metrics{grid-template-columns:1fr!important;gap:11px!important}
+ #page-board .bb-metric{min-height:0!important;padding:20px!important}
+ #page-board .bb-metric strong{font-size:31px!important}
+ #page-board .bb-section-title{align-items:flex-start!important;flex-direction:column!important;gap:12px!important}
+ #page-board .bb-section-title p{font-size:15px!important}
+ #page-board .bb-focus-info,#page-board .bb-focus-polls{padding:25px 22px!important}
+ #page-board .bb-toolbar{align-items:stretch!important}
+ #page-board .bb-sort-wrap{width:100%!important;justify-content:space-between!important}
+ #page-board .bb-sort{flex:1!important;min-width:0!important}
+ #page-board .bb-board-grid{grid-template-columns:1fr!important}
+ #page-board .bb-card{min-height:275px!important;padding:23px!important}
+ #page-board .bb-game-head{align-items:stretch!important;flex-direction:column!important;padding:22px!important}
+ #page-board .bb-game-toggle{align-self:stretch!important}
+ #page-board .bb-game-content{padding:18px!important}
+ #page-board .bb-game-choices{grid-template-columns:1fr!important}
+ #page-board .bb-game-choice{min-height:78px!important}
+ #page-board .bb-game-ledger{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+ #page-board .bb-game-ledger>div{padding:13px 10px!important}
+ #page-board .bb-game-ledger span{font-size:11px!important}
+ #page-board .bb-game-ledger b{font-size:24px!important}
+ #page-board .bb-game-scenario{flex-direction:column!important;align-items:flex-start!important}
+}
+@media(min-width:761px) and (max-width:1000px){
+ #page-board .bb-board-grid{grid-template-columns:1fr!important}
+ #page-board .bb-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:420px){
+ #page-board .bb-seat-side strong{font-size:40px!important}
+ #page-board .bb-seat-foot{flex-wrap:wrap!important}
+ #page-board .bb-filter{font-size:14px!important;padding:12px!important}
+ #page-board .bb-filters{flex-direction:column!important;align-items:stretch!important}
+ #page-board .bb-game-scenario strong{font-size:21px!important;flex-wrap:wrap!important}
+ #page-board .bb-game-compare{align-items:start!important}
+ #page-board .bb-game-score{grid-template-columns:1fr!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #page-board .bb-card,#page-board button{transition:none!important}
+ #page-board .bb-card:hover,#page-board button:hover{transform:none!important}
+}
