@@ -1,7 +1,7 @@
 (()=>{
   const REP='#bd2937', DEM='#2763b8', IND='#8051d2';
   const PAGES=[['home','Home'],['senate','2026 Senate Prediction'],['board','Battleground Board'],['swing','Swing State Explanations'],['errors','Past Polling Errors'],['governor','2026 Governor Map'],['polls','New Polls'],['betting','Betting Odds'],['about','About Me']];
-  const PRIMARY=[['home','Home'],['senate','Senate Map'],['swing','Swing State Explanations'],['errors','Past Polling Errors']];
+  const PRIMARY=[['home','Home'],['senate','2026 Senate Map Prediction'],['swing','Swing State Explanations'],['errors','Past Polling Errors']];
   const EXPLORE=[['polls','New Polls'],['board','Battleground Board'],['governor','2026 Governor Map'],['betting','Live Kalshi Senate Odds'],['about','About Me']];
   let current='home',busy=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
@@ -99,10 +99,6 @@
         }
         body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button{
           height:39px!important;min-height:39px!important;padding:0 10px!important;font-size:11px!important
-        }
-        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="senate"]{font-size:0!important}
-        body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="senate"]:after{
-          content:"Senate";font:800 11px/1 Inter,ui-sans-serif,system-ui,sans-serif
         }
         body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="polls"]{font-size:0!important}
         body .site-header .nav[data-accepted-nav="1"][data-compact-nav="1"]>button[data-accepted-page="polls"]:after{
