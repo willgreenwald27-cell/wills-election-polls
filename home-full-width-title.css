@@ -1,0 +1,93 @@
+/* Homepage hero title takes over the space previously occupied by the white logo panel.
+   Scoped to the homepage; keeps the header logo, favicon, predictions and other pages. */
+body #page-home.reference-home .reference-hero{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  column-gap:0!important;
+  row-gap:clamp(18px,2vw,30px)!important;
+  align-items:center!important;
+  align-content:center!important;
+  padding:clamp(35px,4.8vw,78px)!important;
+  min-height:clamp(455px,40vw,610px)!important;
+}
+body #page-home.reference-home .reference-hero > .reference-hero-mark,
+body #page-home.reference-home .reference-hero .reference-mark-caption{
+  display:none!important;
+}
+body #page-home.reference-home .reference-hero > .reference-hero-copy{
+  grid-column:1/-1!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  align-self:center!important;
+}
+body #page-home.reference-home .reference-hero-copy h1{
+  max-width:100%!important;
+  width:100%!important;
+  font-family:Montserrat,Inter,Arial,sans-serif!important;
+  font-size:clamp(56px,7.2vw,114px)!important;
+  font-weight:800!important;
+  line-height:1.01!important;
+  letter-spacing:-.06em!important;
+  text-wrap:balance!important;
+  color:#fff!important;
+  margin:0 0 23px!important;
+}
+body #page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+  max-width:930px!important;
+  color:#d9e8fa!important;
+  font-size:clamp(16px,1.5vw,20px)!important;
+  line-height:1.55!important;
+}
+body #page-home.reference-home .reference-hero-actions{
+  justify-content:flex-start!important;
+  gap:13px!important;
+  margin-top:28px!important;
+}
+body #page-home.reference-home .reference-hero-actions :is(button,a){
+  min-height:49px!important;
+  padding:13px 21px!important;
+  font-size:14px!important;
+}
+body #page-home.reference-home .wr-signal-module{
+  grid-column:1/-1!important;
+  width:100%!important;
+  min-width:0!important;
+}
+@media(max-width:900px){
+  body #page-home.reference-home .reference-hero{
+    grid-template-columns:minmax(0,1fr)!important;
+    min-height:0!important;
+    padding:clamp(30px,5vw,48px)!important;
+  }
+  body #page-home.reference-home .reference-hero-copy h1{
+    font-size:clamp(48px,7.5vw,72px)!important;
+    line-height:1.04!important;
+  }
+}
+@media(max-width:600px){
+  body #page-home.reference-home .reference-hero{
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:20px!important;
+    padding:30px 21px 27px!important;
+  }
+  body #page-home.reference-home .reference-hero-copy h1{
+    font-size:clamp(42px,10vw,62px)!important;
+    line-height:1.06!important;
+    letter-spacing:-.055em!important;
+    overflow-wrap:normal!important;
+  }
+  body #page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+    font-size:16px!important;
+  }
+  body #page-home.reference-home .reference-hero-actions :is(button,a){
+    font-size:13px!important;
+  }
+}
+@media(max-width:390px){
+  body #page-home.reference-home .reference-hero-copy h1{
+    font-size:clamp(37px,10vw,45px)!important;
+  }
+}
