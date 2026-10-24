@@ -16,7 +16,8 @@ root.innerHTML=[
 '<main class="bb-shell">',
 '<div class="bb-topline"><div class="bb-top-left"><span class="bb-star" aria-hidden="true">✦</span> WILL\'S ELECTION DESK <span aria-hidden="true">/</span> 2026 SENATE</div><div class="bb-topright"><span class="bb-status-dot" aria-hidden="true"></span>FORECAST SNAPSHOT · NOT RESULTS</div></div>',
 '<div class="bb-hero"><div><p class="bb-eyebrow">THE ROAD TO 51 · 2026 MIDTERMS</p><h1>The Battleground <span>Board.</span></h1>',
-'<p class="bb-sub">Eight pivotal Senate contests. One clear view of the polling averages, Will\'s independent race ratings, and where his forecasts break from the numbers.</p></div>',
+'<p class="bb-sub">Follow eight important Senate races. See who leads in the polls, read Will\'s forecast, and choose a state to explore the details.</p>',
+'<div class="bb-hero-actions"><button type="button" class="bb-hero-action primary" data-bb-jump="races">Browse the eight races ↓</button><button type="button" class="bb-hero-action secondary" data-bb-jump="game">Make your own predictions ↗</button></div></div>',
 '<aside class="bb-majority" aria-label="Current site Senate majority forecast"><div class="bb-majority-header"><span class="bb-kicker">PROJECTED SENATE BALANCE</span><span class="bb-majority-year">100 SEATS</span></div>',
 '<div class="bb-seats"><div class="bb-seat-side"><strong data-bb-dem>—</strong><small>DEM</small></div><div class="bb-seat-side"><strong data-bb-rep>—</strong><small>GOP</small></div></div>',
 '<div class="bb-seat-track" data-bb-seatbar aria-label="Current Senate majority projection"><span style="width:50%"></span><span style="width:50%"></span></div>',
@@ -24,14 +25,14 @@ root.innerHTML=[
 '<div class="bb-metrics" aria-label="Battleground overview">',
 '<div class="bb-metric"><small>Races on the board</small><strong data-bb-total>—</strong><span>Selected competitive contests</span></div>',
 '<div class="bb-metric"><small>Closest polling average</small><strong data-bb-closest>—</strong><span data-bb-closest-sub>Candidate polling difference</span></div>',
-'<div class="bb-metric"><small>Polling / forecast split</small><strong data-bb-split>—</strong><span>Races where the polling leader differs from Will\'s call</span></div></div>',
-'<div class="bb-section-title"><div><p class="bb-eyebrow">01 / RACE IN FOCUS</p><h2>Inside the contest</h2></div><span class="bb-pill">SELECT ANY RACE BELOW</span></div>',
+'<div class="bb-metric"><small>Polls vs. forecast</small><strong data-bb-split>—</strong><span>Races where the polling leader differs from Will\'s forecast</span></div></div>',
+'<div class="bb-section-title"><div><p class="bb-eyebrow">01 / SELECTED STATE</p><h2>Race details</h2><p>Choose a state from the race cards below to see the candidates and polling numbers here.</p></div><span class="bb-pill">RACE-BY-RACE ANALYSIS</span></div>',
 '<section class="bb-focus" data-bb-focus aria-live="polite" aria-label="Selected battleground race"></section>',
-'<div class="bb-section-title"><div><p class="bb-eyebrow">02 / ALL BATTLEGROUNDS</p><h2>The race board</h2><p>Each race card shows existing polling averages and the separate independent forecast.</p></div><span class="bb-pill" data-bb-count>8 RACES</span></div>',
+'<div class="bb-section-title" id="bb-race-list"><div><p class="bb-eyebrow">02 / ALL BATTLEGROUNDS</p><h2>Choose a state</h2><p>Select any race card for a larger view of its polling averages and forecast.</p></div><span class="bb-pill" data-bb-count>8 RACES</span></div>',
 '<div class="bb-toolbar"><div class="bb-filters" role="group" aria-label="Filter races">',
 '<button type="button" class="bb-filter" data-bb-filter="all" aria-pressed="true">All races</button>',
-'<button type="button" class="bb-filter" data-bb-filter="close" aria-pressed="false">Tilt / Toss-up</button>',
-'<button type="button" class="bb-filter" data-bb-filter="split" aria-pressed="false">Poll vs. call</button></div>',
+'<button type="button" class="bb-filter" data-bb-filter="close" aria-pressed="false">Close races</button>',
+'<button type="button" class="bb-filter" data-bb-filter="split" aria-pressed="false">Polls differ from forecast</button></div>',
 '<label class="bb-sort-wrap" for="bbSort">SORT BY <select class="bb-sort" id="bbSort"><option value="close">Closest polling</option><option value="alpha">State A–Z</option><option value="call">Forecast rating</option></select></label></div>',
 '<div class="bb-board-grid" data-bb-grid aria-label="Selected Senate battlegrounds"></div>',
 '<footer class="bb-footer"><span>Forecasts are independent judgments, not official results. Polling figures use the site\'s existing candidate averages; methodology and inputs may evolve.</span><a href="/?page=senate" data-bb-map>View the full 2026 Senate map ↗</a></footer>',
@@ -94,11 +95,11 @@ function card(r,i){
  function bar(p,v){return '<span class="'+p+'" style="width:'+Math.max(0,Math.min(100,v??0))+'%"></span>';}
  const rem=Math.max(0,100-(r.a??0)-(r.b??0));
  return '<button type="button" class="bb-card" data-bb-state="'+esc(r.ab)+'" aria-pressed="'+(r.ab===selected?'true':'false')+'" aria-label="Focus on '+esc(r.name)+' Senate race">'+
- '<div class="bb-card-index"><span>RACE '+String(i+1).padStart(2,'0')+' / '+esc(r.ab)+'</span><em>'+esc(ratingLabel(r.rating))+'</em></div>'+
+ '<div class="bb-card-index"><span>STATE '+esc(r.ab)+'</span><em>'+esc(ratingLabel(r.rating))+'</em></div>'+
  '<h3>'+esc(r.name)+'</h3><div class="bb-card-call">Will\'s call: <strong>'+esc(call(r))+'</strong></div>'+
  '<div class="bb-card-names">'+candidate(s.candidate1,r.p1,r.a)+candidate(s.candidate2,r.p2,r.b)+'</div>'+
  '<div class="bb-sharebar" aria-label="Candidate polling percentages">'+bar(r.p1,r.a)+bar(r.p2,r.b)+'<span style="width:'+rem+'%;background:#38516f"></span></div>'+
- '<div class="bb-card-footer"><span>Polling gap: '+(r.gap===null?'—':r.gap.toFixed(1)+' pts')+'</span>'+
+ '<div class="bb-card-footer"><span>Gap between candidates: '+(r.gap===null?'—':r.gap.toFixed(1)+' points')+'</span>'+
  (r.split?'<span class="bb-difference">◆ Polls / call diverge</span>':'<span>VIEW DETAILS →</span>')+'</div></button>';
 }
 function text(selector,value){const el=root.querySelector(selector);if(el)el.textContent=value;}
@@ -125,6 +126,14 @@ function render(force=false){
  const select=root.querySelector('#bbSort');if(select&&select.value!==sort)select.value=sort;
 }
 root.addEventListener('click',e=>{
+ const jump=e.target.closest('[data-bb-jump]');
+ if(jump){
+  const play=jump.dataset.bbJump==='game';
+  const destination=play?root.querySelector('[data-bb-challenge]'):root.querySelector('#bb-race-list');
+  if(play){const toggle=destination?.querySelector('[data-bbg-toggle]');if(toggle?.getAttribute('aria-expanded')!=='true')toggle?.click();}
+  destination?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  return;
+ }
  const card=e.target.closest('[data-bb-state]');
  if(card){selected=card.dataset.bbState;render(true);root.querySelector('[data-bb-focus]')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});return;}
  const b=e.target.closest('[data-bb-filter]');
