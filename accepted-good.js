@@ -293,8 +293,8 @@
       document.getElementById('wg-night-view')?.remove();
       document.getElementById('wg-night-embed-style')?.remove();
       const url=new URL(location.href);
-      if(k==='swing'||k==='board')url.searchParams.set('page',k);
-      else if(['swing','board','electionnight'].includes(url.searchParams.get('page')))url.searchParams.delete('page');
+      if(k==='swing'||k==='board'||k==='errors')url.searchParams.set('page',k);
+      else if(['swing','board','errors','electionnight'].includes(url.searchParams.get('page')))url.searchParams.delete('page');
       if(url.href!==location.href)history.replaceState(null,'',url.pathname+url.search+url.hash);
       current=k; activeNav(); if(scroll) window.scrollTo(0,0);
     }finally{busy=false;}
@@ -575,7 +575,7 @@ function fixAboutPollCount(){
   window.addEventListener('resize',positionMore);
 
 
-  current=['swing','board'].includes(new URLSearchParams(location.search).get('page'))?new URLSearchParams(location.search).get('page'):'home';
+  current=['swing','board','errors'].includes(new URLSearchParams(location.search).get('page'))?new URLSearchParams(location.search).get('page'):'home';
   apply();
   pageEl('governor'); show(current,false);
   setTimeout(apply,100); setTimeout(apply,500); setTimeout(apply,1500);
