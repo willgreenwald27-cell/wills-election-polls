@@ -1,0 +1,60 @@
+/* 2026 Forecast Challenge: Battleground Board, interactive, explicitly hypothetical */
+#page-board .bb-game{margin:32px 0 40px;border:1px solid #376294;border-radius:20px;overflow:hidden;background:radial-gradient(ellipse at 8% 15%,rgba(46,117,208,.18),transparent 45%),linear-gradient(140deg,#112c4e,#0a1d37);box-shadow:0 22px 60px rgba(0,7,19,.17);color:#fff}
+#page-board .bb-game-head{padding:27px clamp(19px,2.7vw,35px);display:flex;align-items:center;justify-content:space-between;gap:18px}
+#page-board .bb-game-label{display:inline-flex;align-items:center;gap:8px;font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#9ec7ff;margin:0 0 11px}
+#page-board .bb-game-label .bb-game-pulse{width:8px;height:8px;border-radius:50%;background:#ff7994;box-shadow:0 0 0 5px rgba(255,121,148,.12)}
+#page-board .bb-game h2{color:#fff!important;font:800 clamp(25px,3vw,37px)/1.08 Montserrat,Inter,system-ui,sans-serif!important;letter-spacing:-.05em;margin:0!important}
+#page-board .bb-game-title > p:last-child{font:500 13px/1.65 Inter,system-ui,sans-serif;color:#b5cbe7;margin:10px 0 0;max-width:650px}
+#page-board .bb-game-toggle{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:11px;background:#f1f7ff;border:1px solid #c3d9f7;color:#143b68;-webkit-text-fill-color:#143b68;border-radius:10px;padding:13px 18px;font:850 12px/1.2 Inter,system-ui,sans-serif;cursor:pointer}
+#page-board .bb-game-toggle:hover{background:#fff}
+#page-board .bb-game-toggle .bb-game-chevron{font-size:16px;transition:transform .15s}
+#page-board .bb-game-toggle[aria-expanded=true] .bb-game-chevron{transform:rotate(180deg)}
+#page-board .bb-game-content{border-top:1px solid #355573;padding:23px clamp(17px,2.7vw,35px) 30px}
+#page-board .bb-game-score{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding:18px 20px 20px;border:1px solid #3a5678;background:rgba(5,18,38,.42);border-radius:13px}
+#page-board .bb-game-scorelabel{font:850 10px/1.3 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a8c5e6;margin:0}
+#page-board .bb-game-progressline{display:flex;align-items:baseline;gap:11px;margin-top:10px}
+#page-board .bb-game-big{font:800 31px/1 Montserrat,Inter,sans-serif;letter-spacing:-.05em;color:#fff}
+#page-board .bb-game-hint{font:650 12px/1.4 Inter,system-ui,sans-serif;color:#b1c7e2}
+#page-board .bb-game-progress{height:9px;border-radius:99px;overflow:hidden;background:#24405f;margin-top:13px;max-width:570px}
+#page-board .bb-game-progress > span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#60a7f9,#a5dbff);border-radius:99px;transition:width .2s}
+#page-board .bb-game-compare{display:flex;flex-direction:column;align-items:end;gap:5px}
+#page-board .bb-game-compare strong{font:800 25px/1 Montserrat,Inter,sans-serif;color:#98ccff}
+#page-board .bb-game-compare span{color:#b6cbe6;font-size:11px;font-weight:700;text-align:right}
+#page-board .bb-game-ledger{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0 19px}
+#page-board .bb-game-ledger > div{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;background:#193451;border:1px solid #345575;border-radius:10px}
+#page-board .bb-game-ledger span{font:800 11px/1.25 Inter,system-ui,sans-serif;color:#d7e7fb}
+#page-board .bb-game-ledger b{font:800 27px/1 Montserrat,Inter,sans-serif;letter-spacing:-.04em}
+#page-board .bb-game-ledger .dem b{color:#85bdff}#page-board .bb-game-ledger .rep b{color:#ff8a9e}#page-board .bb-game-ledger .ind b{color:#c1a5ff}
+#page-board .bb-game-subhead{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:23px 0 13px}
+#page-board .bb-game-subhead h3{font:800 16px/1.2 Inter,system-ui,sans-serif;color:#fff;margin:0!important}
+#page-board .bb-game-subhead span{color:#9fbbdb;font:650 11px/1.4 Inter,system-ui,sans-serif}
+#page-board .bb-game-races{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#page-board .bb-game-race{background:rgba(8,25,48,.68);border:1px solid #345678;border-radius:12px;padding:17px 17px 18px;min-width:0}
+#page-board .bb-game-race[data-picked=true]{border-color:#749ed2;background:rgba(14,41,73,.9)}
+#page-board .bb-game-racehead{display:flex;align-items:start;justify-content:space-between;gap:10px;margin-bottom:15px}
+#page-board .bb-game-racehead h4{font:800 20px/1.1 Montserrat,Inter,sans-serif;color:#fff;margin:0 0 7px;letter-spacing:-.04em}
+#page-board .bb-game-racehead small{display:block;font-size:11px;line-height:1.4;color:#9ab6d4}
+#page-board .bb-game-status{color:#a9c0db;white-space:nowrap;font:800 10px/1.2 Inter,system-ui,sans-serif;letter-spacing:.035em}
+#page-board .bb-game-race[data-picked=true] .bb-game-status{color:#89dcca}
+#page-board .bb-game-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#page-board .bb-game-choice{display:flex;flex-direction:column;align-items:start;justify-content:center;min-width:0;min-height:67px;text-align:left;gap:6px;cursor:pointer;padding:11px 12px;border-radius:9px;border:1px solid #3e5f85;background:#173756;color:#e6effb!important;-webkit-text-fill-color:#e6effb!important;transition:border-color .15s,background .15s}
+#page-board .bb-game-choice:hover{background:#21476f;border-color:#97c8ff}
+#page-board .bb-game-choice[aria-pressed=true]{background:rgba(63,132,205,.22);border-color:#a8d4ff;box-shadow:inset 0 0 0 1px rgba(168,212,255,.35)}
+#page-board .bb-game-choice:before{content:"";width:15px;height:4px;border-radius:3px;background:#9a85d0}
+#page-board .bb-game-choice.dem:before{background:#78b5ff}
+#page-board .bb-game-choice.rep:before{background:#f4798f}
+#page-board .bb-game-choice.ind:before{background:#bc9aff}
+#page-board .bb-game-choice b{display:block;width:100%;overflow-wrap:anywhere;font:800 12px/1.23 Inter,system-ui,sans-serif;color:#f2f7ff}
+#page-board .bb-game-choice span{font:700 10px/1.2 Inter,system-ui,sans-serif;color:#b2c7e3}
+#page-board .bb-game-commands{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:21px}
+#page-board .bb-game-command{background:#3178ca;color:#fff!important;-webkit-text-fill-color:#fff!important;border:1px solid #75b3f9;border-radius:9px;cursor:pointer;font:800 12px/1.25 Inter,system-ui,sans-serif;padding:12px 16px;min-height:43px}
+#page-board .bb-game-command.secondary{background:#1b3758;border-color:#44678c;color:#d1e6fb!important;-webkit-text-fill-color:#d1e6fb!important}
+#page-board .bb-game-command:disabled{opacity:.4;cursor:not-allowed}
+#page-board .bb-game-result{margin-top:19px;background:linear-gradient(120deg,#214979,#153454);border:1px solid #648dbb;border-radius:12px;padding:21px;display:grid;gap:8px}
+#page-board .bb-game-result strong{display:block;font:800 21px/1.2 Montserrat,Inter,sans-serif;color:#fff}
+#page-board .bb-game-result p{color:#d0e1f5;font:500 12px/1.65 Inter,system-ui,sans-serif;margin:0}
+#page-board .bb-game-note{display:block;color:#9eb8d5;font-size:11px;line-height:1.55;margin-top:15px}
+#page-board .bb-game .bb-game-choice:focus-visible,#page-board .bb-game .bb-game-toggle:focus-visible,#page-board .bb-game .bb-game-command:focus-visible{outline:3px solid #9dcaff!important;outline-offset:2px}
+@media(max-width:920px){#page-board .bb-game-races{grid-template-columns:1fr}#page-board .bb-game-head{align-items:flex-start}#page-board .bb-game-ledger{gap:7px}}
+@media(max-width:600px){#page-board .bb-game{margin-top:23px;border-radius:14px}#page-board .bb-game-head{padding:20px 17px;flex-direction:column;align-items:stretch;gap:18px}#page-board .bb-game-toggle{align-self:flex-start}#page-board .bb-game-content{padding:19px 15px 25px}#page-board .bb-game-score{grid-template-columns:1fr;gap:13px;padding:15px}#page-board .bb-game-compare{flex-direction:row;align-items:center;justify-content:space-between}#page-board .bb-game-compare strong{font-size:20px}#page-board .bb-game-ledger{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}#page-board .bb-game-ledger>div{padding:10px 8px;flex-direction:column;align-items:flex-start;gap:4px}#page-board .bb-game-ledger b{font-size:22px}#page-board .bb-game-ledger span{font-size:9px}#page-board .bb-game-race{padding:14px}#page-board .bb-game-choices{gap:6px}#page-board .bb-game-choice{padding:10px 9px;min-height:78px}#page-board .bb-game-choice b{font-size:11px}#page-board .bb-game-subhead{align-items:start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){#page-board .bb-game *{transition:none!important;animation:none!important}}
