@@ -11,8 +11,6 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
-    // RealClearPolling listing supplied on October 24, 2026 (poll dated October 23).
-    ['2026-10-23','TX','Texas','Rasmussen Reports*','James Talarico',45,'Ken Paxton',45,'Tie'],
     // RealClearPolling listings supplied on October 23, 2026 (polls dated October 22).
     ['2026-10-22','ME','Maine','FOX News','Troy Jackson',49,'Susan Collins',49,'Tie'],
     ['2026-10-22','IA','Iowa','InsiderAdvantage','Ashley Hinson',47,'Josh Turek',45,'Hinson +2'],
