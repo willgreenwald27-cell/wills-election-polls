@@ -316,8 +316,8 @@ function ensureHousePrediction(){
   const section=document.createElement('section'); section.id='housePrediction2026';
   section.style.cssText='width:100%;margin:28px 0 10px;display:block';
   const img=document.createElement('img');
-  img.src='/house-prediction.svg?v=20260908-2208';
-  img.alt="Will’s House of Reps Prediction: Democrats 228 seats, Republicans 207 seats; 218 needed for a majority.";
+  img.src='/house-prediction.svg?v=20261026-235-200';
+  img.alt="Will’s House of Reps Prediction: Democrats 235 seats, Republicans 200 seats; 218 needed for a majority.";
   img.style.cssText='display:block;width:100%;height:auto;border-radius:16px';
   section.appendChild(img);
   const metrics=root.querySelector('.reference-metrics');
