@@ -1,0 +1,66 @@
+/* Laptop / Chromebook layout repair — Oct 26, 2026.
+   Do not affect phone layouts or wide desktop monitors. */
+@media (min-width:901px) and (max-width:1500px) {
+  /* The title previously grew to nearly 100px at common Chromebook widths. */
+  body #page-home.reference-home .reference-hero {
+    min-height:0!important;
+    height:auto!important;
+    padding:clamp(27px,3vw,43px)!important;
+    row-gap:clamp(13px,1.8vw,25px)!important;
+  }
+  body #page-home.reference-home .reference-hero-copy h1 {
+    font-size:clamp(39px,4.1vw,59px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.047em!important;
+    margin-bottom:15px!important;
+    max-width:100%!important;
+    overflow-wrap:normal!important;
+  }
+  body #page-home.reference-home .reference-hero-copy>p:not(#homeModelNote) {
+    font-size:clamp(15px,1.15vw,18px)!important;
+    line-height:1.5!important;
+  }
+  body #page-home.reference-home .reference-hero-actions {
+    margin-top:17px!important;
+  }
+  /* The forecast map needs the width of the whole laptop viewport.
+     Put its supplementary race sidebar below it, rather than squeezing it
+     into a 2-column grid and clipping southern states. */
+  #page-senate.senate-immersive.wg-studio .forecast-layout {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:18px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .forecast-layout>*,
+  #page-senate.senate-immersive.wg-studio .map-card {
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    width:100%!important;
+    box-sizing:border-box!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap svg {
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  #page-senate.senate-immersive.wg-studio .page-head {
+    padding:clamp(22px,2.2vw,32px) clamp(17px,2.6vw,40px)!important;
+  }
+  #page-senate.senate-immersive.wg-studio .page-head h1 {
+    font-size:clamp(35px,3.7vw,51px)!important;
+    line-height:1.06!important;
+    margin-bottom:11px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .sidebar {
+    width:100%!important;
+    min-width:0!important;
+  }
+}
