@@ -11,6 +11,13 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling Senate listings supplied October 26 (poll dates October 23–25).
+    ['2026-10-25','NH','New Hampshire','Rasmussen Reports*','Chris Pappas',50,'John Sununu',44,'Pappas +6'],
+    ['2026-10-25','NC','North Carolina','Quantus Insights','Roy Cooper',51,'Michael Whatley',43,'Cooper +8'],
+    ['2026-10-25','MI','Michigan','Michigan State/YouGov','Abdul El-Sayed',48,'Mike Rogers',46,'El-Sayed +2'],
+    ['2026-10-25','SD','South Dakota','SDNW/Mason-Dixon','Mike Rounds',56,'Brian Bengs',37,'Rounds +19'],
+    ['2026-10-24','ME','Maine','Trafalgar Group','Troy Jackson',47,'Susan Collins',47,'Tie'],
+    ['2026-10-23','TX','Texas','Rasmussen Reports*','James Talarico',45,'Ken Paxton',45,'Tie'],
     // RealClearPolling listings supplied on October 23, 2026 (polls dated October 22).
     ['2026-10-22','ME','Maine','FOX News','Troy Jackson',49,'Susan Collins',49,'Tie'],
     ['2026-10-22','IA','Iowa','InsiderAdvantage','Ashley Hinson',47,'Josh Turek',45,'Hinson +2'],
