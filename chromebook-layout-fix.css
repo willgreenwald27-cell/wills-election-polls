@@ -64,3 +64,21 @@
     min-width:0!important;
   }
 }
+
+/* Zoomed Chromebook screens can report tablet-sized CSS widths. */
+@media (min-width:768px) and (max-width:900px) {
+  #page-senate.senate-immersive.wg-studio .forecast-layout {
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap svg {
+    width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+}
