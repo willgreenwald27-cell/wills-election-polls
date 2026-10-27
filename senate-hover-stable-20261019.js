@@ -1,134 +1,113 @@
-/* Restore the site's native mapHoverCard. No extra cards or global DOM observers. */
+/* Stable Senate map hover — one visual tooltip, native click and touch retained.
+   The older mapHoverCard is manipulated by several legacy event handlers.
+   This tooltip never shares their element, so it cannot flicker between states. */
 (()=>{
   'use strict';
-  if(window.__wgNativeHoverRestored)return;
-  window.__wgNativeHoverRestored=true;
-
-  const style=document.createElement('style');
-  style.id='wg-native-hover-restored';
-  style.textContent=[
-    '#page-senate .map-wrap svg .state-shape[data-state]{pointer-events:visiblePainted!important;cursor:pointer!important}',
-    '#page-senate .map-wrap svg .state-label,#page-senate .map-wrap svg .inset-label,#page-senate .map-wrap svg .inset-frame,#page-senate .map-wrap svg [data-label]{pointer-events:none!important}',
+  if(window.__wgSenateSingleHover20261026)return;
+  window.__wgSenateSingleHover20261026=true;
+  const ID='wgSenateStableHoverTip';
+  const css=document.createElement('style');
+  css.id='wg-senate-single-hover-style';
+  css.textContent=[
     '@media (hover:hover) and (pointer:fine){',
-    '  #page-senate .map-wrap #mapHoverCard.show{opacity:1!important;visibility:visible!important;display:block!important;pointer-events:none!important;transition:none!important}',
-    '  #page-senate .map-wrap #mapHoverCard:not(.show){opacity:0!important;visibility:hidden!important;pointer-events:none!important}',
-    '}'
+    '  #page-senate #mapHoverCard{display:none!important;visibility:hidden!important;opacity:0!important;}',
+    '  #page-senate .map-wrap svg .state-shape[data-state]{pointer-events:visiblePainted!important;cursor:pointer!important;}',
+    '  #page-senate .map-wrap svg :is(.state-label,.inset-label,.inset-frame,[data-label]){pointer-events:none!important;}',
+    '}',
+    '#'+ID+'{position:fixed!important;z-index:10050!important;display:none;box-sizing:border-box;',
+    'width:min(340px,calc(100vw - 24px));max-height:min(65vh,500px);overflow:hidden;',
+    'padding:16px 18px;border:1px solid #6999e4;border-top:3px solid #5489ff;border-radius:7px;',
+    'background:rgba(9,19,39,.985);color:#f8fbff;box-shadow:0 18px 42px rgba(0,0,0,.36);',
+    'font:500 14px/1.43 Inter,Arial,sans-serif;pointer-events:none!important;',
+    'transition:none!important;animation:none!important;contain:layout style;}',
+    '#'+ID+' .map-hover-state{font-size:21px;font-weight:850;line-height:1.2;margin-bottom:9px;color:white;}',
+    '#'+ID+' .map-hover-section-title{font-weight:850;font-size:11px;letter-spacing:.07em;color:#a9cafa;}',
+    '#'+ID+' .prediction-copy{display:block;margin:5px 0 9px;font-weight:750;color:#fff;}',
+    '#'+ID+' .map-hover-line{margin-top:6px;}',
+    '#'+ID+' *{transition:none!important;animation:none!important;}'
   ].join('\n');
-  document.head.appendChild(style);
-  let active='',lastEvent=null,frame=0;
-  const abbr=el=>el?.getAttribute?.('data-state')||el?.closest?.('[data-state]')?.getAttribute('data-state');
-  const isFine=e=>e.pointerType==='mouse'||e.pointerType==='pen'||(!e.pointerType&&matchMedia('(hover:hover) and (pointer:fine)').matches);
-  function data(ab){
-    try{return typeof stateData!=='undefined'?stateData[ab]:window.stateData?.[ab]}catch(_){return null}
-  }
-  function underPointer(e){
-    const wrap=document.querySelector('#page-senate .map-wrap'),svg=wrap?.querySelector('svg');
-    if(!wrap||!svg)return null;
-    const sr=svg.getBoundingClientRect();
-    if(e.clientX<sr.left||e.clientX>sr.right||e.clientY<sr.top||e.clientY>sr.bottom)return null;
-    const sel='#page-senate .map-wrap svg [data-state]';
-    const target=e.target?.closest?.(sel);
-    if(target&&data(abbr(target)))return abbr(target);
-    for(const el of document.elementsFromPoint(e.clientX,e.clientY)){
-      const p=el.closest?.(sel);
-      if(p&&data(abbr(p)))return abbr(p);
-    }
-    // Overlays sometimes intercept events even when a state shape is visible.
-    // Use the SVG's actual geometry as a final hit test, never just its bbox.
-    for(const path of svg.querySelectorAll('.state-shape[data-state]')){
-      const r=path.getBoundingClientRect();
-      if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)continue;
-      try{
-        if(typeof path.isPointInFill==='function'){
-          const matrix=path.getScreenCTM();
-          if(!matrix)continue;
-          const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());
-          if(path.isPointInFill(p))return abbr(path);
-        }
-      }catch(_){}
-    }
-    return null;
-  }
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  document.head.appendChild(css);
+  const tip=document.createElement('div');
+  tip.id=ID;
+  tip.setAttribute('role','tooltip');
+  tip.setAttribute('aria-hidden','true');
+  document.body.appendChild(tip);
+  let current='',queued=0,latest=null;
+  const fine=()=>window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const getData=ab=>{
+    try{return typeof stateData!=='undefined' ? stateData[ab] : window.stateData?.[ab]}catch(_){return null}
+  };
+  const escapeHTML=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function fallback(ab){
-    const s=data(ab);
-    const line=i=>s?.['candidate'+i]?'<div class="map-hover-line">'+esc(s['candidate'+i])+'</div>':'';
-    return '<div class="map-hover-state">'+esc(s?.name||ab)+'</div>'+
+    const s=getData(ab)||{};
+    return '<div class="map-hover-state">'+escapeHTML(s.name||ab)+'</div>'+
       '<div class="map-hover-section-title">WILL’S CALL</div>'+
-      '<div class="prediction-copy">'+esc(s?.prediction||String(s?.rating||'').replace(/-/g,' '))+'</div>'+
-      line(1)+line(2);
-  }
-  function show(ab){
-    const card=document.getElementById('mapHoverCard');
-    if(!card||!data(ab))return;
-    if(active!==ab){
-      active=ab;
-      try{
-        card.innerHTML=typeof hoverCardHTML==='function'?hoverCardHTML(ab):fallback(ab);
-      }catch(_){card.innerHTML=fallback(ab)}
-    }
-    card.classList.add('show');
-    // Device media queries can classify a trackpad as hover:none and otherwise
-    // hide a genuinely opened popup with display:none!important.
-    card.style.setProperty('display','block','important');
-    card.style.setProperty('opacity','1','important');
-    card.style.setProperty('visibility','visible','important');
-  }
-  function position(x,y){
-    const card=document.getElementById('mapHoverCard');
-    const wrap=document.querySelector('#page-senate .map-wrap');
-    if(!card||!wrap||!active)return;
-    const r=wrap.getBoundingClientRect();
-    const width=card.offsetWidth||300,height=card.offsetHeight||140;
-    let left=x-r.left+16,top=y-r.top+16;
-    if(left+width>r.width-10)left=x-r.left-width-16;
-    if(top+height>r.height-10)top=y-r.top-height-16;
-    card.style.left=Math.max(8,Math.min(left,Math.max(8,r.width-width-8)))+'px';
-    card.style.top=Math.max(8,Math.min(top,Math.max(8,r.height-height-8)))+'px';
+      '<div class="prediction-copy">'+escapeHTML(s.prediction||String(s.rating||'').replace(/-/g,' '))+'</div>'+
+      [1,2].map(i=>s['candidate'+i]?'<div class="map-hover-line">'+escapeHTML(s['candidate'+i])+'</div>':'').join('');
   }
   function hide(){
-    active='';lastEvent=null;
-    if(frame)cancelAnimationFrame(frame);
-    frame=0;
-    const card=document.getElementById('mapHoverCard');
-    if(card){
-      card.classList.remove('show');
-      card.style.setProperty('display','none','important');
-      card.style.setProperty('opacity','0','important');
-      card.style.setProperty('visibility','hidden','important');
+    current='';
+    tip.style.display='none';
+    tip.setAttribute('aria-hidden','true');
+  }
+  function findState(e,svg){
+    const x=e.clientX,y=e.clientY;
+    const rect=svg.getBoundingClientRect();
+    if(x<rect.left||x>rect.right||y<rect.top||y>rect.bottom)return '';
+    const fromTarget=e.target?.closest?.('.state-shape[data-state]');
+    if(fromTarget&&svg.contains(fromTarget)&&getData(fromTarget.dataset.state))return fromTarget.dataset.state;
+    for(const el of document.elementsFromPoint(x,y)){
+      const hit=el.closest?.('.state-shape[data-state]');
+      if(hit&&svg.contains(hit)&&getData(hit.dataset.state))return hit.dataset.state;
     }
+    // State label overlays and Alaska's inset may obscure path hit-testing.
+    // Use actual SVG fill geometry, never rectangular bounds alone.
+    for(const path of svg.querySelectorAll('.state-shape[data-state]')){
+      const r=path.getBoundingClientRect();
+      if(x<r.left||x>r.right||y<r.top||y>r.bottom)continue;
+      if(typeof path.isPointInFill!=='function')continue;
+      try{
+        const matrix=path.getScreenCTM();
+        if(matrix&&path.isPointInFill(new DOMPoint(x,y).matrixTransform(matrix.inverse()))&&getData(path.dataset.state))
+          return path.dataset.state;
+      }catch(_){}
+    }
+    return '';
   }
-  function track(e){
-    if(!isFine(e))return;
+  function update(){
+    queued=0;
+    const e=latest;
+    if(!e||!fine()){hide();return}
     const page=document.getElementById('page-senate');
-    if(!page||!page.getClientRects().length){hide();return}
-    const ab=underPointer(e);
+    const svg=page?.querySelector('.map-wrap svg');
+    if(!page||!page.getClientRects().length||!svg){hide();return}
+    const ab=findState(e,svg);
     if(!ab){hide();return}
-    show(ab);
-    lastEvent={x:e.clientX,y:e.clientY};
-    if(!frame)frame=requestAnimationFrame(()=>{
-      frame=0;
-      if(lastEvent&&active)position(lastEvent.x,lastEvent.y);
-    });
+    if(current!==ab){
+      current=ab;
+      try{
+        const html=typeof hoverCardHTML==='function'?hoverCardHTML(ab):'';
+        tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
+      }catch(_){tip.innerHTML=fallback(ab)}
+    }
+    tip.style.display='block';
+    tip.setAttribute('aria-hidden','false');
+    const w=tip.offsetWidth||320,h=tip.offsetHeight||150,margin=12;
+    const left=e.clientX+18+w>innerWidth-margin?e.clientX-w-18:e.clientX+18;
+    const top=e.clientY+18+h>innerHeight-margin?e.clientY-h-18:e.clientY+18;
+    tip.style.left=Math.max(margin,Math.min(left,innerWidth-w-margin))+'px';
+    tip.style.top=Math.max(margin,Math.min(top,innerHeight-h-margin))+'px';
   }
-  // The native page also installs mouseenter/mousemove/mouseleave listeners
-  // on each state. They compete with pointer tracking, briefly hiding or
-  // repositioning the same tooltip. Leave this one pointer-based owner.
-  const blockNativeHover=e=>{
-    if(e.target?.matches?.('#page-senate .map-wrap svg .state-shape[data-state]'))
-      e.stopPropagation();
-  };
-  document.addEventListener('mouseenter',blockNativeHover,true);
-  document.addEventListener('mousemove',blockNativeHover,true);
-  document.addEventListener('mouseleave',blockNativeHover,true);
-  document.addEventListener('pointerover',track,true);
-  document.addEventListener('pointermove',track,true);
-  if(!window.PointerEvent){
-    document.addEventListener('mouseover',track,true);
-    document.addEventListener('mousemove',track,true);
+  function move(e){
+    if(e.pointerType==='touch'){hide();return}
+    if(!fine())return;
+    latest={clientX:e.clientX,clientY:e.clientY,target:e.target};
+    if(!queued)queued=requestAnimationFrame(update);
   }
+  document.addEventListener('pointermove',move,{capture:true,passive:true});
+  if(!window.PointerEvent)document.addEventListener('mousemove',move,{capture:true,passive:true});
   document.addEventListener('pointerdown',hide,true);
-  window.addEventListener('blur',hide);
   window.addEventListener('scroll',hide,true);
+  window.addEventListener('blur',hide);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)hide()});
 })();
