@@ -91,3 +91,44 @@ body #page-home.reference-home .wr-signal-module{
     font-size:clamp(37px,10vw,45px)!important;
   }
 }
+
+/* Oct 26: restore a prominent, centered site title without restoring logo panel. */
+body #page-home.reference-home .reference-hero > .reference-hero-copy{
+  text-align:center!important;
+  margin-inline:auto!important;
+}
+body #page-home.reference-home .reference-hero-copy h1{
+  margin-inline:auto!important;
+  font-size:clamp(64px,5.35vw,92px)!important;
+  line-height:1.055!important;
+  letter-spacing:-.052em!important;
+  text-align:center!important;
+  text-wrap:balance!important;
+}
+body #page-home.reference-home .reference-hero-copy>p:not(#homeModelNote){
+  margin-left:auto!important;
+  margin-right:auto!important;
+  text-align:center!important;
+}
+body #page-home.reference-home .reference-hero-actions{
+  justify-content:center!important;
+}
+body #page-home.reference-home .wr-signal-module{
+  margin-inline:auto!important;
+}
+@media(max-width:900px){
+  body #page-home.reference-home .reference-hero-copy h1{
+    font-size:clamp(45px,7.3vw,64px)!important;
+    text-align:center!important;
+  }
+  body #page-home.reference-home .reference-hero-actions{
+    justify-content:center!important;
+    flex-wrap:wrap!important;
+  }
+}
+@media(max-width:600px){
+  body #page-home.reference-home .reference-hero-copy h1{
+    font-size:clamp(39px,9.4vw,54px)!important;
+    line-height:1.085!important;
+  }
+}
