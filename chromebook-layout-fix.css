@@ -9,7 +9,7 @@
     row-gap:clamp(13px,1.8vw,25px)!important;
   }
   body #page-home.reference-home .reference-hero-copy h1 {
-    font-size:clamp(39px,4.1vw,59px)!important;
+    font-size:clamp(52px,5.15vw,70px)!important;
     line-height:1.08!important;
     letter-spacing:-.047em!important;
     margin-bottom:15px!important;
@@ -80,5 +80,26 @@
     height:auto!important;
     max-height:none!important;
     overflow:visible!important;
+  }
+}
+
+
+/* Chromebook homepage masthead: balanced title, aligned to the middle. */
+@media (min-width:901px) and (max-width:1500px) {
+  body #page-home.reference-home .reference-hero > .reference-hero-copy {
+    width:100%!important;
+    text-align:center!important;
+    margin-inline:auto!important;
+  }
+  body #page-home.reference-home .reference-hero-copy h1 {
+    text-align:center!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    max-width:1150px!important;
+    text-wrap:balance!important;
+  }
+  body #page-home.reference-home .reference-hero-actions {
+    justify-content:center!important;
+    flex-wrap:wrap!important;
   }
 }
