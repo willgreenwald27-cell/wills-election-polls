@@ -11,6 +11,10 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling Senate listings supplied October 27 (polls dated October 26).
+    ['2026-10-26','ME','Maine','Marist','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
+    ['2026-10-26','TX','Texas','Univision/YouGov','James Talarico',50,'Ken Paxton',45,'Talarico +5'],
+    ['2026-10-26','MI','Michigan','Detroit News/Glengariff','Abdul El-Sayed',51,'Mike Rogers',45,'El-Sayed +6'],
     // RealClearPolling Senate listings supplied October 26 (poll dates October 23–25).
     ['2026-10-25','NH','New Hampshire','Rasmussen Reports*','Chris Pappas',50,'John Sununu',44,'Pappas +6'],
     ['2026-10-25','NC','North Carolina','Quantus Insights','Roy Cooper',51,'Michael Whatley',43,'Cooper +8'],
