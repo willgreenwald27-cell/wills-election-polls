@@ -25,6 +25,7 @@
     '#'+ID+' .prediction-copy{display:block;margin:5px 0 9px;font-weight:750;color:#fff;}',
     '#'+ID+' .wg-tx-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .wg-oh-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
+    '#'+ID+' .wg-fl-call{color:#f16b75!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .map-hover-line{margin-top:6px;}',
     '#'+ID+' *{transition:none!important;animation:none!important;}'
   ].join('\n');
@@ -90,9 +91,9 @@
       try{
         const html=typeof hoverCardHTML==='function'?hoverCardHTML(ab):'';
         tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
-        if(ab==='TX'||ab==='OH'){
+        if(ab==='TX'||ab==='OH'||ab==='FL'){
           const call=tip.querySelector('.prediction-copy');
-          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':'BROWN +0.6%';call.classList.add(ab==='TX'?'wg-tx-call':'wg-oh-call');}
+          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':ab==='OH'?'BROWN +0.6%':'MOODY +7.6%';call.classList.add(ab==='TX'?'wg-tx-call':ab==='OH'?'wg-oh-call':'wg-fl-call');}
         }
       }catch(_){tip.innerHTML=fallback(ab)}
     }
