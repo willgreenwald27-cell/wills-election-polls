@@ -27,6 +27,7 @@
     '#'+ID+' .wg-oh-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .wg-fl-call{color:#f16b75!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .wg-mn-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
+    '#'+ID+' .wg-ms-call{color:#f16b75!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .map-hover-line{margin-top:6px;}',
     '#'+ID+' *{transition:none!important;animation:none!important;}'
   ].join('\n');
@@ -92,9 +93,9 @@
       try{
         const html=typeof hoverCardHTML==='function'?hoverCardHTML(ab):'';
         tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
-        if(ab==='TX'||ab==='OH'||ab==='FL'||ab==='MN'){
+        if(ab==='TX'||ab==='OH'||ab==='FL'||ab==='MN'||ab==='MS'){
           const call=tip.querySelector('.prediction-copy');
-          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':ab==='OH'?'BROWN +0.6%':ab==='FL'?'MOODY +7.6%':'FLANAGAN +4.8%';call.classList.add(ab==='TX'?'wg-tx-call':ab==='OH'?'wg-oh-call':ab==='FL'?'wg-fl-call':'wg-mn-call');}
+          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':ab==='OH'?'BROWN +0.6%':ab==='FL'?'MOODY +7.6%':ab==='MN'?'FLANAGAN +4.8%':'HYDE-SMITH +8.1%';call.classList.add(ab==='TX'?'wg-tx-call':ab==='OH'?'wg-oh-call':ab==='FL'?'wg-fl-call':ab==='MN'?'wg-mn-call':'wg-ms-call');}
         }
       }catch(_){tip.innerHTML=fallback(ab)}
     }
