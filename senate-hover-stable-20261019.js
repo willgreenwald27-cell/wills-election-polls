@@ -23,6 +23,7 @@
     '#'+ID+' .map-hover-state{font-size:21px;font-weight:850;line-height:1.2;margin-bottom:9px;color:white;}',
     '#'+ID+' .map-hover-section-title{font-weight:850;font-size:11px;letter-spacing:.07em;color:#a9cafa;}',
     '#'+ID+' .prediction-copy{display:block;margin:5px 0 9px;font-weight:750;color:#fff;}',
+    '#'+ID+' .wg-tx-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .map-hover-line{margin-top:6px;}',
     '#'+ID+' *{transition:none!important;animation:none!important;}'
   ].join('\n');
@@ -88,6 +89,10 @@
       try{
         const html=typeof hoverCardHTML==='function'?hoverCardHTML(ab):'';
         tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
+        if(ab==='TX'){
+          const call=tip.querySelector('.prediction-copy');
+          if(call){call.textContent='TALARICO +1.2%';call.classList.add('wg-tx-call');}
+        }
       }catch(_){tip.innerHTML=fallback(ab)}
     }
     tip.style.display='block';
