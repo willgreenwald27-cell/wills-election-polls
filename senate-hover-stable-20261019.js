@@ -24,6 +24,7 @@
     '#'+ID+' .map-hover-section-title{font-weight:850;font-size:11px;letter-spacing:.07em;color:#a9cafa;}',
     '#'+ID+' .prediction-copy{display:block;margin:5px 0 9px;font-weight:750;color:#fff;}',
     '#'+ID+' .wg-tx-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
+    '#'+ID+' .wg-oh-call{color:#4c8dff!important;font-weight:850!important;text-transform:uppercase!important;}',
     '#'+ID+' .map-hover-line{margin-top:6px;}',
     '#'+ID+' *{transition:none!important;animation:none!important;}'
   ].join('\n');
@@ -89,9 +90,9 @@
       try{
         const html=typeof hoverCardHTML==='function'?hoverCardHTML(ab):'';
         tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
-        if(ab==='TX'){
+        if(ab==='TX'||ab==='OH'){
           const call=tip.querySelector('.prediction-copy');
-          if(call){call.textContent='TALARICO +1.2%';call.classList.add('wg-tx-call');}
+          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':'BROWN +0.6%';call.classList.add(ab==='TX'?'wg-tx-call':'wg-oh-call');}
         }
       }catch(_){tip.innerHTML=fallback(ab)}
     }
