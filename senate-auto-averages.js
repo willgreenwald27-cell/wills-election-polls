@@ -11,6 +11,16 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling Senate listings for Wednesday, October 28, 2026 (user-provided screenshots).
+    ['2026-10-28','TX','Texas','CNN','James Talarico',49,'Ken Paxton',43,'Talarico +6'],
+    ['2026-10-28','TX','Texas','TSU/YouGov*','James Talarico',49,'Ken Paxton',47,'Talarico +2'],
+    ['2026-10-28','ME','Maine','CNN','Troy Jackson',49,'Susan Collins',45,'Jackson +4'],
+    ['2026-10-28','MI','Michigan','CNN','Abdul El-Sayed',49,'Mike Rogers',42,'El-Sayed +7'],
+    ['2026-10-28','KS','Kansas','CNN','Adam Hamilton',49,'Roger Marshall',45,'Hamilton +4'],
+    ['2026-10-28','IA','Iowa','co/efficient*','Ashley Hinson',48,'Josh Turek',46,'Hinson +2'],
+    ['2026-10-28','SC','South Carolina','East Carolina U.*','Graham Nordone',51,'Annie Andrews',47,'Graham Nordone +4'],
+    ['2026-10-28','NH','New Hampshire','UMass Lowell*','Chris Pappas',48,'John Sununu',41,'Pappas +7'],
+    ['2026-10-28','MA','Massachusetts','UMass Lowell*','Ed Markey',55,'John Deaton',26,'Markey +29'],
     // RealClearPolling Senate listings supplied October 27 (polls dated October 26).
     ['2026-10-26','ME','Maine','Marist','Troy Jackson',49,'Susan Collins',47,'Jackson +2'],
     ['2026-10-26','TX','Texas','Univision/YouGov','James Talarico',50,'Ken Paxton',45,'Talarico +5'],
