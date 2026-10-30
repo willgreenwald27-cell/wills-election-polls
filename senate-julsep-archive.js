@@ -337,6 +337,7 @@
   function apply(){applyMaineCall();applyMichiganAverage();applyMinnesotaAverage();ensureSep8MichiganPoll();ensureSep7MinnesotaPoll();fixMaineVisibleDetail();ensurePollArchive();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
-  new MutationObserver(()=>{fixMaineVisibleDetail();ensurePollArchive();}).observe(document.body,{childList:true,subtree:true});
+  // Refresh on actual navigation rather than every DOM mutation.
+  document.addEventListener('click',e=>{if(e.target?.closest?.('#page-senate,[data-page-link="senate"],[data-accepted-page="senate"]'))setTimeout(()=>{fixMaineVisibleDetail();ensurePollArchive();},80);},true);
   window.addEventListener('pageshow',apply);
 })();
