@@ -270,10 +270,12 @@
 
   function forceKansas(){
     // One stable rule is applied on initial load; avoid repaint loops.
-    let style=document.getElementById('wg-kansas-stable-tilt-blue');
+    const obsolete=document.getElementById('wg-kansas-stable-tilt-blue');
+    if(obsolete)obsolete.remove();
+    let style=document.getElementById('wg-kansas-stable-tilt-red');
     if(!style){
       style=document.createElement('style');
-      style.id='wg-kansas-stable-tilt-blue';
+      style.id='wg-kansas-stable-tilt-red';
       document.head.appendChild(style);
     }
     const css='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#f8c6ca!important;transition:none!important;animation:none!important}';
@@ -309,9 +311,9 @@
     }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='0 TOSS-UP RACES';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='7 TOSSUPS';
     }
-    const counter=summary?.querySelector('.will-tossup-count');if(counter)counter.textContent='0 TOSS-UP RACES';
+    const counter=summary?.querySelector('.will-tossup-count');if(counter)counter.textContent='7 TOSSUPS';
   }
 
   function forceHome(){
@@ -336,7 +338,7 @@
       const t=norm(el.textContent);
       if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
       if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSS-UP RACES';
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='7 TOSSUPS';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
@@ -348,7 +350,7 @@
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
       bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +3.6%');
     }
-    let count=card.querySelector('.will-tossup-count');if(!count){count=document.createElement('div');count.className='will-tossup-count';(bar||card).insertAdjacentElement('afterend',count);}count.textContent='KANSAS · TILT REPUBLICAN · MARSHALL +3.6%';count.style.cssText='margin:8px 0;color:#a52a38;font-weight:800;font-size:12px;letter-spacing:.03em';
+    card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
 
   function apply(){
