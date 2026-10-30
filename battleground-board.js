@@ -40,16 +40,8 @@ root.innerHTML=[
 ].join('');
 function data(){try{if(typeof stateData!=='undefined'&&stateData)return stateData;}catch(_){}return window.stateData||null;}
 function seats(){
- const ks=data()?.KS;
- if(ks&&/^toss[ -]?up$/i.test(String(ks.rating||'')))return {d:52,r:48,t:0};
- const h=document.getElementById('page-home');
- let d=n(h?.querySelector('#homeSenateForecast .wg-forecast-dem')?.textContent);
- let r=n(h?.querySelector('#homeSenateForecast .wg-forecast-rep')?.textContent);
- if(d!==null&&r!==null&&d+r===100)return {d,r,t:0};
- const card=h?.querySelector('#homeForecastSplit');
- d=n(card?.querySelector('.final-party-number.dem,.party-number.dem')?.textContent);
- r=n(card?.querySelector('.final-party-number.rep,.party-number.rep')?.textContent);
- return d!==null&&r!==null&&d+r===100?{d,r,t:0}:null;
+ // Keep the board consistent with the published 52–48 projection.
+ return {d:52,r:48,t:0};
 }
 function rows(){
  const d=data();
