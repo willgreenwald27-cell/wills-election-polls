@@ -34,8 +34,11 @@
     }
   }
 
+  // Apply on initial render and when the polls page is shown. Avoid a
+  // document-wide mutation observer plus 250ms timer: they trigger on
+  // our own style changes and cause repeated repaints/flashing.
   fix();
-  [50,150,300,600,1000,1800,3200].forEach(ms=>setTimeout(fix,ms));
-  setInterval(fix,250);
-  new MutationObserver(()=>requestAnimationFrame(fix)).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']});
+  [100,450,1200].forEach(ms=>setTimeout(fix,ms));
+  document.addEventListener('click',e=>{if(e.target?.closest?.('[data-page-link="polls"],[data-accepted-page="polls"]'))setTimeout(fix,60);},true);
+  window.addEventListener('pageshow',fix);
 })();
