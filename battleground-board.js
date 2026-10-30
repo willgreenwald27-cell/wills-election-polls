@@ -19,8 +19,8 @@ root.innerHTML=[
 '<p class="bb-sub">Follow eight important Senate races. See who leads in the polls, read Will\'s forecast, and choose a state to explore the details.</p>',
 '<div class="bb-hero-actions"><button type="button" class="bb-hero-action primary" data-bb-jump="races">Browse the eight races ↓</button><button type="button" class="bb-hero-action secondary" data-bb-jump="game">Make your own predictions ↗</button></div></div>',
 '<aside class="bb-majority" aria-label="Current site Senate majority forecast"><div class="bb-majority-header"><span class="bb-kicker">PROJECTED SENATE BALANCE</span><span class="bb-majority-year">100 SEATS</span></div>',
-'<div class="bb-seats"><div class="bb-seat-side"><strong data-bb-dem>—</strong><small>DEM</small></div><div class="bb-seat-side bb-seat-toss"><strong data-bb-toss>1</strong><small>TOSS-UP</small></div><div class="bb-seat-side bb-seat-rep"><strong data-bb-rep>—</strong><small>GOP</small></div></div>',
-'<div class="bb-seat-track" data-bb-seatbar aria-label="Current Senate majority projection"><span style="width:50%"></span><span style="width:1%"></span><span style="width:49%"></span></div>',
+'<div class="bb-seats"><div class="bb-seat-side"><strong data-bb-dem>—</strong><small>DEM</small></div><div class="bb-seat-side bb-seat-toss"><strong data-bb-toss>0</strong><small>TOSS-UP</small></div><div class="bb-seat-side bb-seat-rep"><strong data-bb-rep>—</strong><small>GOP</small></div></div>',
+'<div class="bb-seat-track" data-bb-seatbar aria-label="Current Senate majority projection"><span style="width:52%"></span><span style="width:0%"></span><span style="width:48%"></span></div>',
 '<div class="bb-seat-foot"><span>51 seats to control the Senate</span><b>WILL\'S FORECAST</b></div></aside></div>',
 '<div class="bb-metrics" aria-label="Battleground overview">',
 '<div class="bb-metric"><small>Races on the board</small><strong data-bb-total>—</strong><span>Selected competitive contests</span></div>',
@@ -41,7 +41,7 @@ root.innerHTML=[
 function data(){try{if(typeof stateData!=='undefined'&&stateData)return stateData;}catch(_){}return window.stateData||null;}
 function seats(){
  const ks=data()?.KS;
- if(ks&&/^toss[ -]?up$/i.test(String(ks.rating||'')))return {d:50,r:49,t:1};
+ if(ks&&/^toss[ -]?up$/i.test(String(ks.rating||'')))return {d:52,r:48,t:0};
  const h=document.getElementById('page-home');
  let d=n(h?.querySelector('#homeSenateForecast .wg-forecast-dem')?.textContent);
  let r=n(h?.querySelector('#homeSenateForecast .wg-forecast-rep')?.textContent);
