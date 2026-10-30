@@ -61,14 +61,17 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'rating','tilt-d');set(ks,'predictionParty','Democrat');set(ks,'prediction','Hamilton 51% chance of winning');set(ks,'notes','Tilt Democratic: Hamilton has a 51% chance to win; Marshall has a 49% chance.');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Democratic');
-        if('call' in ks) set(ks,'call','Hamilton 51% chance of winning');
+        set(ks,'rating','tilt-r');
+        set(ks,'predictionParty','Republican');
+        set(ks,'prediction','Marshall +3.6%');
+        set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
+        if('call' in ks) set(ks,'call','Marshall +3.6%');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Marshall/i.test(name)) set(ks,key,'49');
-          if(/Hamilton/i.test(name)) set(ks,key,'51');
+          if(/Marshall/i.test(name))set(ks,key,'63');
+          if(/Hamilton/i.test(name))set(ks,key,'37');
         }
       }
       const ne=stateData.NE;
@@ -266,13 +269,15 @@
   }
 
   function forceKansas(){
-    // Stable CSS wins on the first and every subsequent map render.
-    // Do not repeatedly rewrite SVG fills: legacy scripts redraw the map.
-    if(document.getElementById('wg-kansas-stable-tilt-blue'))return;
-    const style=document.createElement('style');
-    style.id='wg-kansas-stable-tilt-blue';
-    style.textContent='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#d3e2f7!important;transition:none!important;animation:none!important}';
-    document.head.appendChild(style);
+    // One stable rule is applied on initial load; avoid repaint loops.
+    let style=document.getElementById('wg-kansas-stable-tilt-blue');
+    if(!style){
+      style=document.createElement('style');
+      style.id='wg-kansas-stable-tilt-blue';
+      document.head.appendChild(style);
+    }
+    const css='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#f8c6ca!important;transition:none!important;animation:none!important}';
+    if(style.textContent!==css)style.textContent=css;
   }
 
   function forceSenateSummary(){
@@ -287,16 +292,16 @@
         const repBox=summary.querySelector('.balance-party.rep,.republican,[data-party="rep"]');
         const dn=demBox?.querySelector('strong')||demBox;
         const rn=repBox?.querySelector('strong')||repBox;
-        if(dn)dn.textContent='52';
-        if(rn)rn.textContent='48';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton 51% chance'));
+        if(dn)dn.textContent='51';
+        if(rn)rn.textContent='49';
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +3.6%'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
           const dbar=bar.querySelector('.dem,.democratic,[data-party="dem"]')||kids[0];
           const rbar=bar.querySelector('.rep,.republican,[data-party="rep"]')||kids[kids.length-1];
-          if(dbar)dbar.style.setProperty('width','52%','important');
-          if(rbar)rbar.style.setProperty('width','48%','important');
+          if(dbar)dbar.style.setProperty('width','51%','important');
+          if(rbar)rbar.style.setProperty('width','49%','important');
 
         }
         break;
@@ -312,7 +317,7 @@
   function forceHome(){
     const root=document.getElementById('page-home');if(!root)return;
     const forecastNumbers=root.querySelector('#homeSenateForecast');
-    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='52';if(rep)rep.textContent='48';forecastNumbers.setAttribute('aria-label','Senate forecast: 52 Democrats and 48 Republicans; Kansas Hamilton 51%, Marshall 49%');}
+    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='51';if(rep)rep.textContent='49';forecastNumbers.setAttribute('aria-label','Senate forecast: 51 Democrats and 49 Republicans; Kansas tilt Republican');}
     const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
     if(!title)return;
     let card=title.parentElement;
@@ -323,27 +328,27 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const forecast=document.getElementById('homeSenateForecast');
-    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='52';if(b)b.textContent='48';}
+    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='51';if(b)b.textContent='49';}
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='52';nums[1].textContent='48';}
+    if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'52');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'48');
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
       if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSS-UP RACES';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','52%','important');
-      if(r)r.style.setProperty('width','48%','important');
+      if(d)d.style.setProperty('width','51%','important');
+      if(r)r.style.setProperty('width','49%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton 51% chance');
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +3.6%');
     }
-    let count=card.querySelector('.will-tossup-count');if(!count){count=document.createElement('div');count.className='will-tossup-count';(bar||card).insertAdjacentElement('afterend',count);}count.textContent='KANSAS · TILT DEMOCRATIC · HAMILTON 51% WIN CHANCE';count.style.cssText='margin:8px 0;color:#2763b8;font-weight:800;font-size:12px;letter-spacing:.03em';
+    let count=card.querySelector('.will-tossup-count');if(!count){count=document.createElement('div');count.className='will-tossup-count';(bar||card).insertAdjacentElement('afterend',count);}count.textContent='KANSAS · TILT REPUBLICAN · MARSHALL +3.6%';count.style.cssText='margin:8px 0;color:#a52a38;font-weight:800;font-size:12px;letter-spacing:.03em';
   }
 
   function apply(){
