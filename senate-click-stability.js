@@ -553,8 +553,8 @@
       }
     };
 
-    ensure(dem,'Democratic','51','#2763b8','left');
-    ensure(rep,'Republican','49','#bd2937','right');
+    ensure(dem,'Democratic','52','#2763b8','left');
+    ensure(rep,'Republican','48','#bd2937','right');
   }
 
   function fixSenateSeatBalanceBar(){
@@ -593,10 +593,10 @@
       dem.style.setProperty('right','auto','important');
       dem.style.setProperty('top','0','important');
       dem.style.setProperty('bottom','0','important');
-      dem.style.setProperty('width','51%','important');
-      dem.style.setProperty('min-width','51%','important');
-      dem.style.setProperty('max-width','51%','important');
-      dem.style.setProperty('flex','0 0 51%','important');
+      dem.style.setProperty('width','52%','important');
+      dem.style.setProperty('min-width','52%','important');
+      dem.style.setProperty('max-width','52%','important');
+      dem.style.setProperty('flex','0 0 52%','important');
       dem.style.setProperty('transform','none','important');
       dem.style.setProperty('clip-path','none','important');
 
@@ -605,10 +605,10 @@
       rep.style.setProperty('left','auto','important');
       rep.style.setProperty('top','0','important');
       rep.style.setProperty('bottom','0','important');
-      rep.style.setProperty('width','49%','important');
-      rep.style.setProperty('min-width','49%','important');
-      rep.style.setProperty('max-width','49%','important');
-      rep.style.setProperty('flex','0 0 49%','important');
+      rep.style.setProperty('width','48%','important');
+      rep.style.setProperty('min-width','48%','important');
+      rep.style.setProperty('max-width','48%','important');
+      rep.style.setProperty('flex','0 0 48%','important');
       rep.style.setProperty('transform','none','important');
       rep.style.setProperty('clip-path','none','important');
 
@@ -625,7 +625,7 @@
         bar.appendChild(majority);
       }
       majority.style.cssText='display:block!important;position:absolute!important;left:50%!important;top:0!important;bottom:0!important;width:4px!important;transform:translateX(-2px)!important;background:#17263d!important;z-index:20!important;pointer-events:none!important;';
-      bar.setAttribute('aria-label','Senate balance: 51 Democratic seats, 49 Republican seats');
+      bar.setAttribute('aria-label','Senate balance: 52 Democratic seats, 48 Republican seats');
       break;
     }
   }
