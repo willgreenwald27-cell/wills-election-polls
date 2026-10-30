@@ -266,8 +266,8 @@
     if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">October 8, 2026</strong>';
     updated.setAttribute('aria-label','Last updated October 8, 2026');
 
-    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
-    forecast.setAttribute('aria-label','Senate forecast: 51 Democratic seats, 49 Republican seats');
+    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">52 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">48 R</span></div>';
+    forecast.setAttribute('aria-label','Senate forecast: 52 Democratic seats, 48 Republican seats');
   }
 
   function keepPartyLabels(){
@@ -284,7 +284,7 @@
       if(majority&&majority.previousElementSibling!==dem)row.insertBefore(majority,rep);
       if(rep!==row.lastElementChild)row.appendChild(rep);
       const ds=dem.querySelector('span');if(ds){if(ds.textContent!=='Democratic')ds.textContent='Democratic';ds.style.removeProperty('opacity');ds.style.removeProperty('visibility');}
-      const rs=rep.querySelector('span');if(rs){if(rs.textContent!=='Republican')rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn&&dn.textContent!=='51')dn.textContent='51';const rn=rep.querySelector('strong');if(rn&&rn.textContent!=='49')rn.textContent='49';
+      const rs=rep.querySelector('span');if(rs){if(rs.textContent!=='Republican')rs.textContent='Republican';rs.style.removeProperty('opacity');rs.style.removeProperty('visibility');}const dn=dem.querySelector('strong');if(dn&&dn.textContent!=='52')dn.textContent='52';const rn=rep.querySelector('strong');if(rn&&rn.textContent!=='48')rn.textContent='48';
     }
     const key=root.querySelector('.compact-forecast-key');
     const kd=key?.querySelector('.key-side.democratic');
@@ -315,7 +315,7 @@
     try{
       if(typeof stateData!=='undefined'&&stateData?.KS){
         const ks=stateData.KS;
-        const setOdds=(nameKey,oddsKey)=>{const name=norm(ks[nameKey]);if(/Marshall/i.test(name))ks[oddsKey]='63';if(/Hamilton/i.test(name))ks[oddsKey]='37';};
+        const setOdds=(nameKey,oddsKey)=>{const name=norm(ks[nameKey]);if(/Marshall/i.test(name))ks[oddsKey]='50';if(/Hamilton/i.test(name))ks[oddsKey]='50';};
         setOdds('candidate1','candidate1Odds');setOdds('candidate2','candidate2Odds');
       }
     }catch(_){}
@@ -325,9 +325,9 @@
       let box=label.parentElement;
       for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){const t=norm(box.textContent);if(/Marshall/i.test(t)&&/Hamilton/i.test(t)&&/(WIN ODDS|STATISTICAL ODDS|WILL[’']S CALL)/i.test(t))break;}
       if(!box||box===root)continue;
-      for(const el of leafs(box)){const t=norm(el.textContent);if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'63%');if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'37%');}
+      for(const el of leafs(box)){const t=norm(el.textContent);if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'50%');if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'50%');}
       const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length),bar=box.querySelector('.oddsbar');
-      if(bar&&lines.length>=2){const odds=lines.map(line=>{const name=norm(line.querySelector('.candidate-name')?.textContent);return /Marshall/i.test(name)?63:/Hamilton/i.test(name)?37:null;});const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');}
+      if(bar&&lines.length>=2){const odds=lines.map(line=>{const name=norm(line.querySelector('.candidate-name')?.textContent);return /Marshall/i.test(name)?50:/Hamilton/i.test(name)?50:null;});const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');}
     }
   }
 
@@ -336,12 +336,12 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0])nums[0].textContent='51';
-    if(nums[1])nums[1].textContent='49';
+    if(nums[0])nums[0].textContent='52';
+    if(nums[1])nums[1].textContent='48';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
-    if(dem)dem.style.setProperty('width','51%','important');
-    if(rep)rep.style.setProperty('width','49%','important');
+    if(dem)dem.style.setProperty('width','52%','important');
+    if(rep)rep.style.setProperty('width','48%','important');
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
