@@ -11,6 +11,12 @@
     return xa.length>1&&ya.length>1&&xa.at(-1)===ya.at(-1)&&xa[0][0]===ya[0][0];
   };
   const NEW_POLLS=[
+    // RealClearPolling Senate listings for Thursday, October 29, 2026 (user screenshot).
+    ['2026-10-29','TX','Texas','Quantus Insights*','James Talarico',48,'Ken Paxton',49,'Paxton +1'],
+    ['2026-10-29','KS','Kansas','Emerson*','Adam Hamilton',50,'Roger Marshall',47,'Hamilton +3'],
+    ['2026-10-29','KS','Kansas','Washington Post','Adam Hamilton',54,'Roger Marshall',44,'Hamilton +10'],
+    ['2026-10-29','MI','Michigan','Rasmussen Reports*','Abdul El-Sayed',49,'Mike Rogers',44,'El-Sayed +5'],
+    ['2026-10-29','FL','Florida Special Election','InsiderAdvantage','Ashley Moody',49,'Angie Nixon',43,'Moody +6'],
     // RealClearPolling Senate listings for Wednesday, October 28, 2026 (user-provided screenshots).
     ['2026-10-28','TX','Texas','CNN','James Talarico',49,'Ken Paxton',43,'Talarico +6'],
     ['2026-10-28','TX','Texas','TSU/YouGov*','James Talarico',49,'Ken Paxton',47,'Talarico +2'],
