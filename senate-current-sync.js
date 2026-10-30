@@ -285,19 +285,16 @@
         const repBox=summary.querySelector('.balance-party.rep,.republican,[data-party="rep"]');
         const dn=demBox?.querySelector('strong')||demBox;
         const rn=repBox?.querySelector('strong')||repBox;
-        if(dn)dn.textContent='50';
-        if(rn)rn.textContent='49';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 50 Democrats, 49 Republicans, and 1 toss-up'));
+        if(dn)dn.textContent='52';
+        if(rn)rn.textContent='48';
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas rated a toss-up'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
           const dbar=bar.querySelector('.dem,.democratic,[data-party="dem"]')||kids[0];
           const rbar=bar.querySelector('.rep,.republican,[data-party="rep"]')||kids[kids.length-1];
-          if(dbar)dbar.style.setProperty('width','50%','important');
-          if(rbar)rbar.style.setProperty('width','49%','important');
-          let yellow=bar.querySelector('.tossup,.toss-up,[data-tossup]');
-          if(!yellow&&dbar&&rbar){yellow=document.createElement('span');yellow.className='tossup';bar.appendChild(yellow);}
-          if(yellow){yellow.style.setProperty('width','1%','important');yellow.style.setProperty('flex','0 0 1%','important');yellow.style.setProperty('background',TOSSUP,'important');yellow.style.setProperty('display','block','important');yellow.setAttribute('aria-label','1 toss-up seat');}
+          if(dbar)dbar.style.setProperty('width','52%','important');
+          if(rbar)rbar.style.setProperty('width','48%','important');
 
         }
         break;
@@ -305,15 +302,15 @@
     }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='1 TOSS-UP';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='1 TOSS-UP RACE';
     }
-    const counter=summary?.querySelector('.will-tossup-count');if(counter)counter.textContent='1 TOSS-UP';
+    const counter=summary?.querySelector('.will-tossup-count');if(counter)counter.textContent='1 TOSS-UP RACE';
   }
 
   function forceHome(){
     const root=document.getElementById('page-home');if(!root)return;
     const forecastNumbers=root.querySelector('#homeSenateForecast');
-    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='50';if(rep)rep.textContent='49';forecastNumbers.setAttribute('aria-label','Senate forecast: 50 Democrats, 49 Republicans, 1 toss-up (Kansas)');}
+    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='52';if(rep)rep.textContent='48';forecastNumbers.setAttribute('aria-label','Senate forecast: 52 Democrats and 48 Republicans; Kansas 50/50');}
     const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
     if(!title)return;
     let card=title.parentElement;
@@ -324,27 +321,27 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const forecast=document.getElementById('homeSenateForecast');
-    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='50';if(b)b.textContent='49';}
+    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='52';if(b)b.textContent='48';}
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='50';nums[1].textContent='49';}
+    if(nums.length>=2){nums[0].textContent='52';nums[1].textContent='48';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'50');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='1 TOSS-UP';
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'52');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'48');
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='1 TOSS-UP RACE';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','50%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(d)d.style.setProperty('width','52%','important');
+      if(r)r.style.setProperty('width','48%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
-      if(y){y.style.setProperty('width','1%','important');y.style.setProperty('display','block','important');y.style.setProperty('background',TOSSUP,'important');y.style.setProperty('flex','0 0 1%','important');y.setAttribute('aria-label','1 toss-up seat');}
-      bar.setAttribute('aria-label','Senate prediction: 50 Democrats, 49 Republicans, and 1 toss-up');
+      if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
+      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas rated a toss-up');
     }
-    let count=card.querySelector('.will-tossup-count');if(!count){count=document.createElement('div');count.className='will-tossup-count';(bar||card).insertAdjacentElement('afterend',count);}count.textContent='1 TOSS-UP · KANSAS';count.style.cssText='margin:8px 0;color:#ad880f;font-weight:800;font-size:12px;letter-spacing:.03em';
+    let count=card.querySelector('.will-tossup-count');if(!count){count=document.createElement('div');count.className='will-tossup-count';(bar||card).insertAdjacentElement('afterend',count);}count.textContent='KANSAS · 50/50 TOSS-UP RACE';count.style.cssText='margin:8px 0;color:#ad880f;font-weight:800;font-size:12px;letter-spacing:.03em';
   }
 
   function apply(){
