@@ -20,7 +20,7 @@ root.innerHTML=[
 '<div class="bb-hero-actions"><button type="button" class="bb-hero-action primary" data-bb-jump="races">Browse the eight races ↓</button><button type="button" class="bb-hero-action secondary" data-bb-jump="game">Make your own predictions ↗</button></div></div>',
 '<aside class="bb-majority" aria-label="Current site Senate majority forecast"><div class="bb-majority-header"><span class="bb-kicker">PROJECTED SENATE BALANCE</span><span class="bb-majority-year">100 SEATS</span></div>',
 '<div class="bb-seats"><div class="bb-seat-side"><strong data-bb-dem>—</strong><small>DEM</small></div><div class="bb-seat-side bb-seat-toss"><strong data-bb-toss>0</strong><small>TOSS-UP</small></div><div class="bb-seat-side bb-seat-rep"><strong data-bb-rep>—</strong><small>GOP</small></div></div>',
-'<div class="bb-seat-track" data-bb-seatbar aria-label="Current Senate majority projection"><span style="width:52%"></span><span style="width:0%"></span><span style="width:48%"></span></div>',
+'<div class="bb-seat-track" data-bb-seatbar aria-label="Current Senate majority projection"><span style="width:51%"></span><span style="width:0%"></span><span style="width:49%"></span></div>',
 '<div class="bb-seat-foot"><span>51 seats to control the Senate</span><b>WILL\'S FORECAST</b></div></aside></div>',
 '<div class="bb-metrics" aria-label="Battleground overview">',
 '<div class="bb-metric"><small>Races on the board</small><strong data-bb-total>—</strong><span>Selected competitive contests</span></div>',
@@ -40,8 +40,8 @@ root.innerHTML=[
 ].join('');
 function data(){try{if(typeof stateData!=='undefined'&&stateData)return stateData;}catch(_){}return window.stateData||null;}
 function seats(){
- // Keep the board consistent with the published 52–48 projection.
- return {d:52,r:48,t:0};
+ // Keep the board consistent with the published 51–49 projection.
+ return {d:51,r:49,t:0};
 }
 function rows(){
  const d=data();
