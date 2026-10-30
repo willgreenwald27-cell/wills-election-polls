@@ -84,7 +84,7 @@ function focus(r){
  if(r.leader==='tie')lead='Polling average tied';
  else if(r.leader!==null){const name=r.a>r.b?s.candidate1:s.candidate2;lead=esc(String(name).split(' ').at(-1))+' +'+r.gap.toFixed(1)+' pts in polling';}
  return '<div class="bb-focus-inner"><div class="bb-focus-info" data-ab="'+esc(r.ab)+'"><span class="bb-kicker">FEATURED RACE / '+esc(r.ab)+'</span>'+
- '<h3 class="bb-focus-state">'+esc(r.name)+'</h3><div class="bb-focus-pills">'+tag(r)+'<span class="bb-pill">WILL\'S CALL</span><span class="bb-pill '+r.forecast+'">'+esc(partyName(r.forecast))+'</span></div>'+
+ '<h3 class="bb-focus-state">'+esc(r.name)+'</h3><div class="bb-focus-pills">'+tag(r)+'<span class="bb-pill">WILL\'S CALL</span><span class="bb-pill '+r.forecast+'">'+esc(/^toss[ -]?up$/i.test(r.rating)?'Toss-up':partyName(r.forecast))+'</span></div>'+
  '<div class="bb-focus-call">'+esc(call(r))+'</div><p class="bb-focus-desc">'+esc(notes)+'</p>'+
  '<button type="button" class="bb-focus-action" data-bb-map>Explore this race on the Senate map <span aria-hidden="true">↗</span></button></div>'+
  '<div class="bb-focus-polls"><div class="bb-kicker">CANDIDATE POLLING AVERAGES · '+esc(r.ab)+'</div>'+
