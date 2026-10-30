@@ -63,10 +63,10 @@
       if(ks){
         set(ks,'rating','tilt-r');
         set(ks,'predictionParty','Republican');
-        set(ks,'prediction','Marshall +3.6%');
+        set(ks,'prediction','Marshall +2.3%');
         set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
-        if('call' in ks) set(ks,'call','Marshall +3.6%');
+        if('call' in ks) set(ks,'call','Marshall +2.3%');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -296,7 +296,7 @@
         const rn=repBox?.querySelector('strong')||repBox;
         if(dn)dn.textContent='51';
         if(rn)rn.textContent='49';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +3.6%'));
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +2.3%'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
@@ -348,7 +348,7 @@
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +3.6%');
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +2.3%');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
