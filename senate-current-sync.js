@@ -266,11 +266,13 @@
   }
 
   function forceKansas(){
-    const root=document.getElementById('page-senate');if(!root)return;
-    root.querySelectorAll('[data-state="KS"],[data-state="KS"] path,[data-abbr="KS"],[data-abbr="KS"] path,[data-state-abbr="KS"],[data-state-abbr="KS"] path,#KS,#KS path,#state-KS,#state-KS path').forEach(el=>{
-      el.style.setProperty('fill',TILT_BLUE,'important');
-      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',TILT_BLUE,'important');
-    });
+    // Stable CSS wins on the first and every subsequent map render.
+    // Do not repeatedly rewrite SVG fills: legacy scripts redraw the map.
+    if(document.getElementById('wg-kansas-stable-tilt-blue'))return;
+    const style=document.createElement('style');
+    style.id='wg-kansas-stable-tilt-blue';
+    style.textContent='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#d3e2f7!important;transition:none!important;animation:none!important}';
+    document.head.appendChild(style);
   }
 
   function forceSenateSummary(){
