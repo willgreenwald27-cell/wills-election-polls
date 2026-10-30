@@ -61,9 +61,9 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'rating','tossup');set(ks,'predictionParty','Tossup');set(ks,'prediction','Toss-up');set(ks,'notes','Why my forecast differs: It may be too big of an ask to flip a state that Trump won by 16 points in 2024.');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
-        if('call' in ks) set(ks,'call','Marshall +3.6%');
+        set(ks,'rating','tossup');set(ks,'predictionParty','Tossup');set(ks,'prediction','Toss-up');set(ks,'notes','A 50/50 race: neither candidate is the projected winner.');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Tossup');
+        if('call' in ks) set(ks,'call','Toss-up');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -265,6 +265,14 @@
     }
   }
 
+  function forceKansas(){
+    const root=document.getElementById('page-senate');if(!root)return;
+    root.querySelectorAll('[data-state="KS"],[data-state="KS"] path,[data-abbr="KS"],[data-abbr="KS"] path,[data-state-abbr="KS"],[data-state-abbr="KS"] path,#KS,#KS path,#state-KS,#state-KS path').forEach(el=>{
+      el.style.setProperty('fill',TOSSUP,'important');
+      if(el.namespaceURI!=='http://www.w3.org/2000/svg'&&!/^(path|polygon|rect)$/i.test(el.tagName||''))el.style.setProperty('background',TOSSUP,'important');
+    });
+  }
+
   function forceSenateSummary(){
     const root=document.getElementById('page-senate'); if(!root)return;
     const ls=leafs(root);
@@ -333,7 +341,7 @@
   function apply(){
     const changed=syncData();
     if(changed&&typeof renderSenate==='function'&&!rendering){rendering=true;try{renderSenate();}catch(e){}finally{rendering=false;}}
-    forceOhio();forceSenateSummary();forceHome();
+    forceOhio();forceKansas();forceSenateSummary();forceHome();
   }
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply();});}
   apply();[80,250,700,1600,3200].forEach(ms=>setTimeout(apply,ms));
