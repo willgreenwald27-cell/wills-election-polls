@@ -80,8 +80,8 @@ function schedule(){
  requestAnimationFrame(apply);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
-const observer=new MutationObserver(schedule);
-observer.observe(document.documentElement,{childList:true,subtree:true});
+// Logo replacement is idempotent; avoid observing every page DOM mutation.
+document.addEventListener('click',e=>{if(e.target?.closest?.('.site-header .nav,[data-page-link],[data-accepted-page]'))setTimeout(schedule,40);},true);
 [300,900,2200,4500].forEach(t=>setTimeout(apply,t));
 window.addEventListener('pageshow',apply);
 })();
