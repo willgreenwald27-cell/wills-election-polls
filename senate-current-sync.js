@@ -312,6 +312,8 @@
 
   function forceHome(){
     const root=document.getElementById('page-home');if(!root)return;
+    const forecastNumbers=root.querySelector('#homeSenateForecast');
+    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='50';if(rep)rep.textContent='49';forecastNumbers.setAttribute('aria-label','Senate forecast: 50 Democrats, 49 Republicans, 1 toss-up (Kansas)');}
     const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
     if(!title)return;
     let card=title.parentElement;
