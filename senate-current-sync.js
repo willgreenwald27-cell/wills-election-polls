@@ -317,7 +317,7 @@
   function forceHome(){
     const root=document.getElementById('page-home');if(!root)return;
     const forecastNumbers=root.querySelector('#homeSenateForecast');
-    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='51';if(rep)rep.textContent='49';forecastNumbers.setAttribute('aria-label','Senate forecast: 51 Democrats and 49 Republicans; Kansas tilt Republican');}
+    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='51 D';if(rep)rep.textContent='49 R';forecastNumbers.setAttribute('aria-label','Senate forecast: 51 Democrats and 49 Republicans; Kansas tilt Republican');}
     const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
     if(!title)return;
     let card=title.parentElement;
@@ -328,7 +328,7 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const forecast=document.getElementById('homeSenateForecast');
-    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='51';if(b)b.textContent='49';}
+    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='51 D';if(b)b.textContent='49 R';}
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
     if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}
     const all=leafs(card);
