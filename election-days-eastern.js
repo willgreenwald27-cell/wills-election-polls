@@ -19,9 +19,10 @@ function update(){
  }
  // Common standalone counters use explicit IDs/classes.
  for(const el of document.querySelectorAll('[id*="countdown" i],[class*="countdown" i],[id*="days-left" i],[class*="days-left" i],[id*="days-until" i],[class*="days-until" i]')){
-  if(el.children.length===0&&/^\d{1,3}$/.test(el.textContent.trim()))el.textContent=days;
+  if(el.children.length===0&&/^\d{1,3}$/.test(el.textContent.trim())&&el.textContent.trim()!==days)el.textContent=days;
  }
 }
+let lastDays=easternDays();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',update,{once:true});else update();
-setInterval(update,1000);
+setInterval(()=>{const d=easternDays();if(d!==lastDays){lastDays=d;update();}},30000);
 })();
