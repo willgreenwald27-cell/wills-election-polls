@@ -103,3 +103,27 @@
     flex-wrap:wrap!important;
   }
 }
+
+/* Small 11–14 inch Chromebooks: fit the entire US map, including FL and TX. */
+@media (min-width:768px) and (max-width:1500px) {
+  #page-senate.senate-immersive.wg-studio .content,
+  #page-senate.senate-immersive.wg-studio .forecast-layout,
+  #page-senate.senate-immersive.wg-studio .map-card {
+    min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+  }
+  #page-senate.senate-immersive.wg-studio .forecast-layout {
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    display:block!important;width:100%!important;max-width:100%!important;
+    min-width:0!important;height:auto!important;max-height:none!important;
+    overflow:visible!important;box-sizing:border-box!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap svg {
+    display:block!important;width:100%!important;max-width:100%!important;
+    min-width:0!important;height:auto!important;max-height:none!important;
+    transform:none!important;position:relative!important;left:auto!important;
+    right:auto!important;top:auto!important;
+  }
+  #page-senate.senate-immersive.wg-studio .sidebar {grid-column:1!important;}
+}
