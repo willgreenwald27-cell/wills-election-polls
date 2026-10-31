@@ -17,7 +17,7 @@
     if(event.target?.closest?.('[data-page="senate"],[data-target="senate"],#page-senate'))queueMicrotask(apply);
   },true);
   const observer=new MutationObserver(mutations=>{
-    if(mutations.some(m=>m.target.closest?.('#page-senate')||m.target.id==='page-senate'))apply();
+    if(mutations.some(m=>{const n=m.target.nodeType===1?m.target:m.target.parentElement;return n?.closest?.('#page-senate')||n?.id==='page-senate'||[...m.addedNodes].some(x=>x.id==='page-senate');}))apply();
   });
   observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
 })();
