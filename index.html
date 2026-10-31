@@ -16,4 +16,6 @@ const _ksRenderMarker='function renderSenate(){\n  applyPaletteCSS();';
 h=h.replace(_ksRenderMarker,'function renderSenate(){\n  '+_ksInitialSync+'\n  applyPaletteCSS();');
 /* Also ensure the initial load updates Kansas before calling renderSenate. */
 h=h.replace('load();if(stateData.NE)stateData.NE.rating="lean-r";applyPaletteCSS();','load();'+_ksInitialSync+'if(stateData.NE)stateData.NE.rating="lean-r";applyPaletteCSS();');
-/* House forecast now updated in canonical components; obsolete overlay removed. */document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
+/* House forecast now updated in canonical components; obsolete overlay removed. *//* Eastern-time election day counter: calendar-day difference to Nov 3, 2026. */
+h=h.replace('</body>',`<script src="/election-days-eastern.js?v=20261030-et1" defer><\/script></body>`);
+document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
