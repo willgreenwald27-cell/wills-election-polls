@@ -187,3 +187,12 @@
     margin:0 auto!important;
   }
 }
+
+/* Slightly smaller Senate map on every device, centered with breathing room.
+   Mobile's explicitly requested zoom mode retains its own larger width. */
+#page-senate.senate-immersive.wg-studio .map-wrap svg {
+  width:95%!important;
+  max-width:95%!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
