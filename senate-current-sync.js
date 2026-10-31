@@ -311,9 +311,9 @@
     }
     for(const el of ls){
       const t=norm(el.textContent);
-      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='7 TOSSUPS';
+      if(/^\d+\s+(?:INDEPENDENT|TOSSUPS?)$/i.test(t))el.textContent='0 TOSSUPS';
     }
-    const counter=summary?.querySelector('.will-tossup-count');if(counter)counter.textContent='7 TOSSUPS';
+    const counter=summary?.querySelector('.will-tossup-count');if(counter&&counter.textContent!=='0 TOSSUPS')counter.textContent='0 TOSSUPS';
   }
 
   function forceHome(){
@@ -338,7 +338,7 @@
       const t=norm(el.textContent);
       if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
       if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
-      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='7 TOSSUPS';
+      if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSSUPS';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
