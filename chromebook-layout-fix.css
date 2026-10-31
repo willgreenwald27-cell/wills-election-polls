@@ -127,3 +127,37 @@
   }
   #page-senate.senate-immersive.wg-studio .sidebar {grid-column:1!important;}
 }
+
+/* Compact school Chromebooks (typically 1024x600 or 1366x768 at browser zoom).
+   Keep the full map visible without making it horizontally scrollable. */
+@media (min-width:700px) and (max-width:1366px) and (max-height:850px) {
+  #page-senate.senate-immersive.wg-studio .content {
+    padding:10px 12px 28px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-card {
+    padding:12px 10px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .forecast-layout {
+    display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    width:100%!important;max-width:100%!important;
+    overflow:visible!important;padding:0!important;
+    min-width:0!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap svg {
+    display:block!important;width:100%!important;max-width:100%!important;
+    min-width:0!important;height:auto!important;max-height:none!important;
+    object-fit:contain!important;
+  }
+  #page-senate.senate-immersive.wg-studio .page-head {
+    padding:12px 16px!important;
+  }
+  #page-senate.senate-immersive.wg-studio .page-head h1 {
+    font-size:clamp(25px,3vw,36px)!important;
+  }
+  #page-senate.senate-immersive.wg-studio .senate-map-head {
+    margin-bottom:8px!important;padding-bottom:8px!important;
+  }
+}
