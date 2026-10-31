@@ -161,3 +161,29 @@
     margin-bottom:8px!important;padding-bottom:8px!important;
   }
 }
+
+/* School Chromebook clipping repair: allow the full SVG viewBox to scale
+   inside the card, including the southernmost TX/FL geometry. */
+@media (min-width:700px) and (max-width:1366px) {
+  #page-senate.senate-immersive.wg-studio .map-card,
+  #page-senate.senate-immersive.wg-studio .forecast-layout,
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    overflow:visible!important;
+    min-width:0!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap {
+    display:flex!important;justify-content:center!important;
+    align-items:flex-start!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    aspect-ratio:auto!important;
+  }
+  #page-senate.senate-immersive.wg-studio .map-wrap svg {
+    flex:0 1 auto!important;
+    width:100%!important;height:auto!important;
+    max-width:100%!important;max-height:none!important;
+    overflow:visible!important;
+    object-fit:contain!important;
+    transform:none!important;
+    margin:0 auto!important;
+  }
+}
