@@ -112,10 +112,7 @@
         state:'Iowa',
         text:"Iowa's recent Republican voting history weighs more heavily in my forecast than the narrow Democratic lead in polling."
       },
-      KS:{
-        state:'Kansas',
-        text:'It may be too big of an ask to flip a state that Trump won by 16 points in 2024.'
-      }
+
     };
     // Iowa pop-ups can extend off-screen on laptops and phones. On a
     // constrained viewport, use a separate viewport-fixed, compact note.
@@ -551,8 +548,8 @@
       }
     };
 
-    ensure(dem,'Democratic','51','#2763b8','left');
-    ensure(rep,'Republican','49','#bd2937','right');
+    ensure(dem,'Democratic','52','#2763b8','left');
+    ensure(rep,'Republican','48','#bd2937','right');
   }
 
   function fixSenateSeatBalanceBar(){
