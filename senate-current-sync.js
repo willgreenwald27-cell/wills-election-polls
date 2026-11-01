@@ -64,15 +64,15 @@
         set(ks,'rating','tilt-d');
         set(ks,'updated','2026-11-01');
         set(ks,'predictionParty','Democrat');
-        set(ks,'prediction','Hamilton — Tilt Democratic');
+        set(ks,'prediction','Hamilton +0.2 pts');
         set(ks,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Democratic');
-        if('call' in ks) set(ks,'call','Hamilton — Tilt Democratic');
+        if('call' in ks) set(ks,'call','Hamilton +0.2 pts');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
           if(/Marshall/i.test(name))set(ks,key,'49');
-          if(/Hamilton/i.test(name))set(ks,key,'51';
+          if(/Hamilton/i.test(name))set(ks,key,'51');
         }
       }
       const ne=stateData.NE;
@@ -297,7 +297,7 @@
         const rn=repBox?.querySelector('strong')||repBox;
         if(dn)dn.textContent='52';
         if(rn)rn.textContent='48';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton — Tilt Democratic'));
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
@@ -349,7 +349,7 @@
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton — Tilt Democratic');
+      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
