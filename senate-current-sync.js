@@ -62,6 +62,7 @@
       const ks=stateData.KS;
       if(ks){
         set(ks,'rating','tilt-d');
+        set(ks,'updated','2026-11-01');
         set(ks,'predictionParty','Democrat');
         set(ks,'prediction','Hamilton — Tilt Democratic');
         set(ks,'notes','');
