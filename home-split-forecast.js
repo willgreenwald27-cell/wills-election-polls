@@ -9,13 +9,13 @@
       <div class="will-split-title">Will’s Senate Prediction</div>
       <div class="will-split-sub">100 SEATS • 51 NEEDED FOR A MAJORITY</div>
       <div class="will-split-parties">
-        <div><strong class="dem">DEMOCRATS: 52</strong><span>SEATS</span></div>
-        <div class="right"><strong class="rep">REPUBLICANS: 48</strong><span>SEATS</span></div>
+        <div><strong class="dem">DEMOCRATS: 51</strong><span>SEATS</span></div>
+        <div class="right"><strong class="rep">REPUBLICANS: 49</strong><span>SEATS</span></div>
       </div>
       <div class="will-split-bar"><i class="dem-bar"></i><i class="rep-bar"></i><b class="majority-line"></b></div>
-      <div class="will-split-bar-labels"><strong>52</strong><strong>48</strong></div>
+      <div class="will-split-bar-labels"><strong>51</strong><strong>49</strong></div>
       <div class="will-split-majority">51 majority</div>
-      <div class="will-split-legend"><span><i class="dem-dot"></i>Democrats<br><small>52 seats</small></span><span><i class="rep-dot"></i>Republicans<br><small>48 seats</small></span></div>`;
+      <div class="will-split-legend"><span><i class="dem-dot"></i>Democrats<br><small>51 seats</small></span><span><i class="rep-dot"></i>Republicans<br><small>49 seats</small></span></div>`;
     return card;
   }
 
