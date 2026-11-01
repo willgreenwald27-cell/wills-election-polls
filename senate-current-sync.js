@@ -70,8 +70,8 @@
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Marshall/i.test(name))set(ks,key,'48');
-          if(/Hamilton/i.test(name))set(ks,key,'52');
+          if(/Marshall/i.test(name))set(ks,key,'49');
+          if(/Hamilton/i.test(name))set(ks,key,'51';
         }
       }
       const ne=stateData.NE;
@@ -275,7 +275,7 @@
     let style=document.getElementById('wg-kansas-stable-tilt-blue');
     if(!style){
       style=document.createElement('style');
-      style.id='wg-kansas-stable-tilt-red';
+      style.id='wg-kansas-stable-tilt-blue';
       document.head.appendChild(style);
     }
     const css='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#d3e2f7!important;transition:none!important;animation:none!important}';
