@@ -61,7 +61,7 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'rating','tilt-d');set(ks,'predictionParty','Democrat');set(ks,'prediction','Hamilton +0.2 pts');set(ks,'notes','');set(ks,'updated','2026-10-06');
+        set(ks,'rating','tilt-d');set(ks,'predictionParty','Democrat');set(ks,'prediction','Hamilton +0.2 pts');set(ks,'notes','');set(ks,'updated','2026-11-01');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Democratic');
         if('call' in ks) set(ks,'call','Hamilton +0.2 pts');
         for(const slot of [1,2]){
