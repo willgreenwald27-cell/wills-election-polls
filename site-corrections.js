@@ -1,6 +1,6 @@
 (()=>{
   const RED='#bd2937',BLUE='#2763b8',PURPLE='#8051d2';
-  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},KS:{rating:'tilt-d',party:'Democrat',text:'Hamilton — Tilt Democratic'},NE:{rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}};
+  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},KS:{rating:'tilt-d',party:'Democrat',text:'Hamilton +0.2 pts'},NE:{rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}};
   let wrapping=false,rerendered=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
