@@ -7,7 +7,7 @@
   const CALLS={
     ME:{name:'Maine',rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},
     IA:{name:'Iowa',rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},
-    KS:{name:'Kansas',rating:'tilt-r',party:'Republican',text:'Marshall +0.5 pts'},
+    KS:{name:'Kansas',rating:'tilt-r',party:'Republican',text:'Marshall +0.7 pts'},
     NE:{name:'Nebraska',rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}
   };
   const POLL_AVERAGES={
