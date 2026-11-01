@@ -64,10 +64,10 @@
         set(ks,'rating','tilt-r');
         set(ks,'updated','2026-11-01');
         set(ks,'predictionParty','Republican');
-        set(ks,'prediction','Marshall +0.5 pts');
+        set(ks,'prediction','Marshall +0.7 pts');
         set(ks,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
-        if('call' in ks) set(ks,'call','Marshall +0.5 pts');
+        if('call' in ks) set(ks,'call','Marshall +0.7 pts');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -297,7 +297,7 @@
         const rn=repBox?.querySelector('strong')||repBox;
         if(dn)dn.textContent='51';
         if(rn)rn.textContent='49';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.5 pts'));
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.7 pts'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
@@ -349,7 +349,7 @@
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.5 pts');
+      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.7 pts');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
