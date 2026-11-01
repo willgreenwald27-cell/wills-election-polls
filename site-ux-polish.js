@@ -264,6 +264,7 @@
     toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
 
     if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">November 1, 2026</strong>';
+    const updatedValue=updated.querySelector('.wg-metric-value');if(updatedValue)updatedValue.textContent='November 1, 2026';
     updated.setAttribute('aria-label','Last updated November 1, 2026');
 
     if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
