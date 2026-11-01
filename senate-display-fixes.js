@@ -44,7 +44,7 @@
         if(s.rating!==cfg.rating){s.rating=cfg.rating;changed=true;}
         if(s.predictionParty!==cfg.party){s.predictionParty=cfg.party;changed=true;}
         if(s.prediction!==cfg.text){s.prediction=cfg.text;changed=true;}
-        if(s.updated!=='2026-09-07'){s.updated='2026-09-07';changed=true;}
+        if(s.updated!==(ab==='KS'?'2026-11-01':'2026-09-07')){s.updated=ab==='KS'?'2026-11-01':'2026-09-07';changed=true;}
         if('projectedWinner' in s&&s.projectedWinner!==cfg.party){s.projectedWinner=cfg.party;changed=true;}
         if('predictionWinner' in s&&s.predictionWinner!==cfg.party){s.predictionWinner=cfg.party;changed=true;}
         if('winner' in s&&s.winner!==cfg.party){s.winner=cfg.party;changed=true;}
