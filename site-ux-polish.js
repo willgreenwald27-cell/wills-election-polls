@@ -83,20 +83,15 @@
   }
 
   function electionCountdown(){
-    const now=new Date();
-    const parts=new Intl.DateTimeFormat('en-US',{
-      timeZone:'America/Los_Angeles',year:'numeric',month:'numeric',day:'numeric'
-    }).formatToParts(now);
-    const val=t=>Number(parts.find(p=>p.type===t)?.value||0);
-    const todayUtc=Date.UTC(val('year'),val('month')-1,val('day'));
-    const electionUtc=Date.UTC(2026,10,3);
-    const days=Math.max(0,Math.round((electionUtc-todayUtc)/86400000));
+    // Election night begins as the first polls close: Nov 3 at 3 PM PST (6 PM EST).
+    const pollsCloseAt=new Date('2026-11-03T15:00:00-08:00').getTime();
+    const hours=Math.max(0,Math.ceil((pollsCloseAt-Date.now())/3600000));
 
     const senate=document.getElementById('page-senate');
     if(senate){
       for(const el of leafs(senate)){
         const t=norm(el.textContent);
-        if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${days} DAYS UNTIL ELECTION DAY`;
+        if(/^Last updated\b/i.test(t)||/^Updated\b/i.test(t))el.textContent=`${hours} HOURS UNTIL POLLS CLOSE`;
       }
     }
 
@@ -255,9 +250,14 @@
       el.style.setProperty('min-width','0','important');
     }
 
-    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">DAYS UNTIL ELECTION DAY</span><strong class="wg-election-days"></strong><small class="wg-election-copy">November 3, 2026</small>';
-    if(countdown.querySelector('.wg-election-days').textContent!==String(days))countdown.querySelector('.wg-election-days').textContent=String(days);
-    countdown.setAttribute('aria-label',`${days} days until Election Day, November 3, 2026`);
+    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">HOURS UNTIL POLLS CLOSE</span><strong class="wg-election-days"></strong><small class="wg-election-copy">Nov 3, 2026 · 3:00 PM PST</small>';
+    const countdownLabel=countdown.querySelector('.wg-election-label');
+    if(countdownLabel&&countdownLabel.textContent!=='HOURS UNTIL POLLS CLOSE')countdownLabel.textContent='HOURS UNTIL POLLS CLOSE';
+    const countdownCopy=countdown.querySelector('.wg-election-copy');
+    if(countdownCopy&&countdownCopy.textContent!=='Nov 3, 2026 · 3:00 PM PST')countdownCopy.textContent='Nov 3, 2026 · 3:00 PM PST';
+    const countdownValue=countdown.querySelector('.wg-election-days');
+    if(countdownValue&&countdownValue.textContent!==String(hours))countdownValue.textContent=String(hours);
+    countdown.setAttribute('aria-label',`${hours} hours until the first polls close, November 3, 2026 at 3 PM PST`);
 
     if(!toss.querySelector('.wg-metric-value'))toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
     if(toss.querySelector('.wg-metric-value').textContent!==tossups)toss.querySelector('.wg-metric-value').textContent=tossups;
@@ -358,4 +358,6 @@
   const nav=document.querySelector('.site-header .nav');
   // Navigation updates are handled on actual interactions, not by a loop.
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
+  // The displayed integer changes once per hour. Check every minute so an open tab stays accurate.
+  setInterval(electionCountdown,60000);
 })();
