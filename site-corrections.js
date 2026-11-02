@@ -1,6 +1,6 @@
 (()=>{
   const RED='#bd2937',BLUE='#2763b8',PURPLE='#8051d2';
-  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},KS:{rating:'tilt-d',party:'Democrat',text:'Hamilton +0.2 pts'},NE:{rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}};
+  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},KS:{rating:'tilt-r',party:'Republican',text:'Marshall +0.7 pts'},NE:{rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}};
   let wrapping=false,rerendered=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
@@ -14,7 +14,7 @@
   function home(){const root=document.getElementById('page-home');if(!root)return;for(const card of root.querySelectorAll('.reference-metrics>*')){const t=norm(card.textContent).toLowerCase();if(t.includes('poll')&&t.includes('entered')){for(const el of leafs(card)){if(norm(el.textContent)==='13')el.textContent='88';const tx=norm(el.textContent);if(/^13\s+polls?\s+entered$/i.test(tx))el.textContent=tx.replace(/^13/,'88');}}if(t.includes('latest')&&t.includes('update')){setText(card,'Sep 6, 2026','Sep 7, 2026');setText(card,'Sep. 6, 2026','Sep 7, 2026');setText(card,'2026-09-06','Sep 7, 2026');}}
   }
 
-  function forceBalance(){const root=document.getElementById('page-senate');if(!root)return;for(const label of leafs(root)){const t=norm(label.textContent);if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t))continue;let box=label.parentElement;for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));if(n){n.textContent=/^REPUBLICAN$/i.test(t)?'48':'52';break;}}}}
+  function forceBalance(){const root=document.getElementById('page-senate');if(!root)return;for(const label of leafs(root)){const t=norm(label.textContent);if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t))continue;let box=label.parentElement;for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));if(n){n.textContent=/^REPUBLICAN$/i.test(t)?'49':'51';break;}}}}
 
   function maineMap(){const root=document.getElementById('page-senate');if(!root)return;root.querySelectorAll('[data-state="ME"],[data-abbr="ME"],[data-state-abbr="ME"],#ME,#state-ME').forEach(el=>{el.style.setProperty('fill','#f8c6ca','important');el.style.setProperty('background','#f8c6ca','important');});for(const tx of [...root.querySelectorAll('svg text')]){if(norm(tx.textContent)!=='ME')continue;const g=tx.closest('g');if(g)g.querySelectorAll('path,polygon,rect').forEach(el=>el.style.setProperty('fill','#f8c6ca','important'));}}
 
@@ -26,5 +26,5 @@
   function domFixes(){home();pollCount();forceBalance();maineMap();visibleMaine();partyVisuals();}
   function enforce(){const changed=forceData();wrapRender();if(changed&&!rerendered&&typeof window.renderSenate==='function'){rerendered=true;try{window.renderSenate();}catch(e){}}domFixes();}
   function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enforce();});}
-  enforce();setTimeout(enforce,120);setTimeout(enforce,700);setTimeout(enforce,1800);new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true});window.addEventListener('pageshow',enforce);window.addEventListener('resize',enforce);
+  enforce();setTimeout(enforce,120);setTimeout(enforce,700);setTimeout(enforce,1800);/* Avoid a self-triggering document-wide mutation loop; reconciliation is handled on startup, pageshow and resize. */window.addEventListener('pageshow',enforce);window.addEventListener('resize',enforce);
 })();
