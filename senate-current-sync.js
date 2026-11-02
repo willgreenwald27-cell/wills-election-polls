@@ -57,6 +57,10 @@
       }
       const ia=stateData.IA;
       if(ia){
+        set(ia,'predictionParty','Republican');
+        set(ia,'prediction','Hinson +1.8%');
+        for(const key of ['projectedWinner','predictionWinner','winner','callParty']) if(key in ia) set(ia,key,'Republican');
+        if('call' in ia) set(ia,'call','Hinson +1.8%');
         set(ia,'notes',"Why my forecast differs: Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage.");
       }
       const ks=stateData.KS;
@@ -77,7 +81,7 @@
       }
       const ne=stateData.NE;
       if(ne){
-        set(ne,'rating','lean-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
+        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
         set(ne,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ne) set(ne,k,'Republican');
         if('call' in ne) set(ne,'call','Ricketts +3.2%');
