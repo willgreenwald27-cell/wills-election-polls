@@ -2,7 +2,7 @@
   const CALLS={
     ME:{rating:'tilt-r',predictionParty:'Republican',prediction:'Collins +1.3%',notes:'Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).'},
     IA:{rating:'tilt-r',predictionParty:'Republican',prediction:'Hinson +3.2%'},
-    KS:{rating:'likely-r',predictionParty:'Republican',prediction:'Marshall +6.9%'},
+    KS:{rating:'tilt-r',predictionParty:'Republican',prediction:'Marshall +0.7 pts'},
     NE:{rating:'lean-r',predictionParty:'Republican',prediction:'Ricketts +4.3%'}
   };
   const POLL_AVERAGES={
@@ -28,7 +28,7 @@
         for(const [k,v] of Object.entries(vals)){
           if(s[k]!==v){s[k]=v;changed=true;}
         }
-        if(s.updated!=='2026-09-10'){s.updated='2026-09-10';changed=true;}
+        const updated=ab==='KS'?'2026-11-01':'2026-09-10';if(s.updated!==updated){s.updated=updated;changed=true;}
       }
       for(const [ab,byName] of Object.entries(POLL_AVERAGES)){
         const s=stateData[ab]; if(!s) continue;
@@ -62,6 +62,6 @@
   function apply(){applyData();patchVisibleCallText();}
   apply();
   setTimeout(apply,100);setTimeout(apply,700);setTimeout(apply,1600);
-  new MutationObserver(()=>{applyData();patchVisibleCallText();}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  // Prevent a recursive global mutation/re-render loop. Reconcile at startup and on pageshow.
   window.addEventListener('pageshow',apply);
 })();
