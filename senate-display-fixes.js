@@ -81,8 +81,8 @@
   function forceSenateBalance(){
     const root=document.getElementById('page-senate');
     if(!root) return;
-    setSummaryParty(root,/^REPUBLICAN$/i,48);
-    setSummaryParty(root,/^DEMOCRAT(?:IC)?$/i,52);
+    setSummaryParty(root,/^REPUBLICAN$/i,49);
+    setSummaryParty(root,/^DEMOCRAT(?:IC)?$/i,51);
   }
 
   function forceMaineMapColor(){
