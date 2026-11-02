@@ -220,7 +220,7 @@
             </div>
             <div class="senate-bar" aria-label="Senate prediction: 51 Democrats and 49 Republicans"><div class="dem"></div><div class="rep"></div></div>
             <div class="majority-note">51 seats needed for a majority</div>
-            <div class="senate-countdown"><span class="senate-countdown-label">First polls close · Nov 3 · 6 PM ET</span><strong id="senateElectionCountdown">--d --h --m --s</strong></div>
+            <div class="senate-countdown"><span class="senate-countdown-label">FIRST POLLS CLOSE · NOV 3 · 3 PM PST</span><strong id="senateElectionCountdown">-- HOURS</strong></div>
           </div>
         </div>`;
     }
@@ -241,13 +241,11 @@ function fixHomePastErrorsCTA(){
 
 function updateElectionCountdown(){
   const el=document.getElementById('senateElectionCountdown'); if(!el) return;
-  const target=new Date('2026-11-03T18:00:00-05:00').getTime();
-  let ms=Math.max(0,target-Date.now());
-  const d=Math.floor(ms/86400000); ms%=86400000;
-  const h=Math.floor(ms/3600000); ms%=3600000;
-  const m=Math.floor(ms/60000); ms%=60000;
-  const sec=Math.floor(ms/1000);
-  el.textContent=(ms===0&&Date.now()>=target)?'POLLS CLOSING':`${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(sec).padStart(2,'0')}s`;
+  const target=new Date('2026-11-03T15:00:00-08:00').getTime();
+  const hours=Math.max(0,Math.ceil((target-Date.now())/3600000));
+  el.textContent=Date.now()>=target?'POLLS CLOSING':hours+' HOURS';
+  const label=el.closest('.senate-countdown')?.querySelector('.senate-countdown-label');
+  if(label)label.textContent='FIRST POLLS CLOSE · NOV 3 · 3 PM PST';
 }
 
   function removeDuplicateHomeSenatePrediction(){
