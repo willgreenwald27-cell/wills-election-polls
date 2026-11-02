@@ -71,8 +71,8 @@
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Marshall/i.test(name))set(ks,key,'51');
-          if(/Hamilton/i.test(name))set(ks,key,'49');
+          if(/Marshall/i.test(name))set(ks,key,'49');
+          if(/Hamilton/i.test(name))set(ks,key,'51');
         }
       }
       const ne=stateData.NE;
