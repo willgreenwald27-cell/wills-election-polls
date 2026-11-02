@@ -71,8 +71,8 @@
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
-          if(/Marshall/i.test(name))set(ks,key,'49');
-          if(/Hamilton/i.test(name))set(ks,key,'51');
+          if(/Marshall/i.test(name))set(ks,key ,'48');
+          if(/Hamilton/i.test(name))set(ks,key ,'52');
         }
       }
       const ne=stateData.NE;
@@ -295,16 +295,16 @@
         const repBox=summary.querySelector('.balance-party.rep,.republican,[data-party="rep"]');
         const dn=demBox?.querySelector('strong')||demBox;
         const rn=repBox?.querySelector('strong')||repBox;
-        if(dn)dn.textContent='51';
-        if(rn)rn.textContent='49';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.7 pts'));
+        if(dn)dn.textContent='52';
+        if(rn)rn.textContent='48';
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
           const dbar=bar.querySelector('.dem,.democratic,[data-party="dem"]')||kids[0];
           const rbar=bar.querySelector('.rep,.republican,[data-party="rep"]')||kids[kids.length-1];
-          if(dbar)dbar.style.setProperty('width','51%','important');
-          if(rbar)rbar.style.setProperty('width','49%','important');
+          if(dbar)dbar.style.setProperty('width' ,'52%','important');
+          if(rbar)rbar.style.setProperty('width' ,'48%','important');
 
         }
         break;
@@ -320,7 +320,7 @@
   function forceHome(){
     const root=document.getElementById('page-home');if(!root)return;
     const forecastNumbers=root.querySelector('#homeSenateForecast');
-    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='51 D';if(rep)rep.textContent='49 R';forecastNumbers.setAttribute('aria-label','Senate forecast: 51 Democrats and 49 Republicans; Kansas tilt Republican');}
+    if(forecastNumbers){const dem=forecastNumbers.querySelector('.wg-forecast-dem'),rep=forecastNumbers.querySelector('.wg-forecast-rep');if(dem)dem.textContent='52 D';if(rep)rep.textContent='48 R';forecastNumbers.setAttribute('aria-label','Senate forecast: 52 Democrats and 48 Republicans; Kansas tilt Democratic');}
     const title=leafs(root).find(el=>/^Will[’']s Senate Prediction$/i.test(norm(el.textContent)));
     if(!title)return;
     let card=title.parentElement;
@@ -331,25 +331,25 @@
     if(!card||card===root)return;
     card.querySelectorAll('.senate-tiebreak,.final-tiebreak').forEach(el=>el.remove());
     const forecast=document.getElementById('homeSenateForecast');
-    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='51 D';if(b)b.textContent='49 R';}
+    if(forecast){const a=forecast.querySelector('.wg-forecast-dem'),b=forecast.querySelector('.wg-forecast-rep');if(a)a.textContent='52 D';if(b)b.textContent='48 R';}
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums.length>=2){nums[0].textContent='51';nums[1].textContent='49';}
+    if(nums.length>=2){nums[0].textContent='52';nums[1].textContent='48';}
     const all=leafs(card);
     for(const el of all){
       const t=norm(el.textContent);
-      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'51');
-      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/,'49');
+      if(/^Democrats?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/ ,'52');
+      if(/^Republicans?:\s*\d+$/i.test(t))el.textContent=t.replace(/\d+$/ ,'48');
       if(/^\d+\s+(?:TOSSUPS?|INDEPENDENT)$/i.test(t))el.textContent='0 TOSSUPS';
     }
     const bar=card.querySelector('.senate-bar,.final-bar');
     if(bar){
       const d=bar.querySelector('.dem'),r=bar.querySelector('.rep');
-      if(d)d.style.setProperty('width','51%','important');
-      if(r)r.style.setProperty('width','49%','important');
+      if(d)d.style.setProperty('width' ,'52%','important');
+      if(r)r.style.setProperty('width' ,'48%','important');
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 51 Democrats and 49 Republicans; Kansas tilt Republican, Marshall +0.7 pts');
+      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
