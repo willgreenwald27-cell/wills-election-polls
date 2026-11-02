@@ -57,7 +57,7 @@
       #housePrediction2026 .dem{color:${BLUE}} #housePrediction2026 .rep{color:${RED}}
       #housePrediction2026 .will-split-bar{height:54px;border-radius:13px;overflow:hidden;display:flex;position:relative;background:#e6ebf2}
       #housePrediction2026 .will-split-bar i{display:block;height:100%}
-      #housePrediction2026 .dem-bar{background:${BLUE};width:52%} #housePrediction2026 .rep-bar{background:${RED};width:48%}
+      #housePrediction2026 .dem-bar{background:${BLUE};width:51%} #housePrediction2026 .rep-bar{background:${RED};width:49%}
       #housePrediction2026 .majority-line{position:absolute;left:50%;top:-8px;bottom:-24px;width:2px;border-left:2px dashed #596a80;z-index:3}
       #housePrediction2026 .will-split-bar-labels{display:flex;justify-content:space-around;margin-top:-39px;position:relative;z-index:2;color:#fff;font:900 24px/1 Inter,ui-sans-serif,system-ui,sans-serif;pointer-events:none}
       #housePrediction2026 .will-split-majority{text-align:center;margin-top:34px;font:800 12px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:#5d6d82}
