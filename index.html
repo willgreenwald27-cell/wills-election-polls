@@ -20,7 +20,7 @@ h=h.replace('load();if(stateData.NE)stateData.NE.rating="lean-r";applyPaletteCSS
 h=h.replace('</body>',`<script src="/election-days-eastern.js?v=20261031-et3" defer><\/script></body>`);
 h=h.replace('</body>','<script defer src="/senate-map-updated-date.js?v=20261101-nov1-map1"><\/script></body>');
 /* Load the aligned forecast scripts with one fresh version after all other rewrites. */
-h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|site-ux-polish|senate-display-fixes|senate-current-sync|senate-color-polish|home-forecast-equal|home-split-forecast|senate-party-labels|senate-call-average-overrides)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261101-kansas-hamilton02-blue'+quote);
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|site-ux-polish|senate-display-fixes|senate-current-sync|senate-color-polish|home-forecast-equal|home-split-forecast|senate-party-labels|senate-call-average-overrides)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261101-senate52-48-sourcefix-v4'+quote);
 /* homepage Senate forecast final paint: run after all legacy scripts */
-h=h.replace('</body>',`<script src="/homepage-senate-52-48.js?v=20261101-final52" defer><\/script></body>`);
+h=h.replace('</body>',`<script src="/homepage-senate-52-48.js?v=20261101-verified52-v4" defer><\/script></body>`);
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
