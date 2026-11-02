@@ -267,7 +267,7 @@
     const updatedValue=updated.querySelector('.wg-metric-value');if(updatedValue)updatedValue.textContent='November 1, 2026';
     updated.setAttribute('aria-label','Last updated November 1, 2026');
 
-    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">51 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">49 R</span></div>';
+    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">52 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">48 R</span></div>';
     const dd=forecast.querySelector('.wg-forecast-dem'),rr=forecast.querySelector('.wg-forecast-rep');
     if(dd&&dd.textContent!=='52 D')dd.textContent='52 D';
     if(rr&&rr.textContent!=='48 R')rr.textContent='48 R';
@@ -329,7 +329,7 @@
       let box=label.parentElement;
       for(let i=0;box&&box!==root&&i<14;i++,box=box.parentElement){const t=norm(box.textContent);if(/Marshall/i.test(t)&&/Hamilton/i.test(t)&&/(WIN ODDS|STATISTICAL ODDS|WILL[’']S CALL)/i.test(t))break;}
       if(!box||box===root)continue;
-      for(const el of leafs(box)){const t=norm(el.textContent);if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'51%');if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/ ,'49%');}
+      for(const el of leafs(box)){const t=norm(el.textContent);if(/Marshall:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/,'49%');if(/Hamilton:\s*\d+(?:\.\d+)?%/i.test(t))el.textContent=t.replace(/\d+(?:\.\d+)?%/ ,'51%');}
       const lines=[...box.querySelectorAll('.candidate-line')].filter(el=>el.getClientRects().length),bar=box.querySelector('.oddsbar');
       if(bar&&lines.length>=2){const odds=lines.map(line=>{const name=norm(line.querySelector('.candidate-name')?.textContent);return /Marshall/i.test(name)?49:/Hamilton/i.test(name)?51:null;});const a=bar.querySelector('.oddsbar-a'),b=bar.querySelector('.oddsbar-b');if(a&&odds[0]!=null)a.style.setProperty('width',odds[0]+'%','important');if(b&&odds[1]!=null)b.style.setProperty('width',odds[1]+'%','important');}
     }
