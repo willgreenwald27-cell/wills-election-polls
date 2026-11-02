@@ -220,7 +220,7 @@
             </div>
             <div class="senate-bar" aria-label="Senate prediction: 51 Democrats and 49 Republicans"><div class="dem"></div><div class="rep"></div></div>
             <div class="majority-note">51 seats needed for a majority</div>
-            <div class="senate-countdown"><span class="senate-countdown-label">FIRST POLLS CLOSE · NOV 3 · 3 PM PST</span><strong id="senateElectionCountdown">-- HOURS</strong></div>
+            <div class="senate-countdown"><span class="senate-countdown-label">HOURS UNTIL FIRST POLLS CLOSE · 3 PM PST</span><strong id="senateElectionCountdown">-- HOURS</strong></div>
           </div>
         </div>`;
     }
@@ -245,7 +245,7 @@ function updateElectionCountdown(){
   const hours=Math.max(0,Math.ceil((target-Date.now())/3600000));
   el.textContent=Date.now()>=target?'POLLS CLOSING':hours+' HOURS';
   const label=el.closest('.senate-countdown')?.querySelector('.senate-countdown-label');
-  if(label)label.textContent='FIRST POLLS CLOSE · NOV 3 · 3 PM PST';
+  if(label)label.textContent='HOURS UNTIL FIRST POLLS CLOSE · 3 PM PST';
 }
 
   function removeDuplicateHomeSenatePrediction(){
