@@ -6,8 +6,8 @@
     if(!root)return;
     const visible=[...root.querySelectorAll('*')].filter(el=>el.getClientRects().length);
     const leafs=visible.filter(el=>el.children.length===0);
-    const dem=leafs.filter(el=>norm(el.textContent)==='52').sort((a,b)=>parseFloat(getComputedStyle(b).fontSize)-parseFloat(getComputedStyle(a).fontSize))[0];
-    const rep=leafs.filter(el=>norm(el.textContent)==='48').sort((a,b)=>parseFloat(getComputedStyle(b).fontSize)-parseFloat(getComputedStyle(a).fontSize))[0];
+    const dem=leafs.filter(el=>norm(el.textContent)==='51').sort((a,b)=>parseFloat(getComputedStyle(b).fontSize)-parseFloat(getComputedStyle(a).fontSize))[0];
+    const rep=leafs.filter(el=>norm(el.textContent)==='49').sort((a,b)=>parseFloat(getComputedStyle(b).fontSize)-parseFloat(getComputedStyle(a).fontSize))[0];
 
     const hasNearbyLabel=(countEl,label)=>{
       if(!countEl)return false;
