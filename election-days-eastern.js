@@ -1,14 +1,15 @@
 (()=>{'use strict';
 const target=Date.UTC(2026,10,3);
-function easternDays(){const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return Math.max(0,Math.round((target-Date.UTC(+p.year,+p.month-1,+p.day))/86400000));}
+const switchAt=Date.UTC(2026,10,2,5,0,0); // Nov 1 at 9:00 PM PST
+function easternDays(){if(Date.now()>=switchAt)return Math.max(0,Math.ceil((Date.UTC(2026,10,4,5)-Date.now())/86400000)-1);const p=Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'numeric',day:'numeric'}).formatToParts(new Date()).map(x=>[x.type,x.value]));return Math.max(0,Math.round((target-Date.UTC(+p.year,+p.month-1,+p.day))/86400000));}
 function update(){
- const days='1';
+ const days=String(easternDays());
  const leaves=[...document.body.querySelectorAll('*')].filter(e=>e.children.length===0&&!e.closest('script,style,noscript,svg'));
  const label=/\b(days?\s+(until|till|to|before)\s+(the\s+)?(2026\s+)?(election|november\s*3)|days?\s+remaining|election\s+countdown)\b/i;
  for(const el of leaves){
   const t=(el.textContent||'').trim();
   if(!t||t.length>110)continue;
-  if(/\b\d+\s+days?\s+(until|till|to|before)\s+(the\s+)?(2026\s+)?election/i.test(t)){el.textContent='1 day until Election Night at 9 PM PT';continue;}
+  if(/\b\d+\s+days?\s+(until|till|to|before)\s+(the\s+)?(2026\s+)?election/i.test(t)){el.textContent=days+' '+(days==='1'?'day':'days')+' until Election Night';continue;}
   if(!label.test(t))continue;
   // Locate the counter within the nearest small countdown component, not across the page.
   for(let parent=el.parentElement,depth=0;parent&&depth<4;parent=parent.parentElement,depth++){
