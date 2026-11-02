@@ -1,7 +1,7 @@
 (()=>{
   'use strict';
   // Editorial date requested by the site owner, not the browser's current date.
-  const DATE='October 31, 2026';
+  const DATE='November 2, 2026';
   const norm=s=>String(s||'').replace(/\s+/g,' ').trim();
   const update=el=>{if(el&&norm(el.textContent)!==DATE)el.textContent=DATE;};
 
@@ -17,7 +17,7 @@
     if(metric)update(metric.querySelector('.wg-metric-value')||metric.querySelector('strong'));
 
     // Handle other historical metric layout versions, without touching unrelated dates.
-    const dateText=/^(?:(?:Sep(?:tember)?|Oct(?:ober)?)\.?\s+\d{1,2}(?:,?\s*2026)?|2026[-\/]\d{2}[-\/]\d{2})$/i;
+    const dateText=/^(?:(?:Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?)\.?\s+\d{1,2}(?:,?\s*2026)?|2026[-\/]\d{2}[-\/]\d{2})$/i;
     const leaves=[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
     for(const label of leaves){
       if(!/^(Latest Update|Last Updated)$/i.test(norm(label.textContent)))continue;
@@ -28,7 +28,7 @@
       }
     }
     for(const el of leaves){
-      if(/^Last updated\s*:?\s*(?:Sep|Oct)(?:tember|ober)?\.?\s+\d{1,2}(?:,?\s*2026)?$/i.test(norm(el.textContent))){
+      if(/^Last updated\s*:?\s*(?:Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?)\.?\s+\d{1,2}(?:,?\s*2026)?$/i.test(norm(el.textContent))){
         const text='Last updated: '+DATE;
         if(norm(el.textContent)!==text)el.textContent=text;
       }
