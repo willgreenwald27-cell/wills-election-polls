@@ -40,7 +40,7 @@
       const set=(s,k,v)=>{if(String(s[k]??'')!==String(v)){s[k]=v;changed=true;}};
       const me=stateData.ME;
       if(me){
-        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);
+        set(me,'rating','tilt-d');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
@@ -61,13 +61,13 @@
       }
       const ks=stateData.KS;
       if(ks){
-        set(ks,'rating','tilt-r');
+        set(ks,'rating','tilt-d');
         set(ks,'updated','2026-11-01');
-        set(ks,'predictionParty','Republican');
-        set(ks,'prediction','Marshall +0.7 pts');
+        set(ks,'predictionParty','Democrat');
+        set(ks,'prediction','Hamilton +0.2 pts');
         set(ks,'notes','');
-        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Republican');
-        if('call' in ks) set(ks,'call','Marshall +0.7 pts');
+        for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Democrat');
+        if('call' in ks) set(ks,'call','Hamilton +0.2 pts');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
