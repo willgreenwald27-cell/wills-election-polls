@@ -340,12 +340,12 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0]&&nums[0].textContent!=='51')nums[0].textContent='51';
-    if(nums[1]&&nums[1].textContent!=='49')nums[1].textContent='49';
+    if(nums[0]&&nums[0].textContent!=='52')nums[0].textContent='52';
+    if(nums[1]&&nums[1].textContent!=='48')nums[1].textContent='48';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
-    if(dem)dem.style.setProperty('width','51%','important');
-    if(rep)rep.style.setProperty('width','49%','important');
+    if(dem)dem.style.setProperty('width','52%','important');
+    if(rep)rep.style.setProperty('width','48%','important');
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
