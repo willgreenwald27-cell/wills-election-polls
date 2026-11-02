@@ -17,16 +17,16 @@
       for(const el of card.querySelectorAll('*')){
         if(el.children.length)continue;
         const t=(el.textContent||'').trim();
-        if(/^Democrats?:\\s*51$/i.test(t))setText(el,t.replace(/51$/,'52'));
-        if(/^Republicans?:\\s*49$/i.test(t))setText(el,t.replace(/49$/,'48'));
+        if(/^Democrats?:\s*51$/i.test(t))setText(el,t.replace(/51$/,'52'));
+        if(/^Republicans?:\s*49$/i.test(t))setText(el,t.replace(/49$/,'48'));
         if(/^51 seats$/i.test(t)&&/democrat/i.test(el.parentElement?.textContent||''))setText(el,'52 seats');
         if(/^49 seats$/i.test(t)&&/republican/i.test(el.parentElement?.textContent||''))setText(el,'48 seats');
       }
       const split=card.querySelector('.will-split-parties');
       if(split){
         for(const el of split.querySelectorAll('strong')) {
-          if(/DEMOCRATS:\\s*51/i.test(el.textContent))setText(el,'DEMOCRATS: 52');
-          if(/REPUBLICANS:\\s*49/i.test(el.textContent))setText(el,'REPUBLICANS: 48');
+          if(/DEMOCRATS:\s*51/i.test(el.textContent))setText(el,'DEMOCRATS: 52');
+          if(/REPUBLICANS:\s*49/i.test(el.textContent))setText(el,'REPUBLICANS: 48');
         }
       }
       setWidth(card.querySelector('.senate-bar .dem,.final-bar .dem,.dem-bar'), '52%');
