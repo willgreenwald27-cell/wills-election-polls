@@ -12,11 +12,11 @@
       if(tx){
         tx.rating='tilt-d';
         tx.predictionParty='Democrat';
-        tx.prediction='Talarico +0.7%';
+        tx.prediction='Talarico +0.9%';
         tx.notes='';
         // Poll archive owns the latest-update date.
         for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in tx)tx[k]='Democratic';
-        if('call' in tx)tx.call='Talarico +0.7%';
+        if('call' in tx)tx.call='Talarico +0.9%';
       }
       const oh=stateData.OH;
       if(oh){
@@ -437,7 +437,7 @@
         if(party)party.textContent='Democrat';
         const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
         if(rating)rating.textContent='TILT DEMOCRATIC';
-        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.7%';
+        const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.9%';
       }
     }
   }
