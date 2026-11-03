@@ -303,7 +303,6 @@
       for(const el of leafs(card)){
         const v=norm(el.textContent);
         if(t.includes('poll')&&t.includes('entered')&&['13','14','88','89'].includes(v)) el.textContent='90';
-        if(t.includes('toss')&&t.includes('up')&&v==='7') el.textContent='6';
         if(t.includes('latest')&&t.includes('update')&&(/Sep\.? [67], 2026/i.test(v)||v==='2026-09-06'||v==='2026-09-07')) el.textContent='Sep 8, 2026';
       }
     }
