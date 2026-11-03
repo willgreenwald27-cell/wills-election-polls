@@ -49,9 +49,9 @@
       }
       if(typeof stateData!=='undefined'&&stateData?.MI){
         const mi=stateData.MI;
-        if(mi.prediction!=='El-Sayed +1.3%'){mi.prediction='El-Sayed +1.3%';changed=true;}
+        if(mi.prediction!=='El-Sayed +1.6%'){mi.prediction='El-Sayed +1.6%';changed=true;}
         if(mi.predictionParty!=='Democrat'){mi.predictionParty='Democrat';changed=true;}
-        if('call' in mi&&mi.call!=='El-Sayed +1.3%'){mi.call='El-Sayed +1.3%';changed=true;}
+        if('call' in mi&&mi.call!=='El-Sayed +1.6%'){mi.call='El-Sayed +1.6%';changed=true;}
         if(mi.updated!=='2026-09-10'){mi.updated='2026-09-10';changed=true;}
       }
     }catch(e){}
