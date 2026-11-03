@@ -1,12 +1,12 @@
 (()=>{
   const RED='#bd2937',BLUE='#2763b8',PURPLE='#8051d2';
-  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},KS:{rating:'tilt-r',party:'Republican',text:'Marshall +0.7 pts'},NE:{rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}};
+  const CALLS={ME:{rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},IA:{rating:'tilt-r',party:'Republican',text:'Hinson +1.9%'},KS:{rating:'tilt-d',party:'Democrat',text:'Hamilton +0.3%'},NE:{rating:'tilt-r',party:'Republican',text:'Ricketts +2.8%'}};
   let wrapping=false,rerendered=false,queued=false;
   const norm=v=>String(v||'').replace(/\s+/g,' ').trim();
   const leafs=root=>[...root.querySelectorAll('*')].filter(el=>el.children.length===0);
   function colorForParty(v){v=norm(v).toLowerCase();if(v==='r'||v==='rep'||v==='gop'||v.includes('republican'))return RED;if(v==='d'||v.includes('democrat'))return BLUE;return PURPLE;}
 
-  function forceData(){try{if(typeof stateData==='undefined'||!stateData)return false;let changed=false;for(const [ab,c] of Object.entries(CALLS)){const s=stateData[ab];if(!s)continue;for(const [k,v] of [['rating',c.rating],['predictionParty',c.party],['prediction',c.text]]){if(s[k]!==v){s[k]=v;changed=true;}}for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in s&&s[k]!==c.party){s[k]=c.party;changed=true;}if('call' in s&&s.call!==c.text){s.call=c.text;changed=true;}{const date=ab==='KS'?'2026-11-01':'2026-09-07';if(s.updated!==date){s.updated=date;changed=true;}}}if(stateData.NH&&stateData.NH.active&&stateData.NH.rating!=='tilt-d'){stateData.NH.rating='tilt-d';changed=true;}return changed;}catch(e){return false;}}
+  function forceData(){try{if(typeof stateData==='undefined'||!stateData)return false;let changed=false;for(const [ab,c] of Object.entries(CALLS)){const s=stateData[ab];if(!s)continue;for(const [k,v] of [['rating',c.rating],['predictionParty',c.party],['prediction',c.text]]){if(s[k]!==v){s[k]=v;changed=true;}}for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in s&&s[k]!==c.party){s[k]=c.party;changed=true;}if('call' in s&&s.call!==c.text){s.call=c.text;changed=true;}{const date=ab==='KS'?'2026-11-02':'2026-09-07';if(s.updated!==date){s.updated=date;changed=true;}}}if(stateData.NH&&stateData.NH.active&&stateData.NH.rating!=='tilt-d'){stateData.NH.rating='tilt-d';changed=true;}return changed;}catch(e){return false;}}
 
   function wrapRender(){if(wrapping)return;try{const fn=window.renderSenate;if(typeof fn!=='function'||fn.__willStableWrapped)return;const wrapped=function(){forceData();const out=fn.apply(this,arguments);requestAnimationFrame(domFixes);return out;};wrapped.__willStableWrapped=true;window.renderSenate=wrapped;}catch(e){}}
 
