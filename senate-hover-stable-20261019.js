@@ -95,7 +95,7 @@
         tip.innerHTML=(typeof html==='string'&&html.trim())?html:fallback(ab);
         if(ab==='TX'||ab==='OH'||ab==='FL'||ab==='MN'||ab==='MS'){
           const call=tip.querySelector('.prediction-copy');
-          if(call){call.textContent=ab==='TX'?'TALARICO +1.2%':ab==='OH'?'BROWN +0.6%':ab==='FL'?'MOODY +7.6%':ab==='MN'?'FLANAGAN +4.8%':'HYDE-SMITH +8.1%';call.classList.add(ab==='TX'?'wg-tx-call':ab==='OH'?'wg-oh-call':ab==='FL'?'wg-fl-call':ab==='MN'?'wg-mn-call':'wg-ms-call');}
+          if(call){call.textContent=ab==='TX'?'TALARICO +0.9%':ab==='OH'?'BROWN +0.6%':ab==='FL'?'MOODY +7.6%':ab==='MN'?'FLANAGAN +4.8%':'HYDE-SMITH +8.1%';call.classList.add(ab==='TX'?'wg-tx-call':ab==='OH'?'wg-oh-call':ab==='FL'?'wg-fl-call':ab==='MN'?'wg-mn-call':'wg-ms-call');}
         }
       }catch(_){tip.innerHTML=fallback(ab)}
     }
