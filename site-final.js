@@ -29,8 +29,8 @@
         if(norm(me.candidate2)==='Troy Jackson') me.candidate2Odds='52';
       }
       if(stateData.NH&&stateData.NH.active) stateData.NH.rating='tilt-d';
-      if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democrat';stateData.OH.prediction='Tilt Democratic';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Tilt Democratic';}
-      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democrat';stateData.TX.prediction='Talarico +1.2%';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico +1.2%';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
+      if(stateData.OH&&stateData.OH.active){stateData.OH.rating='tilt-d';stateData.OH.predictionParty='Democrat';stateData.OH.prediction='Brown +0.6%';stateData.OH.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.OH)stateData.OH[k]='Democratic';if('call' in stateData.OH)stateData.OH.call='Brown +0.6%';}
+      if(stateData.TX&&stateData.TX.active){stateData.TX.rating='tilt-d';stateData.TX.predictionParty='Democrat';stateData.TX.prediction='Talarico +0.9%';stateData.TX.notes='';for(const k of ['projectedWinner','predictionWinner','winner','callParty'])if(k in stateData.TX)stateData.TX[k]='Democratic';if('call' in stateData.TX)stateData.TX.call='Talarico +0.9%';for(const slot of [1,2]){const n=norm(stateData.TX['candidate'+slot]);if(/Talarico/i.test(n))stateData.TX['candidate'+slot+'Odds']='55';if(/Paxton/i.test(n))stateData.TX['candidate'+slot+'Odds']='45';}}
     }catch(e){}
   }
 
@@ -52,7 +52,7 @@
     for(const label of leafs(root)){
       const t=norm(label.textContent);
       if(!/^(REPUBLICAN|DEMOCRAT(?:IC)?)$/i.test(t)) continue;
-      const value=/^DEMOCRAT/i.test(t)?'51':'49';
+      const value=/^DEMOCRAT/i.test(t)?'52':'48';
       let box=label.parentElement;
       for(let d=0;box&&box!==root&&d<5;d++,box=box.parentElement){
         const n=leafs(box).find(x=>/^\d+$/.test(norm(x.textContent)));
