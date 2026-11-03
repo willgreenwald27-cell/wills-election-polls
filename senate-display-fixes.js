@@ -6,9 +6,9 @@
   const IND='#8051d2';
   const CALLS={
     ME:{name:'Maine',rating:'tilt-r',party:'Republican',text:'Collins +1.3%'},
-    IA:{name:'Iowa',rating:'tilt-r',party:'Republican',text:'Hinson +3.2%'},
-    KS:{name:'Kansas',rating:'tilt-r',party:'Republican',text:'Marshall +0.7 pts'},
-    NE:{name:'Nebraska',rating:'lean-r',party:'Republican',text:'Ricketts +4.3%'}
+    IA:{name:'Iowa',rating:'tilt-r',party:'Republican',text:'Hinson +1.9%'},
+    KS:{name:'Kansas',rating:'tilt-d',party:'Democrat',text:'Hamilton +0.3%'},
+    NE:{name:'Nebraska',rating:'tilt-r',party:'Republican',text:'Ricketts +2.8%'}
   };
   const POLL_AVERAGES={
     SC:{'Annie Andrews':'41.0','Darline Graham':'41.0'},
@@ -44,7 +44,7 @@
         if(s.rating!==cfg.rating){s.rating=cfg.rating;changed=true;}
         if(s.predictionParty!==cfg.party){s.predictionParty=cfg.party;changed=true;}
         if(s.prediction!==cfg.text){s.prediction=cfg.text;changed=true;}
-        if(s.updated!==(ab==='KS'?'2026-11-01':'2026-09-07')){s.updated=ab==='KS'?'2026-11-01':'2026-09-07';changed=true;}
+        if(s.updated!==(ab==='KS'?'2026-11-02':'2026-09-07')){s.updated=ab==='KS'?'2026-11-02':'2026-09-07';changed=true;}
         if('projectedWinner' in s&&s.projectedWinner!==cfg.party){s.projectedWinner=cfg.party;changed=true;}
         if('predictionWinner' in s&&s.predictionWinner!==cfg.party){s.predictionWinner=cfg.party;changed=true;}
         if('winner' in s&&s.winner!==cfg.party){s.winner=cfg.party;changed=true;}
