@@ -1,9 +1,9 @@
 (()=>{
   const CALLS={
     ME:{rating:'tilt-r',predictionParty:'Republican',prediction:'Collins +1.3%',notes:'Why: Final polling margins underestimated Susan Collins by more than 5 points in each of her last three Senate elections (2008, 2014, and 2020).'},
-    IA:{rating:'tilt-r',predictionParty:'Republican',prediction:'Hinson +3.2%'},
-    KS:{rating:'tilt-r',predictionParty:'Republican',prediction:'Marshall +0.7 pts'},
-    NE:{rating:'lean-r',predictionParty:'Republican',prediction:'Ricketts +4.3%'}
+    IA:{rating:'tilt-r',predictionParty:'Republican',prediction:'Hinson +1.9%'},
+    KS:{rating:'tilt-d',predictionParty:'Democrat',prediction:'Hamilton +0.3%'},
+    NE:{rating:'tilt-r',predictionParty:'Republican',prediction:'Ricketts +2.8%'}
   };
   const POLL_AVERAGES={
     SC:{'Annie Andrews':'41.0','Darline Graham':'41.0'},
@@ -28,7 +28,7 @@
         for(const [k,v] of Object.entries(vals)){
           if(s[k]!==v){s[k]=v;changed=true;}
         }
-        const updated=ab==='KS'?'2026-11-01':'2026-09-10';if(s.updated!==updated){s.updated=updated;changed=true;}
+        const updated=ab==='KS'?'2026-11-02':'2026-09-10';if(s.updated!==updated){s.updated=updated;changed=true;}
       }
       for(const [ab,byName] of Object.entries(POLL_AVERAGES)){
         const s=stateData[ab]; if(!s) continue;
