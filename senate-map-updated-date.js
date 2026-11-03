@@ -1,5 +1,5 @@
 (()=>{'use strict';
-  const date='November 1, 2026';
+  const date='November 2, 2026';
   const datePattern=/\b(?:Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?)\.?\s+\d{1,2}(?:,?\s*2026)?\b|\b2026[-/]\d{2}[-/]\d{2}\b/i;
   function apply(){
     const page=document.getElementById('page-senate');
