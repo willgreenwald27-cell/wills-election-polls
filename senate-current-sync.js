@@ -40,7 +40,7 @@
       const set=(s,k,v)=>{if(String(s[k]??'')!==String(v)){s[k]=v;changed=true;}};
       const me=stateData.ME;
       if(me){
-        set(me,'rating','tilt-d');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);
+        set(me,'rating','tilt-r');set(me,'predictionParty','Republican');set(me,'prediction','Collins +1.3%');set(me,'notes',MAINE_NOTE);
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in me) set(me,k,'Republican');
         if('call' in me) set(me,'call','Collins +1.3%');
       }
@@ -58,20 +58,20 @@
       const ia=stateData.IA;
       if(ia){
         set(ia,'predictionParty','Republican');
-        set(ia,'prediction','Hinson +1.8%');
+        set(ia,'prediction','Hinson +1.9%');
         for(const key of ['projectedWinner','predictionWinner','winner','callParty']) if(key in ia) set(ia,key,'Republican');
-        if('call' in ia) set(ia,'call','Hinson +1.8%');
+        if('call' in ia) set(ia,'call','Hinson +1.9%');
         set(ia,'notes',"Why my forecast differs: Iowa has moved sharply toward Republicans in recent presidential elections, so I'm giving the state's recent Republican lean more weight than a narrow Democratic polling advantage.");
       }
       const ks=stateData.KS;
       if(ks){
         set(ks,'rating','tilt-d');
-        set(ks,'updated','2026-11-01');
+        set(ks,'updated','2026-11-02');
         set(ks,'predictionParty','Democrat');
-        set(ks,'prediction','Hamilton +0.2 pts');
+        set(ks,'prediction','Hamilton +0.3%');
         set(ks,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ks) set(ks,k,'Democrat');
-        if('call' in ks) set(ks,'call','Hamilton +0.2 pts');
+        if('call' in ks) set(ks,'call','Hamilton +0.3%');
         for(const slot of [1,2]){
           const name=norm(ks['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -81,10 +81,10 @@
       }
       const ne=stateData.NE;
       if(ne){
-        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +3.2%');
+        set(ne,'rating','tilt-r');set(ne,'predictionParty','Republican');set(ne,'prediction','Ricketts +2.8%');
         set(ne,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in ne) set(ne,k,'Republican');
-        if('call' in ne) set(ne,'call','Ricketts +3.2%');
+        if('call' in ne) set(ne,'call','Ricketts +2.8%');
       }
       const oh=stateData.OH;
       if(oh){
@@ -101,7 +101,7 @@
       const sc=stateData.SC;
       if(sc){
         set(sc,'rating','lean-r');
-        set(sc,'predictionParty','Republican');
+        set(sc,'predictionParty','Republican');set(sc,'prediction','Graham +4.6%');if('call' in sc)set(sc,'call','Graham +4.6%');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in sc) set(sc,k,'Republican');
       }
       const ms=stateData.MS;
@@ -111,9 +111,9 @@
       }
       const tx=stateData.TX;
       if(tx){
-        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democrat');set(tx,'prediction','Talarico +0.7%');set(tx,'notes','');
+        set(tx,'rating','tilt-d');set(tx,'predictionParty','Democrat');set(tx,'prediction','Talarico +0.9%');set(tx,'notes','');
         for(const k of ['projectedWinner','predictionWinner','winner','callParty']) if(k in tx) set(tx,k,'Democratic');
-        if('call' in tx) set(tx,'call','Talarico +0.7%');
+        if('call' in tx) set(tx,'call','Talarico +0.9%');
         for(const slot of [1,2]){
           const name=norm(tx['candidate'+slot]);
           const key='candidate'+slot+'Odds';
@@ -121,6 +121,8 @@
           if(/Paxton/i.test(name))set(tx,key,'45');
         }
       }
+      const finalExtra={AK:['Peltola +1.7%','Democrat'],GA:['Ossoff +7.6%','Democrat'],NC:['Cooper +8.9%','Democrat'],MI:['El-Sayed +1.6%','Democrat'],SC:['Graham +4.6%','Republican']};
+      for(const [ab,vals] of Object.entries(finalExtra)){const s=stateData[ab];if(!s)continue;set(s,'prediction',vals[0]);set(s,'predictionParty',vals[1]);if('call' in s)set(s,'call',vals[0]);for(const f of ['projectedWinner','predictionWinner','winner','callParty'])if(f in s)set(s,f,vals[1]);}
       return changed;
     }catch(e){console.warn('Audited Senate data sync unavailable',e);return false;}
   }
@@ -267,7 +269,7 @@
           if(party)party.textContent='Democrat';
           const rating=vals.find(el=>/(TILT|LEAN|LIKELY|SOLID)\s+(REPUBLICAN|DEMOCRAT(?:IC)?)/i.test(norm(el.textContent)));
           if(rating)rating.textContent='TILT DEMOCRATIC';
-          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.7%';
+          const copy=card.querySelector('.prediction-copy');if(copy)copy.textContent='Talarico +0.9%';
         }
       }
     }
@@ -275,15 +277,15 @@
 
   function forceKansas(){
     // One stable rule is applied on initial load; avoid repaint loops.
-    const obsolete=document.getElementById('wg-kansas-stable-tilt-blue');
+    const obsolete=document.getElementById('wg-kansas-stable-tilt-red');
     if(obsolete)obsolete.remove();
-    let style=document.getElementById('wg-kansas-stable-tilt-red');
+    let style=document.getElementById('wg-kansas-stable-tilt-blue');
     if(!style){
       style=document.createElement('style');
-      style.id='wg-kansas-stable-tilt-red';
+      style.id='wg-kansas-stable-tilt-blue';
       document.head.appendChild(style);
     }
-    const css='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#f8c6ca!important;transition:none!important;animation:none!important}';
+    const css='#page-senate .map-wrap svg .state-shape[data-state="KS"],#page-senate svg path[data-state="KS"],#page-senate svg [data-state="KS"] path,#page-senate svg #KS,#page-senate svg #state-KS path{fill:#a9c8fa!important;transition:none!important;animation:none!important}';
     if(style.textContent!==css)style.textContent=css;
   }
 
@@ -301,7 +303,7 @@
         const rn=repBox?.querySelector('strong')||repBox;
         if(dn)dn.textContent='52';
         if(rn)rn.textContent='48';
-        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts'));
+        summary.querySelectorAll('[aria-label*="Senate prediction"]').forEach(el=>el.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.3%'));
         const bars=[...summary.querySelectorAll('.senate-bar,.forecast-bar,.seat-bar,[class*="senate-bar"],[class*="seat-bar"]')];
         for(const bar of bars){
           const kids=[...bar.children].filter(el=>el.nodeType===1);
@@ -353,7 +355,7 @@
       let y=bar.querySelector('.tossup,.toss-up,[data-tossup]');
       if(!y&&d&&r){y=document.createElement('span');y.className='tossup';bar.appendChild(y);}
       if(y){y.style.setProperty('width','0%','important');y.style.setProperty('display','none','important');y.style.setProperty('flex','0 0 0%','important');}
-      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.2 pts');
+      bar.setAttribute('aria-label','Senate prediction: 52 Democrats and 48 Republicans; Kansas tilt Democratic, Hamilton +0.3%');
     }
     card.querySelectorAll('.will-tossup-count').forEach(el=>el.remove());
   }
