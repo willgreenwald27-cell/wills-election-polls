@@ -267,11 +267,15 @@
     const updatedValue=updated.querySelector('.wg-metric-value');if(updatedValue)updatedValue.textContent='November 2, 2026';
     updated.setAttribute('aria-label','Last updated November 2, 2026');
 
-    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">SENATE FORECAST</span><div class="wg-forecast-value"><span class="wg-forecast-dem">52 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">48 R</span></div>';
+    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">2026 SENATE RESULTS</span><div class="wg-forecast-value"><span class="wg-forecast-dem">54 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">44 R</span></div>';
     const dd=forecast.querySelector('.wg-forecast-dem'),rr=forecast.querySelector('.wg-forecast-rep');
-    if(dd&&dd.textContent!=='52 D')dd.textContent='52 D';
-    if(rr&&rr.textContent!=='48 R')rr.textContent='48 R';
-    forecast.setAttribute('aria-label','Senate forecast: 52 Democratic seats, 48 Republican seats');
+    if(dd&&dd.textContent!=='54 D')dd.textContent='54 D';
+    if(rr&&rr.textContent!=='44 R')rr.textContent='44 R';
+    const status=forecast.querySelector('.wg-results-status')||document.createElement('small');
+    status.className='wg-results-status';status.textContent='2 uncalled · Alaska & Mississippi · D includes 2 independents';
+    status.style.cssText='font-size:10px;line-height:1.5;color:#65788d;font-weight:700;margin-top:8px;text-align:center';
+    if(!status.parentElement)forecast.appendChild(status);
+    forecast.setAttribute('aria-label','Senate result snapshot: 54 Democratic caucus seats, 44 Republican seats, 2 uncalled (Alaska and Mississippi)');
   }
 
   function keepPartyLabels(){
@@ -340,12 +344,12 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0]&&nums[0].textContent!=='52')nums[0].textContent='52';
-    if(nums[1]&&nums[1].textContent!=='48')nums[1].textContent='48';
+    if(nums[0]&&nums[0].textContent!=='54')nums[0].textContent='54';
+    if(nums[1]&&nums[1].textContent!=='44')nums[1].textContent='44';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
-    if(dem)dem.style.setProperty('width','52%','important');
-    if(rep)rep.style.setProperty('width','48%','important');
+    if(dem)dem.style.setProperty('width','54%','important');
+    if(rep)rep.style.setProperty('width','44%','important');
   }
 
   function apply(){ensureStyle();reorderNav();electionCountdown();keepPartyLabels();fixGrahamText();fixKansasOdds();fixHomeSenateCount();}
