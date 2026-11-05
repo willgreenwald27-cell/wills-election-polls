@@ -1,1 +1,49 @@
 #wg-post-election-home{margin:14px auto 28px;width:min(1180px,calc(100% - 24px));border-radius:18px;color:white;background:linear-gradient(115deg,#112c4b,#20558a 68%,#9c4155);padding:30px 34px;box-sizing:border-box;box-shadow:0 14px 33px #092b4b2b;font-family:Arial,sans-serif}#wg-post-election-home h2{font-size:clamp(28px,4vw,47px);line-height:1.05;letter-spacing:-1.4px;color:white!important;margin:9px 0}#wg-post-election-home p{font-size:14px;color:#e2ecfa;line-height:1.55;max-width:760px}#wg-post-election-home .eyebrow{font-size:11px;letter-spacing:2px;color:#b1d4fb;font-weight:800}#wg-post-election-home .status{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}#wg-post-election-home .status span{border:1px solid #ffffff57;background:#ffffff16;border-radius:7px;padding:9px 12px;font-size:11px;font-weight:bold}#wg-post-election-home .status strong{color:#ffca89}#wg-post-election-home .actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}#wg-post-election-home .actions a{display:block;color:#193b60!important;text-decoration:none!important;border-radius:10px;background:#fff;padding:17px 15px;font-size:14px;font-weight:800;transition:transform .15s}#wg-post-election-home .actions a:hover{transform:translateY(-3px)}#wg-post-election-home .actions small{display:block;color:#637d96;font-size:11px;font-weight:500;margin-top:5px}#wg-post-election-home .fine{color:#bcd0e6;font-size:10px;margin-top:15px}@media(max-width:760px){#wg-post-election-home{padding:22px 17px}#wg-post-election-home .actions{grid-template-columns:1fr}}
+/* Internal post-election workspaces never rely on missing external page routes. */
+.wg-workspace{position:fixed;inset:0;z-index:99999;overflow:auto;background:#f4f7fb;color:#142c48;font-family:Arial,sans-serif}
+.wg-workspace *{box-sizing:border-box}
+.wg-workspace .wg-toolbar{position:sticky;top:0;z-index:3;background:#0c243e;color:#fff;display:flex;gap:12px;align-items:center;justify-content:space-between;min-height:64px;padding:10px max(18px,calc((100vw - 1160px)/2));box-shadow:0 4px 20px #0002}
+.wg-workspace .wg-toolbar strong{font-size:14px;letter-spacing:.3px}
+.wg-workspace .wg-toolbar button{font:inherit;font-weight:750;border:1px solid #ffffff77;background:transparent;color:#fff;padding:9px 13px;border-radius:8px;cursor:pointer}
+.wg-workspace .wg-tabs{display:flex;gap:6px;overflow-x:auto;white-space:nowrap}
+.wg-workspace .wg-tabs button{border:0;font:inherit;font-size:12px;font-weight:750;color:#a8c0d9;background:transparent;padding:10px;border-radius:8px;cursor:pointer}
+.wg-workspace .wg-tabs button[aria-selected=true]{color:#fff;background:#ffffff2c}
+.wg-workspace .wg-body{max-width:1160px;margin:auto;padding:30px 20px 90px}
+.wg-workspace .wg-hero{padding:35px;border-radius:18px;background:linear-gradient(115deg,#13345b,#22629e);color:white}
+.wg-workspace .wg-hero h1{font-size:clamp(34px,5vw,62px);line-height:1.04;letter-spacing:-1.8px;margin:9px 0;color:#fff}
+.wg-workspace .wg-hero p{font-size:15px;line-height:1.55;max-width:800px;color:#e0ecf8}
+.wg-workspace .wg-kicker{font-size:11px;letter-spacing:1.8px;font-weight:850;text-transform:uppercase;color:#b6d4fb}
+.wg-workspace .wg-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.wg-workspace .wg-card{background:#fff;border:1px solid #d9e4f0;border-radius:13px;padding:22px}
+.wg-workspace .wg-card h3{margin:0 0 9px;font-size:18px}
+.wg-workspace .wg-card p{font-size:13px;line-height:1.6;color:#5b6e83}
+.wg-workspace .wg-callout{background:#fff8e9;border:1px solid #e6bc7e;border-left:5px solid #d9973b;padding:17px 20px;border-radius:9px;margin:18px 0;color:#654c2a;font-size:14px;line-height:1.6}
+.wg-workspace .wg-section-title{font-size:24px;letter-spacing:-.6px;margin:30px 0 12px}
+.wg-workspace .wg-tablewrap{overflow:auto;background:white;border:1px solid #dce6f0;border-radius:12px}
+.wg-workspace table{width:100%;border-collapse:collapse;min-width:640px;font-size:13px}
+.wg-workspace th,.wg-workspace td{text-align:left;padding:13px 17px;border-bottom:1px solid #e4ebf3}
+.wg-workspace th{background:#eaf2fb;color:#4b6481;font-size:11px;letter-spacing:.8px;text-transform:uppercase}
+.wg-workspace .wg-bar{height:12px;border-radius:10px;background:#eaf0f7;overflow:hidden;width:100%;min-width:90px}
+.wg-workspace .wg-bar i{display:block;height:100%;background:#2b68b5;border-radius:10px}
+.wg-workspace .wg-bar i.rep{background:#c34d60}
+.wg-workspace .wg-muted{color:#697e96;font-size:12px}
+.wg-workspace .wg-step{border-left:3px solid #b58f51;padding:4px 0 4px 23px;margin:15px 0}
+.wg-workspace .wg-step strong{display:block;font-size:18px;margin-bottom:6px}
+.wg-workspace .wg-step p{font-size:13px;color:#64778c}
+.wg-workspace.wg-accuracy{background:#f8fafc}
+.wg-workspace.wg-accuracy .wg-hero{background:#fff;color:#132b4b;border:1px solid #d5e3f1}
+.wg-workspace.wg-accuracy .wg-hero h1{color:#132b4b}
+.wg-workspace.wg-accuracy .wg-hero p{color:#5e7590}
+.wg-workspace.wg-accuracy .wg-kicker{color:#2865a4}
+.wg-workspace.wg-future{background:#f5f0e7}
+.wg-workspace.wg-future .wg-hero{background:linear-gradient(110deg,#173d60,#3b4d64)}
+.wg-workspace.wg-future .wg-hero h1,.wg-workspace.wg-future .wg-section-title{font-family:Georgia,serif}
+.wg-workspace.wg-results{background:#0d1c2e;color:#edf5fc}
+.wg-workspace.wg-results .wg-hero{background:linear-gradient(115deg,#0d253f,#1c4c78 70%,#563a55)}
+.wg-workspace.wg-results .wg-card{background:#172d45;border-color:#34506b;color:#fff}
+.wg-workspace.wg-results .wg-card p{color:#b8cce0}
+.wg-workspace.wg-results .wg-tablewrap{background:#152b43;border-color:#34506b}
+.wg-workspace.wg-results th{background:#23415f;color:#dae7f5}
+.wg-workspace.wg-results td{border-bottom-color:#34506b}
+.wg-workspace.wg-results .wg-muted{color:#b9c9d9}
+@media(max-width:700px){.wg-workspace .wg-toolbar{flex-wrap:wrap;padding:10px 12px}.wg-workspace .wg-toolbar strong{font-size:12px}.wg-workspace .wg-body{padding:14px 12px 50px}.wg-workspace .wg-hero{padding:26px 20px}.wg-workspace .wg-cards{grid-template-columns:1fr}}
