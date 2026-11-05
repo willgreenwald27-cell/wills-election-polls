@@ -1,0 +1,28 @@
+/* Four-panel forecast-versus-results graphic. Legacy graphic hidden, but historical data retained. */
+#page-home #housePrediction2026{display:none!important}
+#page-home #wg-forecast-comparison{width:100%;margin:24px auto 32px;max-width:1300px;color:#19324d;font-family:Inter,Arial,sans-serif}
+#wg-forecast-comparison *{box-sizing:border-box}
+#wg-forecast-comparison .wg-compare-top{text-align:center;margin-bottom:22px}
+#wg-forecast-comparison .wg-compare-eyebrow{font-size:11px;letter-spacing:2.1px;font-weight:900;color:#346a9c;text-transform:uppercase}
+#wg-forecast-comparison h2{font-size:clamp(25px,3.4vw,43px);line-height:1.12;margin:8px 0 8px!important;color:#19324d!important;font-weight:850;letter-spacing:-1px}
+#wg-forecast-comparison .wg-compare-top>p{color:#62768c;font-size:13px;line-height:1.55;margin:0 auto;max-width:740px}
+#wg-forecast-comparison .wg-chamber{margin-top:22px}
+#wg-forecast-comparison .wg-chamber-title{margin:0 0 10px;font-size:16px;font-weight:900;color:#173b60;letter-spacing:.3px;text-transform:uppercase}
+#wg-forecast-comparison .wg-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+#wg-forecast-comparison .wg-compare-card{background:#fff;border:1px solid #dbe5ee;border-radius:15px;padding:22px 23px;box-shadow:0 9px 26px rgba(18,45,79,.06);min-width:0;position:relative;overflow:hidden}
+#wg-forecast-comparison .wg-compare-card.result{border-color:#b6cbe1;background:linear-gradient(145deg,#f3f8fd,#fff 55%)}
+#wg-forecast-comparison .wg-compare-label{color:#61778d;font-size:11px;text-transform:uppercase;letter-spacing:1.3px;font-weight:900}
+#wg-forecast-comparison .wg-compare-sub{font-size:11px;color:#70859a;margin-top:5px;line-height:1.5;min-height:29px}
+#wg-forecast-comparison .wg-compare-numbers{display:flex;justify-content:space-between;gap:8px;margin:12px 0 13px}
+#wg-forecast-comparison .wg-compare-num{text-align:left;min-width:0}
+#wg-forecast-comparison .wg-compare-num:nth-child(2){text-align:right}
+#wg-forecast-comparison .wg-compare-num span{display:block;font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:#62758a;font-weight:800;white-space:nowrap}
+#wg-forecast-comparison .wg-compare-num strong{display:block;font-size:clamp(35px,4vw,61px);line-height:1.05;font-weight:900}
+#wg-forecast-comparison .wg-blue{color:#2962ad}#wg-forecast-comparison .wg-red{color:#bc364b}
+#wg-forecast-comparison .wg-seats-bar{display:flex;height:19px;border-radius:100px;overflow:hidden;background:#dce4eb}
+#wg-forecast-comparison .wg-seats-bar i{display:block;height:100%}
+#wg-forecast-comparison .wg-bar-d{background:#2962ad}#wg-forecast-comparison .wg-bar-r{background:#bc364b}#wg-forecast-comparison .wg-bar-u{background:#edc653}
+#wg-forecast-comparison .wg-compare-foot{font-size:10px;line-height:1.55;color:#6c7e91;margin-top:10px}
+#wg-forecast-comparison .wg-compare-source{margin-top:18px;font-size:11px;color:#6d8196;line-height:1.6;text-align:center}
+#wg-forecast-comparison .wg-compare-source a{color:#275c99;text-decoration:underline}
+@media(max-width:720px){#wg-forecast-comparison .wg-compare-grid{grid-template-columns:1fr}#wg-forecast-comparison .wg-compare-card{padding:17px}#wg-forecast-comparison .wg-compare-sub{min-height:0}#wg-forecast-comparison .wg-compare-num strong{font-size:49px}}
