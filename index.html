@@ -28,20 +28,7 @@ h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|senate-di
 /* Reinforce forecast values after the older inline Texas renderer override. */
 h=h.replace("stateData.TX.notes='';}","stateData.TX.notes='';}"+_ksInitialSync);
 
-/* Post-election navigation: preserve the existing single-page home and its data sections. */
-const _wgPostElection=`<style id="wg-post-election-home-style">
-.wg-post-box{margin:16px auto 24px;width:min(1180px,calc(100% - 24px));padding:18px 22px;border:1px solid #d8e3ef;background:#fff;border-radius:13px;box-shadow:0 5px 18px rgba(16,39,70,.06);box-sizing:border-box;color:#19324c;font-family:inherit}
-.wg-post-kicker{color:#426b9e;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;font-weight:900;margin-bottom:7px}
-.wg-post-box h2{font-size:clamp(19px,2.4vw,27px);letter-spacing:-.5px;margin:0 0 7px!important;line-height:1.2}
-.wg-post-box p{font-size:13px;line-height:1.6;color:#546a80;margin:0 0 14px}
-.wg-post-actions{display:flex;flex-wrap:wrap;gap:9px}
-.wg-post-actions a{display:inline-flex;padding:10px 13px;border-radius:8px;background:#173f6a;color:#fff!important;font-weight:750;text-decoration:none;font-size:12px;align-items:center;min-height:40px}
-.wg-post-actions a:nth-child(2){background:#edf3f9;color:#224b77!important}
-.wg-post-actions a:nth-child(3){background:#edf3f9;color:#224b77!important}
-.wg-post-note{font-size:11px;color:#66788a;margin-top:10px}
-@media(max-width:600px){.wg-post-box{padding:15px;margin:12px auto}.wg-post-actions a{flex:1 1 140px;justify-content:center}}
-</style><script id="wg-post-election-home-script">(function(){function init(){var home=document.querySelector('#page-home');if(home&&!document.querySelector('#wg-post-election-home')){var card=document.createElement('section');card.id='wg-post-election-home';card.className='wg-post-box';card.innerHTML='<div class="wg-post-kicker">Post-election research · November 2026</div><h2>From predictions to results.</h2><p>The 2026 midterms have concluded. Explore the latest results and review our final forecasts without losing access to the original polling maps and historical research.</p><div class="wg-post-actions"><a href="/2026-results.html">2026 Results</a><a href="/prediction-accuracy.html">Forecast Accuracy</a><a href="/road-to-2028.html">Road to 2028</a></div><div class="wg-post-note">Alaska and Mississippi Senate remain uncalled as of the November 4 snapshot. Original forecast data is archived, not represented as vote results.</div>';var hero=home.querySelector('.reference-home-shell')||home.querySelector('.content');if(hero)hero.insertAdjacentElement('afterbegin',card);else home.prepend(card);}var p=new URLSearchParams(location.search);if(p.get('section')==='polling-errors'&&!window.__wgNavigatedErrors){var nav=Array.from(document.querySelectorAll('.site-header .nav button, .site-header .nav a')).find(el=>/past polling|polling errors/i.test(el.textContent||''));if(nav){window.__wgNavigatedErrors=true;nav.click();}}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();setTimeout(init,900);setTimeout(init,2200)})();<\/script>`;
-h=h.replace('</head>',_wgPostElection.split('<script id="wg-post-election-home-script">')[0]+'</head>');
-h=h.replace('</body>','<script id="wg-post-election-home-script">'+_wgPostElection.split('<script id="wg-post-election-home-script">')[1].split('</script>')[0]+'</script></body>');
-
+/* Load self-contained post-election features without altering the original SPA navigation. */
+h=h.replace('</head>','<link rel="stylesheet" href="/post-election-home.css?v=20261104-restored-v4"></head>');
+h=h.replace('</body>','<script defer src="/post-election-home.js?v=20261104-restored-v4"><\/script></body>');
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
