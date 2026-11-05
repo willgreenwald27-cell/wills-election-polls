@@ -230,7 +230,22 @@
   function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;apply();});}
 
   installNavClickRepair();apply();
-  [80,600].forEach(ms=>setTimeout(apply,ms));
+  [80,350,1100,2600].forEach(ms=>setTimeout(apply,ms));
+  /* Re-apply only if a legacy renderer actually restores obsolete homepage cards. */
+  const homeForGuard=document.getElementById('page-home');
+  if(homeForGuard){
+    let queued=false;
+    new MutationObserver(()=>{
+      if(queued)return;
+      const metrics=homeForGuard.querySelector('.reference-metrics');
+      const shell=homeForGuard.querySelector('.reference-home-shell');
+      if(!metrics||!shell)return;
+      const stale=metrics.childElementCount!==1||metrics.firstElementChild?.id!=='homeLastUpdated'||!shell.querySelector('#wg-forecast-comparison');
+      if(!stale)return;
+      queued=true;
+      requestAnimationFrame(()=>{queued=false;electionCountdown();});
+    }).observe(homeForGuard,{subtree:true,childList:true});
+  }
   // One-time initialization and navigation changes replace the old 750ms
   // site-wide reconciliation loop, which caused visible flashes.
   const nav=document.querySelector('.site-header .nav');
