@@ -32,4 +32,6 @@ h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:homepage-senate-52-48|senate-color-po
 /* Load the two-by-two election forecast-versus-results comparison. */
 h=h.replace('</head>','<link rel="stylesheet" href="/homepage-prediction-results.css?v=20261104-side-by-side-v1"></head>');
 h=h.replace('</body>','<script defer src="/homepage-prediction-results.js?v=20261104-side-by-side-v1"><\/script></body>');
+/* Force newly updated homepage cleanup scripts to bypass old cached versions. */
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|home-latest-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-clean-home-v2'+quote);
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
