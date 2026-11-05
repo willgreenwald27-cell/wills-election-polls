@@ -34,11 +34,30 @@
   const page=document.getElementById("page-about");
   if(!page||page.querySelector(".wr-about-note"))return;
   const aside=mk("aside","wr-about-note",
-   '<p class="wr-guide-kicker">ABOUT THE ANALYSIS</p><h2>Independent judgment. Open to scrutiny.</h2>'+
-   '<p>This project brings race-by-race predictions, polling data, and historical comparisons together in one place. Forecasts interpret uncertain evidence; they are not official election results.</p>'+
+   '<p class="wr-guide-kicker">ABOUT THE SITE</p><h2>Why I made this website</h2>'+
+   '<p>I started following election polls because I wanted to understand why some predictions were right and others missed. I built this site to make my own calls, show the polling behind them, and keep track of how accurate they turn out to be.</p>'+
    '<div class="wr-about-actions"><button type="button" data-wr-go="senate">See the forecasts <span aria-hidden="true">↗</span></button><button type="button" data-wr-go="errors">Explore polling history <span aria-hidden="true">↗</span></button></div>');
   aside.setAttribute("aria-label","About the forecasting project");
   page.appendChild(aside);
+ }
+ function cleanAboutWriting(){
+  const page=document.getElementById("page-about");
+  if(!page)return;
+  const replacements=[
+    [/start with the numbers[.!]?/gi,"I started this site because I like following elections and comparing polls."],
+    [/let(?:'|’)?s start with the numbers[.!]?/gi,"I started this site because I like following elections and comparing polls."],
+    [/independent judgment[.] open to scrutiny[.]/gi,"Why I made this website"],
+    [/a passion for politics meets the power of data/gi,"Why I follow elections"],
+    [/where politics meets data/gi,"About this site"]
+  ];
+  const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+    const node=walker.currentNode;
+    if(node.parentElement&&node.parentElement.closest("script,style,button,a"))continue;
+    let next=node.nodeValue;
+    for(const [pattern,copy] of replacements)next=next.replace(pattern,copy);
+    if(next!==node.nodeValue)node.nodeValue=next;
+  }
  }
  function footer(){
   if(document.querySelector(".wr-site-footer"))return;
@@ -74,7 +93,7 @@
   const el=event.target?.closest?.("[data-wr-go]");if(!el)return;
   event.preventDefault();navigate(el.dataset.wrGo);
  });
- function apply(){queued=false;skip();strip();guide();about();footer()}
+ function apply(){queued=false;skip();strip();guide();about();cleanAboutWriting();footer()}
  function schedule(){if(queued)return;queued=true;requestAnimationFrame(apply)}
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply();
  [150,500,1500,3500].forEach(ms=>setTimeout(apply,ms));
