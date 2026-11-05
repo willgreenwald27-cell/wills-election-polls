@@ -51,6 +51,7 @@
       '#wg-accuracy-controls button[aria-pressed="true"]{background:#153e6b;border-color:#153e6b;color:#fff}',
       '#wg-accuracy-key{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 15px;margin:9px 0 10px;border:1px solid #dbe6f1;border-radius:10px;background:#fff;font-size:12px;color:#314b64}',
       '#wg-accuracy-key[hidden]{display:none!important}',
+      '#page-senate[data-wg-accuracy="on"] .legend.compact-forecast-key{display:none!important}',
       '#wg-accuracy-key .wg-key-item{display:inline-flex;align-items:center;gap:6px;font-weight:750}',
       '#wg-accuracy-key .wg-swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid #0002}',
       '#wg-accuracy-key small{display:block;flex-basis:100%;color:#677e93;line-height:1.4}',
