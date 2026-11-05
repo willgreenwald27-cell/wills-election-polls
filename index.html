@@ -30,10 +30,10 @@ h=h.replace("stateData.TX.notes='';}","stateData.TX.notes='';}"+_ksInitialSync);
 /* Refresh only revised homepage results scripts after all legacy URL rewrites. */
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:homepage-senate-52-48|senate-color-polish|home-forecast-equal|home-split-forecast|site-ux-polish)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-senate-results-54-44-v1'+quote);
 /* Load the two-by-two election forecast-versus-results comparison. */
-h=h.replace('</head>','<link rel="stylesheet" href="/homepage-prediction-results.css?v=20261104-compare-raised-v3"></head>');
-h=h.replace('</body>','<script defer src="/homepage-prediction-results.js?v=20261104-compare-raised-v3"><\/script></body>');
+h=h.replace('</head>','<link rel="stylesheet" href="/homepage-prediction-results.css?v=20261104-house-245-147-v4"></head>');
+h=h.replace('</body>','<script defer src="/homepage-prediction-results.js?v=20261104-house-245-147-v4"><\/script></body>');
 /* Force newly updated homepage cleanup scripts to bypass old cached versions. */
-h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|home-latest-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-clean-home-v3'+quote);
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|home-latest-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-house-245-147-v4'+quote);
 /* Preload stable CSS inside the decompressed page, before its first paint. */
 h=h.replace('</head>','<link rel="stylesheet" href="/instant-accuracy-and-home-cleanup.css?v=20261104-instant-v1"></head>');
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:senate-map-updated-date|site-ux-polish)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-direct-svg-colors-v2'+quote);
