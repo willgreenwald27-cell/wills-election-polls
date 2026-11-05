@@ -75,20 +75,20 @@
 
   function cardMarkup(kind){
     const senate=kind==='senate';
-    const title=senate?'Will’s Senate Prediction':'Will’s House of Reps Prediction';
-    const kicker=senate?'2026 U.S. Senate':'2026 U.S. House';
-    const dem=senate?'52':'235', rep=senate?'48':'200';
-    const demW=senate?'52%':'54.02299%', repW=senate?'48%':'45.97701%';
-    const note=senate?'51 seats needed for a majority':'218 seats needed for a majority';
+    const title=senate?'2026 Senate Results':'Will’s House of Reps Prediction';
+    const kicker=senate?'NOVEMBER 4 · REPORTED SEAT COUNT':'2026 U.S. House';
+    const dem=senate?'54':'235', rep=senate?'44':'200';
+    const demW=senate?'54%':'54.02299%', repW=senate?'44%':'45.97701%';
+    const note=senate?'2 uncalled (AK, MS) · Final forecast: 52 D / 48 R · D includes 2 independents':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
       <div class="final-kicker">${kicker}</div>
       <h2 class="final-title">${title}</h2>
       <div class="final-numbers">
-        <div class="final-party"><div class="final-party-label dem">Democrats</div><div class="final-party-number dem">${dem}</div></div>
+        <div class="final-party"><div class="final-party-label dem">${senate?'Democratic caucus':'Democrats'}</div><div class="final-party-number dem">${dem}</div></div>
         <div class="final-party right"><div class="final-party-label rep">Republicans</div><div class="final-party-number rep">${rep}</div></div>
       </div>
-      <div class="final-bar"><span class="dem" style="width:${demW}"></span><span class="rep" style="width:${repW}"></span>${senate?'<i class="final-majority-marker senate"></i>':'<i class="final-majority-marker house"></i>'}</div>
+      <div class="final-bar"><span class="dem" style="width:${demW}"></span><span class="rep" style="width:${repW}"></span>${senate?'<span class="uncalled" style="width:2%;background:#f2c84b"></span>':''}${senate?'<i class="final-majority-marker senate"></i>':'<i class="final-majority-marker house"></i>'}</div>
       <div class="final-majority-note">${note}</div>
     </div>`;
   }
