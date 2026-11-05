@@ -17,14 +17,14 @@ h=h.replace(_ksRenderMarker,'function renderSenate(){\n  '+_ksInitialSync+'\n  a
 /* Also ensure the initial load updates Kansas before calling renderSenate. */
 h=h.replace('load();if(stateData.NE)stateData.NE.rating="tilt-r";applyPaletteCSS();','load();'+_ksInitialSync+'if(stateData.NE)stateData.NE.rating="tilt-r";applyPaletteCSS();');
 /* House forecast now updated in canonical components; obsolete overlay removed. *//* The legacy day-based counter is superseded by the hourly first-polls-close counter. */
-h=h.replace('</body>','<script defer src="/senate-map-updated-date.js?v=20261102-final-margins-nov2"><\/script></body>');
+h=h.replace('</body>','<script defer src="/senate-map-updated-date.js?v=20261104-accuracy-colors-v1"><\/script></body>');
 /* Load the aligned forecast scripts with one fresh version after all other rewrites. */
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|site-ux-polish|senate-display-fixes|senate-current-sync|senate-color-polish|home-forecast-equal|home-split-forecast|senate-party-labels|senate-call-average-overrides)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261101-ne-tiltr-ia-hinson18-v1'+quote);
 /* homepage Senate forecast final paint: run after all legacy scripts */
 h=h.replace('</body>',`<script src="/homepage-senate-52-48.js?v=20261101-ne-tiltr-ia-hinson18-v1" defer><\/script></body>`);
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|sep9-polls-update)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261102-hourly-polls-close-v2'+quote);
 /* Final margin assets: force cache renewal after every legacy URL rewrite. */
-h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|senate-display-fixes|senate-current-sync|senate-click-stability|senate-call-average-overrides|sep9-polls-update|senate-hover-stable-20261019|battleground-board|senate-map-updated-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261102-final-margins-11-v2'+quote);
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|senate-display-fixes|senate-current-sync|senate-click-stability|senate-call-average-overrides|sep9-polls-update|senate-hover-stable-20261019|battleground-board)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261102-final-margins-11-v2'+quote);
 /* Reinforce forecast values after the older inline Texas renderer override. */
 h=h.replace("stateData.TX.notes='';}","stateData.TX.notes='';}"+_ksInitialSync);
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
