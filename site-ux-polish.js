@@ -97,7 +97,13 @@
         '#page-home .reference-metrics>#homeLastUpdated{display:flex!important;flex-direction:column!important;justify-content:center!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;max-width:none!important;min-height:74px!important;box-sizing:border-box!important}',
         '#page-home #homeLastUpdated .wg-metric-value{font-size:clamp(20px,2.5vw,29px)!important;color:#193653!important}',
         '#page-home #wg-forecast-comparison{display:block!important}',
-        '#page-home .reference-hero-actions .reference-primary{display:none!important}'
+        '#page-home .reference-hero-actions .reference-primary{display:none!important}',
+        '#page-home.reference-home .reference-home-shell #housePrediction2026,#page-home.reference-home .reference-home-shell #homeForecastSplit{display:none!important}',
+        '#page-home.reference-home .reference-home-shell>.reference-divider{display:none!important}',
+        '#page-home.reference-home .reference-home-shell>#wg-forecast-comparison{grid-column:1/-1!important;grid-row:2!important;order:2!important;margin:12px auto 20px!important;width:100%!important;max-width:1280px!important;min-width:0!important}',
+        '#page-home.reference-home .reference-home-shell>.reference-hero{order:1!important;grid-row:1!important}',
+        '#page-home.reference-home .reference-home-shell>.reference-metrics{order:3!important;grid-column:1/-1!important;grid-row:3!important;margin:3px auto 16px!important}',
+        '#page-home.reference-home .reference-home-shell>.reference-bottom{display:none!important}'
       ].join('');
       document.head.appendChild(style);
     }
@@ -140,10 +146,25 @@
         block('REPORTED COUNT','November 4, 1:14 p.m. ET results snapshot',241,153,41,'41 uncalled · Timestamped snapshot, not a live count')+
         '</div></div><div class="wg-compare-source">Reported counts are a November 4 snapshot, not certified totals. <a href="https://abcnews.go.com/Politics/" target="_blank" rel="noopener">Senate reporting</a> · <a href="https://www.poliwave.com/us/live/midterms-2026/house?office=governors" target="_blank" rel="noopener">House snapshot</a></div>';
     }
-    if(section.parentElement!==shell){
-      const metrics=shell.querySelector('.reference-metrics');
-      if(metrics)metrics.insertAdjacentElement('afterend',section);
-      else shell.appendChild(section);
+    // Keep the four-panel comparison immediately below the hero, ABOVE Last Updated.
+    const hero=shell.querySelector(':scope > .reference-hero')||shell.querySelector('.reference-hero');
+    if(hero&&section.previousElementSibling!==hero)hero.insertAdjacentElement('afterend',section);
+    else if(section.parentElement!==shell)shell.insertBefore(section,shell.firstChild);
+    // Preserve legacy data for archive views but never show duplicate old graphics.
+    const old=home.querySelector('#housePrediction2026');
+    if(old){
+      old.style.setProperty('display','none','important');
+      old.setAttribute('aria-hidden','true');
+    }
+    // The pre-election "Balance of Power" component is redundant with this comparison.
+    for(const heading of home.querySelectorAll('h1,h2,h3,h4,.section-title,.card-title')){
+      if(!/^balance of power$/i.test((heading.textContent||'').trim()))continue;
+      if(heading.closest('#wg-forecast-comparison'))continue;
+      const panel=heading.closest('.balance-card,.balance-of-power,section,.card');
+      if(panel&&panel!==home&&panel!==shell&&panel!==section){
+        panel.style.setProperty('display','none','important');
+        panel.setAttribute('aria-hidden','true');
+      }
     }
     if(!document.getElementById('wg-forecast-comparison-style')){
       const css=document.createElement('link');css.id='wg-forecast-comparison-style';
@@ -240,7 +261,9 @@
       const metrics=homeForGuard.querySelector('.reference-metrics');
       const shell=homeForGuard.querySelector('.reference-home-shell');
       if(!metrics||!shell)return;
-      const stale=metrics.childElementCount!==1||metrics.firstElementChild?.id!=='homeLastUpdated'||!shell.querySelector('#wg-forecast-comparison');
+      const hero=shell.querySelector('.reference-hero');
+      const compared=shell.querySelector('#wg-forecast-comparison');
+      const stale=metrics.childElementCount!==1||metrics.firstElementChild?.id!=='homeLastUpdated'||!compared||!!(hero&&compared.previousElementSibling!==hero);
       if(!stale)return;
       queued=true;
       requestAnimationFrame(()=>{queued=false;electionCountdown();});
