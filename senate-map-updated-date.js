@@ -25,6 +25,42 @@
 (()=>{
 'use strict';
 let accuracy=true;
+const correct=new Set('AL AR CO DE FL GA ID IL KS KY LA MA MI MN MT NE NH NJ NM NC OH OK OR RI SD TN TX VA WV WY'.split(' '));
+const wrong=new Set('IA ME SC'.split(' '));
+const pending=new Set(['AK','MS']);
+const saved=new WeakMap();
+let watched=null,painting=false;
+function paint(){
+ const page=document.getElementById('page-senate');
+ const map=page?.querySelector('.map-wrap');if(!map)return;
+ painting=true;
+ try{
+  const states=map.querySelectorAll('svg [data-state]');
+  for(const el of states){
+   const ab=String(el.getAttribute('data-state')||'').toUpperCase();
+   if(!/^[A-Z]{2}$/.test(ab))continue;
+   if(!saved.has(el))saved.set(el,{value:el.style.getPropertyValue('fill'),priority:el.style.getPropertyPriority('fill')});
+   if(!accuracy){
+    const prev=saved.get(el);
+    if(prev.value){if(el.style.getPropertyValue('fill')!==prev.value||el.style.getPropertyPriority('fill')!==prev.priority)el.style.setProperty('fill',prev.value,prev.priority);}
+    else if(el.style.getPropertyValue('fill'))el.style.removeProperty('fill');
+    continue;
+   }
+   const color=correct.has(ab)?'#24a55a':wrong.has(ab)?'#db4452':pending.has(ab)?'#f4c542':'#cbd5e1';
+   if(el.style.getPropertyValue('fill')!==color||el.style.getPropertyPriority('fill')!=='important')el.style.setProperty('fill',color,'important');
+  }
+ }finally{painting=false}
+ if(watched!==map){
+  if(watched?.__wgDirectColorObserver)watched.__wgDirectColorObserver.disconnect();
+  const obs=new MutationObserver(mutations=>{
+   if(!accuracy||painting)return;
+   // Older map scripts may repaint inline fills. Restore only on actual changes.
+   if(mutations.some(m=>m.type==='childList'||m.attributeName==='style'||m.attributeName==='fill'))requestAnimationFrame(paint);
+  });
+  obs.observe(map,{subtree:true,childList:true,attributes:true,attributeFilter:['style','fill','data-state']});
+  map.__wgDirectColorObserver=obs;watched=map;
+ }
+}
 function install(){
  const page=document.getElementById('page-senate');if(!page)return false;
  const map=page.querySelector('.map-wrap');
@@ -63,6 +99,7 @@ function install(){
   map.insertAdjacentElement('afterend',key);
  }
  key.hidden=!accuracy;
+ paint();
  return true;
 }
 function init(){
