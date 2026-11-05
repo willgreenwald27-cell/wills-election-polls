@@ -44,8 +44,8 @@
     css.id='wg-accuracy-map-css';
     css.textContent=[
       '#wg-accuracy-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 15px;margin:0 0 13px;border:1px solid #d7e4f0;border-radius:11px;background:#f5f8fc;color:#1b354e}',
-      '#page-senate[data-wg-accuracy="on"] .senate-map-head .balance-power{display:none!important}',
-      '#wg-accuracy-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 14px}',
+      '#page-senate[data-wg-accuracy="on"] .balance-power{display:none!important}',
+      '#page-senate[data-wg-accuracy="on"] #wg-accuracy-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 14px}',
       '#wg-accuracy-summary[hidden]{display:none!important}',
       '#wg-accuracy-summary .wg-score{border:1px solid #dce5ec;border-radius:11px;background:#fff;padding:12px;text-align:center}',
       '#wg-accuracy-summary .wg-score b{display:block;font-size:clamp(24px,3vw,39px);line-height:1.12;font-weight:900}',
@@ -78,21 +78,29 @@
     if(!page)return;
     const svg=page.querySelector('.map-wrap svg');
     if(!svg)return;
-    for(const el of findShapes(page)){
-      const ab=String(el.getAttribute('data-state')).toUpperCase();
-      if(!SAVED.has(el))SAVED.set(el,{style:el.getAttribute('style'),title:el.getAttribute('title')});
-      if(accuracy){
-        const status=category(ab),color=COLORS[status];
-        if(el.style.getPropertyValue('fill')!==color||el.style.getPropertyPriority('fill')!=='important')
-          el.style.setProperty('fill',color,'important');
-        const label=status==='correct'?'Correct forecast':status==='wrong'?'Incorrect forecast':status==='uncalled'?'Not called':'No 2026 Senate race';
-        el.setAttribute('data-wg-accuracy-status',label);
-      }else if(el.hasAttribute('data-wg-accuracy-status')){
-        const old=SAVED.get(el);
-        if(old.style===null)el.removeAttribute('style');
-        else el.setAttribute('style',old.style);
-        el.removeAttribute('data-wg-accuracy-status');
+    if(!accuracy){
+      svg.querySelectorAll('[data-wg-accuracy-overlay="1"]').forEach(el=>el.remove());
+      return;
+    }
+    const originalShapes=[...svg.querySelectorAll('.state-shape[data-state]')];
+    for(const el of originalShapes){
+      const ab=String(el.getAttribute('data-state')||'').toUpperCase();
+      if(!/^[A-Z]{2}$/.test(ab))continue;
+      let overlay=el.nextElementSibling;
+      if(!overlay||overlay.getAttribute('data-wg-accuracy-overlay')!=='1'){
+        overlay=el.cloneNode(false);
+        overlay.removeAttribute('id');
+        overlay.removeAttribute('data-state');
+        overlay.removeAttribute('class');
+        overlay.removeAttribute('title');
+        overlay.setAttribute('data-wg-accuracy-overlay','1');
+        overlay.setAttribute('aria-hidden','true');
+        overlay.style.setProperty('pointer-events','none','important');
+        el.parentNode.insertBefore(overlay,el.nextSibling);
       }
+      const color=COLORS[category(ab)];
+      if(overlay.style.getPropertyValue('fill')!==color)
+        overlay.style.setProperty('fill',color,'important');
     }
   }
   function schedulePaint(){
@@ -108,6 +116,12 @@
     if(!mapCard||!mapWrap)return;
     addStyles();
     page.dataset.wgAccuracy=accuracy?'on':'off';
+    const header=page.querySelector('.page-head h1');
+    if(header){
+      if(!header.dataset.wgForecastTitle)header.dataset.wgForecastTitle=header.textContent;
+      header.textContent=accuracy?'2026 Senate Prediction Accuracy':header.dataset.wgForecastTitle;
+    }
+
     const balance=mapCard.querySelector('.balance-power');
     if(balance&&!document.getElementById('wg-accuracy-summary')){
       const summary=document.createElement('div');
@@ -127,6 +141,9 @@
         if(!button)return;
         accuracy=button.dataset.view==='accuracy';
         page.dataset.wgAccuracy=accuracy?'on':'off';
+        const header=page.querySelector('.page-head h1');
+        if(header)header.textContent=accuracy?'2026 Senate Prediction Accuracy':(header.dataset.wgForecastTitle||'2026 Senate Prediction');
+
         for(const b of controls.querySelectorAll('button'))b.setAttribute('aria-pressed',String((b.dataset.view==='accuracy')===accuracy));
         const key=document.getElementById('wg-accuracy-key');if(key)key.hidden=!accuracy;
         const summary=document.getElementById('wg-accuracy-summary');if(summary)summary.hidden=!accuracy;
@@ -144,7 +161,7 @@
       if(observed&&observed.__wgAccuracyObserver)observed.__wgAccuracyObserver.disconnect();
       const mo=new MutationObserver(muts=>{
         if(muts.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&
-          (n.matches?.('svg, path, .state-shape')||n.querySelector?.('svg .state-shape[data-state]')))))schedulePaint();
+          (n.getAttribute?.('data-wg-accuracy-overlay')!=='1'&&(n.matches?.('svg, path, .state-shape')||n.querySelector?.('svg .state-shape[data-state]'))))))schedulePaint();
       });
       mo.observe(mapWrap,{subtree:true,childList:true});
       mapWrap.__wgAccuracyObserver=mo;observed=mapWrap;
@@ -159,7 +176,7 @@
     document.addEventListener('click',e=>{
       if(e.target?.closest?.('.site-header .nav'))setTimeout(install,80);
     },true);
-    setInterval(()=>{if(accuracy&&document.getElementById('page-senate')?.querySelector('.map-wrap svg'))paint();},2500);
+
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
   else start();
