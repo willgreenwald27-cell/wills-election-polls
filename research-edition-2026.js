@@ -2,7 +2,7 @@
  "use strict";
  // Research Edition presentation only. Leaves forecast, poll arrays,
  // map behavior, ratings, and existing SPA navigation untouched.
- const NAMES={senate:"2026 Senate Prediction",polls:"New Polls",errors:"Past Polling Errors",about:"About Me"};
+ const NAMES={senate:"2026 Senate Accuracy",polls:"New Polls",errors:"Past Polling Errors",about:"About Me"};
  let queued=false;
  const mk=(tag,cls,html)=>{
   const el=document.createElement(tag);el.className=cls;if(html)el.innerHTML=html;return el;
