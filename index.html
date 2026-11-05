@@ -29,4 +29,7 @@ h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|senate-di
 h=h.replace("stateData.TX.notes='';}","stateData.TX.notes='';}"+_ksInitialSync);
 /* Refresh only revised homepage results scripts after all legacy URL rewrites. */
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:homepage-senate-52-48|senate-color-polish|home-forecast-equal|home-split-forecast|site-ux-polish)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-senate-results-54-44-v1'+quote);
+/* Load the two-by-two election forecast-versus-results comparison. */
+h=h.replace('</head>','<link rel="stylesheet" href="/homepage-prediction-results.css?v=20261104-side-by-side-v1"></head>');
+h=h.replace('</body>','<script defer src="/homepage-prediction-results.js?v=20261104-side-by-side-v1"><\/script></body>');
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
