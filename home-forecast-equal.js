@@ -136,12 +136,12 @@
       const senate=split.querySelector('.senate-card');
       if(senate){
         const nums=[...senate.querySelectorAll('.party-number')];
-        if(nums[0]&&nums[0].textContent!=='52') nums[0].textContent='52';
-        if(nums[1]&&nums[1].textContent!=='48') nums[1].textContent='48';
+        if(nums[0]&&nums[0].textContent!=='54') nums[0].textContent='54';
+        if(nums[1]&&nums[1].textContent!=='44') nums[1].textContent='44';
         const dem=senate.querySelector('.senate-bar .dem,.senate-bar .democratic,[data-party="dem"]');
         const rep=senate.querySelector('.senate-bar .rep,.senate-bar .republican,[data-party="rep"]');
-        if(dem) dem.style.setProperty('width','52%','important');
-        if(rep) rep.style.setProperty('width','48%','important');
+        if(dem) dem.style.setProperty('width','54%','important');
+        if(rep) rep.style.setProperty('width','44%','important');
       }
     }
 
