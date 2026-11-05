@@ -17,7 +17,7 @@ h=h.replace(_ksRenderMarker,'function renderSenate(){\n  '+_ksInitialSync+'\n  a
 /* Also ensure the initial load updates Kansas before calling renderSenate. */
 h=h.replace('load();if(stateData.NE)stateData.NE.rating="tilt-r";applyPaletteCSS();','load();'+_ksInitialSync+'if(stateData.NE)stateData.NE.rating="tilt-r";applyPaletteCSS();');
 /* House forecast now updated in canonical components; obsolete overlay removed. *//* The legacy day-based counter is superseded by the hourly first-polls-close counter. */
-h=h.replace('</body>','<script defer src="/senate-map-updated-date.js?v=20261104-accuracy-colors-v1"><\/script></body>');
+h=h.replace('</body>','<script defer src="/senate-map-updated-date.js?v=20261104-accuracy-scores-v2"><\/script></body>');
 /* Load the aligned forecast scripts with one fresh version after all other rewrites. */
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|site-ux-polish|senate-display-fixes|senate-current-sync|senate-color-polish|home-forecast-equal|home-split-forecast|senate-party-labels|senate-call-average-overrides)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261101-ne-tiltr-ia-hinson18-v1'+quote);
 /* homepage Senate forecast final paint: run after all legacy scripts */
