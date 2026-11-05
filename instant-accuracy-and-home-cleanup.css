@@ -1,0 +1,26 @@
+/* Loaded with the page so accuracy colors appear on the first paint. */
+#page-senate:not([data-wg-accuracy="off"]) .map-wrap svg :is([data-state="AL"],[data-state="AR"],[data-state="CO"],[data-state="DE"],[data-state="FL"],[data-state="GA"],[data-state="ID"],[data-state="IL"],[data-state="KS"],[data-state="KY"],[data-state="LA"],[data-state="MA"],[data-state="MI"],[data-state="MN"],[data-state="MT"],[data-state="NE"],[data-state="NH"],[data-state="NJ"],[data-state="NM"],[data-state="NC"],[data-state="OH"],[data-state="OK"],[data-state="OR"],[data-state="RI"],[data-state="SD"],[data-state="TN"],[data-state="TX"],[data-state="VA"],[data-state="WV"],[data-state="WY"]){fill:#24a55a!important;transition:none!important;animation:none!important}
+#page-senate:not([data-wg-accuracy="off"]) .map-wrap svg :is([data-state="IA"],[data-state="ME"],[data-state="SC"]){fill:#db4452!important;transition:none!important;animation:none!important}
+#page-senate:not([data-wg-accuracy="off"]) .map-wrap svg :is([data-state="AK"],[data-state="MS"]){fill:#f4c542!important;transition:none!important;animation:none!important}
+#page-senate:not([data-wg-accuracy="off"]) .map-wrap svg .state-shape[data-state]:not(:is([data-state="AL"],[data-state="AR"],[data-state="CO"],[data-state="DE"],[data-state="FL"],[data-state="GA"],[data-state="ID"],[data-state="IL"],[data-state="KS"],[data-state="KY"],[data-state="LA"],[data-state="MA"],[data-state="MI"],[data-state="MN"],[data-state="MT"],[data-state="NE"],[data-state="NH"],[data-state="NJ"],[data-state="NM"],[data-state="NC"],[data-state="OH"],[data-state="OK"],[data-state="OR"],[data-state="RI"],[data-state="SD"],[data-state="TN"],[data-state="TX"],[data-state="VA"],[data-state="WV"],[data-state="WY"],[data-state="IA"],[data-state="ME"],[data-state="SC"],[data-state="AK"],[data-state="MS"])){fill:#cbd5e1!important}
+#page-senate .map-wrap svg[data-wg-accuracy-snapshot]{display:none!important}
+#page-senate:not([data-wg-accuracy="off"]) .balance-power,#page-senate:not([data-wg-accuracy="off"]) .compact-forecast-key{display:none!important}
+#page-senate #wg-accuracy-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+#page-senate #wg-accuracy-summary[hidden],#page-senate #wg-accuracy-key[hidden]{display:none!important}
+#page-senate #wg-accuracy-summary>div{text-align:center;border:1px solid #d7e3ef;border-radius:10px;background:#fff;padding:12px}
+#page-senate #wg-accuracy-summary b{display:block;font-size:clamp(26px,3vw,38px);font-weight:900;line-height:1.1}
+#page-senate #wg-accuracy-summary>div:nth-child(1) b{color:#24a55a}
+#page-senate #wg-accuracy-summary>div:nth-child(2) b{color:#db4452}
+#page-senate #wg-accuracy-summary>div:nth-child(3) b{color:#c49a24}
+#page-senate #wg-accuracy-summary span{font-size:11px;font-weight:800;color:#4b6077}
+#page-senate #wg-accuracy-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#f5f8fc;border:1px solid #d7e3ef;border-radius:10px;padding:12px;margin:12px 0}
+#page-senate #wg-accuracy-controls strong{font-size:13px;color:#193e61}
+#page-senate #wg-accuracy-controls>div{display:flex;gap:7px}
+#page-senate #wg-accuracy-controls button{border:1px solid #bacbdc;border-radius:7px;background:#fff;color:#214d77;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer}
+#page-senate #wg-accuracy-controls button[aria-pressed="true"]{background:#174673;color:#fff}
+#page-senate #wg-accuracy-key{display:flex;flex-wrap:wrap;gap:14px;padding:12px;border:1px solid #d7e3ef;border-radius:10px;background:white;font-size:11px}
+#page-senate #wg-accuracy-key span{display:inline-flex;gap:6px;align-items:center}
+#page-senate #wg-accuracy-key i{display:inline-block;width:13px;height:13px;border-radius:3px}
+#page-home.reference-home .reference-hero{min-height:0!important;padding-bottom:clamp(25px,3vw,48px)!important}
+#page-home.reference-home .reference-hero .balance-of-power,#page-home.reference-home .reference-hero [id*="balancePower"],#page-home.reference-home .reference-hero [class*="balance-power"]{display:none!important}
+#page-home.reference-home .reference-home-shell>#wg-forecast-comparison{margin-top:10px!important}
