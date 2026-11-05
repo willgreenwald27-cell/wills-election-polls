@@ -6,16 +6,16 @@
     card.className='will-split-card will-senate-card';
     card.innerHTML=`
       <div class="will-split-icon" aria-hidden="true">♜</div>
-      <div class="will-split-title">Will’s Senate Prediction</div>
-      <div class="will-split-sub">100 SEATS • 51 NEEDED FOR A MAJORITY</div>
+      <div class="will-split-title">2026 Senate Results</div>
+      <div class="will-split-sub">NOVEMBER 4 · 2 UNCALLED (AK, MS)</div>
       <div class="will-split-parties">
-        <div><strong class="dem">DEMOCRATS: 52</strong><span>SEATS</span></div>
-        <div class="right"><strong class="rep">REPUBLICANS: 48</strong><span>SEATS</span></div>
+        <div><strong class="dem">DEMOCRATIC CAUCUS: 54</strong><span>SEATS</span></div>
+        <div class="right"><strong class="rep">REPUBLICANS: 44</strong><span>SEATS</span></div>
       </div>
-      <div class="will-split-bar"><i class="dem-bar"></i><i class="rep-bar"></i><b class="majority-line"></b></div>
-      <div class="will-split-bar-labels"><strong>52</strong><strong>48</strong></div>
-      <div class="will-split-majority">51 majority</div>
-      <div class="will-split-legend"><span><i class="dem-dot"></i>Democrats<br><small>52 seats</small></span><span><i class="rep-dot"></i>Republicans<br><small>48 seats</small></span></div>`;
+      <div class="will-split-bar"><i class="dem-bar"></i><i class="rep-bar"></i><i class="wg-remaining-seats" style="width:2%;background:#f2c84b"></i><b class="majority-line"></b></div>
+      <div class="will-split-bar-labels"><strong>54</strong><strong>44</strong></div>
+      <div class="will-split-majority">2 uncalled · includes 2 independents in D caucus</div>
+      <div class="will-split-legend"><span><i class="dem-dot"></i>Democrats<br><small>54 seats</small></span><span><i class="rep-dot"></i>Republicans<br><small>44 seats</small></span></div>`;
     return card;
   }
 
@@ -57,7 +57,7 @@
       #housePrediction2026 .dem{color:${BLUE}} #housePrediction2026 .rep{color:${RED}}
       #housePrediction2026 .will-split-bar{height:54px;border-radius:13px;overflow:hidden;display:flex;position:relative;background:#e6ebf2}
       #housePrediction2026 .will-split-bar i{display:block;height:100%}
-      #housePrediction2026 .dem-bar{background:${BLUE};width:52%} #housePrediction2026 .rep-bar{background:${RED};width:48%}
+      #housePrediction2026 .dem-bar{background:${BLUE};width:54%} #housePrediction2026 .rep-bar{background:${RED};width:44%}
       #housePrediction2026 .majority-line{position:absolute;left:50%;top:-8px;bottom:-24px;width:2px;border-left:2px dashed #596a80;z-index:3}
       #housePrediction2026 .will-split-bar-labels{display:flex;justify-content:space-around;margin-top:-39px;position:relative;z-index:2;color:#fff;font:900 24px/1 Inter,ui-sans-serif,system-ui,sans-serif;pointer-events:none}
       #housePrediction2026 .will-split-majority{text-align:center;margin-top:34px;font:800 12px/1 Inter,ui-sans-serif,system-ui,sans-serif;color:#5d6d82}
