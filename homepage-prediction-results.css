@@ -26,3 +26,39 @@
 #wg-forecast-comparison .wg-compare-source{margin-top:18px;font-size:11px;color:#6d8196;line-height:1.6;text-align:center}
 #wg-forecast-comparison .wg-compare-source a{color:#275c99;text-decoration:underline}
 @media(max-width:720px){#wg-forecast-comparison .wg-compare-grid{grid-template-columns:1fr}#wg-forecast-comparison .wg-compare-card{padding:17px}#wg-forecast-comparison .wg-compare-sub{min-height:0}#wg-forecast-comparison .wg-compare-num strong{font-size:49px}}
+
+/* Post-election homepage consolidation: only the four-panel comparison remains. */
+#page-home.reference-home .reference-home-shell #housePrediction2026,
+#page-home.reference-home .reference-home-shell #homeForecastSplit,
+#page-home.reference-home .reference-home-shell .balance-of-power,
+#page-home.reference-home .reference-home-shell [id="homeBalanceOfPower"]{
+  display:none!important;
+}
+#page-home.reference-home .reference-home-shell > #wg-forecast-comparison{
+  display:block!important;
+  grid-column:1/-1!important;
+  grid-row:2!important;
+  order:2!important;
+  width:min(100%,1280px)!important;
+  max-width:1280px!important;
+  min-width:0!important;
+  margin:10px auto 18px!important;
+}
+#page-home.reference-home .reference-home-shell > .reference-hero{
+  order:1!important;
+  grid-row:1!important;
+}
+#page-home.reference-home .reference-home-shell > .reference-metrics{
+  order:3!important;
+  grid-column:1/-1!important;
+  grid-row:3!important;
+  margin:0 auto 16px!important;
+}
+#page-home.reference-home .reference-home-shell > .reference-divider{
+  display:none!important;
+}
+@media(max-width:720px){
+ #page-home.reference-home .reference-home-shell > #wg-forecast-comparison{
+  margin:7px auto 15px!important;
+ }
+}
