@@ -45,7 +45,7 @@
     )||items.find(el=>norm(el.textContent)===label);
     const fixed=[
       find('home','Home'),
-      find('senate','2026 Senate Prediction'),
+      find('senate','2026 Senate Accuracy'),
       find('swing','Swing State Explanations'),
       find('errors','Past Polling Errors'),
       find('governor','2026 Governor Map'),
@@ -82,200 +82,74 @@
     },true);
   }
 
+  /* Post-election homepage: one durable update tile, no election-day counters. */
   function electionCountdown(){
-    // Election night begins as the first polls close: Nov 3 at 3 PM PST (6 PM EST).
-    const pollsCloseAt=new Date('2026-11-03T15:00:00-08:00').getTime();
-    const hours=Math.max(0,Math.ceil((pollsCloseAt-Date.now())/3600000));
-
-    const senate=document.getElementById('page-senate');
-    if(senate){
-      for(const el of leafs(senate)){
-        const t=norm(el.textContent);
-        if(/^\d+ (?:DAYS UNTIL ELECTION DAY|HOURS UNTIL (?:FIRST )?POLLS CLOSE)$/i.test(t))el.textContent=`${hours} HOURS UNTIL FIRST POLLS CLOSE`;
-      }
-    }
-
     const home=document.getElementById('page-home');
-    const metrics=home?.querySelector('.reference-metrics');
-    if(!metrics)return;
-
-    const mobileMetrics=window.matchMedia('(max-width:800px)').matches;
-    // Keep the election countdown on its own full-width row; align the
-    // three other stats side by side underneath on desktop.
-    const splitScreenHome=!!document.querySelector('link[href*="home-splitscreen-2026.css"]');
-    metrics.style.setProperty('display','grid','important');
-    metrics.style.setProperty('grid-template-columns',splitScreenHome?(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'):(mobileMetrics?'1fr':'repeat(3,minmax(0,1fr))'),'important');
-    metrics.style.setProperty('grid-auto-columns','unset','important');
-    metrics.style.setProperty('grid-auto-flow','row','important');
-    metrics.style.setProperty('gap',splitScreenHome?'0':'14px','important');
-    metrics.style.setProperty('width','100%','important');
-    metrics.style.setProperty('max-width','100%','important');
-
-    const tossups='7';
-
-    let style=document.getElementById('wgElectionCountdownStyle');
+    if(!home)return;
+    let style=document.getElementById('wg-post-election-home-cleanup');
     if(!style){
       style=document.createElement('style');
-      style.id='wgElectionCountdownStyle';
+      style.id='wg-post-election-home-cleanup';
+      style.textContent=[
+        '#page-home #homeElectionCountdown,#page-home #homeSenateTossups,#page-home #homeSenateForecast{display:none!important}',
+        '#page-home .reference-latest,#page-home .reference-bottom,#page-home #homeLatestPolls{display:none!important}',
+        '#page-home .reference-metrics{display:flex!important;align-items:stretch!important;justify-content:center!important;gap:12px!important;margin:16px auto 26px!important;max-width:1160px!important}',
+        '#page-home .reference-metrics>#homeLastUpdated{display:flex!important;flex-direction:column!important;justify-content:center!important;grid-column:auto!important;grid-row:auto!important;width:100%!important;max-width:none!important;min-height:74px!important;box-sizing:border-box!important}',
+        '#page-home #homeLastUpdated .wg-metric-value{font-size:clamp(20px,2.5vw,29px)!important;color:#193653!important}',
+        '#page-home #wg-forecast-comparison{display:block!important}',
+        '#page-home .reference-hero-actions .reference-primary{display:none!important}'
+      ].join('');
       document.head.appendChild(style);
     }
-    if(!style.textContent)style.textContent=`
-      #page-home .reference-metrics{
-        display:grid!important;
-        grid-template-columns:repeat(3,minmax(0,1fr))!important;
-        gap:14px!important;
-        width:100%!important;
-        max-width:100%!important;
-        height:auto!important;
-        min-height:0!important;
-        overflow:visible!important;
-        align-items:stretch!important;
-        box-sizing:border-box!important;
-        margin:18px 0 24px!important;
+    const metrics=home.querySelector('.reference-metrics');
+    if(metrics){
+      let updated=metrics.querySelector('#homeLastUpdated');
+      if(!updated){
+        updated=document.createElement('div');
+        updated.id='homeLastUpdated';updated.className='wg-home-metric';
+        updated.style.cssText='border:1px solid #d9e2ec;border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,34,53,.07);padding:16px;text-align:center';
       }
-      #page-home #homeElectionCountdown{
-        grid-column:1/-1!important;
-        width:100%!important;
-        max-width:100%!important;
-        min-width:0!important;
-        min-height:148px!important;
-        padding:22px 26px 20px!important;
-        box-sizing:border-box!important;
-        display:flex!important;
-        flex-direction:column!important;
-        align-items:center!important;
-        justify-content:center!important;
-        text-align:center!important;
-      }
-      #page-home #homeSenateTossups,
-      #page-home #homeLastUpdated,
-      #page-home #homeSenateForecast{
-        width:100%!important;
-        max-width:100%!important;
-        min-width:0!important;
-        min-height:116px!important;
-        padding:20px 24px!important;
-        box-sizing:border-box!important;
-        display:flex!important;
-        flex-direction:column!important;
-        justify-content:center!important;
-      }
-      #page-home .wg-election-label,
-      #page-home .wg-metric-label{
-        display:block!important;
-        color:#6d7c91!important;
-        font:900 11px/1.2 Inter,ui-sans-serif,system-ui,sans-serif!important;
-        letter-spacing:1.45px!important;
-        text-transform:uppercase!important;
-        margin-bottom:8px!important;
-      }
-      #page-home #homeSenateTossups .wg-metric-label{color:#a53a49!important;}
-      #page-home .wg-election-days{
-        display:block!important;
-        color:#17263d!important;
-        font:900 clamp(58px,7vw,82px)/.92 Georgia,serif!important;
-        letter-spacing:-3px!important;
-      }
-      #page-home .wg-election-copy{
-        display:block!important;
-        color:#53647a!important;
-        font:800 15px/1.35 Inter,ui-sans-serif,system-ui,sans-serif!important;
-        margin-top:8px!important;
-      }
-      #page-home .wg-metric-value{
-        color:#17263d!important;
-        font:900 34px/1 Georgia,serif!important;
-      }
-      #page-home #homeSenateTossups .wg-metric-value{color:#a53a49!important;}
-      #page-home #homeSenateForecast .wg-forecast-value{
-        display:flex!important;
-        align-items:baseline!important;
-        gap:14px!important;
-        flex-wrap:wrap!important;
-        font:900 31px/1 Georgia,serif!important;
-      }
-      #page-home #homeSenateForecast .wg-forecast-dem{color:#2763b8!important;}
-      #page-home #homeSenateForecast .wg-forecast-rep{color:#bd2937!important;}
-      #page-home #homeSenateForecast .wg-forecast-divider{
-        color:#a9b4c3!important;
-        font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
-        font-size:20px!important;
-      }
-      @media(max-width:800px){
-        #page-home .reference-metrics{grid-template-columns:1fr!important;}
-        #page-home #homeElectionCountdown{min-height:132px!important;padding:18px 16px!important;}
-        #page-home .wg-election-days{font-size:60px!important;}
-        #page-home .wg-election-copy{font-size:13px!important;}
-        #page-home #homeSenateTossups,
-        #page-home #homeLastUpdated,
-        #page-home #homeSenateForecast{min-height:104px!important;padding:18px 20px!important;}
-      }
-    `;
-
-    const legacyPresent=leafs(metrics).some(el=>/rated\s+senate\s+races|polls?\s+entered/i.test(norm(el.textContent)));
-    let countdown=metrics.querySelector('#homeElectionCountdown');
-    let toss=metrics.querySelector('#homeSenateTossups');
-    let updated=metrics.querySelector('#homeLastUpdated');
-    let forecast=metrics.querySelector('#homeSenateForecast');
-
-    if(legacyPresent||!countdown||!toss||!updated||!forecast||metrics.children.length!==4){
-      countdown=document.createElement('div');
-      countdown.id='homeElectionCountdown';
-      countdown.className='wg-election-countdown';
-      countdown.style.cssText='border:1px solid #d9dee7;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,34,53,.08);';
-
-      toss=document.createElement('div');
-      toss.id='homeSenateTossups';
-      toss.className='wg-home-metric';
-      toss.style.cssText='border:1px solid #ead9dc;border-radius:14px;background:#fff9fa;box-shadow:0 5px 16px rgba(20,34,53,.04);';
-
-      updated=document.createElement('div');
-      updated.id='homeLastUpdated';
-      updated.className='wg-home-metric';
-      updated.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
-
-      forecast=document.createElement('div');
-      forecast.id='homeSenateForecast';
-      forecast.className='wg-home-metric';
-      forecast.style.cssText='border:1px solid #d9dee7;border-radius:14px;background:#fff;box-shadow:0 5px 16px rgba(20,34,53,.05);';
-
-      metrics.replaceChildren(countdown,toss,updated,forecast);
+      const date='November 4, 2026';
+      const markup='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">'+date+'</strong>';
+      if(updated.innerHTML!==markup)updated.innerHTML=markup;
+      if(metrics.childElementCount!==1||metrics.firstElementChild!==updated)metrics.replaceChildren(updated);
+      updated.setAttribute('aria-label','Last updated November 4, 2026');
     }
+    const obsolete=home.querySelector('.reference-bottom');
+    if(obsolete)obsolete.style.setProperty('display','none','important');
+    if(typeof renderHomeComparison==='function')renderHomeComparison();
+  }
 
-    countdown.style.setProperty('grid-column','1 / -1','important');
-    for(const el of [toss,updated,forecast]){
-      el.style.setProperty('grid-column','auto','important');
-      el.style.setProperty('width','100%','important');
-      el.style.setProperty('max-width','none','important');
-      el.style.setProperty('min-width','0','important');
+  function renderHomeComparison(){
+    const home=document.getElementById('page-home');
+    if(!home)return;
+    const shell=home.querySelector('.reference-home-shell');
+    if(!shell)return;
+    let section=home.querySelector('#wg-forecast-comparison');
+    if(!section){
+      section=document.createElement('section');
+      section.id='wg-forecast-comparison';
+      section.setAttribute('aria-label','2026 Senate and House prediction versus results comparison');
+      const block=(title,subtitle,d,r,u,details)=>'<article class="wg-compare-card '+(u?'result':'prediction')+'"><div class="wg-compare-label">'+title+'</div><div class="wg-compare-sub">'+subtitle+'</div><div class="wg-compare-numbers"><div class="wg-compare-num"><span>Democratic seats</span><strong class="wg-blue">'+d+'</strong></div><div class="wg-compare-num"><span>Republican seats</span><strong class="wg-red">'+r+'</strong></div></div><div class="wg-seats-bar" aria-label="'+d+' Democratic, '+r+' Republican, '+u+' uncalled"><i class="wg-bar-d" style="width:'+(100*d/(d+r+u))+'%"></i><i class="wg-bar-r" style="width:'+(100*r/(d+r+u))+'%"></i>'+(u?'<i class="wg-bar-u" style="width:'+(100*u/(d+r+u))+'%"></i>':'')+'</div><div class="wg-compare-foot">'+details+'</div></article>';
+      section.innerHTML='<div class="wg-compare-top"><div class="wg-compare-eyebrow">2026 MIDTERMS · FORECAST VS. RESULTS</div><h2>My predictions vs. the results</h2><p>My final Election Day predictions on the left and the reported November 4 counts on the right. Yellow represents uncalled seats.</p></div>'+
+        '<div class="wg-chamber"><h3 class="wg-chamber-title">U.S. Senate</h3><div class="wg-compare-grid">'+
+        block('MY PREDICTION','Final forecast · November 3',52,48,0,'100 seats · Prediction archived')+
+        block('REPORTED COUNT','November 4 results snapshot',54,44,2,'2 uncalled: Alaska and Mississippi · Democratic caucus includes 2 independents')+
+        '</div></div><div class="wg-chamber"><h3 class="wg-chamber-title">U.S. House</h3><div class="wg-compare-grid">'+
+        block('MY PREDICTION','Final forecast · November 3',235,200,0,'435 seats · Prediction archived')+
+        block('REPORTED COUNT','November 4, 1:14 p.m. ET results snapshot',241,153,41,'41 uncalled · Timestamped snapshot, not a live count')+
+        '</div></div><div class="wg-compare-source">Reported counts are a November 4 snapshot, not certified totals. <a href="https://abcnews.go.com/Politics/" target="_blank" rel="noopener">Senate reporting</a> · <a href="https://www.poliwave.com/us/live/midterms-2026/house?office=governors" target="_blank" rel="noopener">House snapshot</a></div>';
     }
-
-    if(!countdown.querySelector('.wg-election-days'))countdown.innerHTML='<span class="wg-election-label">HOURS UNTIL FIRST POLLS CLOSE</span><strong class="wg-election-days"></strong><small class="wg-election-copy">Nov 3, 2026 · 3:00 PM PST</small>';
-    const countdownLabel=countdown.querySelector('.wg-election-label');
-    if(countdownLabel&&countdownLabel.textContent!=='HOURS UNTIL FIRST POLLS CLOSE')countdownLabel.textContent='HOURS UNTIL FIRST POLLS CLOSE';
-    const countdownCopy=countdown.querySelector('.wg-election-copy');
-    if(countdownCopy&&countdownCopy.textContent!=='Nov 3, 2026 · 3:00 PM PST')countdownCopy.textContent='Nov 3, 2026 · 3:00 PM PST';
-    const countdownValue=countdown.querySelector('.wg-election-days');
-    if(countdownValue&&countdownValue.textContent!==String(hours))countdownValue.textContent=String(hours);
-    countdown.setAttribute('aria-label',`${hours} hours until the first polls close, November 3, 2026 at 3 PM PST`);
-
-    if(!toss.querySelector('.wg-metric-value'))toss.innerHTML='<span class="wg-metric-label">SENATE TOSS-UPS</span><strong class="wg-metric-value"></strong>';
-    if(toss.querySelector('.wg-metric-value').textContent!==tossups)toss.querySelector('.wg-metric-value').textContent=tossups;
-    toss.setAttribute('aria-label',`${tossups} Senate toss-ups`);
-
-    if(!updated.querySelector('.wg-metric-value'))updated.innerHTML='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">November 2, 2026</strong>';
-    const updatedValue=updated.querySelector('.wg-metric-value');if(updatedValue)updatedValue.textContent='November 2, 2026';
-    updated.setAttribute('aria-label','Last updated November 2, 2026');
-
-    if(!forecast.querySelector('.wg-forecast-value'))forecast.innerHTML='<span class="wg-metric-label">2026 SENATE RESULTS</span><div class="wg-forecast-value"><span class="wg-forecast-dem">54 D</span><span class="wg-forecast-divider">/</span><span class="wg-forecast-rep">44 R</span></div>';
-    const dd=forecast.querySelector('.wg-forecast-dem'),rr=forecast.querySelector('.wg-forecast-rep');
-    if(dd&&dd.textContent!=='54 D')dd.textContent='54 D';
-    if(rr&&rr.textContent!=='44 R')rr.textContent='44 R';
-    const status=forecast.querySelector('.wg-results-status')||document.createElement('small');
-    status.className='wg-results-status';status.textContent='2 uncalled · Alaska & Mississippi · D includes 2 independents';
-    status.style.cssText='font-size:10px;line-height:1.5;color:#65788d;font-weight:700;margin-top:8px;text-align:center';
-    if(!status.parentElement)forecast.appendChild(status);
-    forecast.setAttribute('aria-label','Senate result snapshot: 54 Democratic caucus seats, 44 Republican seats, 2 uncalled (Alaska and Mississippi)');
+    if(section.parentElement!==shell){
+      const metrics=shell.querySelector('.reference-metrics');
+      if(metrics)metrics.insertAdjacentElement('afterend',section);
+      else shell.appendChild(section);
+    }
+    if(!document.getElementById('wg-forecast-comparison-style')){
+      const css=document.createElement('link');css.id='wg-forecast-comparison-style';
+      css.rel='stylesheet';css.href='/homepage-prediction-results.css?v=20261104-post-election-cleanup-v2';
+      document.head.appendChild(css);
+    }
   }
 
   function keepPartyLabels(){
@@ -363,5 +237,5 @@
   // Navigation updates are handled on actual interactions, not by a loop.
   window.addEventListener('pageshow',apply);window.addEventListener('resize',apply);
   // The displayed integer changes once per hour. Check every minute so an open tab stays accurate.
-  setInterval(electionCountdown,60000);
+  // Obsolete hourly election countdown intentionally removed.
 })();
