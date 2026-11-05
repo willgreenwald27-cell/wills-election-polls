@@ -158,7 +158,7 @@
     }
     // The pre-election "Balance of Power" component is redundant with this comparison.
     for(const heading of home.querySelectorAll('h1,h2,h3,h4,.section-title,.card-title')){
-      if(!/^balance of power$/i.test((heading.textContent||'').trim()))continue;
+      if(!/\bbalance of power\b/i.test((heading.textContent||'').trim()))continue;
       if(heading.closest('#wg-forecast-comparison'))continue;
       const panel=heading.closest('.balance-card,.balance-of-power,section,.card');
       if(panel&&panel!==home&&panel!==shell&&panel!==section){
