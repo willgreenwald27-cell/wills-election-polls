@@ -1,7 +1,7 @@
 (()=>{
   const PAGES=[
     ['home','Home'],
-    ['senate','2026 Senate Prediction'],
+    ['senate','2026 Senate Accuracy'],
     ['governor','2026 Governor Map'],
     ['polls','New Polls'],
     ['betting','Betting Odds'],
