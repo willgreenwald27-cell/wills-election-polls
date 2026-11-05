@@ -19,9 +19,14 @@ function card(label,subtitle,d,r,u,foot){
 }
 function render(){
  const root=document.getElementById('page-home');
- if(!root||root.querySelector('#wg-forecast-comparison'))return !!root;
- const old=root.querySelector('#housePrediction2026')||root.querySelector('#homeForecastSplit');
+ if(!root)return false;
  const reference=root.querySelector('.reference-home-shell')||root.querySelector('.content')||root;
+ const hero=reference.querySelector(':scope > .reference-hero')||reference.querySelector('.reference-hero');
+ const existing=root.querySelector('#wg-forecast-comparison');
+ if(existing){
+   if(hero&&existing.previousElementSibling!==hero)hero.insertAdjacentElement('afterend',existing);
+   return true;
+ }
  const section=document.createElement('section');
  section.id='wg-forecast-comparison';
  section.setAttribute('aria-label','Original 2026 election predictions compared with November 4 reported results');
@@ -36,8 +41,8 @@ function render(){
  card('Reported count','November 4 · 1:14 p.m. ET snapshot',241,153,41,'394 called · 41 uncalled · House result totals are not final')+
  '</div></div>'+
  '<div class="wg-compare-source">Senate results: <a href="'+SOURCE_SENATE+'" target="_blank" rel="noopener">ABC News</a> · House results: <a href="'+SOURCE_HOUSE+'" target="_blank" rel="noopener">Poliwave 1:14 p.m. ET snapshot</a>. These are timestamped election-night counts, not live-updating or certified results.</div>';
- if(old&&old.parentElement)old.insertAdjacentElement('beforebegin',section);
- else reference.appendChild(section);
+ if(hero)hero.insertAdjacentElement('afterend',section);
+ else reference.insertAdjacentElement('afterbegin',section);
  return true;
 }
 function init(){if(render())return;let attempts=0;const t=setInterval(()=>{if(render()||++attempts>15)clearInterval(t)},350);}
