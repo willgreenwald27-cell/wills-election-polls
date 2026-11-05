@@ -65,6 +65,9 @@
       '#wg-accuracy-key .wg-swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid #0002}',
       '#wg-accuracy-key small{display:block;flex-basis:100%;color:#677e93;line-height:1.4}',
       '#page-senate[data-wg-accuracy="on"] .map-wrap svg .state-shape[data-state]{transition:none!important;animation:none!important}',
+      '#page-senate[data-wg-accuracy="on"][data-wg-accuracy-snapshot="ready"] .map-wrap svg:not([data-wg-accuracy-snapshot]){opacity:0!important}',
+      '#page-senate .map-wrap svg[data-wg-accuracy-snapshot]{pointer-events:none!important;z-index:30!important;display:none!important}',
+      '#page-senate[data-wg-accuracy="on"] .map-wrap svg[data-wg-accuracy-snapshot]{display:block!important;opacity:1!important}',
       '@media(max-width:650px){#wg-accuracy-controls{padding:11px}#wg-accuracy-controls .wg-accuracy-buttons{width:100%}#wg-accuracy-controls button{flex:1}#wg-accuracy-key{gap:8px;font-size:10px}}'
     ].join('');
     document.head.appendChild(css);
@@ -73,35 +76,47 @@
     return [...root.querySelectorAll('svg .state-shape[data-state],svg path[data-state]')]
       .filter(el=>/^[A-Z]{2}$/.test(String(el.getAttribute('data-state')||'').toUpperCase()));
   }
+  /* A frozen, non-interactive SVG snapshot prevents older site scripts
+     from repainting the visible result colors. The underlying live SVG
+     still handles pointer clicks and tooltips. */
   function paint(){
     const page=document.getElementById('page-senate');
-    if(!page)return;
-    const svg=page.querySelector('.map-wrap svg');
-    if(!svg)return;
+    const wrap=page?.querySelector('.map-wrap');
+    if(!wrap)return;
+    const source=wrap.querySelector('svg:not([data-wg-accuracy-snapshot])');
+    if(!source)return;
+    wrap.querySelectorAll('[data-wg-accuracy-overlay="1"]').forEach(el=>el.remove());
     if(!accuracy){
-      svg.querySelectorAll('[data-wg-accuracy-overlay="1"]').forEach(el=>el.remove());
+      wrap.querySelectorAll('svg[data-wg-accuracy-snapshot]').forEach(el=>el.remove());
       return;
     }
-    const originalShapes=[...svg.querySelectorAll('.state-shape[data-state]')];
-    for(const el of originalShapes){
-      const ab=String(el.getAttribute('data-state')||'').toUpperCase();
-      if(!/^[A-Z]{2}$/.test(ab))continue;
-      let overlay=el.nextElementSibling;
-      if(!overlay||overlay.getAttribute('data-wg-accuracy-overlay')!=='1'){
-        overlay=el.cloneNode(false);
-        overlay.removeAttribute('id');
-        overlay.removeAttribute('data-state');
-        overlay.removeAttribute('class');
-        overlay.removeAttribute('title');
-        overlay.setAttribute('data-wg-accuracy-overlay','1');
-        overlay.setAttribute('aria-hidden','true');
-        overlay.style.setProperty('pointer-events','none','important');
-        el.parentNode.insertBefore(overlay,el.nextSibling);
-      }
-      const color=COLORS[category(ab)];
-      if(overlay.style.getPropertyValue('fill')!==color)
-        overlay.style.setProperty('fill',color,'important');
+    let snapshot=wrap.querySelector('svg[data-wg-accuracy-snapshot]');
+    if(!snapshot){
+      snapshot=source.cloneNode(true);
+      snapshot.setAttribute('data-wg-accuracy-snapshot','1');
+      snapshot.setAttribute('aria-hidden','true');
+      snapshot.removeAttribute('id');
+      snapshot.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+      snapshot.querySelectorAll('.state-shape[data-state],path[data-state]').forEach(el=>{
+        const ab=String(el.getAttribute('data-state')||'').toUpperCase();
+        if(!/^[A-Z]{2}$/.test(ab))return;
+        el.style.setProperty('fill',COLORS[category(ab)],'important');
+        el.removeAttribute('data-state');
+        el.classList.remove('state-shape');
+      });
+      snapshot.style.setProperty('pointer-events','none','important');
+      snapshot.style.setProperty('transition','none','important');
+      wrap.appendChild(snapshot);
     }
+    const rect=source.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
+    if(rect.width>0&&rect.height>0){
+      snapshot.style.setProperty('position','absolute','important');
+      snapshot.style.setProperty('left',(rect.left-wr.left+wrap.scrollLeft)+'px','important');
+      snapshot.style.setProperty('top',(rect.top-wr.top+wrap.scrollTop)+'px','important');
+      snapshot.style.setProperty('width',rect.width+'px','important');
+      snapshot.style.setProperty('height',rect.height+'px','important');
+    }
+    page.dataset.wgAccuracySnapshot='ready';
   }
   function schedulePaint(){
     if(scheduled)return;
@@ -116,6 +131,7 @@
     if(!mapCard||!mapWrap)return;
     addStyles();
     page.dataset.wgAccuracy=accuracy?'on':'off';
+    if(!accuracy)delete page.dataset.wgAccuracySnapshot;
     const header=page.querySelector('.page-head h1');
     if(header){
       if(!header.dataset.wgForecastTitle)header.dataset.wgForecastTitle=header.textContent;
@@ -141,6 +157,7 @@
         if(!button)return;
         accuracy=button.dataset.view==='accuracy';
         page.dataset.wgAccuracy=accuracy?'on':'off';
+        if(!accuracy)delete page.dataset.wgAccuracySnapshot;
         const header=page.querySelector('.page-head h1');
         if(header)header.textContent=accuracy?'2026 Senate Prediction Accuracy':(header.dataset.wgForecastTitle||'2026 Senate Prediction');
 
@@ -160,8 +177,10 @@
     if(observed!==mapWrap){
       if(observed&&observed.__wgAccuracyObserver)observed.__wgAccuracyObserver.disconnect();
       const mo=new MutationObserver(muts=>{
-        if(muts.some(m=>[...m.addedNodes].some(n=>n.nodeType===1&&
-          (n.getAttribute?.('data-wg-accuracy-overlay')!=='1'&&(n.matches?.('svg, path, .state-shape')||n.querySelector?.('svg .state-shape[data-state]'))))))schedulePaint();
+        const sourceChanged=muts.some(m=>Array.from(m.addedNodes).some(n=>
+          n.nodeType===1&&n.getAttribute?.('data-wg-accuracy-snapshot')!=='1'&&
+          (n.matches?.('svg:not([data-wg-accuracy-snapshot]),.state-shape')||n.querySelector?.('.state-shape[data-state]'))));
+        if(sourceChanged)schedulePaint();
       });
       mo.observe(mapWrap,{subtree:true,childList:true});
       mapWrap.__wgAccuracyObserver=mo;observed=mapWrap;
