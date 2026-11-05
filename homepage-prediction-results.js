@@ -38,9 +38,9 @@ function render(){
  '</div></div>'+
  '<div class="wg-chamber"><h3 class="wg-chamber-title">U.S. House of Representatives</h3><div class="wg-compare-grid">'+
  card('My final prediction','Election Day · November 3, 2026',235,200,0,'Original forecast · 435 seats')+
- card('Reported count','November 4 · 1:14 p.m. ET snapshot',241,153,41,'394 called · 41 uncalled · House result totals are not final')+
+ card('Reported count','November 4 · updated count',245,147,43,'392 called · 43 uncalled · House result totals are not final')+
  '</div></div>'+
- '<div class="wg-compare-source">Senate results: <a href="'+SOURCE_SENATE+'" target="_blank" rel="noopener">ABC News</a> · House results: <a href="'+SOURCE_HOUSE+'" target="_blank" rel="noopener">Poliwave 1:14 p.m. ET snapshot</a>. These are timestamped election-night counts, not live-updating or certified results.</div>';
+ '<div class="wg-compare-source">Senate results: <a href="'+SOURCE_SENATE+'" target="_blank" rel="noopener">ABC News</a> · House results: <a href="'+SOURCE_HOUSE+'" target="_blank" rel="noopener">House results reference</a>. These are timestamped election-night counts, not live-updating or certified results.</div>';
  if(hero)hero.insertAdjacentElement('afterend',section);
  else reference.insertAdjacentElement('afterbegin',section);
  return true;
