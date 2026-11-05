@@ -132,3 +132,26 @@ body #page-home.reference-home .wr-signal-module{
     line-height:1.085!important;
   }
 }
+
+/* November 4, 2026: small, non-disruptive post-election homepage update.
+   CSS only: no navigation, forecast data, or loader changes. */
+body #page-home.reference-home .reference-hero-copy::before{
+  content:"2026 MIDTERMS  ·  POST-ELECTION ANALYSIS";
+  display:table;
+  margin:0 auto 17px;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,.4);
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  color:#e8f4ff;
+  font:800 11px/1.4 Montserrat,Arial,sans-serif;
+  letter-spacing:1.2px;
+  text-align:center;
+}
+@media(max-width:600px){
+ body #page-home.reference-home .reference-hero-copy::before{
+  font-size:9px;
+  letter-spacing:.8px;
+  max-width:100%;
+ }
+}
