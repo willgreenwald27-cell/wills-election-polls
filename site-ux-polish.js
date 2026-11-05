@@ -121,6 +121,29 @@
       if(metrics.childElementCount!==1||metrics.firstElementChild!==updated)metrics.replaceChildren(updated);
       updated.setAttribute('aria-label','Last updated November 4, 2026');
     }
+    // The empty Balance of Power graphic is nested INSIDE the hero, not a sibling.
+    // Remove the whole graphic card without removing the main hero heading.
+    const hero=home.querySelector('.reference-hero');
+    if(hero){
+      const all=[...hero.querySelectorAll('*')];
+      for(const el of all){
+        if(el.children.length||!/THE BALANCE OF POWER/i.test(el.textContent||''))continue;
+        let panel=el;
+        while(panel.parentElement&&panel.parentElement!==hero){
+          if(panel.parentElement.querySelectorAll('a,button').length&&
+             /Explore the Senate map/i.test(panel.parentElement.textContent||'')){
+            panel=panel.parentElement;break;
+          }
+          panel=panel.parentElement;
+        }
+        if(panel!==hero){
+          panel.style.setProperty('display','none','important');
+          panel.setAttribute('aria-hidden','true');
+        }
+      }
+      hero.style.setProperty('min-height','0','important');
+      hero.style.setProperty('padding-bottom','clamp(24px,3vw,48px)','important');
+    }
     const obsolete=home.querySelector('.reference-bottom');
     if(obsolete)obsolete.style.setProperty('display','none','important');
     if(typeof renderHomeComparison==='function')renderHomeComparison();
