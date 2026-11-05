@@ -44,6 +44,15 @@
     css.id='wg-accuracy-map-css';
     css.textContent=[
       '#wg-accuracy-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 15px;margin:0 0 13px;border:1px solid #d7e4f0;border-radius:11px;background:#f5f8fc;color:#1b354e}',
+      '#page-senate[data-wg-accuracy="on"] .senate-map-head .balance-power{display:none!important}',
+      '#wg-accuracy-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 14px}',
+      '#wg-accuracy-summary[hidden]{display:none!important}',
+      '#wg-accuracy-summary .wg-score{border:1px solid #dce5ec;border-radius:11px;background:#fff;padding:12px;text-align:center}',
+      '#wg-accuracy-summary .wg-score b{display:block;font-size:clamp(24px,3vw,39px);line-height:1.12;font-weight:900}',
+      '#wg-accuracy-summary .wg-score span{font-size:11px;font-weight:800;color:#495e72}',
+      '#wg-accuracy-summary .wg-score.good b{color:#24a55a}',
+      '#wg-accuracy-summary .wg-score.bad b{color:#db4452}',
+      '#wg-accuracy-summary .wg-score.pending b{color:#ba8b1b}',
       '#wg-accuracy-controls strong{font-size:15px;display:block;font-weight:850}',
       '#wg-accuracy-controls .wg-accuracy-note{font-size:11px;color:#597087;display:block;margin-top:3px}',
       '#wg-accuracy-controls .wg-accuracy-buttons{display:flex;gap:6px;flex-wrap:wrap}',
@@ -99,6 +108,16 @@
     if(!mapCard||!mapWrap)return;
     addStyles();
     page.dataset.wgAccuracy=accuracy?'on':'off';
+    const balance=mapCard.querySelector('.balance-power');
+    if(balance&&!document.getElementById('wg-accuracy-summary')){
+      const summary=document.createElement('div');
+      summary.id='wg-accuracy-summary';
+      summary.setAttribute('aria-label','2026 Senate forecast accuracy summary');
+      summary.innerHTML='<div class="wg-score good"><b>30</b><span>Correct</span></div><div class="wg-score bad"><b>3</b><span>Incorrect</span></div><div class="wg-score pending"><b>2</b><span>Uncalled</span></div>';
+      balance.insertAdjacentElement('afterend',summary);
+    }
+    const summary=document.getElementById('wg-accuracy-summary');
+    if(summary)summary.hidden=!accuracy;
     if(!document.getElementById('wg-accuracy-controls')){
       const controls=document.createElement('div');
       controls.id='wg-accuracy-controls';
@@ -110,6 +129,7 @@
         page.dataset.wgAccuracy=accuracy?'on':'off';
         for(const b of controls.querySelectorAll('button'))b.setAttribute('aria-pressed',String((b.dataset.view==='accuracy')===accuracy));
         const key=document.getElementById('wg-accuracy-key');if(key)key.hidden=!accuracy;
+        const summary=document.getElementById('wg-accuracy-summary');if(summary)summary.hidden=!accuracy;
         schedulePaint();
       });
       mapWrap.parentNode.insertBefore(controls,mapWrap);
