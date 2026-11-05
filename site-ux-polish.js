@@ -166,7 +166,7 @@
         block('REPORTED COUNT','November 4 results snapshot',54,44,2,'2 uncalled: Alaska and Mississippi · Democratic caucus includes 2 independents')+
         '</div></div><div class="wg-chamber"><h3 class="wg-chamber-title">U.S. House</h3><div class="wg-compare-grid">'+
         block('MY PREDICTION','Final forecast · November 3',235,200,0,'435 seats · Prediction archived')+
-        block('REPORTED COUNT','November 4, 1:14 p.m. ET results snapshot',241,153,41,'41 uncalled · Timestamped snapshot, not a live count')+
+        block('REPORTED COUNT','November 4 · updated count',245,147,43,'43 uncalled · Timestamped snapshot, not a live count')+
         '</div></div><div class="wg-compare-source">Reported counts are a November 4 snapshot, not certified totals. <a href="https://abcnews.go.com/Politics/" target="_blank" rel="noopener">Senate reporting</a> · <a href="https://www.poliwave.com/us/live/midterms-2026/house?office=governors" target="_blank" rel="noopener">House snapshot</a></div>';
     }
     // Keep the four-panel comparison immediately below the hero, ABOVE Last Updated.
