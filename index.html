@@ -34,4 +34,7 @@ h=h.replace('</head>','<link rel="stylesheet" href="/homepage-prediction-results
 h=h.replace('</body>','<script defer src="/homepage-prediction-results.js?v=20261104-compare-raised-v3"><\/script></body>');
 /* Force newly updated homepage cleanup scripts to bypass old cached versions. */
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|home-latest-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-clean-home-v3'+quote);
+/* Preload stable CSS inside the decompressed page, before its first paint. */
+h=h.replace('</head>','<link rel="stylesheet" href="/instant-accuracy-and-home-cleanup.css?v=20261104-instant-v1"></head>');
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:senate-map-updated-date|site-ux-polish)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-no-flash-v1'+quote);
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
