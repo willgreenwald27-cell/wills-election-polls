@@ -27,4 +27,6 @@ h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-ux-polish|sep9-polls-update)\.js
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:site-final|site-corrections|senate-display-fixes|senate-current-sync|senate-click-stability|senate-call-average-overrides|sep9-polls-update|senate-hover-stable-20261019|battleground-board)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261102-final-margins-11-v2'+quote);
 /* Reinforce forecast values after the older inline Texas renderer override. */
 h=h.replace("stateData.TX.notes='';}","stateData.TX.notes='';}"+_ksInitialSync);
+/* Refresh only revised homepage results scripts after all legacy URL rewrites. */
+h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:homepage-senate-52-48|senate-color-polish|home-forecast-equal|home-split-forecast|site-ux-polish)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261104-senate-results-54-44-v1'+quote);
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
