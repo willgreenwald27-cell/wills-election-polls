@@ -1,0 +1,147 @@
+/* Personal About page: less dashboard, more of Will's own voice. */
+#page-about { background: #f5f7fa !important; color: #1b2b3d !important; }
+#page-about > :not(#wg-about-personal) { display: none !important; }
+#page-about > #wg-about-personal {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 22px 76px !important;
+  box-sizing: border-box !important;
+  background: #f5f7fa !important;
+  color: #1b2b3d !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+#page-about .wg-about-inner {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+#page-about .wg-about-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #d6dee7;
+  padding: 31px 0 20px;
+  font-size: 12px !important;
+  font-weight: 650;
+  letter-spacing: .02em;
+  color: #64758a;
+}
+#page-about .wg-about-topline span:first-child {
+  color: #a3333e;
+  letter-spacing: .13em;
+  font-weight: 800;
+}
+#page-about .wg-about-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 36px;
+  padding: 62px 0 39px;
+}
+#page-about .wg-about-intro h1 {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: clamp(48px, 6vw, 74px) !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+  letter-spacing: -.035em !important;
+  color: #102844 !important;
+  margin: 0 0 19px !important;
+}
+#page-about .wg-about-lead {
+  font-size: clamp(20px, 2.25vw, 25px) !important;
+  line-height: 1.48 !important;
+  font-weight: 400 !important;
+  color: #364e65 !important;
+  max-width: 620px;
+  margin: 0 !important;
+  letter-spacing: -.01em !important;
+}
+#page-about .wg-about-logo {
+  width: 190px;
+  max-width: 23vw;
+  height: auto;
+  background: #fff;
+  padding: 9px;
+  border: 1px solid #dfe5eb;
+  border-radius: 7px;
+  box-shadow: 0 3px 12px rgba(25, 42, 65, .06);
+  flex-shrink: 0;
+}
+#page-about .wg-about-story {
+  max-width: 815px;
+  padding: 0 0 41px;
+}
+#page-about .wg-about-story p,
+#page-about .wg-about-outside p,
+#page-about .wg-about-project p,
+#page-about .wg-about-project li {
+  font-size: 18px !important;
+  line-height: 1.78 !important;
+  letter-spacing: normal !important;
+  color: #253b50 !important;
+}
+#page-about .wg-about-story p { margin: 0 0 23px !important; }
+#page-about .wg-about-story p:last-child { margin-bottom: 0 !important; }
+#page-about .wg-about-lower {
+  border-top: 1px solid #d6dee7;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  gap: clamp(30px, 5vw, 76px);
+  padding: 39px 0 0;
+  align-items: start;
+}
+#page-about .wg-about-lower h2 {
+  font-family: Georgia, "Times New Roman", serif !important;
+  color: #132b44 !important;
+  font-size: clamp(26px, 2.7vw, 33px) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.02em !important;
+  margin: 0 0 20px !important;
+}
+#page-about .wg-about-outside p { margin: 0 0 16px !important; }
+#page-about .wg-about-essay {
+  display: inline-block;
+  margin-top: 7px;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.6;
+  color: #19599f !important;
+  text-decoration: underline;
+  text-decoration-color: #9ab8db;
+  text-underline-offset: 4px;
+}
+#page-about .wg-about-essay:hover,
+#page-about .wg-about-essay:focus-visible { color: #a3333e !important; }
+#page-about .wg-about-project {
+  background: #fff;
+  border: 1px solid #dce3eb;
+  border-radius: 8px;
+  padding: 29px 31px 25px;
+}
+#page-about .wg-about-project h2 { font-size: 25px !important; }
+#page-about .wg-about-project ul {
+  list-style: disc;
+  margin: 0 0 19px;
+  padding: 0 0 0 21px;
+}
+#page-about .wg-about-project li { padding: 0 0 8px; font-size: 16px !important; line-height: 1.6 !important; }
+#page-about .wg-about-project p { font-size: 15px !important; line-height: 1.6 !important; color: #637487 !important; margin: 0 !important; }
+@media (max-width: 740px) {
+  #page-about > #wg-about-personal { padding: 0 19px 52px !important; }
+  #page-about .wg-about-topline { padding: 25px 0 17px; flex-direction: column; align-items: flex-start; gap: 7px; }
+  #page-about .wg-about-intro { padding: 42px 0 32px; align-items: flex-start; gap: 25px; }
+  #page-about .wg-about-intro h1 { font-size: clamp(47px, 11vw, 62px) !important; }
+  #page-about .wg-about-logo { width: 96px; max-width: 24vw; padding: 5px; }
+  #page-about .wg-about-lead { font-size: 20px !important; }
+  #page-about .wg-about-story p, #page-about .wg-about-outside p { font-size: 17px !important; line-height: 1.72 !important; }
+  #page-about .wg-about-lower { display: block; padding-top: 31px; }
+  #page-about .wg-about-project { margin-top: 30px; padding: 26px 24px; }
+}
+@media (max-width: 390px) {
+  #page-about .wg-about-intro { gap: 14px; }
+  #page-about .wg-about-logo { width: 77px; }
+}
