@@ -112,3 +112,16 @@ document.addEventListener('click',e=>{
 },true);
 window.addEventListener('pageshow',install);
 })();
+
+/* Load the AP-based state results after the existing Senate map and hover scripts. */
+(()=>{
+  const install=()=>{
+    if(document.querySelector('script[data-wg-ap-results-loader]'))return;
+    const script=document.createElement('script');
+    script.src='/senate-ap-results-popups.js?v=20261119-ap35-v1';
+    script.dataset.wgApResultsLoader='1';
+    document.body.appendChild(script);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});
+  else install();
+})();
