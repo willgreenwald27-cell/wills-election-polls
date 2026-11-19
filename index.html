@@ -41,5 +41,5 @@ h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:senate-map-updated-date|site-ux-polis
 h=h.replace(/(<script\b[^>]*\bsrc=["']\/(?:homepage-prediction-results|home-latest-date|site-ux-polish|home-forecast-equal|home-split-forecast|homepage-senate-52-48|senate-color-polish|senate-map-updated-date)\.js)(?:\?[^"']*)?(["'])/gi,(_,path,quote)=>path+'?v=20261119-nov18-home-258-171-56-44-v1'+quote);
 /* A simpler, more personal About Me page. */
 h=h.replace('</head>','<link rel="stylesheet" href="/about-simple.css?v=20261119-personal-v1"></head>');
-h=h.replace('</body>','<script defer src="/about-simple.js?v=20261119-personal-v1"><\/script></body>');
+h=h.replace('</body>','<script defer src="/about-simple.js?v=20261119-personal-v2"><\/script></body>');
 document.open();document.write(h);document.close()}catch(e){document.body.innerHTML='<pre style="white-space:pre-wrap;font-family:system-ui;padding:30px">Site failed to load: '+e+'</pre>'}})();</script><noscript>This site requires JavaScript.</noscript></body></html>
