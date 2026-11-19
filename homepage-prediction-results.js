@@ -29,18 +29,18 @@ function render(){
  }
  const section=document.createElement('section');
  section.id='wg-forecast-comparison';
- section.setAttribute('aria-label','Original 2026 election predictions compared with November 4 reported results');
+ section.setAttribute('aria-label','Original 2026 election predictions compared with November 18 reported results');
  section.innerHTML='<div class="wg-compare-top"><div class="wg-compare-eyebrow">2026 MIDTERMS · FORECAST VS RESULTS</div>'+
  '<h2>My predictions vs. the results</h2><p>The original Election Day forecasts are shown next to the reported seat counts. Yellow represents races not yet called in the result snapshots.</p></div>'+
  '<div class="wg-chamber"><h3 class="wg-chamber-title">U.S. Senate</h3><div class="wg-compare-grid">'+
  card('My final prediction','Election Day · November 3, 2026',52,48,0,'Original forecast · 100 seats')+
- card('Reported count','November 4 · Senate snapshot',54,44,2,'2 uncalled: Alaska and Mississippi · Democratic caucus includes two independents')+
+ card('Reported count','November 18 · Senate snapshot',56,44,0,'All 100 seats called · Democratic caucus includes two independents')+
  '</div></div>'+
  '<div class="wg-chamber"><h3 class="wg-chamber-title">U.S. House of Representatives</h3><div class="wg-compare-grid">'+
  card('My final prediction','Election Day · November 3, 2026',235,200,0,'Original forecast · 435 seats')+
- card('Reported count','November 4 · updated count',245,147,43,'392 called · 43 uncalled · House result totals are not final')+
+ card('Reported count','November 18 · updated count',258,171,6,'429 called · 6 uncalled · House result totals are not final')+
  '</div></div>'+
- '<div class="wg-compare-source">Senate results: <a href="'+SOURCE_SENATE+'" target="_blank" rel="noopener">ABC News</a> · House results: <a href="'+SOURCE_HOUSE+'" target="_blank" rel="noopener">House results reference</a>. These are timestamped election-night counts, not live-updating or certified results.</div>';
+ '<div class="wg-compare-source">Senate results: <a href="'+SOURCE_SENATE+'" target="_blank" rel="noopener">ABC News</a> · House results: <a href="'+SOURCE_HOUSE+'" target="_blank" rel="noopener">House results reference</a>. These are timestamped November 18, 2026 snapshots, not live-updating or certified results.</div>';
  if(hero)hero.insertAdjacentElement('afterend',section);
  else reference.insertAdjacentElement('afterbegin',section);
  return true;
