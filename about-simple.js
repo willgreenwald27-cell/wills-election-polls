@@ -29,7 +29,7 @@
           <h2>Outside of polling</h2>
           <p>I'm captain of my high school's varsity tennis team, I'm involved in mock trial, and I've served on local climate action and racial equity committees. I also worked with Democracy Summer.</p>
           <p>I like writing, too. I've published two books and wrote an article for <em>The Fulcrum</em> about my obsession with political predictions.</p>
-          <a class="wg-about-essay" href="https://thefulcrum.us/civic-engagement-education/illusion-certainty-politics-civic-engagement" target="_blank" rel="noopener noreferrer">Read my essay, “The Illusion of Certainty” <span aria-hidden="true">↗</span></a>
+          <a class="wg-about-essay" href="https://thefulcrum.us/civic-engagement-education/illusion-certainty-politics-civic-engagement" target="_blank" rel="noopener noreferrer">Read my essay, “The Illusion of Certainty”</a>
         </div>
 
         <aside class="wg-about-project" aria-label="What is on this website">
