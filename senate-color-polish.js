@@ -76,10 +76,10 @@
   function cardMarkup(kind){
     const senate=kind==='senate';
     const title=senate?'2026 Senate Results':'Will’s House of Reps Prediction';
-    const kicker=senate?'NOVEMBER 4 · REPORTED SEAT COUNT':'2026 U.S. House';
-    const dem=senate?'54':'235', rep=senate?'44':'200';
-    const demW=senate?'54%':'54.02299%', repW=senate?'44%':'45.97701%';
-    const note=senate?'2 uncalled (AK, MS) · Final forecast: 52 D / 48 R · D includes 2 independents':'218 seats needed for a majority';
+    const kicker=senate?'NOVEMBER 18 · REPORTED SEAT COUNT':'2026 U.S. House';
+    const dem=senate?'56':'235', rep=senate?'44':'200';
+    const demW=senate?'56%':'54.02299%', repW=senate?'44%':'45.97701%';
+    const note=senate?'All 100 seats called · Final forecast: 52 D / 48 R · D includes 2 independents':'218 seats needed for a majority';
     return `<div class="forecast-card final-forecast-card final-${kind}-card">
       
       <div class="final-kicker">${kicker}</div>
