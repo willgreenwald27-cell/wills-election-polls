@@ -25,9 +25,9 @@
 (()=>{
 'use strict';
 let accuracy=true;
-const correct=new Set('AL AR CO DE FL GA ID IL KS KY LA MA MI MN MT NE NH NJ NM NC OH OK OR RI SD TN TX VA WV WY'.split(' '));
-const wrong=new Set('IA ME SC'.split(' '));
-const pending=new Set(['AK','MS']);
+const correct=new Set('AK AL AR CO DE FL GA ID IL KS KY LA MA MI MN MT NE NH NJ NM NC OH OK OR RI SD TN TX VA WV WY'.split(' '));
+const wrong=new Set('IA ME MS SC'.split(' '));
+const pending=new Set();
 const saved=new WeakMap();
 let watched=null,painting=false;
 function paint(){
@@ -74,7 +74,7 @@ function install(){
  let summary=page.querySelector('#wg-accuracy-summary');
  if(!summary){
   summary=document.createElement('div');summary.id='wg-accuracy-summary';
-  summary.innerHTML='<div><b>30</b><span>Correct</span></div><div><b>3</b><span>Incorrect</span></div><div><b>2</b><span>Uncalled</span></div>';
+  summary.innerHTML='<div><b>31</b><span>Correct</span></div><div><b>4</b><span>Incorrect</span></div><div><b>0</b><span>Uncalled</span></div>';
   const balance=page.querySelector('.balance-power');
   if(balance)balance.insertAdjacentElement('afterend',summary);
   else map.insertAdjacentElement('beforebegin',summary);
@@ -95,7 +95,7 @@ function install(){
  let key=page.querySelector('#wg-accuracy-key');
  if(!key){
   key=document.createElement('div');key.id='wg-accuracy-key';
-  key.innerHTML='<span><i style="background:#24a55a"></i> Correct</span><span><i style="background:#db4452"></i> Incorrect</span><span><i style="background:#f4c542"></i> Uncalled (AK, MS)</span><span><i style="background:#cbd5e1"></i> No 2026 Senate race</span>';
+  key.innerHTML='<span><i style="background:#24a55a"></i> Correct</span><span><i style="background:#db4452"></i> Incorrect</span><span><i style="background:#f4c542"></i> Uncalled</span><span><i style="background:#cbd5e1"></i> No 2026 Senate race</span>';
   map.insertAdjacentElement('afterend',key);
  }
  key.hidden=!accuracy;
