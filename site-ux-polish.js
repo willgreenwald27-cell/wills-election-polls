@@ -115,11 +115,11 @@
         updated.id='homeLastUpdated';updated.className='wg-home-metric';
         updated.style.cssText='border:1px solid #d9e2ec;border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(20,34,53,.07);padding:16px;text-align:center';
       }
-      const date='November 4, 2026';
+      const date='November 18, 2026';
       const markup='<span class="wg-metric-label">LAST UPDATED</span><strong class="wg-metric-value">'+date+'</strong>';
       if(updated.innerHTML!==markup)updated.innerHTML=markup;
       if(metrics.childElementCount!==1||metrics.firstElementChild!==updated)metrics.replaceChildren(updated);
-      updated.setAttribute('aria-label','Last updated November 4, 2026');
+      updated.setAttribute('aria-label','Last updated November 18, 2026');
     }
     // The empty Balance of Power graphic is nested INSIDE the hero, not a sibling.
     // Remove the whole graphic card without removing the main hero heading.
@@ -160,14 +160,14 @@
       section.id='wg-forecast-comparison';
       section.setAttribute('aria-label','2026 Senate and House prediction versus results comparison');
       const block=(title,subtitle,d,r,u,details)=>'<article class="wg-compare-card '+(u?'result':'prediction')+'"><div class="wg-compare-label">'+title+'</div><div class="wg-compare-sub">'+subtitle+'</div><div class="wg-compare-numbers"><div class="wg-compare-num"><span>Democratic seats</span><strong class="wg-blue">'+d+'</strong></div><div class="wg-compare-num"><span>Republican seats</span><strong class="wg-red">'+r+'</strong></div></div><div class="wg-seats-bar" aria-label="'+d+' Democratic, '+r+' Republican, '+u+' uncalled"><i class="wg-bar-d" style="width:'+(100*d/(d+r+u))+'%"></i><i class="wg-bar-r" style="width:'+(100*r/(d+r+u))+'%"></i>'+(u?'<i class="wg-bar-u" style="width:'+(100*u/(d+r+u))+'%"></i>':'')+'</div><div class="wg-compare-foot">'+details+'</div></article>';
-      section.innerHTML='<div class="wg-compare-top"><div class="wg-compare-eyebrow">2026 MIDTERMS · FORECAST VS. RESULTS</div><h2>My predictions vs. the results</h2><p>My final Election Day predictions on the left and the reported November 4 counts on the right. Yellow represents uncalled seats.</p></div>'+
+      section.innerHTML='<div class="wg-compare-top"><div class="wg-compare-eyebrow">2026 MIDTERMS · FORECAST VS. RESULTS</div><h2>My predictions vs. the results</h2><p>My final Election Day predictions on the left and the reported November 18 counts on the right. Yellow represents uncalled seats.</p></div>'+
         '<div class="wg-chamber"><h3 class="wg-chamber-title">U.S. Senate</h3><div class="wg-compare-grid">'+
         block('MY PREDICTION','Final forecast · November 3',52,48,0,'100 seats · Prediction archived')+
-        block('REPORTED COUNT','November 4 results snapshot',54,44,2,'2 uncalled: Alaska and Mississippi · Democratic caucus includes 2 independents')+
+        block('REPORTED COUNT','November 18 results snapshot',56,44,0,'All 100 seats called · Democratic caucus includes 2 independents')+
         '</div></div><div class="wg-chamber"><h3 class="wg-chamber-title">U.S. House</h3><div class="wg-compare-grid">'+
         block('MY PREDICTION','Final forecast · November 3',235,200,0,'435 seats · Prediction archived')+
-        block('REPORTED COUNT','November 4 · updated count',245,147,43,'43 uncalled · Timestamped snapshot, not a live count')+
-        '</div></div><div class="wg-compare-source">Reported counts are a November 4 snapshot, not certified totals. <a href="https://abcnews.go.com/Politics/" target="_blank" rel="noopener">Senate reporting</a> · <a href="https://www.poliwave.com/us/live/midterms-2026/house?office=governors" target="_blank" rel="noopener">House snapshot</a></div>';
+        block('REPORTED COUNT','November 18 · updated count',258,171,6,'429 called · 6 uncalled · Timestamped snapshot, not a live count')+
+        '</div></div><div class="wg-compare-source">Reported counts are a November 18 snapshot, not certified totals. <a href="https://abcnews.go.com/Politics/" target="_blank" rel="noopener">Senate reporting</a> · <a href="https://www.poliwave.com/us/live/midterms-2026/house?office=governors" target="_blank" rel="noopener">House snapshot</a></div>';
     }
     // Keep the four-panel comparison immediately below the hero, ABOVE Last Updated.
     const hero=shell.querySelector(':scope > .reference-hero')||shell.querySelector('.reference-hero');
@@ -262,11 +262,11 @@
     const card=root.querySelector('#homeForecastSplit .senate-card,#homeForecastSplit .final-senate-card,.will-senate-card');
     if(!card)return;
     const nums=[...card.querySelectorAll('.party-number,.final-party-number')];
-    if(nums[0]&&nums[0].textContent!=='54')nums[0].textContent='54';
+    if(nums[0]&&nums[0].textContent!=='56')nums[0].textContent='56';
     if(nums[1]&&nums[1].textContent!=='44')nums[1].textContent='44';
     const dem=card.querySelector('.senate-bar .dem,.final-bar .dem,.democratic,[data-party="dem"]');
     const rep=card.querySelector('.senate-bar .rep,.final-bar .rep,.republican,[data-party="rep"]');
-    if(dem)dem.style.setProperty('width','54%','important');
+    if(dem)dem.style.setProperty('width','56%','important');
     if(rep)rep.style.setProperty('width','44%','important');
   }
 
