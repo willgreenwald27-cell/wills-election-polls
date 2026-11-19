@@ -1,0 +1,55 @@
+/* AP-reported Senate results in state hover cards and click-open drawers. */
+#wgSenateStableHoverTip .wg-ap-top,
+#mapHoverCard .wg-ap-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+#wgSenateStableHoverTip .map-hover-state,
+#mapHoverCard .map-hover-state{margin:0 0 8px;font-size:20px}
+.wg-ap-flag{flex:none;display:inline-block;border-radius:99px;padding:4px 8px;font-size:9px;line-height:1.2;font-weight:850;letter-spacing:.015em}
+.wg-ap-flag.correct{color:#bdf5d1;background:#175334}
+.wg-ap-flag.incorrect{color:#ffe0e3;background:#772734}
+.wg-ap-flag.pending{color:#e0e6ee;background:#536075}
+#wgSenateStableHoverTip .wg-ap-caption,
+#mapHoverCard .wg-ap-caption{color:#a9cafa;font-weight:850;font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:5px 0}
+.wg-ap-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid rgba(139,167,203,.2);padding:7px 0}
+.wg-ap-person{display:flex;flex-direction:column;min-width:0}
+.wg-ap-person strong{font-size:12px;line-height:1.25;color:inherit;font-weight:780}
+.wg-ap-person small{font-size:10px;line-height:1.4;opacity:.78;color:inherit}
+.wg-ap-percent{font-size:17px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#wgSenateStableHoverTip .wg-ap-row.dem .wg-ap-percent,
+#mapHoverCard .wg-ap-row.dem .wg-ap-percent{color:#83b4ff}
+#wgSenateStableHoverTip .wg-ap-row.rep .wg-ap-percent,
+#mapHoverCard .wg-ap-row.rep .wg-ap-percent{color:#ff8690}
+#wgSenateStableHoverTip .wg-ap-row.other .wg-ap-percent,
+#mapHoverCard .wg-ap-row.other .wg-ap-percent{color:#d1b6ff}
+.wg-ap-winner{font-size:10px;color:#48c783;white-space:nowrap}
+.wg-ap-other{font-size:10px;opacity:.75;margin-top:5px}
+.wg-ap-margin{font-size:12px;font-weight:800;margin:9px 0;color:#f4f8ff}
+.wg-ap-forecast{font-size:11px;line-height:1.4;border-top:1px solid #48607d;padding-top:8px;color:#d4e1f2}
+.wg-ap-forecast span{font-weight:800;color:#fff}
+.wg-ap-updated{font-size:9px;opacity:.65;margin-top:7px;line-height:1.35}
+.wg-ap-drawer{padding:6px 0 24px;color:#16273d}
+.wg-ap-drawer-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.wg-ap-kicker{color:#3465a1;font-size:10px;font-weight:900;letter-spacing:.07em}
+.wg-ap-drawer h3{font-size:23px;line-height:1.2;margin:6px 0;color:#132e51}
+.wg-ap-drawer h3 span{font-weight:500}
+.wg-ap-drawer-top p{font-size:12px;color:#5f7087;margin:0}
+.wg-ap-drawer .wg-ap-flag.correct{background:#d7f2df;color:#0c7033}
+.wg-ap-drawer .wg-ap-flag.incorrect{background:#fbe1e4;color:#b12f42}
+.wg-ap-drawer-margin{background:#eef4fd;border-radius:10px;padding:12px;margin:16px 0;font-size:12px;color:#416086}
+.wg-ap-drawer-margin b{display:block;font-size:20px;color:#163e70}
+.wg-ap-drawer h4{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#56708d;margin:20px 0 6px}
+.wg-ap-drawer .wg-ap-row{border-color:#e3e9f2;padding:10px 2px}
+.wg-ap-drawer .wg-ap-person strong{font-size:13px}
+.wg-ap-drawer .wg-ap-person small{font-size:11px;color:#64758a}
+.wg-ap-drawer .wg-ap-row.dem .wg-ap-percent{color:#2763b8}
+.wg-ap-drawer .wg-ap-row.rep .wg-ap-percent{color:#bd2937}
+.wg-ap-drawer .wg-ap-row.other .wg-ap-percent{color:#8051d2}
+.wg-ap-archive{margin:20px 0 10px;border-left:3px solid #6387bb;background:#f3f6fb;padding:12px 14px;border-radius:0 8px 8px 0}
+.wg-ap-archive strong{font-size:12px;color:#32557c}
+.wg-ap-archive p{font-size:14px;font-weight:750;margin:6px 0}
+.wg-ap-archive small{font-size:11px;color:#506b8a}
+.wg-ap-caveat,.wg-ap-source{font-size:11px;line-height:1.5;color:#66768b}
+.wg-ap-source a{color:#2261ad;text-decoration:underline}
+@media(max-width:760px){
+ .wg-ap-drawer h3{font-size:20px}
+ .wg-ap-drawer .wg-ap-row{padding:9px 2px}
+}
